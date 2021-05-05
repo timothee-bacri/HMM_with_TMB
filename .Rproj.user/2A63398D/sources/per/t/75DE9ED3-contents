@@ -1,0 +1,155 @@
+rm(list = ls())
+
+source("code/packages.R")
+source("functions/utils.R")
+source("functions/utils_personal.R")
+
+# Sets the version R runs on and the seed it will use
+# The seed used can produce different random numbers depending on the version of R
+RNGversion("3.6.0")
+set.seed(123)
+
+# Which dataset are tests run on
+RUN_LAMB <- FALSE
+RUN_SIMULATION <- FALSE
+RUN_HOSPITAL <- FALSE
+RUN_TINNITUS <- FALSE
+
+# Used for Wald confidence intervals, approximately 1.96
+q95_norm <- qnorm(1 - 0.05 / 2)
+
+# We use nlminb because it's a fast method that works properly
+# The possible methods are BFGS, CG, Nelder-Mead, L-BFGS-B, nlm, nlminb,
+# Rcgmin, Rvmmin, hjn
+# Rvmmin and Rcgmin don't work in our case, so we don't use them
+
+# Number of benchmarks used to time estimation of HMM parameters
+BENCHMARK_TRIALS <- 5
+
+# Number of bootstrap samples used to retrieve confidence intervals
+BOOTSTRAP_SAMPLES <- 500
+
+# Number of confidence intervals used to retrieve coverage probabilities
+COVERAGE_SAMPLES <- 15
+
+# Number of hidden states used for timing HMMs on each dataset
+M_LIST_LAMB <- c(1, 2)
+M_LIST_SIMUL <- c(1, 2, 3)
+M_LIST_HOSP <- c(1, 2, 3, 4)
+M_LIST_TINN <- c(2, 3)
+
+# Parameters returned by TMB.estimate
+params_names <- c("lambda", "gamma", "delta")
+
+# Name if TMB provides gradient/hessian
+#
+#                        Gradient not provided   Gradient provided
+# Hessian not provided          TMB1                   TMB3
+# Hessian provided              TMB2                   TMB4
+PROCEDURES <- c("DM", "TMB1", "TMB2", "TMB3", "TMB4")
+
+# Loading the lamb dataset
+load("data/fetal-lamb.RData")
+lamb_data <- lamb
+rm(lamb)
+
+# Loading the hospital dataset
+# The DATE column requires a line of code to be treated as a proper datetime item (POSIXct)
+# To that end, we use the lubridate package
+full_hosp_data <- as_tibble(read.csv("data/grouped_hospital_data.csv",
+                                     stringsAsFactors = FALSE)) %>%
+  mutate(DATE = ymd_hms(DATE))
+hosp_data <- full_hosp_data$PATIENTS
+
+# Loading the tinnitus dataset, arousal for 14th patient
+# load("data/tyt_dataset.RData")
+# tinn_data <- gimme_data
+# tinn_data <- tinn_data[[14]][, "arousal"] * 8
+# save(tinn_data, file = "data/tinnitus.RData")
+# rm(gimme_data)
+load("data/tinnitus.RData")
+
+# Setting the size of the datasets
+DATA_SIZE_LAMB <- length(lamb_data)
+DATA_SIZE_SIMUL <- 2000
+DATA_SIZE_HOSP <- length(hosp_data)
+DATA_SIZE_TINN <- length(tinn_data)
+
+# Container for the quality of fit values of HMMs for each dataset
+mllk_values_lamb <- data.frame(m = integer(),
+                               procedure = factor(levels = PROCEDURES),
+                               mllk = numeric(),
+                               AIC = numeric(),
+                               BIC = numeric())
+mllk_values_simul <- mllk_values_lamb
+mllk_values_hosp <- mllk_values_lamb
+mllk_values_tinn <- mllk_values_lamb
+
+# Container for the time benchmarks of HMMs parameter estimation on different optimizers for each dataset
+method_comparison_lamb = list()
+method_comparison_simul = list()
+method_comparison_hosp = list()
+method_comparison_tinn = list()
+
+# Container for the time benchmarks of HMMs' negative likelihood function for each dataset
+mllk_times_lamb <- list()
+mllk_times_simul <- list()
+mllk_times_hosp <- list()
+mllk_times_tinn <- list()
+
+# Container for the time benchmarks of HMMs parameter estimation for each dataset
+benchmarks_lamb <- list()
+benchmarks_simul <- list()
+benchmarks_hosp <- list()
+benchmarks_tinn <- list()
+
+# More practical container for the time benchmarks of HMMs parameter estimation for each dataset
+benchmarks_df_lamb <- data.frame(time = numeric(),
+                                 m = factor(levels = M_LIST_LAMB),
+                                 procedure = factor(levels = PROCEDURES))
+benchmarks_df_simul <- benchmarks_df_lamb
+benchmarks_df_hosp <- benchmarks_df_lamb
+benchmarks_df_tinn <- benchmarks_df_lamb
+
+# Container for the parameters estimated by HMMs and their confidence intervals for each dataset
+conf_int_lamb <- data.frame(m = integer(),
+                           Parameter = character(),
+                           Parameter.estimate = numeric(),
+                           Profile.L = numeric(),
+                           Profile.U = numeric(),
+                           Bootstrap.L = numeric(),
+                           Bootstrap.U = numeric(),
+                           TMB.L = numeric(),
+                           TMB.U = numeric(),
+                           Coverage.Profile = numeric(),
+                           Coverage.Bootstrap = numeric(),
+                           Coverage.TMB = numeric(),
+                           stringsAsFactors = FALSE)
+conf_int_hosp <- conf_int_lamb
+conf_int_tinn <- conf_int_lamb
+# For the simulation, we also know the true parameter value being estimated
+conf_int_simul <- data.frame(m = integer(),
+                             Parameter = character(),
+                             Parameter.value = numeric(),
+                             Parameter.estimate = numeric(),
+                             Profile.L = numeric(),
+                             Profile.U = numeric(),
+                             Bootstrap.L = numeric(),
+                             Bootstrap.U = numeric(),
+                             TMB.L = numeric(),
+                             TMB.U = numeric(),
+                             Coverage.Profile = numeric(),
+                             Coverage.Bootstrap = numeric(),
+                             Coverage.TMB = numeric(),
+                             stringsAsFactors = FALSE)
+
+# Ensure that the algorithms BFGS and L-BFGS-B don't stop simply because of a low iteration limit
+ctrl = list(maxit = 10000)
+
+#TMB SETUP
+TMB::compile("code/poi_hmm.cpp")
+dyn.load(dynlib("code/poi_hmm"))
+TMB::compile("code/linreg.cpp")
+dyn.load(dynlib("code/linreg"))
+# Optional debug feature for TMB, requires manual input immediately after being run
+# TMB:::setupRStudio()
