@@ -1,0 +1,11 @@
+h1:state-inf State inference
+fig:nice-fig Here is a nice figure!
+tab:nice-tab Here is a nice table!
+h2:prepare-the-model Prepare the model
+h2:setup Setup
+h2:log-forward Log-forward probabilities
+h2:log-backward Log-backward probabilities
+h2:local-decoding Smoothing probabilities and local decoding
+h2:forecast Forecast, h-step-ahead-probabilities
+h2:global-decoding Global decoding using the Viterbi algorithm
+

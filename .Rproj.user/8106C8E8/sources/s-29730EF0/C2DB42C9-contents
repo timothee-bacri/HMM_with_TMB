@@ -1,0 +1,112 @@
+# Using TMB
+
+## Likelihood function
+
+The function is defined in *[poi_hmm.cpp](code/poi_hmm.cpp)*
+```{Rcpp code=readLines("code/poi_hmm.cpp"), eval=FALSE}
+```
+
+
+## Preparation of data and functions
+Loading of the necessary packages, compilation of the nll function with TMB and subsequent loading, and loading of the auxiliary functions for parameter transformation
+
+```{r init-example}
+library(TMB)
+library(optimr)
+# Run the C++ file containing the TMB code
+TMB::compile("code/poi_hmm.cpp")
+# Load it
+dyn.load(dynlib("code/poi_hmm"))
+# Load the parameter transformation function
+source("functions/utils.R")
+```
+
+Loading the ([tinnitus data](data/tinnitus.RData)) "arousal" variable can be achieved with
+
+```{r load-example}
+load("data/tinnitus.RData")
+```
+
+Raw tinnitus data
+<!-- https://gist.github.com/benmarwick/8ad99f35d5e4caa06492 -->
+
+```{r echo=FALSE, results='asis'}
+library(xtable)
+temp <- paste(tinn_data, collapse = " ")
+temp <- as.data.frame(temp)
+temp <- xtable(temp,
+               # align = "lp{15cm}",
+               caption = "Tinnitus data")
+               # label = "table:tinnitus_data")
+print(temp, include.rownames = FALSE, include.colnames = FALSE,
+      # hline.after = c(0, nrow(temp)),
+      type = "html",
+      html.table.attributes=list("border='0' cellpadding='5' "))
+```
+
+## Modeling
+
+```{r}
+# Model with 2 states
+m <- 2
+TMB_data <- list(x = tinn_data, m = m)
+
+# Initial set of parameters
+lambda <- c(1, 3)
+gamma <- matrix(c(0.8, 0.2,
+                  0.2, 0.8), byrow = TRUE, nrow = m)
+
+# Turn them into working parameters
+parameters <- pois.HMM.pn2pw(m, lambda, gamma)
+
+# Build the TMB object
+obj_tmb <- MakeADFun(TMB_data, parameters,
+                     DLL = "poi_hmm", silent = TRUE)
+
+# Optimize
+mod_tmb <- nlminb(start = obj_tmb$par,
+                  objective = obj_tmb$fn,
+                  gradient = obj_tmb$gr,
+                  hessian = obj_tmb$he)
+
+# Check convergence
+mod_tmb$convergence == 0
+
+# Results
+summary(sdreport(obj_tmb), "report")
+```
+
+## Nested models
+
+In order to build a nested model, we decide to fix $\lambda_1$ to the value 1.
+```{r}
+# Get the previous values, and fix some
+fixed_par_lambda <- lambda
+fixed_par_lambda[1] <- 1
+# Transform them into working parameters
+new_parameters <- pois.HMM.pn2pw(m = m,
+                                 lambda = fixed_par_lambda,
+                                 gamma = gamma)
+```
+
+Then, we instruct <tt>TMB</tt> to read these custom parameters.
+We indicate fixed values by mapping them to NA values, whereas the variable values need to be mapped to different factor variables.
+Lastly, we specify this mapping with the <tt>map</tt> argument when making the <tt>TMB</tt> object.
+```{r}
+map <- list(tlambda = as.factor(c(NA, 1)),
+            tgamma = as.factor(c(2, 3)))
+fixed_par_obj_tmb <- MakeADFun(TMB_data, new_parameters,
+                               DLL = "poi_hmm",
+                               silent = TRUE,
+                               map = map)
+```
+
+Estimating of the model and displaying the results is performed as usual
+```{r}
+fixed_par_mod_tmb <- nlminb(start = fixed_par_obj_tmb$par,
+                            objective = fixed_par_obj_tmb$fn,
+                            gradient = fixed_par_obj_tmb$gr,
+                            hessian = fixed_par_obj_tmb$he)
+summary(sdreport(fixed_par_obj_tmb), "report")
+```
+Note that the standard error of $\lambda_1$ is zero, because it is no longer considered a variable parameter and does not enter the optimization procedure.

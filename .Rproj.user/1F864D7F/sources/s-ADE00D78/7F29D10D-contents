@@ -1,0 +1,213 @@
+# State inference {#state-inf}
+
+You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(state-inf). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
+
+Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
+
+```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
+par(mar = c(4, 4, .1, .1))
+plot(pressure, type = 'b', pch = 19)
+```
+
+Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
+
+```{r nice-tab, tidy=FALSE}
+knitr::kable(
+  head(iris, 20), caption = 'Here is a nice table!',
+  booktabs = TRUE
+)
+```
+
+You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
+
+
+## Prepare the model
+
+```{r prepare, results=FALSE}
+library(TMB)
+source("../functions/utils.R")
+load("../data/fetal-lamb.RData")
+TMB::compile("../code/poi_hmm.cpp")
+dyn.load(dynlib("../code/poi_hmm"))
+lamb_data <- lamb
+m <- 2
+TMB_data <- list(x = lamb_data, m = m)
+lambda <- c(1, 3)
+gamma <- matrix(c(0.8, 0.2,
+                  0.2, 0.8), byrow = TRUE, nrow = m)
+parameters <- pois.HMM.pn2pw(m, lambda, gamma)
+obj_tmb <- MakeADFun(TMB_data, parameters,
+                     DLL = "poi_hmm", silent = TRUE)
+mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn,
+                  gradient = obj_tmb$gr, hessian = obj_tmb$he)
+```
+
+## Setup
+
+Given an optimized <tt>MakeADFun</tt> object <tt>obj</tt>, we need to
+setup some variables to compute the probabilities detailed below.
+
+```{r init-decoding}
+# Retrieve the objects at ML value
+adrep <- obj_tmb$report(obj_tmb$env$last.par.best)
+delta <- adrep$delta
+gamma <- adrep$gamma
+emission_probs <- adrep$emission_probs
+n <- adrep$n
+m <- length(delta)
+mllk <- adrep$mllk
+```
+
+## Log-forward probabilities {#log-forward}
+
+The forward probabilities have been detailed in
+TO FIX LINK_TO_hmm_likelihood!!!!!!!!!!!!!!!!!.
+
+We show here a way to compute the log of the forward probabilities,
+using a scaling scheme defined by [see @zucchini, p.66 and p.334].
+
+```{r log-forward}
+# Compute log-forward probabilities (scaling used)
+lalpha <- matrix(NA, m, n)
+foo <- delta * emission_probs[1, ]
+sumfoo <- sum(foo)
+lscale <- log(sumfoo)
+foo <- foo / sumfoo
+lalpha[, 1] <- log(foo) + lscale
+for (i in 2:n) {
+  foo <- foo %*% gamma * emission_probs[i, ]
+  sumfoo <- sum(foo)
+  lscale <- lscale + log(sumfoo)
+  foo <- foo / sumfoo
+  lalpha[, i] <- log(foo) + lscale
+}
+# lalpha contains n=240 columns, so we only display 5 for readability
+lalpha[, 1:5]
+```
+
+## Log-backward probabilities {#log-backward}
+
+The backward probabilities have been defined in the same section
+@zucchini [p~.67 and p~.334].
+
+```{r log-backward}
+# Compute log-backwards probabilities (scaling used)
+lbeta <- matrix(NA, m, n)
+lbeta[, n] <- rep(0, m)
+foo <- rep (1 / m, m)
+lscale <- log(m)
+for (i in (n - 1):1) {
+  foo <- gamma %*% (emission_probs[i + 1, ] * foo)
+  lbeta[, i] <- log(foo) + lscale
+  sumfoo <- sum(foo)
+  foo <- foo / sumfoo
+  lscale <- lscale + log(sumfoo)
+}
+# lbeta contains n=240 columns, so we only display 4 for readability
+lbeta[, 1:4]
+```
+
+## Smoothing probabilities and local decoding {#local-decoding}
+
+The smoothing probabilities are defined in [@zucchini, p.87 and p.336] as
+<!-- P(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n} -->
+\[
+P(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
+\]
+
+
+```{r smoothing}
+# Compute conditional state probabilities, smoothing probabilities
+stateprobs <- matrix(NA, ncol = n, nrow = m)
+llk <- - mllk
+for(i in 1:n) {
+  stateprobs[, i] <- exp(lalpha[, i] + lbeta[, i] - llk)
+}
+```
+
+The local decoding is a straightforward maximum of the smoothing
+probabilities.
+
+```{r localdecoding}
+# Most probable states (local decoding)
+ldecode <- rep(NA, n)
+for (i in 1:n) {
+  ldecode[i] <- which.max(stateprobs[, i])
+}
+ldecode
+```
+
+## Forecast, h-step-ahead-probabilities {#forecast}
+
+The forecast distribution or h-step-ahead-probabilities as well as its
+implementation in R is detailed in [@zucchini, p.85 and p.337]
+
+Then,
+
+<!-- Original -->
+<!-- P(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_T \b{\gamma}^h \bcp(x) \b{1}'}{\b{\alpha}_T \b{1}'} = \bfphi_T \b{\gamma}^h \bcp(x) \b{1}' -->
+\[
+P(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_T \b{\gamma}^h \b{P}(x) \b{1}'}{\b{\alpha}_T \b{1}'} = \b{P}hi_T \b{\gamma}^h \b{P}(x) \b{1}'
+\]
+An implementation of this, using a scaling scheme is
+
+```{r forecast}
+# Number of steps
+h <- 1
+# Values for which we want the forecast probabilities
+xf <- 0:50
+
+nxf <- length(xf)
+dxf <- matrix(0, nrow = h, ncol = nxf)
+foo <- delta * emission_probs[1, ]
+sumfoo <- sum(foo)
+lscale <- log(sumfoo)
+foo <- foo / sumfoo
+for (i in 2:n) {
+  foo <- foo %*% gamma * emission_probs[i, ]
+  sumfoo <- sum( foo)
+  lscale <- lscale + log(sumfoo)
+  foo <- foo / sumfoo
+}
+emission_probs_xf <- get.emission.probs(xf, lambda)
+for (i in 1:h) {
+  foo <- foo %*% gamma
+  for (j in 1:m) {
+    dxf[i, ] <- dxf[i, ] + foo[j] * emission_probs_xf[, j]
+  }
+}
+# dxf contains n=240 columns, so we only display 4 for readability
+dxf[, 1:4]
+```
+
+## Global decoding using the Viterbi algorithm {#global-decoding}
+
+The Viterbi algorithm is detailed in [@zucchini, p.88 and p.334].
+It calculates the sequence of states $(i_1^*, \ldots, i_T^*)$ which
+maximizes the conditional probability of all states simultaneously, i.e.
+\begin{equation*}
+(i_1^*, \ldots, i_n^*) = \argmax_{i_1, \ldots, i_n \in \{1, \ldots, m \}} P(C_1 = i_1, \ldots, C_n = i_n \vert X^{(n)} = x^{(n)}).
+\end{equation*} An implementation of it is
+
+```{r global}
+xi <- matrix(0, n, m)
+foo <- delta * emission_probs[1, ]
+xi[1, ] <- foo / sum(foo)
+for (i in 2:n) {
+  foo <- apply(xi[i - 1, ] * gamma, 2, max) * emission_probs[i, ]
+  xi[i, ] <- foo / sum(foo)
+}
+iv <- numeric(n)
+iv[n] <- which.max(xi[n, ])
+for (i in (n - 1):1){
+  iv[i] <- which.max(gamma[, iv[i + 1]] * xi[i, ])
+}
+iv
+```
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```

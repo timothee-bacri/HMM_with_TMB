@@ -1,0 +1,572 @@
+#Utility functions for hmm
+
+#Outputs the map for chosen covariates. 
+# Beta: the full covariance structure
+# sel_cov: vector of TRUE/FALSE. TRUE = include covariate in 
+# row corresponding to position in sel_cov
+Beta_map <- function(Beta, sel_cov){
+  
+  map.matrix <- Beta
+  map.matrix[sel_cov, ] <- seq(sum(sel_cov) * dim(Beta)[2])
+  map.matrix[!sel_cov, ] <- NA
+  return(factor(map.matrix))
+  
+}
+
+# Function to transform natural parameters to working
+Delta_n2w <- function(m, delta){
+  
+  tdelta <- log(delta[- 1] / delta[1])
+  
+  return(tdelta) 
+}
+
+Delta_w2n <- function(m, tdelta){
+  if (m == 1) return(1)
+  
+  # set first element to one and fill in the last m - 1 elements with working parameters and take exp
+  foo <- c(1, exp(tdelta))
+  
+  # normalize
+  delta <- foo / sum(foo)
+  
+  return(delta)
+}
+
+#Function to transform natural parameters to working (C ++ code as basis then add 1 to elements)
+# Gamma_n2w <- function(m, gamma){
+#   
+#   foo <- log(gamma / diag(gamma))
+#   
+#   tgamma <- seq(m * (m - 1))
+#   
+#   for (idx in 0 : ((m * (m - 1)/2 - 1))){
+#     i <-  1 + as.integer((- 1 + sqrt(8 * idx + 1)) / 2)
+#     j <- idx - (i - 1) * i / 2
+#     #Adjust c++ code
+#     i <- i + 1
+#     j <- j + 1
+#     idx <- idx + 1
+#     
+#     tgamma[idx] <- foo[i, j]
+#     tgamma[m * (m - 1) / 2 + idx] <- foo[j, i]
+#     
+#   }
+#   
+#   return(tgamma)
+# }
+Gamma_n2w <- function(m, gamma){
+  
+  foo <- log(gamma / diag(gamma))
+  
+  tgamma <- as.vector(foo[!diag(m)])
+  
+  return(tgamma)
+}
+
+#Function tranforming working parameters to natural parameters (C ++ code as basis then add 1 to elements)
+Gamma_w2n_old <- function(m, tgamma){
+  
+  # Construct m x m identity matrix
+  gamma <- diag(m)
+  
+  #Fill offdiagonal elements with working parameters colwise:
+  for (idx in 0:((m * (m - 1) / 2 - 1))) {
+    
+    i <-  1 + as.integer((- 1 + sqrt(8 * idx + 1)) / 2)
+    j <- idx - (i - 1) * i / 2
+    
+    #Adjust c++ code
+    i <- i + 1
+    j <- j + 1
+    idx <- idx + 1
+    
+    #fill gamma according to mapping and take exp()
+    gamma[i, j] = exp(tgamma[idx])
+    gamma[j, i] = exp(tgamma[m * (m - 1) / 2 + idx])
+    
+  }
+  
+  #Normalize each row
+  gamma <- gamma / apply(gamma, 1, sum)
+  
+  return(gamma);
+}
+
+Gamma_w2n <- function(m, tgamma){
+  
+  gamma <- diag(m)
+  if (m == 1) return(gamma)
+  
+  gamma[!gamma] <- exp(tgamma)
+  gamma <- gamma/apply(gamma, 1, sum)
+  
+  return(gamma)
+}
+
+# For sorting data
+TopMaxUsingFullSort <- function(x, N) {
+  value <- sort(x, decreasing = TRUE)[1:min(N, length(x))]
+  number <- rep(0, length(value))
+  for (i in 1:length(value)) {
+    number[i] <-  which(x == value[i])
+  }
+  return(list(value = value, number = number))
+  
+}
+
+TopMinUsingFullSort <- function(x, N) {
+  value <- sort(x, decreasing = FALSE)[1:min(N, length(x))]
+  number <- rep(0, length(value))
+  for (i in 1:length(value)) {
+    number[i] <-  which(x == value[i])
+  }
+  return(list(value = value, number = number))
+}
+
+## ---- TMB.estimate
+# Estimation using TMB
+TMB.estimate <- function(TMB_data,
+                         parameters,
+                         MakeADFun_obj = NULL,
+                         map = list(),
+                         gradient = FALSE,
+                         hessian = FALSE,
+                         std_error = FALSE) {
+  
+  obj <- MakeADFun_obj
+  if (is.null(MakeADFun_obj)) {
+    obj <- MakeADFun(TMB_data, parameters, DLL = "poi_hmm", silent = TRUE, map = map)
+  }
+  
+  # The function ifelse cannot return a NULL value, the function switch can
+  # If gradient is FALSE, then gradient + 1 is 1 and the switch returns NULL
+  # If gradient is TRUE, then gradient + 1 is 2 and the switch returns mod$gr
+  gr <- switch(gradient + 1, NULL, obj$gr)
+  he <- switch(hessian + 1, NULL, obj$he)
+  
+  m <- TMB_data$m
+  
+  # Optimizing while handling errors
+  mod <- tryCatch({
+    nlminb(start = obj$par, objective = obj$fn, gradient = gr, hessian = he)
+  },
+  error = function(e) {
+    message("nlminb error:")
+    message("m = ", m)
+    message("gradient = ", gradient)
+    message("hessian = ", hessian)
+    message("The original error message is:\n", e)
+    return()
+  })
+  convergence <- mod$convergence
+  if (is.null(mod)) {
+    return()
+  }
+  if (convergence != 0) {
+    w <- paste0("nlminb didn't succesfully converge:\n",
+                mod$message,
+                "\nm = ", m,
+                "\ngradient = ", gradient,
+                "\nhessian = ", hessian, "\n")
+    warning(w)
+  }
+  
+  mllk <- mod$objective
+  np <- length(unlist(parameters))
+  AIC <- 2 * (mllk + np)
+  n <- sum(!is.na(TMB_data$x))
+  BIC <- 2 * mllk + np * log(n)
+  # Return standard errors
+  if (std_error) {
+    adrep <- summary(sdreport(obj), "report")
+    
+    rows <- rownames(adrep) == "lambda"
+    lambda <- adrep[rows, "Estimate"]
+    lambda_std_error <- adrep[rows, "Std. Error"]
+    
+    rows <- rownames(adrep) == "gamma"
+    gamma <- adrep[rows, "Estimate"]
+    gamma <- matrix(gamma, ncol = m)
+    gamma_std_error <- adrep[rows, "Std. Error"]
+    gamma_std_error <- matrix(gamma_std_error, ncol = m)
+    
+    rows <- rownames(adrep) == "delta"
+    delta <- adrep[rows, "Estimate"]
+    delta_std_error <- adrep[rows, "Std. Error"]
+    
+    return(list(m = m, lambda = lambda, gamma = gamma, delta = delta,
+                lambda_std_error = lambda_std_error,
+                gamma_std_error = gamma_std_error,
+                delta_std_error = delta_std_error,
+                convergence = convergence, mllk = mllk,
+                AIC = AIC, BIC = BIC,
+                mod = mod, obj = obj))
+  }
+  
+  tlambda <- as.numeric(mod$par[names(mod$par) == "tlambda"])
+  tgamma <- as.numeric(mod$par[names(mod$par) == "tgamma"])
+  
+  estim <- pois.HMM.pw2pn(m, c(tlambda, tgamma))
+  
+  return(list(m = m, lambda = estim$lambda, gamma = estim$gamma,
+              delta = estim$delta, convergence = convergence, mllk = mllk,
+              AIC = AIC, BIC = BIC, mod = mod, obj = obj))
+}
+
+## ---- HMM.decode
+# Computes log-forward, log-backward and conditional probabilities
+# and decoding based on (optimized) MakeADFun object,
+HMM.decode <- function(obj) {
+  
+  # Setup
+  # Retrieve the objects at ML value
+  adrep <- obj$report(obj$env$last.par.best)
+  delta <- adrep$delta
+  gamma <- adrep$gamma
+  emission_probs <- adrep$emission_probs
+  n <- adrep$n
+  m <- length(delta)
+  mllk <- adrep$mllk
+  
+  # Compute log-forward probabilities (scaling used)
+  lalpha <- matrix(NA, m, n)
+  foo <- delta * emission_probs[1, ]
+  sumfoo <- sum(foo)
+  lscale <- log(sumfoo)
+  foo <- foo / sumfoo
+  lalpha[, 1] <- log(foo) + lscale
+  for (i in 2:n) {
+    foo <- foo %*% gamma * emission_probs[i, ]
+    sumfoo <- sum(foo)
+    lscale <- lscale + log(sumfoo)
+    foo <- foo / sumfoo
+    lalpha[, i] <- log(foo) + lscale
+  }
+  
+  # Compute log-backwards probabilities (scaling used)
+  lbeta <- matrix(NA, m, n)
+  lbeta[, n] <- rep(0, m)
+  foo <- rep (1 / m, m)
+  lscale <- log(m)
+  for (i in (n - 1):1) {
+    foo <- gamma %*% (emission_probs[i + 1, ] * foo)
+    lbeta[, i] <- log(foo) + lscale
+    sumfoo <- sum(foo)
+    foo <- foo / sumfoo
+    lscale <- lscale + log(sumfoo)
+  }
+  
+  # Compute conditional state probabilities, smoothing probabilities
+  stateprobs <- matrix(NA, ncol = n, nrow = m)
+  llk <- - mllk
+  for(i in 1:n) {
+    stateprobs[, i] <- exp(lalpha[, i] + lbeta[, i] - llk)
+  }
+  
+  # Most probable states
+  ldecode <- rep(NA, n)
+  for (i in 1:n) {
+    ldecode[i] <- which.max(stateprobs[, i])
+  }
+  
+  # Output as list
+  list(lalpha = lalpha, lbeta = lbeta,
+       stateprobs = stateprobs, ldecode = ldecode)
+}
+
+# 2.5% and 97.5% quantiles
+quantile.colwise <- function(data) {
+  return(quantile(data, probs = c(0.05 / 2, 1 - 0.05 / 2)))
+}
+
+# Transform tpm with column wise idx to row and column indexes
+matrix.col.idx.to.rowcol <- function(idx, m) {
+  # The indexes are 1:m in the 1st column, then (m+1):(2*m) in the 2nd, etc...
+  row <- (idx - 1) %% m + 1
+  col <- (idx - 1) %/% m + 1
+  return(c(row, col))
+}
+
+# Calculate emission probabilities
+get.emission.probs <- function(data, lambda) {
+  n <- length(data)
+  m <- length(lambda)
+  emission_probs <- matrix(0, nrow = n, ncol = m)
+  for (i in 1:n) {
+    if (is.na(data[i])) {
+      emission_probs[i, ] <- rep(1, m)
+    } else {
+      emission_probs[i, ] <- dpois(data[i], lambda)
+    }
+  }
+  return(emission_probs)
+}
+
+## ---- stat.dist
+# Compute the stationary distribution of a Markov chain
+# with transition probability gamma
+stat.dist <- function(gamma) {
+  m <- dim(gamma)[1]
+  return(solve(t(diag(m) - gamma + 1), rep(1, m)))
+}
+
+## ---- pois.HMM.pn2pw
+# Transform Poisson natural parameters to working parameters
+pois.HMM.pn2pw <- function(m, lambda, gamma, delta = NULL,
+                           stationary = TRUE) {
+  tlambda <- log(lambda)
+  foo <- log(gamma / diag(gamma))
+  tgamma <- as.vector(foo[!diag(m)])
+  if (stationary) {
+    # If tdelta is set to NULL and returned in the list,
+    # it will cause issues when optimizing with TMB
+    return(list(tlambda = tlambda, tgamma = tgamma))
+  } else {
+    tdelta <- log(delta[- 1] / delta[1])
+    return(list(tlambda = tlambda, tgamma = tgamma, tdelta = tdelta))
+  }
+}
+
+## ---- pois.HMM.pw2pn
+# Transform Poisson working parameters to natural parameters
+pois.HMM.pw2pn <- function(m, parvect, stationary = TRUE) {
+  parvect <- unlist(parvect)
+  lambda <- exp(parvect[1:m])
+  gamma <- diag(m)
+  if (m == 1) return(list(lambda = lambda, gamma = gamma, delta = 1))
+  gamma[!gamma] <- exp(parvect[(m + 1):(m * m)])
+  gamma <- gamma / apply(gamma, 1, sum)
+  if (stationary) {
+    delta <- solve(t(diag(m) - gamma + 1), rep(1, m))
+  } else {
+    foo <- c(1, exp(parvect[(m * m + 1):(m * m + m - 1)]))
+    delta <- foo / sum(foo)
+  }
+  return(list(lambda = lambda, gamma = gamma, delta = delta))
+}
+
+## ---- pois.HMM.generate_sample
+# Generate a random sample from a HMM
+pois.HMM.generate_sample  <- function(ns, mod) {
+  mvect <- 1:mod$m
+  state <- numeric(ns)
+  state[1] <- sample(mvect, 1, prob = mod$delta)
+  for (i in 2:ns) {
+    state[i] <- sample(mvect, 1, prob = mod$gamma[state[i - 1], ])
+  }
+  x <- rpois(ns, lambda = mod$lambda[state])
+  return(list(data = x, state = state))
+}
+
+## ---- pois.HMM.generate_estimable_sample
+# Generate a random sample from a HMM
+pois.HMM.generate_estimable_sample <- function(ns, mod, testing_params, params_names = PARAMS_NAMES, test_marqLevAlg = FALSE, std_error = FALSE) {
+  if(anyNA(c(ns, mod, testing_params))) {
+    stop("Some parameters are missing in pois.HMM.generate_estimable_sample")
+  }
+  # Loop as long as there is an issue with nlminb
+  repeat {
+    mod_temp <- NULL
+    #simulate the data
+    new_data <- pois.HMM.generate_sample(ns = DATA_SIZE_LAMB,
+                                         mod = mod)
+    
+    TMB_benchmark_data <- list(x = new_data$data, m = mod$m)
+    
+    testing_w_params <- pois.HMM.pn2pw(m = mod$m, lambda = testing_params$lambda, gamma = testing_params$gamma, delta = testing_params$delta)
+    
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
+                                              parameters = testing_w_params,
+                                              std_error = std_error))
+    
+    # If nlminb doesn't reach any result, retry
+    if (is.null(mod_temp)) {
+      next
+    }
+    # If nlminb doesn't converge successfully, retry
+    if (mod_temp$convergence != 0) {
+      next
+    }
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
+                                              parameters = testing_w_params,
+                                              gradient = TRUE,
+                                              std_error = std_error))
+    
+    # If nlminb doesn't reach any result, retry
+    if (is.null(mod_temp)) {
+      next
+    }
+    # If nlminb doesn't converge successfully, retry
+    if (mod_temp$convergence != 0) {
+      next
+    }
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
+                                              parameters = testing_w_params,
+                                              hessian = TRUE,
+                                              std_error = std_error))
+    
+    # If nlminb doesn't reach any result, retry
+    if (is.null(mod_temp)) {
+      next
+    }
+    # If nlminb doesn't converge successfully, retry
+    if (mod_temp$convergence != 0) {
+      next
+    }
+    
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
+                                              parameters = testing_w_params,
+                                              gradient = TRUE,
+                                              hessian = TRUE,
+                                              std_error = std_error))
+    
+    # If nlminb doesn't reach any result, retry
+    if (is.null(mod_temp)) {
+      next
+    }
+    # If nlminb doesn't converge successfully, retry
+    if (mod_temp$convergence != 0) {
+      next
+    }
+    
+    # marqLevAlg sometimes doesn't converge
+    if (test_marqLevAlg == TRUE) {
+      testing_w_params <- unlist(testing_w_params)
+      # No need to spend a few seconds to compute the marqLevAlg optimization if it's unnecessary
+      if (marqLevAlg(b = testing_w_params, fn = mod_temp$obj$fn, gr = mod_temp$obj$gr, hess = mod_temp$obj$he, maxiter = 10000)$istop != 1) {
+        next
+      }
+    }
+    
+    l <- mod_temp$lambda
+    g <- mod_temp$gamma
+    d <- mod_temp$delta
+    l_se <- mod_temp$lambda_std_error
+    g_se <- mod_temp$gamma_std_error
+    d_se <- mod_temp$delta_std_error
+    
+    # Label switching
+    natural_parameters <- pois.HMM.label.order(m, lambda = l,
+                                               gamma = g, delta = d,
+                                               lambda_std_error = l_se,
+                                               gamma_std_error = g_se,
+                                               delta_std_error = d_se)
+
+    # If some parameters are NA for some reason, retry
+    if (anyNA(natural_parameters[params_names], recursive = TRUE)) {
+      next
+    }
+    
+    # If everything went well, end the "repeat" loop
+    break
+  }
+  return(c(data = list(new_data$data), natural_parameters = list(natural_parameters), mod = list(mod_temp)))
+}
+
+## ---- pois.HMM.label.order
+# Relabel states by increasing Poisson means
+pois.HMM.label.order <- function(m, lambda, gamma, delta = NULL, lambda_std_error = NULL, gamma_std_error = NULL, delta_std_error = NULL) {
+  # Get the indexes of the sorted states
+  # according to ascending lambda
+  sorted_lambda <- sort(lambda, index.return = TRUE)$ix
+  ordered_lambda <- lambda[sorted_lambda]
+  # Re-order the TPM according to the switched states
+  # in the sorted lambda
+  ordered_gamma <- matrix(0, nrow = m, ncol = m)
+  for (col in 1:m) {
+    new_col <- which(sorted_lambda == col)
+    for (row in 1:m) {
+      new_row <- which(sorted_lambda == row)
+      ordered_gamma[row, col] <- gamma[new_row, new_col]
+    }
+  }
+  # Re-order the stationary distribution if it is provided
+  # Generate it otherwise
+  if (is.null(delta)) {
+    ordered_delta <- stat.dist(ordered_gamma)
+  } else {
+    ordered_delta <- delta[sorted_lambda]
+  }
+  # Re-order the standard errors
+  ordered_lambda_std_error <- lambda_std_error[sorted_lambda]
+  ordered_gamma_std_error <- gamma_std_error[sorted_lambda]
+  ordered_delta_std_error <- delta_std_error[sorted_lambda]
+  
+  result <- list(lambda = ordered_lambda,
+                 gamma = ordered_gamma,
+                 delta = ordered_delta,
+                 lambda_std_error = ordered_lambda_std_error,
+                 gamma_std_error = ordered_gamma_std_error,
+                 delta_std_error = ordered_delta_std_error)
+  
+  # Remove the NULL elements
+  result[sapply(result, is.null)] <- NULL
+  
+  return(result)
+}
+
+## ---- pois.HMM.mllk
+# Calculate the negative log-likelihood, based on the book
+pois.HMM.mllk <- function(parvect, x_alias, m_alias, stationary = TRUE) {
+  # The variable names m and x are already used as parameters for the hessian
+  # m_alias and x_alias are only replacement names
+  m <- m_alias
+  x <- x_alias
+  n <- length(x)
+  pn <- pois.HMM.pw2pn(m, parvect)
+  emission_probs <- get.emission.probs(x, pn$lambda)
+  
+  if (m == 1) return(- sum(log(emission_probs[, 1])))
+  
+  foo <- pn$delta * emission_probs[1, ]
+  sumfoo <- sum(foo)
+  lscale <- log(sumfoo)
+  foo <- foo / sumfoo
+  for (i in 2:n) {
+    if (!is.na(x[i])) {
+      P <- emission_probs[i, ]
+    } else {
+      P <- rep(1, m)
+    }
+    
+    foo <- foo %*% pn$gamma * P
+    sumfoo <- sum(foo)
+    lscale <- lscale + log(sumfoo)
+    foo <- foo / sumfoo
+  }
+  mllk <- - lscale
+  return(mllk)
+}
+
+## ---- DM.estimate
+# Compute the ML estimates without using TMB
+DM.estimate = function(x, m, lambda0, gamma0, delta0 = NULL,
+                       stationary = TRUE) {
+  parvect0 <- pois.HMM.pn2pw(m = m, lambda = lambda0, gamma = gamma0,
+                             delta = delta0, stationary = stationary)
+  # nlminb needs a vector, not a list
+  parvect0 <- unlist(parvect0)
+  
+  mod <- nlminb(start = parvect0, objective = pois.HMM.mllk, x_alias = x, m_alias = m, stationary = stationary)
+  pw <- mod$par
+  pn <- pois.HMM.pw2pn(m, as.numeric(pw))
+  mllk <- mod$objective
+  np <- unlist(parvect0)
+  np <- length(np)
+  AIC <- 2 * (mllk + np)
+  n <- sum(!is.na(x))
+  BIC <- 2 * mllk + np * log(n)
+  return(list(m = m, lambda = pn$lambda, gamma = pn$gamma, delta = pn$delta,
+              convergence = mod$convergence, mllk = mllk, AIC = AIC, BIC = BIC,
+              mod = mod))
+  
+}
+
+# Function to use TMB's gradient and/or hessian in nlm
+nlmfn <- function(par, obj, gr = TRUE, he = TRUE) {
+  res <- as.numeric(obj$fn(par))
+  if(gr) {attr(res, "gradient") <- obj$gr(par)}
+  if(he) {attr(res, "hessian") <- obj$he(par)}
+  res
+}

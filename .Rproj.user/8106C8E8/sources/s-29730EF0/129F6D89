@@ -1,0 +1,26 @@
+{
+    "id": "129F6D89",
+    "path": "D:/Program Data/Dropbox/TMB_HMM/paper1/functions/utils.R",
+    "project_path": null,
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1619911198323.0,
+    "source_on_save": false,
+    "relative_order": 8,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "571,1",
+        "scrollLine": "0"
+    },
+    "folds": "6|36|13|0|\n16|32|21|0|\n23|33|33|0|\n57|32|64|0|\n67|37|93|0|\n95|33|104|0|\n107|39|115|0|\n117|39|124|0|\n134|45|214|0|\n153|23|160|2|\n219|29|275|0|\n278|36|280|0|\n283|46|288|0|\n291|46|303|0|\n308|30|311|0|\n316|47|328|0|\n332|59|346|0|\n350|48|359|0|\n363|146|464|0|\n468|139|506|0|\n510|73|539|0|\n544|43|563|0|\n566|51|571|0|\n",
+    "lastKnownWriteTime": 1619911210,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1619911210201,
+    "read_only": false,
+    "read_only_alternatives": []
+}
