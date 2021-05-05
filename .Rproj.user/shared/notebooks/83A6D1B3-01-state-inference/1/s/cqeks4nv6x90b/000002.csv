@@ -1,0 +1,4 @@
+"0","knitr::kable("
+"0","  head(iris, 20), caption = 'Here is a nice table!',"
+"0","  booktabs = TRUE"
+"0",")"

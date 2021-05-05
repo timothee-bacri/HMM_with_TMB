@@ -44,3 +44,4 @@ preparing-data-and-functions
 generating-data
 relabeling-hmm-states
 bootstrap-code
+main-github-page

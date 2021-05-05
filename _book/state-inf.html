@@ -26,7 +26,7 @@
 <meta name="author" content="Geir Berentsen geir.berentsen@nhh.no" />
 
 
-<meta name="date" content="2021-03-26" />
+<meta name="date" content="2021-05-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -153,13 +153,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#getting-started-with-a-linear-regression"><i class="fa fa-check"></i><b>2.2</b> Getting started with a linear regression</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>3</b> Methods</a></li>
-<li class="chapter" data-level="4" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>4</b> Applications</a>
+<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using TMB</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>4.1</b> Example one</a></li>
-<li class="chapter" data-level="4.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>4.2</b> Example two</a></li>
+<li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
+<li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions"><i class="fa fa-check"></i><b>4.2</b> Preparing data and functions</a></li>
+<li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#modeling"><i class="fa fa-check"></i><b>4.3</b> Modeling</a></li>
+<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>4.4</b> Nested models</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a></li>
+<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>5.1</b> Generating data</a></li>
+<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#relabeling-hmm-states"><i class="fa fa-check"></i><b>5.2</b> Relabeling HMM states</a></li>
+<li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-code"><i class="fa fa-check"></i><b>5.3</b> Bootstrap code</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="6" data-path="main-github-page.html"><a href="main-github-page.html"><i class="fa fa-check"></i><b>6</b> Main GitHub page</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -351,14 +359,14 @@ Figure 1.1: Here is a nice figure!
 </tr>
 </tbody>
 </table>
-<p>You can write citations, too. For example, we are using the <strong>bookdown</strong> package <span class="citation">(<a href="references.html#ref-R-bookdown" role="doc-biblioref">Xie 2020</a>)</span> in this sample book, which was built on top of R Markdown and <strong>knitr</strong> <span class="citation">(<a href="references.html#ref-xie2015" role="doc-biblioref">Xie 2015</a>)</span>.</p>
+<p>You can write citations, too. For example, we are using the <strong>bookdown</strong> package <span class="citation">(<a href="main-github-page.html#ref-R-bookdown" role="doc-biblioref">Xie 2020</a>)</span> in this sample book, which was built on top of R Markdown and <strong>knitr</strong> <span class="citation">(<a href="main-github-page.html#ref-xie2015" role="doc-biblioref">Xie 2015</a>)</span>.</p>
 <div id="prepare-the-model" class="section level2" number="1.1">
 <h2><span class="header-section-number">1.1</span> Prepare the model</h2>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="state-inf.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
-<span id="cb3-2"><a href="state-inf.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;../functions/utils.R&quot;</span>)</span>
-<span id="cb3-3"><a href="state-inf.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;../data/fetal-lamb.RData&quot;</span>)</span>
-<span id="cb3-4"><a href="state-inf.html#cb3-4" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;../code/poi_hmm.cpp&quot;</span>)</span>
-<span id="cb3-5"><a href="state-inf.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;../code/poi_hmm&quot;</span>))</span>
+<span id="cb3-2"><a href="state-inf.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
+<span id="cb3-3"><a href="state-inf.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/fetal-lamb.RData&quot;</span>)</span>
+<span id="cb3-4"><a href="state-inf.html#cb3-4" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span>
+<span id="cb3-5"><a href="state-inf.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span>
 <span id="cb3-6"><a href="state-inf.html#cb3-6" aria-hidden="true" tabindex="-1"></a>lamb_data <span class="ot">&lt;-</span> lamb</span>
 <span id="cb3-7"><a href="state-inf.html#cb3-7" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
 <span id="cb3-8"><a href="state-inf.html#cb3-8" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> lamb_data, <span class="at">m =</span> m)</span>
@@ -387,9 +395,9 @@ setup some variables to compute the probabilities detailed below.</p>
 <div id="log-forward" class="section level2" number="1.3">
 <h2><span class="header-section-number">1.3</span> Log-forward probabilities</h2>
 <p>The forward probabilities have been detailed in
-LINK_TO_hmm_likelihood!!!!!!!!!!!!!!!!!.</p>
+TO FIX LINK_TO_hmm_likelihood!!!!!!!!!!!!!!!!!.</p>
 <p>We show here a way to compute the log of the forward probabilities,
-using a scaling scheme defined by <span class="citation">(see <a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 66</a> and p.334)</span>.</p>
+using a scaling scheme defined by <span class="citation">(see <a href="main-github-page.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 66</a> and p.334)</span>.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="state-inf.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-forward probabilities (scaling used)</span></span>
 <span id="cb5-2"><a href="state-inf.html#cb5-2" aria-hidden="true" tabindex="-1"></a>lalpha <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
 <span id="cb5-3"><a href="state-inf.html#cb5-3" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
@@ -413,7 +421,7 @@ using a scaling scheme defined by <span class="citation">(see <a href="reference
 <div id="log-backward" class="section level2" number="1.4">
 <h2><span class="header-section-number">1.4</span> Log-backward probabilities</h2>
 <p>The backward probabilities have been defined in the same section
-<span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, p~.67</a> and p~.334)</span>.</p>
+<span class="citation"><a href="main-github-page.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="main-github-page.html#ref-zucchini" role="doc-biblioref">2016, p~.67</a> and p~.334)</span>.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="state-inf.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-backwards probabilities (scaling used)</span></span>
 <span id="cb7-2"><a href="state-inf.html#cb7-2" aria-hidden="true" tabindex="-1"></a>lbeta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
 <span id="cb7-3"><a href="state-inf.html#cb7-3" aria-hidden="true" tabindex="-1"></a>lbeta[, n] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, m)</span>
@@ -434,7 +442,7 @@ using a scaling scheme defined by <span class="citation">(see <a href="reference
 </div>
 <div id="local-decoding" class="section level2" number="1.5">
 <h2><span class="header-section-number">1.5</span> Smoothing probabilities and local decoding</h2>
-<p>The smoothing probabilities are defined in <span class="citation">(<a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 87</a> and p.336)</span> as
+<p>The smoothing probabilities are defined in <span class="citation">(<a href="main-github-page.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 87</a> and p.336)</span> as
 <!-- P(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n} -->
 <span class="math display">\[
 P(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
@@ -464,7 +472,7 @@ probabilities.</p>
 <div id="forecast" class="section level2" number="1.6">
 <h2><span class="header-section-number">1.6</span> Forecast, h-step-ahead-probabilities</h2>
 <p>The forecast distribution or h-step-ahead-probabilities as well as its
-implementation in R is detailed in <span class="citation">(<a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 85</a> and p.337)</span></p>
+implementation in R is detailed in <span class="citation">(<a href="main-github-page.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 85</a> and p.337)</span></p>
 <p>Then,</p>
 <!-- Original -->
 <!-- P(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_T \b{\gamma}^h \bcp(x) \b{1}'}{\b{\alpha}_T \b{1}'} = \bfphi_T \b{\gamma}^h \bcp(x) \b{1}' -->
@@ -502,7 +510,7 @@ An implementation of this, using a scaling scheme is</p>
 </div>
 <div id="global-decoding" class="section level2" number="1.7">
 <h2><span class="header-section-number">1.7</span> Global decoding using the Viterbi algorithm</h2>
-<p>The Viterbi algorithm is detailed in <span class="citation">(<a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 88</a> and p.334)</span>.
+<p>The Viterbi algorithm is detailed in <span class="citation">(<a href="main-github-page.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 88</a> and p.334)</span>.
 It calculates the sequence of states <span class="math inline">\((i_1^*, \ldots, i_T^*)\)</span> which
 maximizes the conditional probability of all states simultaneously, i.e.
 <span class="math display">\[\begin{equation*}

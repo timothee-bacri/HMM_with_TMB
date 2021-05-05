@@ -1,0 +1,26 @@
+{
+    "id": "130184C7",
+    "path": "D:/Program Data/Dropbox/TMB_HMM/paper1/Data supplements/05-confidence-intervals.Rmd",
+    "project_path": "05-confidence-intervals.Rmd",
+    "type": "r_markdown",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1616728750807.0,
+    "source_on_save": false,
+    "relative_order": 6,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "159,139",
+        "scrollLine": "0"
+    },
+    "folds": "2|48|7|0|\n15|18|24|0|\n18|31|19|0|\n22|41|23|0|\n25|24|47|0|\n33|27|34|0|\n38|14|44|0|\n48|17|159|139|\n50|35|154|0|\n110|59|112|0|\n",
+    "lastKnownWriteTime": 1620237550,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1620244223363,
+    "read_only": false,
+    "read_only_alternatives": []
+}

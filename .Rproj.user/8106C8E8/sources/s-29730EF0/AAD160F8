@@ -1,0 +1,27 @@
+{
+    "id": "AAD160F8",
+    "path": "D:/Program Data/Dropbox/TMB_HMM/paper1/Data supplements/01-state-inference.Rmd",
+    "project_path": "01-state-inference.Rmd",
+    "type": "r_markdown",
+    "hash": "0",
+    "contents": "",
+    "dirty": true,
+    "created": 1616728747835.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "0,30",
+        "scrollLine": "0",
+        "ignored_words": "lalpha\n"
+    },
+    "folds": "44|8|59|0|\n49|20|58|0|\n60|43|86|0|\n87|45|108|0|\n92|19|107|0|\n109|63|138|0|\n118|16|125|0|\n130|20|137|0|\n139|51|181|0|\n153|15|180|0|\n182|65|213|0|\n191|13|205|0|\n207|20|212|0|\n",
+    "lastKnownWriteTime": 1619291101,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1620246408989,
+    "read_only": false,
+    "read_only_alternatives": []
+}
