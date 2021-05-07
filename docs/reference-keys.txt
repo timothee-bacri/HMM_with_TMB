@@ -20,3 +20,8 @@ generating-data
 relabeling-hmm-states
 bootstrap-code
 main-github-page
+fig:nice-fig
+tab:nice-tab
+parameter-estimation-techniques
+application-to-different-data-sets
+tyt-dataset
