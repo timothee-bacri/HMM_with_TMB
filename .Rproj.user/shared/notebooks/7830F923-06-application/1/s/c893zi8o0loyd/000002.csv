@@ -1,0 +1,5 @@
+"0","simu_data <- pois.HMM.generate_sample(ns = DATA_SIZE_SIMU,"
+"0","                                      mod = list(m = m,"
+"0","                                                 lambda = lambda,"
+"0","                                                 gamma = gamma,"
+"0","                                                 delta = delta))$data"

@@ -1,0 +1,7 @@
+"0","DATA_SIZE_SIMU <- 2000"
+"0","m <- 2"
+"0","# Generate parameters"
+"0","lambda <- seq(10, 14, length.out = m)"
+"0","gamma <- matrix(0.2 / (m - 1), nrow = m, ncol = m)"
+"0","diag(gamma) <- 0.8"
+"0","delta <- stat.dist(gamma)"

@@ -1,0 +1,9 @@
+"0","library(knitr)"
+"0","setwd(dir = ""../"")"
+"2","The working directory was changed to D:/Program Data/Dropbox/TMB_HMM/paper1 inside a notebook chunk. The working directory will be reset when the chunk is finished running. Use the knitr root.dir option in the setup chunk to change the working directory for notebook chunks."
+"0","suppressMessages(source(""code/main.R""))"
+"1","make: Nothing to be done for 'all'.
+"
+"1","make: Nothing to be done for 'all'.
+"
+"0","knitr::read_chunk('functions/utils.R')"

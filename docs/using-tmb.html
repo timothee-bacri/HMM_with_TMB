@@ -26,7 +26,7 @@
 <meta name="author" content="Geir Berentsen geir.berentsen@nhh.no" />
 
 
-<meta name="date" content="2021-05-07" />
+<meta name="date" content="2021-05-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -147,9 +147,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.6" data-path="state-inf.html"><a href="state-inf.html#forecast"><i class="fa fa-check"></i><b>1.6</b> Forecast, h-step-ahead-probabilities</a></li>
 <li class="chapter" data-level="1.7" data-path="state-inf.html"><a href="state-inf.html#global-decoding"><i class="fa fa-check"></i><b>1.7</b> Global decoding using the Viterbi algorithm</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>2</b> Principles of using <tt>TMB</tt> for Maximum Likelihood Estimation</a>
+<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>2</b> Principles of using <strong>TMB</strong> for Maximum Likelihood Estimation</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#setting-up-tmb"><i class="fa fa-check"></i><b>2.1</b> Setting up <tt>TMB</tt></a></li>
+<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#setting-up-tmb"><i class="fa fa-check"></i><b>2.1</b> Setting up <strong>TMB</strong></a></li>
 <li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#getting-started-with-a-linear-regression"><i class="fa fa-check"></i><b>2.2</b> Getting started with a linear regression</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques</a></li>
@@ -169,6 +169,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-dataset"><i class="fa fa-check"></i><b>6.1</b> TYT dataset</a></li>
+<li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-dataset"><i class="fa fa-check"></i><b>6.2</b> Simulated dataset</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="main-github-page.html"><a href="main-github-page.html"><i class="fa fa-check"></i><b>7</b> Main GitHub page</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -310,7 +311,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Raw tinnitus data
 <!-- https://gist.github.com/benmarwick/8ad99f35d5e4caa06492 --></p>
 <!-- html table generated in R 4.0.5 by xtable 1.8-4 package -->
-<!-- Fri May 07 22:32:08 2021 -->
+<!-- Wed May 19 22:52:09 2021 -->
 <table border="0" cellpadding="5">
 <caption align="bottom">
 Tinnitus data
@@ -371,9 +372,9 @@ Tinnitus data
 <span id="cb10-5"><a href="using-tmb.html#cb10-5" aria-hidden="true" tabindex="-1"></a>new_parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(<span class="at">m =</span> m,</span>
 <span id="cb10-6"><a href="using-tmb.html#cb10-6" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">lambda =</span> fixed_par_lambda,</span>
 <span id="cb10-7"><a href="using-tmb.html#cb10-7" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">gamma =</span> gamma)</span></code></pre></div>
-<p>Then, we instruct <tt>TMB</tt> to read these custom parameters.
+<p>Then, we instruct <strong>TMB</strong> to read these custom parameters.
 We indicate fixed values by mapping them to NA values, whereas the variable values need to be mapped to different factor variables.
-Lastly, we specify this mapping with the <tt>map</tt> argument when making the <tt>TMB</tt> object.</p>
+Lastly, we specify this mapping with the <strong>map</strong> argument when making the <strong>TMB</strong> object.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="using-tmb.html#cb11-1" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">tlambda =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="cn">NA</span>, <span class="dv">1</span>)),</span>
 <span id="cb11-2"><a href="using-tmb.html#cb11-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">tgamma =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>)))</span>
 <span id="cb11-3"><a href="using-tmb.html#cb11-3" aria-hidden="true" tabindex="-1"></a>fixed_par_obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, new_parameters,</span>

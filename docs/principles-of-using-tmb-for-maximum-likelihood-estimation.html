@@ -26,7 +26,7 @@
 <meta name="author" content="Geir Berentsen geir.berentsen@nhh.no" />
 
 
-<meta name="date" content="2021-05-07" />
+<meta name="date" content="2021-05-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -147,9 +147,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.6" data-path="state-inf.html"><a href="state-inf.html#forecast"><i class="fa fa-check"></i><b>1.6</b> Forecast, h-step-ahead-probabilities</a></li>
 <li class="chapter" data-level="1.7" data-path="state-inf.html"><a href="state-inf.html#global-decoding"><i class="fa fa-check"></i><b>1.7</b> Global decoding using the Viterbi algorithm</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>2</b> Principles of using <tt>TMB</tt> for Maximum Likelihood Estimation</a>
+<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>2</b> Principles of using <strong>TMB</strong> for Maximum Likelihood Estimation</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#setting-up-tmb"><i class="fa fa-check"></i><b>2.1</b> Setting up <tt>TMB</tt></a></li>
+<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#setting-up-tmb"><i class="fa fa-check"></i><b>2.1</b> Setting up <strong>TMB</strong></a></li>
 <li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#getting-started-with-a-linear-regression"><i class="fa fa-check"></i><b>2.2</b> Getting started with a linear regression</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques</a></li>
@@ -169,6 +169,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-dataset"><i class="fa fa-check"></i><b>6.1</b> TYT dataset</a></li>
+<li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-dataset"><i class="fa fa-check"></i><b>6.2</b> Simulated dataset</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="main-github-page.html"><a href="main-github-page.html"><i class="fa fa-check"></i><b>7</b> Main GitHub page</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -193,13 +194,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="principles-of-using-tmb-for-maximum-likelihood-estimation" class="section level1" number="2">
-<h1><span class="header-section-number">Chapter 2</span> Principles of using <tt>TMB</tt> for Maximum Likelihood Estimation</h1>
+<h1><span class="header-section-number">Chapter 2</span> Principles of using <strong>TMB</strong> for Maximum Likelihood Estimation</h1>
 <div id="setting-up-tmb" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> Setting up <tt>TMB</tt></h2>
+<h2><span class="header-section-number">2.1</span> Setting up <strong>TMB</strong></h2>
 <ul>
 <li>Install <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a></li>
-<li>Install the R-package <tt>TMB</tt> <span class="citation">(<a href="references.html#ref-R-TMB" role="doc-biblioref">Kristensen 2021</a>)</span></li>
-<li>(Optional) Setup error debugging in <tt>RStudio</tt> by running the command <code>TMB:::setupRstudio()</code></li>
+<li>Install the R-package <strong>TMB</strong> <span class="citation">(<a href="references.html#ref-R-TMB" role="doc-biblioref">Kristensen 2021</a>)</span></li>
+<li>(Optional) Setup error debugging in<strong>RStudio</strong> by running the command <code>TMB:::setupRstudio()</code></li>
 </ul>
 <p>Advanced use is detailed in <a href="https://kaskr.github.io/adcomp/_book/Tutorial.html" class="uri">https://kaskr.github.io/adcomp/_book/Tutorial.html</a></p>
 </div>
@@ -211,7 +212,7 @@ For a simple linear regression model with intercept <span class="math inline">\(
 - \log L(a, b, \sigma^2) = - \sum_{i=1}^n \log(\phi(y_i; a + bx_i, \sigma^2))),
 \end{equation*}\]</span>
 where <span class="math inline">\(\phi(\cdot; \mu, \sigma^2)\)</span> corresponds to the density function of the univariate normal distribution with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>.</p>
-<p>The use of <tt>TMB</tt> requires the (negative) log-likelihood function to be coded in C++ under a specific template, which is then loaded into R.
+<p>The use of <strong>TMB</strong> requires the (negative) log-likelihood function to be coded in C++ under a specific template, which is then loaded into R.
 The minimization of this function and other post-processing procedures are all carried out in R.
 Therefore, we require two files.<br />
 The first file, named <a href="code/linreg.cpp"><em>linreg.cpp</em></a>, is written in C++ and defines the objective function, i.e. the negative log-likelihood (nll) function of the linear model.</p>
@@ -279,12 +280,12 @@ The .R file (shown below) carries out the compilation of the C++ file and minimi
 ## b       0.98395535 0.03658781
 ## tsigma -0.05814659 0.15811381
 ## sigma   0.94351162 0.14918222</code></pre>
-<p>The <tt>select</tt> argument restricts the output to variables passed
-by <tt>ADREPORT(variable_name);</tt> in the <a href="code/linreg.cpp"><em>linreg.cpp</em></a> file.</p>
+<p>The <strong>select</strong> argument restricts the output to variables passed
+by <strong>ADREPORT(variable_name);</strong> in the <a href="code/linreg.cpp"><em>linreg.cpp</em></a> file.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_linreg), <span class="at">select =</span> <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
 <pre><code>##        Estimate Std. Error
 ## sigma 0.9435116  0.1491822</code></pre>
-<p>Lastly, we display the estimates from <tt>lm</tt> to compare them to the ones from <tt>TMB</tt>.</p>
+<p>Lastly, we display the estimates from <strong>lm</strong> to compare them to the ones from <strong>TMB</strong>.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> data)<span class="sc">$</span>coefficients</span></code></pre></div>
 <pre><code>## (Intercept)           x 
 ##   0.3100925   0.9839554</code></pre>
