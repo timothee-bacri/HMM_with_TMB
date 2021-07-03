@@ -1,0 +1,219 @@
+```{r import-files, echo = FALSE, cache = FALSE}
+library(knitr)
+setwd(dir = "../")
+suppressMessages(source("code/main.R"))
+knitr::read_chunk('functions/utils.R')
+```
+# Confidence intervals
+
+From the parameters' ML estimates, we generate new data and re-estimate the parameters \Sexpr{BOOTSTRAP_SAMPLES} times.
+From that list of new estimates we can get the 2.5th and 97.5th percentiles and get 95\% confidence intervals for the parameters.\\
+
+We show below how to derive confidence intervals using `TMB`, a likelihood profile based method, and parametric bootstrap, based on the 2 state Poisson HMM estimates.
+
+For all three methods, we require a model, so we generate a 2-state Poisson HMM based on the TYT dataset
+```{r}
+set.seed(123)
+library(TMB)
+TMB::compile("code/poi_hmm.cpp")
+dyn.load(dynlib("code/poi_hmm"))
+source("functions/utils.R")
+m <- 2
+load("data/tinnitus.RData")
+TMB_data <- list(x = tinn_data, m = m)
+
+# Initial set of parameters
+lambda_init <- c(1, 3)
+gamma_init <- matrix(c(0.8, 0.2,
+                       0.2, 0.8), byrow = TRUE, nrow = m)
+
+# Turn them into working parameters
+parameters <- pois.HMM.pn2pw(m, lambda_init, gamma_init)
+
+# Build the TMB object
+obj_tmb <- MakeADFun(TMB_data, parameters,
+                     DLL = "poi_hmm", silent = TRUE)
+
+# Optimize
+mod_tmb <- nlminb(start = obj_tmb$par,
+                  objective = obj_tmb$fn,
+                  gradient = obj_tmb$gr,
+                  hessian = obj_tmb$he)
+
+# MLE
+ML_working_estimates <- obj_tmb$env$last.par.best
+ML_natural_estimates <- obj_tmb$report(ML_working_estimates)
+lambda <- ML_natural_estimates$lambda
+gamma <- ML_natural_estimates$gamma
+delta <- ML_natural_estimates$delta
+```
+
+## Wald-type
+
+Now that we have a model estimated via `TMB`, we can derive Wald-type [@wald] confidence intervals.
+For example, the $(1 - \alpha) \%$ CI for $\lambda_1$ is given by $\lambda_1 \pm z_{1-\alpha/2} * \sigma_{\lambda_1}$ where $z_{x}$ is the $x$-percentile of the standard normal distribution, and $\sigma_{\lambda_1}$ is the standard error of $\lambda_1$ obtained via the delta method.
+
+First, we require the standard errors. We can retrieve them from the `MakeADFun` object.
+The standard errors of the working parameters `tlambda` and `tgamma` can be retrieved without needing to add `ADREPORT` in the C++ file.
+However, it is usually more interesting to access the standard errors of the natural parameters `lambda`, `gamma` and `delta`. This requires adding a few lines to the C++ file to produce these standard errors, as detailed in [Getting started with a linear regression].
+
+Be careful: `adrep` lists `gamma` column-wise
+```{r}
+adrep <- summary(sdreport(obj_tmb), "report")
+adrep
+```
+
+Standard errors for $\hat{\b{\lambda}}$
+```{r}
+rows <- rownames(adrep) == "lambda"
+lambda <- adrep[rows, "Estimate"]
+lambda_std_error <- adrep[rows, "Std. Error"]
+lambda
+lambda_std_error
+```
+
+Standard errors for $\hat{\b{\Gamma}}$
+```{r}
+rows <- rownames(adrep) == "gamma"
+gamma <- adrep[rows, "Estimate"]
+gamma <- matrix(gamma, ncol = m)
+gamma_std_error <- adrep[rows, "Std. Error"]
+gamma_std_error <- matrix(gamma_std_error, nrow = m, ncol = m)
+gamma
+gamma_std_error
+```
+
+Standard errors for $\hat{\b{\delta}}$
+```{r}
+rows <- rownames(adrep) == "delta"
+delta <- adrep[rows, "Estimate"]
+delta_std_error <- adrep[rows, "Std. Error"]
+delta
+delta_std_error
+```
+
+## Parametric bootstrap
+### Generating data
+In order to perform a parametric bootstrap, we need to be able to generate data from a set of parameters.
+
+For readability and code maintenance, it is conventional to store procedures that will be used more than once into functions.
+
+The data-generating function is defined in \citet[A.1.5 ~p.333]{zucchini}.
+```{r generate_sample-original, eval=FALSE}
+pois.HMM.generate_sample <- function(ns,mod) {
+  mvect <- 1:mod$m
+  state <- numeric(ns)
+  state[1] <- sample(mvect, 1, prob = mod$delta)
+  for (i in 2:ns) {
+    state[i] <- sample(mvect, 1, prob = mod$gamma[state[i - 1], ])
+  }
+  x <- rpois(ns, lambda = mod$lambda[state])
+  return(x)
+}
+```
+Further, one can retrieve the state sequence used to generate the data by performing an adjustment:
+```{r pois.HMM.generate_sample}
+```
+The results are returned in a list to simplify usage, as the intuitive way (`c(x, state)`) would append the state sequence to the data.
+
+In practice, HMMs sometimes cannot be estimated on generated samples.
+To deal with this, we can generate a new sample as long as HMMs cannot be estimated on it with the help of this more robust function which can easily be adapted to different needs.
+Natural parameter estimates are returned for convenience.
+The argument `test_marqLevAlg` decides if convergence of `marqLevAlg` is required.
+The argument `std_error` decides if standard errors are returned along with TMB's estimates.
+This function relies on the custom function `TMB_estimate` which is a wrapper of `nlminb` made for Poisson HMM estimation via TMB.
+```{r pois.HMM.generate_estimable_sample}
+```
+
+### Bootstrap
+```{r bootstrap-code, eval = FALSE}
+set.seed(123)
+library(TMB)
+TMB::compile("code/poi_hmm.cpp")
+dyn.load(dynlib("code/poi_hmm"))
+source("functions/utils.R")
+m <- 2
+load("data/tinnitus.RData")
+TMB_data <- list(x = tinn_data, m = m)
+
+# Initial set of parameters
+lambda_init <- c(1, 3)
+gamma_init <- matrix(c(0.8, 0.2,
+                       0.2, 0.8), byrow = TRUE, nrow = m)
+
+# Turn them into working parameters
+parameters <- pois.HMM.pn2pw(m, lambda_init, gamma_init)
+
+# Build the TMB object
+obj_tmb <- MakeADFun(TMB_data, parameters,
+                     DLL = "poi_hmm", silent = TRUE)
+
+# Optimize
+mod_tmb <- nlminb(start = obj_tmb$par,
+                  objective = obj_tmb$fn,
+                  gradient = obj_tmb$gr,
+                  hessian = obj_tmb$he)
+
+# Bootstrap procedure
+bootstrap_estimates <- data.frame()
+DATA_SIZE <- length(tinn_data)
+# Set how many parametric bootstrap samples we create
+BOOTSTRAP_SAMPLES <- 10
+
+# MLE
+ML_working_estimates <- obj_tmb$env$last.par.best
+ML_natural_estimates <- obj_tmb$report(ML_working_estimates)
+lambda <- ML_natural_estimates$lambda
+gamma <- ML_natural_estimates$gamma
+delta <- ML_natural_estimates$delta
+
+PARAMS_NAMES <- c("lambda", "gamma", "delta")
+for (idx_sample in 1:BOOTSTRAP_SAMPLES) {
+  # Generate a sample based on mod, and ensure a HMM can be estimated on it
+  # with testing_params as initial parameters
+  temp <- pois.HMM.generate_estimable_sample(ns = DATA_SIZE,
+                                             mod = list(m = m,
+                                                        lambda = lambda,
+                                                        gamma = gamma),
+                                             testing_params = list(m = m,
+                                                                   lambda = lambda_init,
+                                                                   gamma = gamma_init))$natural_parameters
+  # The values from gamma are taken columnwise
+  natural_parameters <- unlist(temp[PARAMS_NAMES])
+  len_par <- length(natural_parameters)
+  bootstrap_estimates[idx_sample, 1:len_par] <- natural_parameters
+}
+
+# Lower and upper (2.5% and 97.5%) bounds
+q <- apply(bootstrap_estimates, 2, function(par_estimate) {
+  quantile(par_estimate, probs = c(0.025, 0.975))
+})
+
+PARAMS_NAMES <- paste0(rep("lambda", m), 1:m)
+# Get row and column indexes for gamma instead of the default
+# columnwise index: the default indexes are 1:m for the 1st column,
+# then (m + 1):(2 * m) for the 2nd, etc...
+for (gamma_idx in 1:m ^ 2) {
+  row <- (gamma_idx - 1) %% m + 1
+  col <- (gamma_idx - 1) %/% m + 1
+  row_col_idx <- c(row, col)
+  PARAMS_NAMES <- c(PARAMS_NAMES,
+                    paste0("gamma",
+                           paste0(row_col_idx, collapse = "")))
+}
+PARAMS_NAMES <- c(PARAMS_NAMES,
+                  paste0(rep("delta", m), 1:m))
+
+bootstrap_CI <- data.frame("Parameter" = PARAMS_NAMES,
+                           "Estimate" = c(lambda, gamma, delta),
+                           "Lower bound" = q[1, ],
+                           "Upper bound" = q[2, ])
+print(bootstrap_CI, row.names = FALSE)
+```
+
+
+It should be noted that some bootstrap estimates can be very large or very small.
+One possible reason is that the randomly generated bootstrap sample might contain long chains of the same values, thus causing some probabilities in the TPM to be near the boundary 0 or 1.
+However, a large number of bootstrap samples lowers that risk since we automatically discard 5\% of the most extreme values during the data generating process.
+## Profiling the negative log-likelihood
+Profile

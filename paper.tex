@@ -1,0 +1,2524 @@
+% compile with knitr::knit2pdf("paper.rnw")
+
+\documentclass[bimj,fleqn]{w-art}\usepackage[]{graphicx}\usepackage[]{color}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{array}
+\usepackage{times}
+\usepackage{w-thm}
+\usepackage[authoryear, round]{natbib}
+\usepackage{booktabs}
+\setlength{\bibsep}{2pt}
+\setlength{\bibhang}{2em}
+\newcommand{\J}{J\"{o}reskog}
+\newcommand{\So}{S\"{o}rbom}
+\newcommand{\bcx}{{\bf X}}
+\newcommand{\bcy}{{\bf Y}}
+\newcommand{\bcz}{{\bf Z}}
+\newcommand{\bcu}{{\bf U}}
+\newcommand{\bcv}{{\bf V}}
+\newcommand{\bcw}{{\bf W}}
+\newcommand{\bci}{{\bf I}}
+\newcommand{\bch}{{\bf H}}
+\newcommand{\bcb}{{\bf B}}
+\newcommand{\bcr}{{\bf R}}
+\newcommand{\bcm}{{\bf M}}
+\newcommand{\bcp}{{\bf P}}
+\newcommand{\bcf}{{\bf F}}
+\newcommand{\bcg}{{\bf G}}
+\newcommand{\bcs}{{\bf S}}
+\newcommand{\bct}{{\bf T}}
+\newcommand{\bca}{{\bf A}}
+\newcommand{\bcd}{{\bf D}}
+\newcommand{\bcc}{{\bf C}}
+\newcommand{\bce}{{\bf E}}
+\newcommand{\ba}{{\bf a}}
+\newcommand{\bb}{{\bf b}}
+\newcommand{\bc}{{\bf c}}
+\newcommand{\bd}{{\bf d}}
+\newcommand{\bx}{\mbox{\boldmath x}}
+\newcommand{\by}{\mbox{\boldmath y}}
+\newcommand{\bz}{{\bf z}}
+\newcommand{\bu}{{\bf u}}
+\newcommand{\bv}{{\bf v}}
+\newcommand{\bh}{{\bf h}}
+\newcommand{\bl}{{\bf l}}
+\newcommand{\be}{{\bf e}}
+\newcommand{\br}{{\bf r}}
+\newcommand{\bw}{{\bf w}}
+\newcommand{\de}{\stackrel{D}{=}}
+\newcommand{\bt}{\bigtriangleup}
+\newcommand{\bfequiv}{\mbox{\boldmath $\equiv$}}
+\newcommand{\bmu}{\mbox{\boldmath $\mu$}}
+\newcommand{\bnu}{\mbox{\boldmath $\nu$}}
+\newcommand{\bxi}{\mbox{\boldmath $\xi$}}
+\newcommand{\btau}{\mbox{\boldmath $\tau$}}
+\newcommand{\bgamma}{\mbox{\boldmath $\Gamma$}}
+\newcommand{\bphi}{\mbox{\boldmath $\Phi$}}
+\newcommand{\bfphi}{\mbox{\boldmath $\varphi$}}
+\newcommand{\bfeta}{\mbox{\boldmath $\eta$}}
+\newcommand{\bpi}{\mbox{\boldmath $\Pi$}}
+\newcommand{\bequiv}{\mbox{\boldmath $\equiv$}}
+\newcommand{\bvarepsilon}{\mbox{\boldmath $\varepsilon$}}
+\newcommand{\btriangle}{\mbox{\boldmath $\triangle$}}
+\newcommand{\bdelta}{\mbox{\boldmath $\Delta$}}
+\newcommand{\beps}{\mbox{\boldmath $\epsilon$}}
+\newcommand{\btheta}{\mbox{\boldmath $\theta$}}
+\newcommand{\balpha}{\mbox{\boldmath $\alpha$}}
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bsphi}{\mbox{\boldmath $\varphi$}}
+\newcommand{\bsig}{\mbox{\boldmath $\sigma$}}
+\newcommand{\bfpsi}{\mbox{\boldmath $\psi$}}
+\newcommand{\bfdelta}{\mbox{\boldmath $\delta$}}
+\newcommand{\bsigma}{{\bf \Sigma}}
+\newcommand{\bzero}{{\bf 0}}
+\newcommand{\bone}{{\bf 1}}
+\newcommand{\bpsi}{\mbox{\boldmath $\Psi$}}
+\newcommand{\bep}{\mbox{\boldmath $\epsilon$}}
+\newcommand{\bomega}{\mbox{\boldmath $\Omega$}}
+\newcommand{\bfomega}{\mbox{\boldmath $\omega$}}
+\newcommand{\blambda}{\mbox{\boldmath $\Lambda$}}
+\newcommand{\bflambda}{\mbox{\boldmath $\lambda$}}
+\newcommand{\bfsigma}{\mbox{\boldmath $\sigma$}}
+\newcommand{\bfpi}{{\mbox{\boldmath $\pi$}}}
+\newcommand{\bupsilon}{\mbox{\boldmath $\upsilon$}}
+\newcommand{\obs}{{\rm obs}}
+\newcommand{\mis}{{\rm mis}}
+\theoremstyle{plain}
+\newtheorem{criterion}{Criterion}
+\theoremstyle{definition}
+\newtheorem{condition}[theorem]{Condition}
+\usepackage[]{graphicx}
+\chardef\bslash=`\\ % p. 424, TeXbook
+\newcommand{\ntt}{\normalfont\ttfamily}
+\newcommand{\cn}[1]{{\protect\ntt\bslash#1}}
+\newcommand{\pkg}[1]{{\protect\ntt#1}}
+\let\fn\pkg
+\let\env\pkg
+\let\opt\pkg
+\hfuzz1pc % Don't bother to report overfull boxes if overage is < 1pc
+\newcommand{\envert}[1]{\left\lvert#1\right\rvert}
+\let\abs=\envert
+
+
+
+% Linebreaks in xtable
+% \usepackage{makecell}
+\usepackage{multirow}
+
+% \usepackage[utf8x]{inputenc}
+\usepackage{bm}
+\usepackage{amsthm,amsmath,amssymb,amsfonts,amssymb}
+\usepackage{listings}
+% \usepackage{booktabs}
+\usepackage{enumerate}
+% \usepackage{subfigure}
+% \usepackage{caption}
+% \usepackage{subcaption}
+% \usepackage{capt-of}
+\usepackage{enumitem}
+\setlist[enumerate,1]{label={(\roman*)}}
+\usepackage[figuresright]{rotating}
+% \usepackage{lmodern}
+% \usepackage[a4paper, left=1in,right=1in,top=1.5in,bottom=1.5in]{geometry}
+% \usepackage{babel}
+% \usepackage{setspace}
+% \usepackage[draft]{fixme}
+\usepackage{mathtools}
+%\usepackage[nolists,heads,tablesfirst]{endfloat}
+% \usepackage{hyphenat}
+% \usepackage[section]{placeins}
+% \usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\hypersetup{
+colorlinks,
+citecolor=black,
+filecolor=black,
+linkcolor=black,
+urlcolor=black
+}
+\def\sectionautorefname{Section}
+\def\subsectionautorefname{Section}
+\def\subsubsectionautorefname{Section}
+
+\definecolor{backgroundColour}{rgb}{0.97,0.96,0.97}
+\lstset {
+  language={C++},
+  numbers=none,
+  frame=none,
+  includerangemarker=false,
+  basicstyle=\small\ttfamily, % basic font setting
+  backgroundcolor=\color{backgroundColour},
+% https://tex.stackexchange.com/questions/68091/how-do-i-add-syntax-coloring-to-my-c-source-code-in-beamer
+  keywordstyle=\color{BrickRed}\textbf,
+  emph={DATA_VECTOR, DATA_INTEGER, PARAMETER, PARAMETER_VECTOR, sum, exp, dnorm, Type, dpois, Gamma_w2n, Stat_dist, setOnes, size,
+        ADREPORT, objective_function,
+        lambda, tlambda, gamma, tgamma, vector, matrix},
+  emphstyle=\color{BrickRed}\textbf,
+  emph={[2]a, b, x, y, m, n, i, j, sigma, tsigma, nll},
+  emphstyle={[2]\color{Green}},
+  commentstyle=\color{Gray}\textit,
+  % morecomment=[l][\color{magenta}]{\#}
+}
+
+% \onehalfspacing
+% \newcommand{\dnorm}[3][x]{\frac{1}{\sqrt{2\pi}#3}\exp\biggl[-\frac{1}{2}\biggl(\frac{#1-#2}{#3}\biggr)^2\biggr]}
+% \newcommand{\dnormvar}[3][x]{\frac{1}{\sqrt{2\pi(#3)}}\exp\biggl[-\frac{1}{2}\frac{(#1-#2)^2}{#3}\biggr]}
+% 
+% \newcommand{\ndist}[1]{\mathcal{N}(#1)} % Normal distribution
+% \newcommand{\mn}[1]{\overline{#1}} % Mean: bar or overline?
+% \newcommand{\est}[1]{\widehat{#1}} % Estimator/estimate: hat?
+% \newcommand{\altest}[1]{\widetilde{#1}} % Estimator/estimate: hat?
+% % \mkern2mu\overline{\mkern-2mu F}_i  \overline{F}_i
+% 
+% \DeclareMathOperator{\LW}{LW}
+% \DeclareMathOperator{\Cov}{Cov}         % Covariance
+% \DeclareMathOperator{\corr}{corr}       % Correlation
+% \DeclareMathOperator{\Var}{Var}         % Variance
+% \DeclareMathOperator{\E}{\mathbb{E}}    % Expected value
+% \DeclareMathOperator{\diag}{diag}       % Diagonal matrix
+% \DeclareMathOperator*{\argmax}{argmax}
+
+% \newcommand*\diff{
+% \mathop{}\nobreak
+% \mskip-\thinmuskip\nobreak
+% \mathrm{d}
+% }
+% 
+% \newcommand*\pdiff{
+% \mathop{}\nobreak
+% \mskip-\thinmuskip\nobreak
+% \partial
+% }
+% 
+% % \newcommand{\abbr}[1]{\textsc{\lowercase{#1}}}
+% \newcommand{\abbr}[1]{#1}
+% \newcommand{\kort}[1]{\abbr{#1}}
+% 
+% \providecommand*\ifrac[2]{
+% \begingroup #1 \endgroup
+% % A Close / so no space before it (unless a punctuation atom is the
+% % last item in #1 but unlikely).
+% \mathclose{/}%
+% % Followed by an empty Open. Thus no space is inserted before the
+% % denominator.
+% \mathopen{}%
+% \begingroup #2 \endgroup
+% }
+% 
+% % Absolute value and norm
+% \newcommand{\abs}[1]{\lvert #1 \rvert}
+% \newcommand{\eqdef}{\ensuremath{\stackrel{\mathrm{def}}{=}}}
+
+
+%\bibliographystyle{jf}
+%\bibpunct{(}{)}{;}{a}{}{,}
+
+% Bold letters
+% \def\balpha{\bm{\alpha}}
+% \def\bbeta{\bm{\beta}}
+% \def\bdelta{\bm{\delta}}
+% \def\bGamma{\bm{\Gamma}}
+% \def\btheta{\bm{\theta}}
+% \def\bpsi{\bm{\psi}}
+% \def\bphi{\bm{\phi}}
+% \def\bI{\bm{I}}
+% \def\bU{\bm{U}}
+% \def\bT{\bm{T}}
+% \def\b1{\bm{1}}
+% \def\bP{\bm{P}}
+% \def\bx{\bm{x}}
+% \def\blambda{\bm{\lambda}}
+
+% % Matrices and transpose symbol:
+% \newcommand{\matr}[1]{\boldsymbol{#1}}
+% \newcommand{\tr}{^{\mathrm{T}}} % Transponert
+% \newcommand{\startr}{^{\star{}\mathrm{T}}} % Transponert
+% \newcommand{\eps}{\varepsilon}
+% 
+% 
+% \newcommand{\argmin}{\operatornamewithlimits{arg\,min}}
+\newcommand{\argmax}{\operatornamewithlimits{arg\,max}}
+% \newcommand{\dcon}{\ensuremath{\stackrel{\mathrm{d}}{\to}}}
+
+
+% \usepackage{url}
+
+% \newenvironment{subfigures}{}{}
+% \newenvironment{subtables}{}{}
+
+
+% \newcommand{\dataset}[1]{\nohyphens{\texttt{#1}}}
+% \newcommand{\package}[1]{\dataset{#1}}
+% \newcommand{\program}[1]{\dataset{#1}}
+% 
+% \makeatletter
+% \def\maxwidth{.7\textwidth}
+% % {%
+% % \ifdim\Gin@nat@width>\linewidth
+% % \linewidth
+% % \else
+% % \Gin@nat@width
+% % \fi
+% % }
+% \makeatother
+
+%\usepackage[center]{titlesec}
+%\renewcommand{\thetable}{\Roman{table}}
+%\renewcommand{\thesection}{\Roman{section}.}
+%\renewcommand\thesubsection{\Alph{subsection}.} 
+
+%\hyphenation{Huft-hammer}
+
+% \usepackage{dcolumn}
+% \newcolumntype{e}{D{.}{.}{9}}
+
+% \numberwithin{equation}{section}
+
+% \theoremstyle{plain}
+% \newtheorem{theorem}{Theorem}[section]
+% \newtheorem{proposition}{Proposition}[section]
+% \newtheorem{lemma}{Lemma}[section]
+% 
+% \theoremstyle{definition}
+% \newtheorem{definition}{Definition}[section]
+% \newtheorem{example}{Example}[section]
+% 
+% \theoremstyle{remark}
+% \newtheorem*{remark}{Remark}
+
+% \providecommand{\abs}[1]{\lvert#1\rvert}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}              
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% for compilation knitr::knit2pdf("paper.rnw")
+
+
+
+% Import R files here with proper labels
+% include = FALSE removes any output from this chunk
+
+
+% \author{Timothee Bacri$^{1,*}$\email{timothee.bacri@uib.no} \\
+% University of Bergen, 5007 Bergen, Norway
+% \and
+% Jan Bulla$^{2,**}$\email{jan.bulla@uib.no}\\
+% University of Bergen, 5007 Bergen, Norway
+% \and
+% Geir Drage Berentsen$^{3,***}$\email{geir.berentsen@nhh.no}\\
+% Norwegian School of Economics, Helleveien 30, 5045 Bergen, Norway
+% }
+
+%\DOIsuffix{bimj.DOIsuffix}
+\DOIsuffix{bimj.200100000}
+\Volume{zz}
+\Issue{zz}
+\Year{2021}
+\pagespan{1}{}
+\keywords{Hidden Markov Model; TMB; Confidence intervals; Maximum Likelihood Estimation; Tutorial\\
+\noindent \hspace*{-4pc}
+% {\small\it (Up to five keywords are allowed and should be given in alphabetical order. Please capitalize the key}\\
+\hspace*{-4pc} %{\small\it words)}
+\\[1pc]
+\noindent\hspace*{-4.2pc} Supporting Information for this article is available from the author or on the WWW under\break \hspace*{-4pc}
+\underline{\url{https://timothee-bacri.github.io/HMM_with_TMB}} % (please delete if not
+% applicable)
+}  %%% semicolon and fullpoint added here for keyword style
+
+%\title[Fast parameter and confidence interval for HMMs using {\tt TMB}]{Fast parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder}
+\title[Tutorial of parameter and confidence interval estimation for HMMs using {\tt TMB}]{A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder}
+%% Information for the first author.
+\author[Bacri {\it{et al.}}]{Timoth\'ee Bacri\inst{1}}
+\address[\inst{1}]{Department of Statistics, University of Bergen, 5007 Bergen, Norway}
+%%%%    Information for the second author
+\author[]{Geir D. Berentsen\inst{2}}
+\address[\inst{2}]{Department of Business and Management Science, Norwegian School of Economics, Helleveien 30, 5045 Bergen, Norway}
+%%%%    Information for the third author
+\author[]{Jan Bulla\footnote{Corresponding author: {\sf{e-mail: jan.bulla@uib.no}}, Phone: +47 55 58 28 75}\inst{1}}
+%%%%    \dedicatory{This is a dedicatory.}
+\Receiveddate{zzz} \Reviseddate{zzz} \Accepteddate{zzz}
+
+\begin{abstract}
+
+NOTE: the historical overview (1st par.) could also be moved to the very beginning of the introduction.\\
+Check in the end!\\
+ML: do we need this abbrev.? How often?\\[1ex]
+
+Since their first application in speech recognition \citep[see e.g.][]{baum, fredkin, gales}, Hidden Markov Models (HMMs) found wide usage in many applied sciences.
+To name only a few, biology and bioinformatics \citep{schadt, durbin, eddy}, finance \citep{hamilton}, ecology \citep{mcclintock}, stochastic weather modeling \citep{lystig, ailliot} and engineering \citep{mor}.\\
+A very common way to estimate the parameters of an HMM is the relatively straightforward computation of Maximum Likelihood (ML) estimates. For this task, most users rely on user-friendly implementation of the estimation routines via an interpreted programming language such as the statistical software environment {\tt{R}} \citep{rcoreteam}. Such an approach can easily require time-consuming computations, in particular for longer sequences of observations. In addition, selecting a suitable approach for deriving confidence intervals for the estimated parameters is not entirely obvious \citep[see e.g.][]{zucchini, lystig, visser}, and often the computationally intensive bootstrap methods have to be applied.\\
+In this tutorial, we illustrate how to speed up the computation of ML estimates significantly via the {\tt{R}} package {\tt{TMB}}. Moreover, this approach permits simple retrieval of standard errors at the same time. We illustrate the performance of our routines using different data sets.
+First, two smaller samples from a mobile application for tinnitus patients and a well-known data set of fetal lamb movements with 87 and 240 data points, respectively. Second, we rely on larger data sets of simulated data of sizes 2000 and 5000 for further analysis.\\
+This tutorial is accompanied by a collection of scripts which are all available on GitHub. These scripts allow any user with moderate programming experience to benefit quickly from the computational advantages of {\tt{TMB}}.
+
+% Why we did it
+% What problem/question did we address
+% What did we find
+% What is new (compare with best approaches)
+% How did we do it
+% 
+% 
+% 1-2 sentences Basic intro, audience = anyone
+% 2-3 intro to audience in related discipline
+% 1 general problem in this paper
+% 1 "here we show" summarize result
+% 2-3 explain what result reveals compared to what was thought/how it adds to previous knowledge
+% 1-2 put result in more general context
+% 2-3 broader perspective (discussion points)
+\end{abstract}
+
+\maketitle
+
+\newpage
+
+% \tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Short paragraph about HMMs and problems with speed and uncertainty evaluation.
+
+Hidden Markov models (HMMs) are a well-established, versatile type of model employed in many different applications. The scientific literature on this topic in statistics is rich, as illustrated e.g.~by the manuscripts of \cite{zucchini, cappe, bartolucci}. The aforementioned sources contain, among many other aspects, detailed descriptions of parameter estimation for HMMs by maximization of the (log-)likelihood function. In short, Maximum likelihood estimation (MLE) is commonly achieved either by a direct numerical maximization as introduced by \citet{turner} and later detailed by \citet{zucchini}, who also provided a collection of {\tt{R}} \citep{rcoreteam} scripts that is widely used. Alternatively, Expectation Maximization (EM) type algorithms as firstly described by \citet{bauma} or \citet{dempster} serve for parameter estimation equally well. For a comparison of both approaches, see \citet{bulla}, who also describe a hybrid approach combining both algorithms.\\
+Evaluating uncertainty and obtaining confidence intervals (CIs) constitutes another essential aspect when working with HMMs - and it is less straightforward than parameter estimation. Although \citet[][Ch.~12]{cappe} showed that CIs could be obtained based on asymptotic normality of the ML estimates of the parameters under certain conditions, \citet[p. ~53]{fruhwirth-schnatter} points out that in independent mixture models, ``the regularity conditions are often violated''. \citet[p.~68]{mclachlan} adds that ``In particular for mixture models, it is well known that the sample size $n$ has to be very large before the asymptotic theory of maximum likelihood applies.'' \citet{lystig} shows a way to compute the exact Hessian, and \citet{zucchini} presents an alternative way to compute the approximate Hessian and thus confidence intervals, but admits that ``the use of the Hessian to compute standard errors (and thence confidence intervals) is unreliable if some of the parameters are on or near the boundary of their parameter space''. In addition, \citet{visser} report that computational problems arise when deriving CIs from the Hessian for sequences longer than 100 observations.\\  
+In this tutorial, we illustrate how to accelerate parameter estimation for HMMs with the help of Template Model Builder ({\tt{TMB}}). As described by \citet{kristensen}, {\tt{TMB}} is an {\tt{R}} package developed for efficiently fitting complex statistical models to data. It provides exact calculations of first and second-order derivatives of the (log-)likelihood of a model by automatic differentiation, which allows for efficient gradient- and/or Hessian-based optimization of the likelihood on the one hand. On the other hand, {\tt{TMB}} permits to infer CIs for the estimated parameters by means of the Hessian. We show how to carry out this part for HMMs using a couple of simple examples. Then, we compare the Hessian-based CIs with CIs resulting from likelihood profiling and bootstrapping, which are both more computationally intensive.\\
+The tutorial is accompanied by a collection of scripts, which guide any user working with HMMs through the implementation of computationally efficient parameter estimation. The majority of scripts require only knowledge of {\tt{R}}, just the computation of the (log-)likelihood function requires the involvement of {\tt{C++}}. Moreover, we illustrate how {\tt{TMB}} permits Hessian- or profile likelihood-based CIs for the estimated parameters at a very low computational cost. Naturally, the accelerated parameter estimation procedure may also serve for implementing computationally more efficient bootstrap CIs, an aspect we also make use of for our analyses.\\[1ex]
+
+
+% GEIR: I out-commentend this part (tex file). Do you think one should include some of it in the intro?\\[1ex]
+% The Hessian is not necessarily directly applicable for evaluating parameter uncertainty in HMMs as there are several parameter constraints in these models.
+% This can be addressed by constraint optimization, and subsequently combining the Hessian with the Jacobian of the constraints to obtain the covariance matrix as shown by \citet{visser}.
+% Alternatively, \citet{zucchini} shows how the constraints can be imposed by suitable transformations of the parameters.
+% The covariance matrix of the untransformed (original) parameters can then be retrieved by the delta method, a feature implemented in {\tt{TMB}}.
+
+
+
+% We decide to use a direct maximization approach instead of the EM algorithm.
+% The reason is that the direct maximization approach is easier to adapt if one wants to fit different and more complex models.
+% It also deals easily with missing observations, whereas the EM approach is more complex.
+
+
+% Selling points to include:
+% \begin{enumerate}
+% \item Two aspects of the paper: 1) Speedup of estimation 2) Esier and faster evaluation of parameter uncertainty
+% \item Speed important when $T$ and $m$ large?
+% \item Hessian based uncertainty earlier in the traditional sense not feasable \citep{visser}, and finite-differences must be employed since the computation of the Hessian not feasible.
+% \item Bootstrap methods requires speed
+% \item Profile methods requires speed
+% \end{enumerate}
+% 
+
+
+\begin{acknowledgement}
+The work of J.~Bulla was partially supported by the GENDER-Net Co-Plus Fund (GNP-182). We thank the University of Regensburg and European School for Interdisciplinary Tinnitus Research (ESIT) for providing access to the TYT data. Special thanks go to J.~Sim\~{o}es for data preparation, and W.~Schlee and B.~Langguth for helpful comments and suggestions.
+% We gratefully thank Dr. Bertrand GALICHON and Dr. Anthony CHAUVIN for their patience and their efforts to provide the hospital dataset along with the necessary authorizations.
+\end{acknowledgement}
+
+\vspace*{1pc}
+
+\noindent {\bf{Conflict of Interest}}
+
+\noindent {\it{The authors have declared no conflict of interest.}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Principles of using {\tt{TMB}} for MLE}
+\label{sec:principles}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In order to keep this tutorial at acceptable length, all sections follow the same concept. That is, the reader is encouraged to consult the respective part of our GitHub repository in parallel to reading each section; it is available at \underline{\url{https://timothee-bacri.github.io/HMM_with_TMB}}. This permits to copy-paste or download all the scripts presented in this tutorial for each section on the one hand. On the other hand, it allows for consistent maintenance of the code. Moreover, the repository also contains additional explanations, comments, and scripts.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Setup}
+\label{sec:setup}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Execution of our routines requires the installation of the {\tt{R}}-package {\tt{TMB}} and the software {\tt{Rtools}}, where the latter serves for compiling {\tt{C++}} code.
+In order to ensure reproducibility of all results involving the generation of random numbers, the \texttt{set.seed} function requires {\tt{R}} version number 3.6.0 or greater.
+Our scripts were tested on an Intel(R) Core(TM) i7-8700 processor running under Windows 10 Enterprise version 1809.
+
+In particular for beginners, those parts of scripts involving {\tt{C++}} code can be difficult to debug because the code operates using a specific template.
+Therefore it is helpful to know that {\tt{TMB}} provides a debugging feature, which can be useful to retrieve diagnostic error messages, in RStudio.
+Enabling this feature is optional and can be achieved by the command \texttt{TMB:::setupRStudio()} (requires manual confirmation and re-starting RStudio).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Linear regression example}
+\label{sec:linreg}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We begin by demonstrating the principles of {\tt{TMB}}, which we illustrate through the fitting procedure for a simple linear model.
+This permits, among other things, to show how to handle parameters subject to constraints, an aspect particularly relevant for HMMs.
+A more comprehensive tutorial on {\tt{TMB}} presenting many technical details in more depths is available at\\
+\underline{\url{https://kaskr.github.io/adcomp/\_book/Tutorial.html}}.
+
+Let $\bm{x}$ and $\bm{y}$ denote the predictor and response vector, respectively, both of length $n$.
+For a simple linear regression model with intercept $a$ and slope $b$, the negative log-likelihood equals
+\begin{equation*}
+- \log L(a, b, \sigma^2) = - \sum_{i=1}^n \log(\phi(y_i; a + bx_i, \sigma^2))),
+\end{equation*}
+where $\phi(\cdot; \mu, \sigma^2)$ corresponds to the density function of the univariate normal distribution with mean $\mu$ and variance $\sigma^2$.
+
+The use of {\tt{TMB}} requires the (negative) log-likelihood function to be coded in {\tt{C++}} under a specific template, which is then loaded into {\tt{R}}.
+The minimization of this function and other post-processing procedures are all carried out in {\tt{R}}.
+Therefore, we require two files.
+The first file, named \textit{linreg.cpp}, is written in {\tt{C++}} and defines the objective function, i.e.~the negative log-likelihood (nll) function of the linear model, as follows.\\
+
+\lstinputlisting{code/linreg.cpp}
+
+Note that we define data inputs $x$ and $y$ using the \texttt{DATA\_VECTOR()} declaration in the above code.
+Furthermore, we declare the nll as a function of the three parameters a, b and $\log(\sigma)$ using the \texttt{PARAMETER()} declaration.
+In order to be able to carry out unconstrained optimization procedures in the following, the nll function is parametrized in terms of $\log(\sigma)$.
+While the parameter $\sigma$ is constrained to be non-negative, $\log(\sigma)$ can be freely estimated.
+Alternatively, constraint optimization methods could be carried out, but we do not investigate such procedures.
+The \texttt{ADREPORT()} function is optional but useful for parameter inference at the postprocessing stage.
+%This approach avoids the need of using constraint optimization methods.
+
+The second file needed is written in {\tt{R}} and serves for compiling the nll function defined above and carrying out the estimation procedure by numerical optimization of the nll function.
+The .R file (shown below) carries out the compilation of the {\tt{C++}} file and minimization of the nll function:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Loading TMB package}
+\hlkwd{library}\hlstd{(TMB)}
+\hlcom{# Compilation. The compiler returns 0 if the compilation of}
+\hlcom{# the cpp file was successful}
+\hlstd{TMB}\hlopt{::}\hlkwd{compile}\hlstd{(}\hlstr{"code/linreg.cpp"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Dynamic loading of the compiled cpp file}
+\hlkwd{dyn.load}\hlstd{(}\hlkwd{dynlib}\hlstd{(}\hlstr{"code/linreg"}\hlstd{))}
+\hlcom{# Generate the data for our test sample}
+\hlkwd{set.seed}\hlstd{(}\hlnum{123}\hlstd{)}
+\hlstd{data} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwc{y} \hlstd{=} \hlkwd{rnorm}\hlstd{(}\hlnum{20}\hlstd{)} \hlopt{+} \hlnum{1}\hlopt{:}\hlnum{20}\hlstd{,} \hlkwc{x} \hlstd{=} \hlnum{1}\hlopt{:}\hlnum{20}\hlstd{)}
+\hlstd{parameters} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwc{a} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{b} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{tsigma} \hlstd{=} \hlnum{0}\hlstd{)}
+\hlcom{# Instruct TMB to create the likelihood function}
+\hlstd{obj_linreg} \hlkwb{<-} \hlkwd{MakeADFun}\hlstd{(data, parameters,} \hlkwc{DLL} \hlstd{=} \hlstr{"linreg"}\hlstd{,}
+                        \hlkwc{silent} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlcom{# Optimization of the objective function with nlminb}
+\hlstd{mod_linreg} \hlkwb{<-} \hlkwd{nlminb}\hlstd{(obj_linreg}\hlopt{$}\hlstd{par, obj_linreg}\hlopt{$}\hlstd{fn)}
+\hlstd{mod_linreg}\hlopt{$}\hlstd{par}
+\end{alltt}
+\begin{verbatim}
+##           a           b      tsigma 
+##  0.31009240  0.98395535 -0.05814659
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+In addition to the core functionality presented above, different types of post-processing of the results are possible as well. For example, the function \texttt{sdreport} returns the ML estimates and standard errors of the parameters in terms of which the nll is parametrized:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{sdreport}\hlstd{(obj_linreg,} \hlkwc{par.fixed} \hlstd{= mod_linreg}\hlopt{$}\hlstd{par)}
+\end{alltt}
+\begin{verbatim}
+## sdreport(.) result
+##           Estimate Std. Error
+## a       0.31009240 0.43829083
+## b       0.98395535 0.03658781
+## tsigma -0.05814659 0.15811381
+## Maximum gradient component: 6.931683e-05
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+In principle, the argument \texttt{par.fixed = mod\_linreg\$par} is optional but recommended, because it ensures that the \texttt{sdreport} function is carried out at the minimum found by \texttt{nlminb}. Note that the standard errors above are based on the Hessian matrix of the nll.\\
+From a practical perspective, it is usually desirable to obtain standard errors for the constrained variables, in this case $\sigma$. To achieve this, one can run the \texttt{summary} function with argument \texttt{select = "report"}:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(}\hlkwd{sdreport}\hlstd{(obj_linreg,} \hlkwc{par.fixed} \hlstd{= mod_linreg}\hlopt{$}\hlstd{par),}
+        \hlkwc{select} \hlstd{=} \hlstr{"report"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##        Estimate Std. Error
+## sigma 0.9435116  0.1491822
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+These standard errors result from the generalized delta method described by \citet{kass}, which is implemented within {\tt{TMB}}. Note that full functionality of the \texttt{sdreport} function requires calling the function \texttt{ADREPORT} on the additional parameters of interest (i.e. those including transformed parameters, in our example $\sigma$) in the {\tt{C++}} part.
+The \texttt{select} argument restricts the output to variables passed by \texttt{ADREPORT}.
+This feature is particularly useful when the likelihood has been reparametrized as above, and is especially relevant for HMMs.
+Following \citet{zucchini}, we refer to the original parameters as natural parameters, and to their transformed version as the working parameters.\\
+Last, we display the estimation results from the \texttt{lm} function for comparison.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{lm}\hlstd{(y} \hlopt{~} \hlstd{x,} \hlkwc{data} \hlstd{= data)}\hlopt{$}\hlstd{coefficients}
+\end{alltt}
+\begin{verbatim}
+## (Intercept)           x 
+##   0.3100925   0.9839554
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+Note that minor deviations from the results of \texttt{lm} originate in the numerical methods involved in the selected optimization procedure, in our case \texttt{nlminb}.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Parameter estimation techniques for HMMs}
+\label{sec:estimation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this section we recall basic concepts underlying parameter estimation for HMMs via direct numerical optization of the likelihood. In terms of notation, we stay as close as possible to \citet{zucchini}, where a more detailed presentation is available.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Basic notation and model setup}
+\label{sec:notation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A large variety of modeling approaches is possible with HMMs, ranging from rather simple to highly complex setups.
+In a basic HMM, one assumes that the data-generating process corresponds to a time-dependent mixture of the so-called conditional distributions.
+More specifically, the mixing process is driven by an unobserved (hidden) homogeneous Markov chain.
+In this paper we focus on a Poisson HMM, but only small changes are necessary to adapt our scripts to models with other conditional distributions.
+Let $\{X_t: t = 1, \ldots, T\}$ and $\{C_t : t = 1, \ldots, T\}$ denote the observed and hidden process, respectively.
+For an $m$-state Poisson HMM, the conditional distributions with parameter $\lambda_i$ are then specified through
+\begin{equation*}
+p_i(x) = \text{P}(X_t = x \vert C_t = i) = \frac{e^{-\lambda_i} \lambda_i^x}{x!},
+\end{equation*}
+where $i = 1, \ldots, m$. Furthermore, we let $\bgamma = \{\gamma_{ij}\}$ and $\bfdelta$ denote the transition probability matrix (TPM) of the Markov chain and the corresponding stationary distribution, respectively.
+It is noteworthy that Markov chains in the context of HMMs are often assumed irreducible and aperiodic.
+For example,
+\citet[Lemma 6.3.5 on p. ~225 and Theorem 6.4.3 on p. ~227]{grimmett} show that irreducibility ensures the existence of the stationary distribution, and \citet[p. ~394]{feller} describe that aperiodicity implies that a unique limiting distribution exists and corresponds to the stationary distribution.
+These results are, however, of limited relevance for most estimation algorithms, because the elements of $\bgamma$ are in general strictly positive. Nevertheless, one should be careful when manually setting selected elements of $\bgamma$ equal to zero.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{The likelihood function of an HMM}
+\label{sec:hmm_likelihood}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The likelihood function of an HMM requires, in principle, an summation over all possible state sequences. As shown e.g.~by \citet[p.~37]{zucchini}, a computationally convenient representation as a product of matrices is possible. Let $X^{(t)} = \{X_1, \ldots, X_t \}$ and $x^{(t)} = \{x_1, \ldots, x_t \}$ denote the history of the observed process $X_t$ and the observations $x_t$ from time zero up to time $t$. Moreover, let $\btheta$ denote the vector of model parameters, which consists of the parameters of the TPM and the parameters of the conditional probability density functions (pdf). Given these parameters, the likelihood of the observations $\{x_1, \ldots, x_T \}$ can then be expressed as
+\begin{equation}
+\label{eq:hmm_likelihood}
+L($\btheta$) = \bcp(X^{(T)} = x^{(T)}) = \bfdelta \bcp(x_1) \bgamma \bcp(x_2) \bgamma \bcp(x_3) \ldots \bgamma \bcp(x_T) \bone',
+\end{equation}
+where
+\begin{equation*}
+\bcp(x) = \begin{pmatrix}
+p_1(x)    &         &         & 0\\
+          & p_2(x)  &         &\\
+          &         & \ddots  &\\
+0         &         &         & p_m(x)
+\end{pmatrix}
+\end{equation*}
+corresponds to a diagonal matrix with the $m$ conditional pdfs evaluated at $x$ (we will use the term density despite the discrete support), and $\bone$ denotes a vector of ones. The first element of the likelhood function, the so-called initial distribution, is given by the stationary distribution $\bfdelta$ here. Alternatively, the initial distribution may be estimated freely, which requires minor changes to the likelihood function discussed in Section \ref{sec:tmb_cpp}.\\
+Note that the treatment of missing data is comparably straightforward in this setup. If $x$ is a missing observations, one just has to set $p_i(x) =  1$, thus $\bcp(x)$ reduces to the unity matrix as detailed in \citet[p. ~40]{zucchini}.
+\citet[p. ~41]{zucchini} also explains how to adjust the likelihood when entire intervals are missing. Furthermore, this representation of the likelihood is quite natural from an intuitive point of view. From left to right, it can be interpreted as a pass through the observations: one starts with the initial distribution multiplied by the conditional density of $x_1$ collected in $\bcp(x_1)$. This is followed by iterative multiplications with the TPM modeling the transition to the next observation, and yet another multiplication with contributions of the following conditional densities.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Forward algorithm and backward algorithm}
+\label{sec:hmm_fwbw}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The pass through the observations described above actually forms the basis for an efficient evaluation of the  likelihood function. More precisely, the so-called ``forward algorithm'' allows for a recursive computation of the likelihood. For setting up this algorithm, we need to define the vector $\balpha_t$ by
+\begin{align*}
+\balpha_t &= \bfdelta \bcp(x_1)\bgamma \bcp(x_2) \bgamma \bcp(x_3) \ldots \bgamma \bcp(x_t)\\
+&= \bfdelta \bcp(x_1) \prod_{s=2}^{t}\bgamma \bcp(x_s)\\
+&= \left( \alpha_t(1), \ldots, \alpha_t(m) \right)
+\end{align*}
+for $t = 1, 2, \ldots, T$. 
+The name forward algorithm originates from the way of calculating $\balpha_t$, i.e.
+\begin{gather*}
+\balpha_0 = \bfdelta \bcp(x_1)\\
+\balpha_t = \balpha_{t-1} \bgamma \bcp(x_t) \text{ for } t = 1, 2, \ldots, T.
+\end{gather*}
+After a pass through all observations, the likelihood results from
+\begin{gather*}
+L(\btheta) = \balpha_T \bone'.
+\end{gather*}
+In a similar way, the ``backward algorithm'' also permits the recursive computation of the likelihood, but starting with the last observation. To formulate the backward algorithm, let us define the vector $\bfbeta_t$ for $t = 1, 2,
+\ldots, T$ so that
+\begin{align*}
+\bfbeta'_t &= \bgamma \bcp(x_{t+1}) \bgamma \bcp(x_{t+2}) \ldots \bgamma \bcp(x_T) \ldots \bone'\\
+&= \left(\prod_{s=t+1}^{T}\bgamma \bcp(x_s) \right) \bone'\\
+&= \left( \beta_t(1), \ldots, \beta_t(m) \right)
+\end{align*}
+The name backward algorithm results from the way of calculating $\bfbeta_t$, i.e.
+\begin{gather*}
+\bfbeta_T = \bone'\\
+\bfbeta_t = \bgamma \bcp(x_{t+1}) \bfbeta_{t+1} \text{ for } t = T-1, T-2, \ldots, 1.
+\end{gather*}
+Again, the likelihood can be calculated after a pass through all observations by
+\begin{gather*}
+L(\btheta) = \bfdelta \bfbeta_1.
+\end{gather*}
+In general, parameter estimation bases on the forward algorithm.
+The backward algorithm is, however, still useful because the quantities $\balpha_t$ and $\bfbeta_t$ together serve for a couple of interesting tasks.
+For example, they are the basis for deriving a particular type of conditional distributions and for state inference by local decoding \cite[Ch.~5, pp.~81-93]{zucchini}. We present details on local decoding on the GitHub page.\\
+Last, it is well-known that the execution of the forward (or backward) algorithm may quickly lead to underflow errors, because many elements of the vectors and matrices involved take values between zero and one. To avoid these difficulties, a scaling factor can be introduced. We follow the approach suggested by \citet[p. ~48]{zucchini} and implement a scaled version of the forward algorithm, which directly provides the (negative) log-likelihood as result.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Reparametrization of the likelihood function}
+\label{sec:hmm_repar}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The representation of the likelihood and the algorithms shown above rely on the data and the set of parameters $\btheta$ as input. The data are subject to several constraints:
+\begin{enumerate}
+\item Typically there are various constraints of the parameters in the conditional distribution. For the Poisson HMM, all elements of the parameter vector $\bflambda\ = (\lambda_1, \dots, \lambda_m)$ must be non-negative. 
+\item In general, the parameters $\gamma_{ij}$ of the TPM $\bgamma$ have to be non-negative, and the rows of $\bgamma$ must sum up to one.
+\end{enumerate}
+The constraints of the TPM can be difficult to deal with using constrained optimization of the likelihood. A common approach is to reparametrize the log-likelihood in terms of unconstrained ``working'' parameters $\{\bct, \bfeta\}= g^{-1}(\bgamma, \bflambda)$, as follows. A possible reparametrization of $\bgamma$ is given by 
+
+\begin{equation*}
+\gamma_{ij} = \frac{\exp(\tau_{ij})}{1 + \sum_{k \neq i} \tau_{ik}}, \text{ for } i \neq j
+\end{equation*}
+
+where $\tau_{ij}$ are $m(m-1)$ real-valued, thus unconstrained, elements of an $m$ times $m$ matrix $\bct$ with no diagonal elements. The diagonal elements of $\bgamma$ follows implicitly from $\sum_j \gamma_{ij} = 1 \;\forall\; i$ \cite[p. ~51]{zucchini}. The corresponding reverse transformation is given by
+\begin{equation*}
+\tau_{ij} = \log\left(\frac{\gamma_{ij}}{1 - \sum_{k \neq i} \gamma_{ik}}\right) = \log(\gamma_{ij}/\gamma_{ii}), \text{ for } i \neq j
+\end{equation*}
+
+For the Poisson HMM the intensities can be reparametrized in terms of $\lambda_i = \exp(\eta_i)$, and consequently the unconstrained working parameters are given by $\eta_i = \log(\lambda_i), i = 1,\dots,m$. Estimates of the "natural" parameters $\{\bgamma, \bflambda\}$ can then be obtained by maximizing the reparametrized likelihood with respect to $\{\bct, \bfeta\}$ and then transforming the estimated working parameters back to natural parameters via the above transformations, i.e. $\{\hat{\bgamma}, \hat{\bflambda}\} = g(\hat{\bct}, \hat{\bfeta})$. Note that in general the function $g$ needs to be one-to-one for the above procedure to work.
+
+% As illustrated in the previous section, we focus on unconstrained optimization, similar \citet[p. ~50]{zucchini}.
+% Hence, we parametrize the likelihood function as a function of the working parameters.
+% The computation of the likelihood then requires to transform the working parameters back to natural parameters before calculating the negative log-likelihood via \autoref{eq:hmm_likelihood}.
+% This part is entirely set up in the {\tt{C++}} likelihood function.
+% 
+% Since the transformation of the transition probability Matrix (TPM) is identical for all HMMs, it is stored as a separate {\tt{C++}} function \texttt{Gamma\_w2n} which is available in the file \textit{utils.cpp} (Appendix A.2 \autoref{code:Gamma_w2n}).
+% This file also contains the {\tt{C++}} function \texttt{Delta\_w2n} which, if necessary, we can define to transform the working stationary distribution vector into a natural parameter (Appendix A.2 \autoref{code:Delta_w2n}).
+% It is however unneeded for this paper.
+% 
+% Given a working parameter vector \texttt{log\_lambda}, the {\tt{C++}} function turning the working vector of the Poisson means into a natural parameter is simple:
+% \begin{lstlisting}
+% vector<Type> lambda = tlambda.exp();
+% \end{lstlisting}
+% 
+% Such a transformation can be adapted to other conditional distributions.
+% Note that the parts concerning the Markov chain remain unchanged.
+% The working parameters returned then serve as initial values for starting the optimization procedure of the likelihood via {\tt{TMB}}.
+% 
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Needed? / to be integrated later}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% 
+% We call $\begin{pmatrix}
+% p_1(x_1)  & p_2(x_1) & \ldots & p_m(x_1)\\
+% p_1(x_2)  & p_2(x_2) & \ldots & p_m(x_2)\\
+% \vdots    &  \vdots  & \ddots & \vdots\\
+% p_1(x_T)  & p_2(x_T) & \ldots & p_m(x_T)\\
+% \end{pmatrix}$ the emission probability matrix.\\
+% 
+% 
+% Similarly to \citet{zucchini}, we choose to minimize the negative log-likelihood for convenience purposes.
+% It is therefore better to maximize the log-likelihood instead.
+% 
+% 
+% In summary, we need to define the state-dependent probabilities (from Poisson distributions) and the transformations in {\tt{R}} and {\tt{C++}} (depending on the distributions used, but can be easily adapted).
+% We show below the next step: defining the likelihood function in {\tt{C++}} and using it to model a dataset in {\tt{R}}.
+% 
+% 
+% In practice, as explained in \autoref{sec:principles}, we first create a set of natural parameters and turn them into working parameters before passing them to an optimizer.\\
+% 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Using TMB}
+\label{sec:tmb}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In the following we show how MLE of the parameters of HMMs can be carried out efficiently via {\tt{TMB}}. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Likelihood function}
+\label{sec:tmb_cpp}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Similar to the linear regression example presented in \ref{sec:linreg}, the first and essential step is to define our nll function to be minimized later in a suitable {\tt{C++}} file. In our case, this function calculates the negative log-likelihood presented by \citet[p. ~48]{zucchini}, and our {\tt{C++}} code is analog to the {\tt{R}}-code shown by \citet[p. ~331 - 333]{zucchini}. This function, named \textit{poi\_hmm.cpp}, tackles our setting with conditional Poisson distributions only. An extension to for example Gaussian, binomial and exponential conditional distributions is straightforward. It only requires to modify the density function in the \textit{poi\_hmm.cpp} function and the related functions for parameter transformation presented in Section \ref{sec:hmm_repar}. We illustrate the implementation of these cases in the GitHub repository. However, note that the number of possible modelling setups is very large: e.g., the conditional distributions may vary from state to state, nested model specifications, the conditional mean may be linked to covariates, or the TPM could depend on covariates - to name only a few. Due to the very large number of possible extensions of the basic HMM, we refrain from implementing an {\tt{R}}-package, but prefer to provide a proper guidance to the reader for building custom models suited to a particular application. As a small example, we illustrate how to implement a freely estimated initial distribution in the function \textit{poi\_hmm.cpp}. This modification can be achieved by uncommenting a couple of lines only.  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Optimization}
+\label{sec:tmb_r}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+With the nll function available in {\tt{C++}}, we can carry out the parameter estimation and all pre-/post-processing in {\tt{R}}. in the following we describe the steps to be carried out.
+
+\begin{enumerate}
+\item Loading of the necessary packages, compilation of the nll function with {\tt{TMB}} and subsequent loading, and loading of the auxiliary functions for parameter transformation.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Load TMB and optimization packages}
+\hlkwd{library}\hlstd{(TMB)}
+\hlkwd{library}\hlstd{(optimr)}
+\hlcom{# Run the \{\textbackslash{}tt\{C++\}\} file containing the TMB code}
+\hlstd{TMB}\hlopt{::}\hlkwd{compile}\hlstd{(}\hlstr{"code/poi_hmm.cpp"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Load it}
+\hlkwd{dyn.load}\hlstd{(}\hlkwd{dynlib}\hlstd{(}\hlstr{"code/poi_hmm"}\hlstd{))}
+\hlcom{# Load the parameter transformation function}
+\hlkwd{source}\hlstd{(}\hlstr{"functions/utils.R"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item Loading of the observations. The data are part of a large data set collected with the "Track Your Tinnitus" (TYT) mobile application, a detailed description of which is presented in \citet{pryss} and \citet{pryssa}.
+We analyze 87 successive days of the ``arousal'' variable recorded for a single individual. This variable is measured on a discrete scale, where higher values correspond to a higher degree of excitement and lower values to a more calm emotional state \citep[for details, see][]{probst, probsta}.
+
+Loading the ``arousal'' variable can be achieved simply with
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{load}\hlstd{(}\hlstr{"data/tinnitus.RData"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\autoref{table:tinnitus_data} presents the raw data, which are also available for download at the GitHub repository.
+
+% latex table generated in R 4.0.5 by xtable 1.8-4 package
+% Sat Jul 03 15:33:40 2021
+\begin{table}[ht]
+\centering
+\begin{tabular}{p{15cm}}
+   \hline
+6 5 3 6 4 3 5 6 6 6 4 6 6 4 6 6 6 6 6 4 6 5 6 7 6 5 5 5 7 6 5 6 5 6 6 6 5 6 7 7 6 7 6 6 6 6 5 7 6 1 6 0 2 1 6 7 6 6 6 5 5 6 6 2 5 0 1 1 1 2 3 1 3 1 3 0 1 1 1 4 1 4 1 2 2 2 0 \\ 
+   \hline
+\end{tabular}
+\caption{TYT data. Observations collected by the TYT app on 87 successive days (from left to right) for a single individual.} 
+\label{table:tinnitus_data}
+\end{table}
+
+%More details on this data set are provided in \\autoref{sec:tyt_data}.
+
+
+\item Initialization of the number of states and starting (or initial) values for the optimization. First, the number of states needs to be determined. As explained by \citet{pohlea}, \citet{pohle}, and \citet[][Section 6]{zucchini} (to name only a few), usually one would first fit models with a different number of states. Then, these models are evaluated e.g.~by means of model selection criteria \citep[as carried out by][]{leroux} or prediction performance \citep{celeux}. Since the results reported by \citet{leroux} show that a two-state model is preferred by the BIC, we focus on this model only here - although other choices would be possible, e.g.~the AIC selects a three-state model. The list object \texttt{TMB\_data} contains the data and the number of states.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Model with 2 states}
+\hlstd{m} \hlkwb{<-} \hlnum{2}
+\hlstd{TMB_data} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwc{x} \hlstd{= tinn_data,} \hlkwc{m} \hlstd{= m)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+Secondly, initial values for the optimization procedure need to be defined. Although we will apply unconstrained optimization, we initialize the natural parameters, because this is much more intuitive and practical than handling the working parameters. 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Generate initial set of parameters for optimization}
+\hlstd{lambda} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{3}\hlstd{)}
+\hlstd{gamma} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{0.8}\hlstd{,} \hlnum{0.2}\hlstd{,}
+                  \hlnum{0.2}\hlstd{,} \hlnum{0.8}\hlstd{),} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{nrow} \hlstd{= m)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item Transformation from natural to working parameters. The previously created initial values are transformed and stored in the list {\tt parameters} for the optimization procedure.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Turn them into working parameters}
+\hlstd{parameters} \hlkwb{<-} \hlkwd{pois.HMM.pn2pw}\hlstd{(m, lambda, gamma)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item Creation of the \texttt{TMB} negative log-likelihood function with its derivatives. This object, stored as \texttt{obj\_tmb} requires the data, the initial values, and the previously created the DLL as input. Setting argument \texttt{silent = TRUE} disables tracing information and is only used here to avoid excessive output.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{obj_tmb} \hlkwb{<-} \hlkwd{MakeADFun}\hlstd{(TMB_data, parameters,}
+                     \hlkwc{DLL} \hlstd{=} \hlstr{"poi_hmm"}\hlstd{,} \hlkwc{silent} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+This object also contains the previously defined initial values as a vector (\texttt{par}) rather than a list. The negative log-likelihood (\texttt{fn}), its gradient (\texttt{gr}), and Hessian (\texttt{he}) are functions of the parameters (in vector form) while the data are considered fixed: 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{obj_tmb}\hlopt{$}\hlstd{par}
+\end{alltt}
+\begin{verbatim}
+##   tlambda   tlambda    tgamma    tgamma 
+##  0.000000  1.098612 -1.386294 -1.386294
+\end{verbatim}
+\begin{alltt}
+\hlstd{obj_tmb}\hlopt{$}\hlkwd{fn}\hlstd{(obj_tmb}\hlopt{$}\hlstd{par)}
+\end{alltt}
+\begin{verbatim}
+## [1] 228.3552
+\end{verbatim}
+\begin{alltt}
+\hlstd{obj_tmb}\hlopt{$}\hlkwd{gr}\hlstd{(obj_tmb}\hlopt{$}\hlstd{par)}
+\end{alltt}
+\begin{verbatim}
+##          [,1]      [,2]     [,3]      [,4]
+## [1,] -3.60306 -146.0336 10.52832 -1.031706
+\end{verbatim}
+\begin{alltt}
+\hlstd{obj_tmb}\hlopt{$}\hlkwd{he}\hlstd{(obj_tmb}\hlopt{$}\hlstd{par)}
+\end{alltt}
+\begin{verbatim}
+##           [,1]       [,2]       [,3]       [,4]
+## [1,]  1.902009  -5.877900 -1.3799682  2.4054017
+## [2,] -5.877900 188.088247 -4.8501589  2.3434284
+## [3,] -1.379968  -4.850159  9.6066700 -0.8410438
+## [4,]  2.405402   2.343428 -0.8410438  0.7984216
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+\item Execution of the optimization. For this step we rely again on the optimizer implemented in the {\tt{nlminb}} function. The arguments, i.e.~ initial values for the parameters and the function to be optimized, are extracted from the previously created {\tt{TMB}} object. 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{mod_tmb} \hlkwb{<-} \hlkwd{nlminb}\hlstd{(}\hlkwc{start} \hlstd{= obj_tmb}\hlopt{$}\hlstd{par,} \hlkwc{objective} \hlstd{= obj_tmb}\hlopt{$}\hlstd{fn)}
+\hlcom{# Check that it converged successfully}
+\hlstd{mod_tmb}\hlopt{$}\hlstd{convergence} \hlopt{==} \hlnum{0}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+It is noteworthy that various alternatives to {\tt{nlminb}} exist. Nevertheless, we focus on this established optimization routine because of its high speed of convergence.
+
+\item Obtaining the ML estimates of the natural parameters together with their standard errors is possible by using the previously introduced command \texttt{sdreport}. Recall that this requires the parameters of interest to be treated by the \texttt{ADREPORT} statement in the {\tt{C++}} part. It should be noted that the presentation of the set of parameters \texttt{gamma} below results from a column-wise representation of the TPM.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(}\hlkwd{sdreport}\hlstd{(obj_tmb,} \hlkwc{par.fixed} \hlstd{= mod_tmb}\hlopt{$}\hlstd{par),} \hlstr{"report"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##          Estimate Std. Error
+## lambda 1.63641070 0.27758294
+## lambda 5.53309626 0.31876141
+## gamma  0.94980192 0.04374682
+## gamma  0.02592209 0.02088689
+## gamma  0.05019808 0.04374682
+## gamma  0.97407791 0.02088689
+## delta  0.34054163 0.23056401
+## delta  0.65945837 0.23056401
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+Note that the table above also contains estimation results for $\bfdelta$ and accompanying standard errors, although $\bfdelta$ is not estimated, but derived from $\bgamma$. We provide further details on this aspect in \autoref{sec:hessian}.\\
+The value of the nll function in the minimum found by the optimizer can also be extracted directly from the object {\tt mod\_tmb} by accessing the list element {\tt objective}:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{mod_tmb}\hlopt{$}\hlstd{objective}
+\end{alltt}
+\begin{verbatim}
+## [1] 168.5361
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\item In the optimization above we already benefited from an increased speed due to the evaluation of the nll in {\tt{C++}} compared to the forward algorithm being executed entirely in {\tt{R}}. However, the use of {\tt{TMB}} also permits to introduce the gradient and/or the Hessian computed by {\tt{TMB}} into the optimization procedure. This is in general advisable, because {\tt{TMB}} provides an exact value of both gradient and Hessian up to machine precision, which is superior to approximations used by optimizing procedure. Similar to the nll, both quantities can be extracted directly from the {\tt{TMB}} object {\tt obj\_tmb}:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# The negative log-likelihood is accessed by the objective}
+\hlcom{# attribute of the optimized object}
+\hlstd{mod_tmb} \hlkwb{<-} \hlkwd{nlminb}\hlstd{(}\hlkwc{start} \hlstd{= obj_tmb}\hlopt{$}\hlstd{par,} \hlkwc{objective} \hlstd{= obj_tmb}\hlopt{$}\hlstd{fn,}
+                  \hlkwc{gradient} \hlstd{= obj_tmb}\hlopt{$}\hlstd{gr,} \hlkwc{hessian} \hlstd{= obj_tmb}\hlopt{$}\hlstd{he)}
+\hlstd{mod_tmb}\hlopt{$}\hlstd{objective}
+\end{alltt}
+\begin{verbatim}
+## [1] 168.5361
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+Note that passing the gradient and Hessian provided by {\tt{TMB}} to \texttt{nlminb} leads to the same minimum, i.e.~value of the nll function, here.
+
+\end{enumerate}
+
+On a minor note, when comparing our estimation results to those reported by \citet{leroux}, some non-negligible differences can be noted. The reasons for this are difficult to determine, but some likely explanations are given in the following. First, differences in the parameter estimates may result e.g.~from the optimizing algorithms used and related setting (e.g.~convergence criterion, number of steps, optimization routines used in 1992,...). Moreover, \citet{leroux} seem to base their calculations on an altered likelihood, which is reduced by removing the constant term $\sum_{i=1}^{T} \log(x_{i}!)$ from the log-likelihood. This modification may also possess an impact on the behavior of the optimization algorithm, as e.g.~relative convergence criteria and step size could be affected.\\
+
+% TIMO: if we show the following, I would put all of it on GitHub. It could be in the part corresponding to Section 4, but as supplementary contents
+ 
+% The reason is that their likelihood is altered while ours isn't.
+% This becomes clear when comparing the likelihoods with only one state.
+% 
+% A 1 state Poisson HMM is the same as a Poisson regression model, for which the log-likelihood has the expression
+% \begin{align*}
+% l(\lambda) &= \log \left(\prod_{i=1}^{T} \frac{\lambda^{x_i} e^{-\lambda}}{x_{i}!} \right)\\
+% &= - T \lambda + \log(\lambda) \left( \sum_{i=1}^{T} x_i \right) - \sum_{i=1}^{T} \log(x_{i}!).
+% \end{align*}
+% The authors find a ML estimate $\lambda = 0.3583$ and a log-likelihood of -174.26.
+% In contrast, calculating the log-likelihood explicitly shows a different result.
+% <<leroux-likelihood-calculation>>=
+% x <- lamb_data
+% # We use n instead of T in R code
+% n <- length(x)
+% l <- 0.3583
+% - n * l + log(l) * sum(x) - sum(log(factorial(x)))
+% @
+% 
+% The log-likelihood is different, but when the constant $- \sum_{i=1}^{T} \log(x_{i}!)$ is removed, it matches our result.
+% <<leroux-likelihood>>=
+% - n * l + log(l) * sum(x)
+% @
+% In this paper, we use the complete formula for the negative log-likelihood, which therefore differs sligthly from \citet{leroux}.
+
+
+% TIMO: same here, this is too irrelevant for being an own section. I would put it as well into the readme of section 4, but as supplementary section. 
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Computing the stationary distribution}
+% \label{sec:stat_dist}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% Within the objective function in \autoref{sec:tmb_cpp}, the stationary distribution of the $m$ state HMM's Markov chain with transition probability matrix $\bgamma$ is calculated.
+% In this section, we explain that calculation.
+% 
+% \citet{zucchini} shows that calculating the stationary distribution can be achieved by solving \autoref{eq:stat-dist} for $\bfdelta$, where $\bci_m$ is the $m*m$ identity matrix, $\bcu$ is a $m*m$ matrix of ones, and $\bone$ is a row vector of ones.
+% \begin{equation}
+% \bfdelta(\bci_m - \bgamma + \bcu) = \bone
+% \label{eq:stat-dist}
+% \end{equation}
+% 
+% An implementation of this in R is shown here
+% <<stat.dist>>=
+% @
+% and used in the supporting information.
+% 
+% In order to use it in {\tt{TMB}}, an implementation in {\tt{C++}} is necessary under a specific template.
+% The file \textit{utils.cpp} (Appendix A.2 \autoref{code:Stat_dist}) shows how to achieve this.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Basic nested model specification}
+\label{sec:nested}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In the context of HMMs (and other statistical models), nested  models or models subject to certain parameter restrictions are commonly used. For example, it may be necessary to fix some parameters because of biological or physical constraints.  {\tt{TMB}} can be instructed to treat selected parameters as constants, or impose equality constraints on a set of parameters.
+For the practical implementation, it is noteworthy that such parameter restrictions should be imposed on the working parameters.
+However, it is also easily possible to impose restrictions on a natural parameter (e.g.~$\lambda$), and then identify the corresponding restriction on the working parameter (i.e.~$\log(\lambda)$). We illustrate a simple nested model specification by fixing $\lambda_1$ to one in our two-state Poisson HMM, the other parameter components correspond to the previous initial values. 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Get the previous values, and fix some}
+\hlstd{fixed_par_lambda} \hlkwb{<-} \hlstd{lambda}
+\hlstd{fixed_par_lambda[}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlnum{1}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+We then transform these natural parameters into a set of working parameters.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Transform them into working parameters}
+\hlstd{new_parameters} \hlkwb{<-} \hlkwd{pois.HMM.pn2pw}\hlstd{(}\hlkwc{m} \hlstd{= m,}
+                                 \hlkwc{lambda} \hlstd{= fixed_par_lambda,}
+                                 \hlkwc{gamma} \hlstd{= gamma)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+For instructing {\tt{TMB}} to treat selected parameters as constants, the \texttt{map} argument of the \texttt{MakeADFun} has to be specified in addition to the usual arguments. The \texttt{map} argument is a list consisting factor-valued vectors which possess the same length as the working parameters and carry their names as well. 
+The factor levels have to be unique for the regular parameters not subject to specific restrictions. If a parameter is fixed the corresponding entry of the \texttt{map} argument is filled with \texttt{NA}. In our example, this leads to:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{map} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwc{tlambda} \hlstd{=} \hlkwd{as.factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{NA}\hlstd{,} \hlnum{1}\hlstd{)),}
+            \hlkwc{tgamma} \hlstd{=} \hlkwd{as.factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{3}\hlstd{)))}
+\hlstd{fixed_par_obj_tmb} \hlkwb{<-} \hlkwd{MakeADFun}\hlstd{(TMB_data, new_parameters,}
+                               \hlkwc{DLL} \hlstd{=} \hlstr{"poi_hmm"}\hlstd{,}
+                               \hlkwc{silent} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+                               \hlkwc{map} \hlstd{= map)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+% The estimates and standard errors vary after fixing the parameters (\autoref{table:nested-model}) and the standard errors for the fixed parameters are zero.
+It is noteworthy that more complex constraints are possible as well. For example, to impose equality constraints (such as $\gamma_{11} = \gamma_{22}$), the corresponding factor level has to be identical for the concerned entries.\\
+We refer to our GitHub page [INSERT GITHUB LINK](here) for more details on this.
+Last, estimation of the remaining model parameters and extraction of the results is achieved as before.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fixed_par_mod_tmb} \hlkwb{<-} \hlkwd{nlminb}\hlstd{(}\hlkwc{start} \hlstd{= fixed_par_obj_tmb}\hlopt{$}\hlstd{par,}
+                            \hlkwc{objective} \hlstd{= fixed_par_obj_tmb}\hlopt{$}\hlstd{fn,}
+                            \hlkwc{gradient} \hlstd{= fixed_par_obj_tmb}\hlopt{$}\hlstd{gr,}
+                            \hlkwc{hessian} \hlstd{= fixed_par_obj_tmb}\hlopt{$}\hlstd{he)}
+\hlkwd{summary}\hlstd{(}\hlkwd{sdreport}\hlstd{(fixed_par_obj_tmb),} \hlstr{"report"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##          Estimate Std. Error
+## lambda 1.00000000 0.00000000
+## lambda 5.50164872 0.30963641
+## gamma  0.94561055 0.04791050
+## gamma  0.02655944 0.02133283
+## gamma  0.05438945 0.04791050
+## gamma  0.97344056 0.02133283
+## delta  0.32810136 0.22314460
+## delta  0.67189864 0.22314460
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+Note that the standard error of $\lambda_1$ equals zero, because it is no longer considered a parameter and does not enter the optimization procedure.
+
+% 
+% <<estimates-nested-model, results = 'asis', echo = FALSE>>=
+% adrep1 <- summary(sdreport(obj_tmb), "report")
+% row_names_latex <- paste0(rep("$\\lambda_{", m), 1:m, "}$")
+% for (gamma_idx in 1:m ^ 2) {
+%   row_col_idx <- matrix.col.idx.to.rowcol(gamma_idx, m)
+%   row_names_latex <- c(row_names_latex,
+%                        paste0("$\\gamma_{", paste0(row_col_idx, collapse = ""), "}$"))
+% }
+% row_names_latex <- c(row_names_latex,
+%                      paste0(rep("$\\delta_{", m), 1:m, "}$"))
+% 
+% mat1 <- matrix(adrep1, ncol = 2,
+%                dimnames = list(row_names_latex, colnames(adrep1)))
+% 
+% adrep2 <- summary(sdreport(fixed_par_obj_tmb), "report")
+% mat2 <- matrix(adrep2, ncol = 2,
+%                dimnames = list(row_names_latex, colnames(adrep2)))
+% 
+% addtorow <- list()
+% addtorow$pos <- list(- 1)
+% addtorow$command <- paste0(paste0('& \\multicolumn{2}{c}{', c('Original model', 'Nested model'), '}',
+%                                   collapse=''),
+%                            '\\\\')
+% 
+% mat3 <- cbind(mat1, mat2)
+% table <- xtable(mat3,
+%                 caption = "2 state Poisson HMM before and after fixing $\\lambda_1$ to 1 using a nested model",
+%                 label = "table:nested-model")
+% print(table,
+%       sanitize.rownames.function = identity,
+%       add.to.row = addtorow)
+% @
+% 
+% Since the nested model isn't the optimal model, the likelihood becomes worse, going from
+% <<original-likelihood>>=
+% # Original model negative log-likelihood
+% mod_tmb$objective
+% @
+% 
+% to
+% <<decayed-likelihood>>=
+% # Nested model negative log-likelihood
+% fixed_par_mod_tmb$objective
+% @
+% 
+% 
+% Note that some inconsistencies can happen.
+% 
+% The stationary distribution is a vector of probabilities and should sum to 1.
+% However, it doesn't behave as expected.
+% <<1-diff-1>>=
+% adrep <- summary(sdreport(obj_tmb), "report")
+% estimate_delta <- adrep[rownames(adrep) == "delta", "Estimate"]
+% sum(estimate_delta)
+% sum(estimate_delta) == 1
+% @
+% 
+% As noted on \citet[pp.~159-160]{zucchini}, ``with the specifications of $\bfdelta$, $\bgamma$ and $\bcp(x_t)$ given above, the row sums of $\bgamma$ will only approximately equal 1, and the components of the vector $\bfdelta$ will only approximately total 1. This can be remedied by scaling the vector $\bfdelta$ and each row of $\bgamma$ to total 1''.
+% The code in this paper doesn't remedy this because it provides no benefit here.
+% 
+% % This is likely due to machine approximations when numbers far apart from each other interact together.
+% % In R, a small number is not 0 but is treated as 0 when added to a much larger number.
+% % <<0-diff-0>>=
+% % 1e-100 == 0
+% % (1 + 1e-100) == 1
+% % @
+% This can result in incoherent findings when checking equality between 2 numbers.
+% Fortunately, no issue arose from this.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{State inference and forecasting}
+\label{sec:state_inference}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+After estimating a HMM by the procedures illustrated in \autoref{sec:tmb_r}, it is possible to carry out a couple analyses that provide insight into the interpretation of the estimated model. These include, e.g., the so-called smoothing probabilities, which correspond to the probability of being in state $i$ at time $t$ for $i = 1,...,m$, $t=1,...,n$, given all observations. These probabilities can be obtained by
+\begin{equation*}
+\text{P}(C_t = i \vert X^{(n)} = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L(\hat \btheta)},
+\end{equation*}
+where $\hat \btheta$ denotes the set of ML estimates. The derived smoothing probabilities then serve for determining the most probable state $i_t^*$ at time $t$ given the observations by
+\begin{equation*}
+i_t^* = \argmax_{i_t \in \{1, \ldots, m \}} \text{P}(C_t = i_t \vert X^{(n)} = x^{(n)}).
+\end{equation*}
+Furthermore, the Viterbi algorithm determines the overall most probable sequence of states $i_1^*, \ldots, i_T^*$, given the observations. This is achieved by evaluating
+\begin{equation*}
+(i_1^*, \ldots, i_n^*) = \argmax_{i_1, \ldots, i_n \in \{1, \ldots, m \}} \text{P}(C_1 = i_1, \ldots, C_n = i_n \vert X^{(n)} = x^{(n)}).
+\end{equation*}
+Other quantities of interest include the forecast distribution or $h$-step-ahead probabilities, which are obtained through
+\begin{equation*}
+\text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\balpha_n \bgamma^h \bcp(x) \bone'}{\balpha_n \bone'} = \bfphi_n \bgamma^h \bcp(x) \bone',
+\end{equation*}
+where $\bfphi_n = {\balpha_n} / {\balpha_n \bone'}$.\\
+All the quantities shown above and the related algorithms for deriving them are described in detail in \citet[][Chapter 5]{zucchini}. In order to apply these algorithms, it is only necessary to extract the quantities required as input from a suitable \texttt{MakeADFun} object. Note that most algorithms rely on scaled versions of the forward- and backward-algorithm. This is illustrated in detail on GitHub. GEIR (OK?) \autoref{fig:data_plot_tyt} shows the TYT data together with the conditional mean values linked to the most probable state inferred by the smoothing probabilities.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[htb]
+
+{\centering \includegraphics[width=\maxwidth]{figure/data_plot_tyt-1} 
+
+}
+
+\caption{Plot of the TYT data. The solid horizontal lines correspond to the conditional mean of the inferred state at each time. See \autoref{table:tinn_cis} for the values of $\widehat{\lambda}_i$.}\label{fig:data_plot_tyt}
+\end{figure}
+
+\end{knitrout}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Confidence intervals}
+\label{sec:confint}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A common approach for deriving confidence intervals (CIs) for the estimated parameters of statistical models bases on finite-difference approximations of the Hessian. This technique is, however, not suited for most HMMs due to computational difficulties, as already pointed out by \citet{visser}. The same authors suggest likelihood profile CIs or bootstrap-based CIs as potentially better alternatives. Despite the potentially high computational load, bootstrap-based CIs have become an established method in the context of HMMs \citep{bulla, zucchini} and found widespread application by practitioners.\\
+In this section we illustrate how CIs based on the Hessian, likelihood profiling, and the bootstrap can be efficiently implemented by integrating {\tt{TMB}}.
+This permits in particular to obtain Hessian based and likelihood profile based CIs at very low computational cost. For simplicity, we illustrate our procedures by means of the parameter $\lambda_2$ of our two-state Poisson HMM. We will further address the resulting CIs for $\bgamma$ and $\bflambda$ and performance-related aspects in \autoref{sec:application_datasets}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Wald-type confidence intervals based on the Hessian}
+\label{sec:hessian}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Since the negative log-likelihood function of HMMs typically depends on the working parameters, evaluation of the Hessian in the optimum found by numerical optimization only serves for inference about the working parameters. From a practical perspective, however, inference about the natural parameters usually is of interest. As the Hessian $\nabla^2\log L(\{\hat{\bct}, \hat{\bfeta}\})$ refers to the working parameters $\{\bct, \bfeta\}$, the delta method is suitable to obtain an estimate of the covariance matrix of $\{\hat{\bgamma}, \hat{\bflambda}\}$ by
+\begin{equation}
+\Sigma_{\hat{\bgamma}, \hat{\bflambda}} = - \nabla g(\hat{\bct}, \hat{\bfeta})\left(\nabla^2\log L(\hat{\bct}, \hat{\bfeta})\right)^{-1}\nabla g(\hat{\bct}, \hat{\bfeta})^\prime,
+\label{eq:deltamethod}
+\end{equation}
+with $\{\hat{\bgamma}, \hat{\bflambda}\} = g(\hat{\bct}, \hat{\bfeta})$ as defined in \autoref{sec:hmm_repar}.
+From a user's perspective, it is highly convenient that the entire right-hand side of \autoref{eq:deltamethod} can be directly computed via automatic differentiation in \texttt{TMB}. Moreover, it is particularly noteworthy that the standard errors of derived parameters can be calculated by the delta-method similarly. For example, the stationary distribution $\bfdelta$ is a function of $\bgamma$ in our case, and \texttt{TMB} provides a straightforward way to obtain standard errors of $\bfdelta$. This is achieved by first defining $\bfdelta$ inside the {\tt{C++}} file \texttt{poi\_hmm.cpp} (or, in our implementation, the related \texttt{utils.cpp}, which gathers auxiliary functions). Secondly, it is necessary to call \texttt{ADREPORT} on $\bfdelta$ within the \texttt{poi\_hmm.cpp} file. To display the resulting estimates and corresponding standard errors in {\tt{R}}, one can rely on the command shown previously in \autoref{sec:tmb_r}.\\
+Subsequently, Wald-type confidence intervals \citep{wald} follow in the usual manner. For example, the $(1 - \alpha) \%$ CI for $\lambda_1$ is given by $\lambda_1 \pm z_{1-\alpha/2} * \sigma_{\lambda_1}$ where $z_{x}$ is the $x$-percentile of the standard normal distribution, and $\sigma_{\lambda_1}$ is the standard error of $\lambda_1$ obtained via the delta method. This part is easily implemented in {\tt{R}}. We illustrate the calculation of these CIs for our two-state Poisson HMM on GitHub.\\
+
+Finally, note that the reliability of Wald-type CIs may suffer from a singular Fisher information matrix, which can occur for many different types of statistical models, including HMMs. This also jeopardizes the validity of AIC and BIC criteria. For further details on this topic, see e.g. \citet{drton}.
+
+% <<Wald>>=
+% adrep <- summary(sdreport(obj_tmb), "report")
+% 
+% # Get the 97.5 percentile of the standard normal distribution
+% q95_norm <- qnorm(1 - 0.05 / 2)
+% 
+% # Create the confidence interval
+% # Extract the values
+% estimates <- adrep[, "Estimate"]
+% std_errors <- adrep[, "Std. Error"]
+% # Create the bounds
+% lower_bound <- estimates - q95_norm * std_errors
+% upper_bound <- estimates + q95_norm * std_errors
+% # Show the CI
+% cbind(lower_bound, upper_bound)
+% @
+
+% For comparison, we have included the corresponding standard deviations resulting from replacing $\nabla^2\log L(\hat{\psi})$ in (\autoref{eq:deltamethod}) with traditional numerical approximations using the {\tt{R}} functions nlm (nlmb) and fdHess (nlme).
+% The difference when using these approximations are of order $1e-05$ or less, however one would still have to calculate $\nabla g(\hat{\psi})$ for these approximations to be useful.
+
+%As mentioned earlier, for a larger amount of hidden states, {\tt{TMB}} may be unable to give some or any standard standard errors because some variables are close to their boundaries. In that situation, using a nested model might solve this issue. We refer the reader to \autoref{sec:nested} for information on how to specify a nested model using {\tt{TMB}}.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Likelihood profile based confidence intervals}
+\label{sec:likelihood}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The Hessian based CIs presented above rely on asymptotic normality of the ML estimator. Properties of the ML estimator may, however, change in small samples. Moreover, symmetric CIs may not be suitable if the ML estimator lies close to a boundary of the parameter space. This occurs, e.g., when states are highly persistent, which leads to entries close to one in the TPM. An alternative approach to construct CIs bases on the so-called profile likelihood \citep[see, e.g.,][]{venzon, meeker}, which has also shown a satisfactory performance in the context of HMMs \citep{visser}.\\
+In the following, we illustrate the principle of likelihood profile based CIs by the example of the parameter $\lambda_2$ in our two-state Poisson HMM. The underlying basic idea is to identify those values of our parameter of interest $\lambda_2$ in the neighborhood of $\hat \lambda_2$ that lead to a significant change in the log-likelihood, whereby the other parameters (i.e.~$\bgamma$, $\lambda_1$) are considered nuisance parameters \citep{meeker}. The "term nuisance parameters" means that these parameters need to be re-estimated (by maximizing the likelihood) for any fixed value of $\lambda_2$ different to $\hat \lambda_2$. That is, the profile likelihood of $\lambda_2$ is defined as
+\begin{equation*}
+L_p(\lambda_2) = \max_{\bgamma, \lambda_1} L(\bgamma, \bflambda)
+\end{equation*}
+\\
+In order to construct profile likelihood-based CIs, let $\{\hat{\bgamma}, \hat{\bflambda}\}$ denote the ML estimate for our HMM computed as described in \autoref{sec:tmb_r}. Evaluation of the log-likelihood function in this point results in the value $\log L(\{\hat{\bgamma}, \hat{\bfdelta}\})$. The deviation of the likelihood of the ML estimate and the profile likelihood in the point $\lambda_2^p$ is then captured by the following likelihood ratio:
+\begin{equation}
+R_p(\lambda_2) = -2 \left[ \log(L_p(\lambda_2)) - \log(L(\hat{\bgamma}, \hat{\bflambda}))\right]
+\label{eq:profileLR}
+\end{equation}
+As described above, the log-likelihood $\log(L_p(\lambda_2))$ results from re-estimating the two-state HMM with fixed parameter $\lambda_2$. Therefore, this model effectively corresponds to a nested model of the full model with ML estimate $\hat{\bgamma}, \hat{\bflambda}$. Consequently, $R_p$ asymptotically follows a $\chi^{2}$ distribution with one degree of freedom - the difference in degrees of freedom between the two models. Based on this, a CI for $\lambda_2$ can be derived by evaluating $R_p$ at many different values of $\lambda_2^p$ and determining when the resulting value of $R_p$ becomes "too extreme". That is, for a given $\alpha$, one needs to calculate the $1-\alpha$ quantile of the $\chi^{2}_{1}$ distribution (e.g., 3.841 for $\alpha = 5\%$). The CI at level $1-\alpha$ for the parameter $\lambda_2$ is then given by 
+\begin{equation}
+\left\{\lambda_2: R_p(\lambda_2)  < \chi^{2}_{1, (1-\alpha)}\right\}
+\label{eq:profileCI}
+\end{equation}
+
+\bigskip
+
+% OLD - OUT?\\
+% 
+% Next, we consider evaluating uncertainty using likelihood-profiles.
+% 
+% Let $\eta$ be single parameter in a model with parameters $(\eta, \theta)$ and likelihood $L(\eta, \theta)$, and let $L_p(\eta)$ be the profile likelihood defined by $L_p(\eta)=\max_{\theta} L(\eta, \theta)$.
+% Then a likelihood-based CI for $\eta$ is given by
+% \begin{equation}
+% \left\{\eta: 2\log(\frac{L(\hat{\eta},\hat{\theta})}{L_p(\eta)} < \chi^{2}_{1, (1-\alpha)}\right\}
+% \label{eq:profileCI}
+% \end{equation}
+% where $\chi^{2}_{1, (1-\alpha)}$ is the $1-\alpha$ quantile of a $\chi^2$ distribution with $1$ degree of freedom.
+% {\tt{TMB}} allows for very efficient computation of both the profile likelihood $L(\eta)$ and the CI given by \autoref{eq:profileCI}, and this has been used to produce \autoref{table:lamb_estimates_std_errors} and \autoref{table:simul_estimates_std_errors} which display the profile log-likelihood and the corresponding likelihood-based CI's in the model for the lamb and the simulated dataset.
+
+For simplicity, the principles of likelihood profiling shown above rely on the natural parameters.
+Our nll function is, however, parametrized in terms of and optimized with respect to the working parameters.
+In practice, this aspect is easy to deal with.
+Once a profile CI for the working parameter (here $\eta_2$) has been obtained following the procedure above, the corresponding CI for the natural parameter $\lambda_2$ results directly from transforming the upper and lower boundary of the CI for $\eta_2$ by the one-to-one transformation $\lambda_2 = \exp(\eta_2)$.
+For further details on the invariance of likelihood-based CIs to parameter transformations, we refer to \citet{meeker}.
+%Basis for this transformation is the invariance property of ML estimation, as described e.g.~by \citet[Theorem 7.2.10 on p. ~320]{casella}.
+
+{\tt{TMB}} provides an easy way to profiling through the function {\tt{tmbprofile}}, which requires several inputs.
+First, the well-known \texttt{MakeADFun} object called \texttt{obj\_tmb} from our two-state Poisson HMM.
+Secondly, the position of the (working) parameter to be profiled via the \texttt{name} argument.
+This position refers to the position in the parameter vector \texttt{obj\_tmb\$par}.
+Moreover, here the optional \texttt{trace} argument indicates how much information on the optimization is displayed.
+The following commands permit to profile the second working parameter $\eta_2 = \log(\lambda_2)$. 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{profile} \hlkwb{<-} \hlkwd{tmbprofile}\hlstd{(}\hlkwc{obj} \hlstd{= obj_tmb,}
+                      \hlkwc{name} \hlstd{=} \hlnum{2}\hlstd{,}
+                      \hlkwc{trace} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlkwd{par}\hlstd{(}\hlkwc{mgp} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{0.5}\hlstd{,} \hlnum{0}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{2.5}\hlstd{,} \hlnum{1}\hlstd{),}
+    \hlkwc{cex.lab} \hlstd{=} \hlnum{1.5}\hlstd{)}
+\hlkwd{plot}\hlstd{(profile,} \hlkwc{level} \hlstd{=} \hlnum{0.95}\hlstd{,}
+     \hlkwc{xlab} \hlstd{=} \hlkwd{expression}\hlstd{(eta[}\hlnum{2}\hlstd{]),}
+     \hlkwc{ylab} \hlstd{=} \hlstr{"nll"}\hlstd{)}
+\end{alltt}
+\end{kframe}\begin{figure}[htb]
+
+{\centering \includegraphics[width=\maxwidth]{figure/profile_plot-1} 
+
+}
+
+\caption[Profile likelihood plot]{Profile likelihood plot. This figure shows the profile nll as function of the working parameter $\eta_2$. The vertical and horizontal lines correspond to the boundaries of the confidence interval and the critical value of the nll, respectively.}\label{fig:profile_plot}
+\end{figure}
+
+\end{knitrout}
+
+Furthermore, \autoref{fig:profile_plot} obtained via the \texttt{plot} function shows the resulting profile nll as function of the working parameter $\eta_2$. The vertical and horizontal lines correspond to the boundaries of the 95\% CI and the critical value of the nll derived from \autoref{eq:profileCI}, respectively. The CI for $\eta_2$ can directly be extracted via the function \texttt{confint}:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Confidence interval of tlambda}
+\hlkwd{confint}\hlstd{(profile,} \hlkwc{level} \hlstd{=} \hlnum{0.95}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##            lower    upper
+## tlambda 1.593141 1.820641
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+The corresponding CI for $\lambda_2$ the follows from:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Confidence interval of lambda}
+\hlkwd{exp}\hlstd{(}\hlkwd{confint}\hlstd{(profile,} \hlkwc{level} \hlstd{=} \hlnum{0.95}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##            lower    upper
+## tlambda 4.919178 6.175815
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+While simple linear combinations of variables can be profiled through the argument \texttt{lincomb} in the \texttt{tmbprofile} function, this is not possible for more complex functions of the parameters. This includes the stationary distribution $\bfdelta$, for which CIs cannot be obtained by this method.\\
+Last, note that the function \texttt{tmbprofile} carries out several optimization procedures internally for calculating profile CIs. If this approach fails, or prefers a specific optmimization routine, the necessary steps for profiling can also be implemented by the user. To do so, it would be - roughly speaking - necessary to compute $R_p(\eta_2)$ for a sufficient number of $\eta_2$ values to achieve the desired precision.
+
+%GEIR: REFORMULATE? In addition, this method can sometimes give NA values, usually when a ML estimate is close to a boundary, but not only. For example, the first working parameter \texttt{log\_lambda} is pretty low ($round(sdreport(obj_tmb)$par.fixed[m ^ 2], 2)$). It becomes too difficult to profile the likelihood so the function fails to provide a meaningful confidence interval.\\
+
+%Another important issue is about profiling with a univariate model. With only 1 (hidden) state, a Poisson HMM becomes a univariate Poisson regression model. Therefore, the profile becomes a plot of the likelihood when the Poisson mean varies. However, \texttt{tmbprofile} fails to provide a confidence interval. The reason is likely that it tries to optimize the likelihood despite the lack of parameters to change, and therefore fails.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Bootstrap-based confidence intervals}
+\label{sec:bootstrapping}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The last approach for deriving CIs is the bootstrap, which is frequently applied by many practitioner. \citet{efron} describe the underlying concepts of the bootstrap in their seminal manuscript. Many different bootstrap techniques have evolved since then, leading to an extensive treatment of this subject in the scientific literature.\\
+A thorough overview of this subject would go beyond the scope of this paper. As pointed out by \citet{hardle}, the so-called parametric bootstrap is suitable in the context of time series models. For further details on the bootstrap for HMMs including the implementation of a parametric bootstrap, we refer to \citet[][Ch.~3, pp.~56-60]{zucchini}.\\ 
+Basically all versions of the bootstrap have in common that some kind of re-sampling procedure needs to be carried out first. Secondly, the model of interest is re-estimated for each of the re-sampled data sets. A natural way to accelerate the second part consists in the use of \texttt{TMB} for the model estimation by means of the procedures presented in \autoref{sec:tmb_r}. Our GitHub page contains a detailed example illustrating the implementation of a parametric percentile bootstrap for our two-state Poisson HMM.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Application to different data sets}
+\label{sec:application_datasets}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This section aims to demonstrate the performance of \texttt{TMB} by means of a couple of practical examples that differ in terms of the number of observations and model complexity. These examples include the TYT data shown above, a data set of fetal lamb movements, and simulated data sets. For the performance comparisons, the focus lies on computational speed and the reliability of confidence intervals. The {\tt{R}} scripts necessary for this section may serve interested users for investigating their own HMM setting, and are all available on GitHub.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{TYT data}
+\label{sec:tyt_data}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We begin by investigating the speed of five approaches for parameter estimation: one without the usage of {\tt{TMB}}, and four with {\tt{TMB}}. In the following, $DM$ denotes direct maximization of the log-likelihood through the optimization function \texttt{nlminb} without {\tt{TMB}}. Furthermore, $TMB_0$, $TMB_H$, $TMB_G$, and $TMB_{GH}$ denote direct maximization with {\tt{TMB}} without using the gradient and Hessian provided by {\tt{TMB}}, with the Hessian, with the gradient, and with both gradient and Hessian, respectively.\\
+As a preliminary reliability check of our IT infrastructure and setup, we timed the fitting of our two-state HMM to the TYT data with the help of the {\tt{microbenchmark}} package \citep{mersmann}. For this data set, all five approaches converged to the same optimum and parameter estimates, apart from minor variations typical for numerical optimization (see \autoref{table:2-state-tinn-estimates}).
+
+% JAN: nllk is added. The argument "display" can be set to:\\
+% - "f" for usual number format (default for numbers)\\
+% - "fg" for the same result but with significant digits instead of total number of digits\\
+% - "s" needs to be set for strings\\
+% 
+% The number of digits or signif digits is set via "digits".\\[1ex]
+
+% latex table generated in R 4.0.5 by xtable 1.8-4 package
+% Sat Jul 03 15:33:41 2021
+\begin{table}[ht]
+\centering
+\begin{tabular}{cccccc}
+  \hline
+Par. & \textit{${DM}$} & \textit{${TMB_0}$} & \textit{${TMB_G}$} & \textit{${TMB_H}$} & \textit{${TMB_{GH}}$} \\ 
+  \hline
+$\lambda_{1}$ & 1.636410931 & 1.636410932 & 1.636410933 & 1.636410932 & 1.636410997 \\ 
+  $\lambda_{2}$ & 5.533095962 & 5.533095962 & 5.533095957 & 5.533095962 & 5.533095759 \\ 
+  $\gamma_{11}$ & 0.949802041 & 0.949802041 & 0.949802042 & 0.949802041 & 0.949802094 \\ 
+  $\gamma_{12}$ & 0.050197959 & 0.050197959 & 0.050197958 & 0.050197959 & 0.050197906 \\ 
+  $\gamma_{21}$ & 0.025922044 & 0.025922044 & 0.025922044 & 0.025922044 & 0.025922038 \\ 
+  $\gamma_{22}$ & 0.974077956 & 0.974077956 & 0.974077956 & 0.974077956 & 0.974077962 \\ 
+  $\delta_{1}$ & 0.340541816 & 0.340541816 & 0.340541819 & 0.340541816 & 0.340541999 \\ 
+  $\delta_{2}$ & 0.659458184 & 0.659458184 & 0.659458181 & 0.659458184 & 0.659458001 \\ 
+  nll & 168.536055869 & 168.536055869 & 168.536055869 & 168.536055869 & 168.536055869 \\ 
+   \hline
+\end{tabular}
+\caption{Parameter estimates and corresponding nll of the two-state Poisson HMM with and without using {\tt TMB} obtained for the TYT data.} 
+\label{table:2-state-tinn-estimates}
+\end{table}
+
+
+\autoref{table:speed-consistency-tinn} shows the resulting average time required for the parameter estimation and the number of iterations needed by each approach, measured over $200$ replications. The results show that the use of {\tt{TMB}} significantly accelerates parameter estimation in comparison with $DM$. The most substantial acceleration is achieved by $TMB_G$, underlining the benefit of using the gradient provided by {\tt{TMB}}. Moreover, $TMB_{GH}$ requires fewer iterations than the other approaches. However, the evaluation of the Hessian seems to increase the computational burden.     
+
+% latex table generated in R 4.0.5 by xtable 1.8-4 package
+% Sat Jul 03 15:33:41 2021
+\begin{table}[ht]
+\centering
+\begin{tabular}{lccccc}
+  \hline
+ & \textit{${DM}$} & \textit{${TMB_0}$} & \textit{${TMB_G}$} & \textit{${TMB_H}$} & \textit{${TMB_{GH}}$} \\ 
+  \hline
+Time (ms) & 23.1 & 1.71 & 0.804 & 1.67 & 2.18 \\ 
+   &  (22.5, 23.7)  &  (1.62, 1.8)  &  (0.788, 0.82)  &  (1.66, 1.68)  &  (2.11, 2.26)  \\ 
+  Iterations & 13 & 13 & 13 & 13 & 7 \\ 
+   \hline
+\end{tabular}
+\caption{Average duration (in milliseconds) together with 95\% CI and number of iterations required for fitting a two-state Poisson HMM to the TYT data. The CIs are of Wald-type and base on the standard error of the mean derived from 200 replications.} 
+\label{table:speed-consistency-tinn}
+\end{table}
+
+
+%paste0("Average duration (in milliseconds) together with 95\\% CI and number of iterations required for fitting a 2-state Poisson HMM to the TYT data. The CIs are of Wald-type and base on the the standard error of the mean derived from", $CONSISTENCY_BENCHMARK_TINN$, "replications.")
+
+
+
+% \autoref{table:notation} summarizes the notation.
+% 
+% \begin{table}[h!]
+% \begin{center}
+% \caption{Naming of TMB parameters}
+% \label{table:notation}
+% \begin{tabular}{l|cccc}
+% \hline
+%                         & TMB1  & TMB2  & TMB3  & TMB4\\
+% \hline
+% Exact gradient is used  & No    & No    & Yes   & Yes\\
+% Exact hessian is used   & No    & Yes   & No    & Yes\\
+% \hline
+% \end{tabular}
+% \end{center}
+% \end{table}
+
+Next, we verified the reproducibility of the acceleration by {\tt{TMB}} in a parametric bootstrap setting. More specifically, we simulated $200$ bootstrap samples from the model estimated on the TYT data. Then, we re-estimated the same model by our five approaches and derived acceleration ratios (with $DM$ as reference approach) and their corresponding percentile CIs. As shown in \autoref{table:speed-tinn}, all acceleration ratios take values significantly larger than one, whether the gradient and Hessian are passed from {\tt{TMB}} or not. In addition, the findings from the single TYT data set are confirmed, with $TMB_G$ providing the most substantial acceleration and $TMB_{GH}$ reducing the number of iterations. This underlines that two factors are sources of the acceleration in \autoref{table:speed-tinn}: the use of {\tt{C++}} code on the one hand, and computation of the gradient and/or Hessian by {\tt TMB} on the other hand.  
+
+% latex table generated in R 4.0.5 by xtable 1.8-4 package
+% Sat Jul 03 15:33:41 2021
+\begin{table}[ht]
+\centering
+\begin{tabular}{lcccc}
+  \hline
+ & \textit{${TMB_0}$} & \textit{${TMB_G}$} & \textit{${TMB_H}$} & \textit{${TMB_{GH}}$} \\ 
+  \hline
+Acceleration ratio & 12.9 & 26.5 & 12.8 & 11.3 \\ 
+   &  (11.8, 13.8)  &  (22.9, 29.5)  &  (11.5, 13.8)  &  (8.69, 14.3)  \\ 
+  Iterations & 14.5 & 14.5 & 14.5 & 7.1 \\ 
+   &  (11, 20)  &  (11, 20)  &  (11, 20)  &  (5, 11)  \\ 
+   \hline
+\end{tabular}
+\caption{Acceleration and iterations for the TYT data. The top lines show the acceleration ratios together with 95\% percentile bootstrap CIs when using {\tt TMB} in a bootstrap setting with 200 bootstrap samples. The bottom lines display the corresponding values for the number of iterations.} 
+\label{table:speed-tinn}
+\end{table}
+
+
+
+
+% TIMO: Come back to me after you get the results of the checks discussed.\\
+% JAN: run main.R, then print the variable coverage\_skips\_lamb coverage\_skips\_tinn coverage\_skips\_simu1 coverage\_skips\_simu2 for the details. "NA\_value" means that even after all the restrictions, some estimate was NA for some unknown reason\\
+In order to obtain reliable results, we excluded all those bootstrap samples with a simulated state sequence not sojourning in each state of the underlying model at least once. This is necessary because such a constellation almost certainly leads to convergence problems on the one hand. On the other hand, even if the estimation algorithms converge, the estimated models are usually degenerate because of the lack of identifiability. Furthermore, for some very rare bootstrap samples, one or several of the estimation algorithms did not converge properly. In such cases, we discarded the results, generated an additional bootstrap sample, and re-ran the parameter estimation. Convergence problems mainly occurred due to $TMB_0$ and $TMB_H$ failing. Therefore, we recommend passing at least the gradient when optimizing with {\tt{TMB}} for increased stability.\\ 
+% As additional check of the acceleration obtained by {\tt{TMB}}, we also timed the computation of log-likelihood alone in the bootstrap setting. The acceleration factor of {\tt{TMB}} compared to conventional {\tt R} code was estimated as signif(avg,3) with a 95\% percentile bootstrap confidence interval of (signif(ci[1],3), signif(ci[2],3)). This underlines that two factors obtain the acceleration in \autoref{table:speed-tinn}: the use of {\tt{C++}} code on the one hand, and computation of the gradient and/or Hessian by {\tt TMB} on the other hand.
+
+Last, we investigate CIs obtained for the TYT data by the three different methods described in \autoref{sec:confint}, $TMB_{GH}$ served as the sole estimation approach. The columns to the left in \autoref{table:tinn_cis} show the parameter estimates and the three types of 95\% CIs obtained using the Hessian, likelihood profiling, and bootstrapping. For this data set, no major differences between the different CIs are visible. Furthermore, we assessed the accuracy of the different CIs by computing coverage probabilities, which are shown in the last three columns of \autoref{table:tinn_cis}. For calculating these coverage probabilities, we used a Monte Carlo setting similar to the one described above. Samples that possessed state sequences not visiting all states or samples for which the estimation algorithm did not converge were replaced. Moreover, we also simulated a replacement sequence when the profile likelihood method failed to converge on any bound to ensure comparability of the results. The results, shown on the right of \autoref{table:tinn_cis} indicate that all methods provide comparably reliable CI estimates, and neither outperforms the other for all parameters. For the Wald-type CIs, the coverage probabilities almost reach 100\% for $\gamma_{22}$,  $\gamma_{21}$, but lie comparably low for both the other elements of the TPM and $\delta_1$, $\delta_2$. However, profile likelihood-based CIs also take values above 95\% for all elements of the TPM, and the coverage probabilities for bootstrap CIs are all above 95\%. 
+
+% latex table generated in R 4.0.5 by xtable 1.8-4 package
+% Sat Jul 03 15:33:41 2021
+\begin{table}[ht]
+\centering
+\begin{tabular}{ccccccccccc}
+  && \multicolumn{2}{c}{Wald-type CI}& \multicolumn{2}{c}{Profile CI}& \multicolumn{2}{c}{Bootstrap CI}& \multicolumn{3}{c}{Coverage prob. (\%)}\\ \hline
+Par. & Est. & L. & U. & L. & U. & L. & U. & Wald & Profile & Bootst. \\ 
+  \hline
+$\lambda_{1}$ & 1.64 & 1.09 & 2.18 & 1.15 & 2.23 & 0.83 & 2.96 & 93.9 & 96.1 & 99.1 \\ 
+  $\lambda_{2}$ & 5.53 & 4.91 & 6.16 & 4.92 & 6.18 & 4.73 & 6.43 & 93.8 & 94.4 & 97.7 \\ 
+  $\gamma_{11}$ & 0.95 & 0.86 & 1.00 & 0.82 & 1.00 & 0.45 & 0.99 & 90.2 & 96.6 & 95.2 \\ 
+  $\gamma_{12}$ & 0.05 & 0.00 & 0.14 & 0.00 & 0.18 & 0.01 & 0.55 & 90.2 & 96.6 & 95.2 \\ 
+  $\gamma_{21}$ & 0.03 & 0.00 & 0.07 & 0.00 & 0.09 & 0.01 & 0.20 & 99.6 & 97.3 & 96.0 \\ 
+  $\gamma_{22}$ & 0.97 & 0.93 & 1.00 & 0.91 & 1.00 & 0.80 & 0.99 & 99.6 & 97.3 & 96.0 \\ 
+  $\delta_{1}$ & 0.34 & 0.00 & 0.79 &  &  & 0.07 & 0.82 & 87.3 &  & 95.6 \\ 
+  $\delta_{2}$ & 0.66 & 0.21 & 1.00 &  &  & 0.18 & 0.93 & 87.3 &  & 95.6 \\ 
+   \hline
+\end{tabular}
+\caption{CIs for the TYT dataset. From left to right, the columns contain: the parameter name, parameter estimate, and lower (L.) and upper (U.) bound of the corresponding 95\% CI derived via the Hessian provided by {\tt TMB}, likelihood profiling, and percentile bootstrap. Then follow coverage probabilities derived for these three methods in a Monte-Carlo study.} 
+\label{table:tinn_cis}
+\end{table}
+
+
+TODO: VALUES BELOW FOR CONTROL. BENCHMARK SAMPLES IS INTENTIONALLY LOW\\[1ex]
+CONSISTENCY\_BENCHMARK\_TINN=200 replications for the first speed TYT benchmarking.\\
+BENCHMARK\_SAMPLES=200 replications for the speed benchmarking.\\
+BOOTSTRAP\_SAMPLES=1000 replications for bootstrap CIs\\
+COVERAGE\_SAMPLES=1000 replications for coverage CIs\\
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Lamb data}
+\label{sec:lamb_data}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We fit two-state HMMs to the well-known data set presented in \citet{leroux} as the second example. This data set consists of the number of movements by a fetal lamb observed through ultrasound during 240 consecutive 5-second intervals, as shown in \autoref{fig:data_plot_lamb}. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[htb]
+
+{\centering \includegraphics[width=\maxwidth]{figure/data_plot_lamb-1} 
+
+}
+
+\caption{Plot of the lamb data. The solid horizontal lines correspond to the conditional mean of the inferred state at each time. See \autoref{table:lamb_cis} for the values of $\widehat{\lambda}_i$.}\label{fig:data_plot_lamb}
+\end{figure}
+
+\end{knitrout}
+
+We selected this data set for several reasons. First, the number of observations is larger than for the TYT data (but still comparably low). Secondly, according to the results of \citet{leroux}, the first state largely dominates the data generating process, whereas the second state is not very persistent and linked to only a few observations. Thirdly, the conditional means of the two states are not very different. The latter two aspects qualify this data as a 'non-text-book example'.
+
+% <<tmb-acceleration-lamb, fig.height = 3, fig.cap = 'm state Poisson HMMs estimation time with and without using TMB, estimated on the lamb dataset. Each procedure was repeated and timed. Boxplots are shown for visual comparison.', echo = FALSE>>=
+% # include_graphics(paste0("Plots/lamb_m=", max(M_LIST_LAMB), ".png"))
+% # title <- paste0("Lamb data, size = ", DATA_SIZE_LAMB)
+% # ggplot(benchmarks_df_lamb, aes(x = procedure, y = time)) +
+% #   geom_boxplot() +
+% #   facet_grid(. ~ m, space ="free_x", scales="free_x", switch="x") +
+% #   theme_Publication() +
+% #   xlab("Exact/inexact gradient and hessian") +
+% #   ylab("Time (seconds)") +
+% #   ggtitle(title, "Parameter estimation time") +
+% #   scale_y_log10()
+% plots <- list()
+% for (i in 1:length(M_LIST_LAMB)) {
+%   m_i <- M_LIST_LAMB[i]
+%   subtitle <- paste0("m = ", m_i)
+%   plots[[i]] <- estim_benchmarks_df_lamb %>%
+%     filter(m == m_i) %>%
+%     ggplot(aes(x = procedure, y = time)) +
+%     geom_boxplot() +
+%     theme_Publication() +
+%     xlab("Exact/inexact gradient and hessian") +
+%     ylab("Time (seconds)") +
+%     ggtitle("Parameter estimation time", subtitle) +
+%     scale_y_log10()
+% }
+% ggarrange(plotlist = plots, ncol = length(M_LIST_LAMB), nrow = 1)
+% @
+% 
+% 
+% TIMO: for the table below, did we not have something more intuitive for the talk as well (factor instead of percent?)?\\
+
+Similar to the TYT data, all estimations algorithms converged to the same minimum of the nll, and provided almost identical parameter estimates on the original data set. A bootstrap experiment similar to the one described above for the TYT data led to comparable results, as shown in \autoref{table:speed-lamb}. The highest acceleration is achieved by $TMB_G$, whereas $TMB_{GH}$ achieves the lowest acceleration despite requiring a lower number of iterations than the other approaches. However, all ratios lie above those obtained for the TYT data, indicating an increased benefit of using {\tt TMB} with an increasing number of observations.
+
+% latex table generated in R 4.0.5 by xtable 1.8-4 package
+% Sat Jul 03 15:33:41 2021
+\begin{table}[ht]
+\centering
+\begin{tabular}{lcccc}
+  \hline
+ & \textit{${TMB_0}$} & \textit{${TMB_G}$} & \textit{${TMB_H}$} & \textit{${TMB_{GH}}$} \\ 
+  \hline
+Acceleration ratio & 21.2 & 41.4 & 21.2 & 12 \\ 
+   &  (17.6, 23.6)  &  (36.6, 51.3)  &  (17.7, 23.5)  &  (8.95, 17.9)  \\ 
+  Iterations & 15.4 & 15.4 & 15.4 & 8.85 \\ 
+   &  (11, 38)  &  (11, 39)  &  (11, 38)  &  (6, 23)  \\ 
+   \hline
+\end{tabular}
+\caption{Acceleration and iterations for the lamb data. The top lines show the acceleration ratios together with 95\% percentile bootstrap CIs when using {\tt TMB} in a bootstrap setting with 200 bootstrap samples. The bottom lines display the corresponding values for the number of iterations.} 
+\label{table:speed-lamb}
+\end{table}
+
+
+% <<tmb-acceleration-consistency-lamb-table, results='asis', echo = FALSE>>=
+% library(xtable)
+% incr_consist_lamb <- data.frame(m = integer(),
+%                                  "TMB" = character(),
+%                                  "TMB_G" = character(),
+%                                  "TMB_H" = character(),
+%                                  "TMB_GH" = character())
+% for (idx in 1:length(M_LIST_LAMB)) {
+%   m <- M_LIST_LAMB[idx]
+%   incr_consist_lamb[idx, "m"] <- m
+%   boxplot_data <- consistency_estim_benchmarks_df_lamb[consistency_estim_benchmarks_df_lamb$m == m, ]
+%   
+%   timeDM <- boxplot_data[boxplot_data$procedure == "DM", "time"]
+%   for (proc in PROCEDURES) {
+%     time <- boxplot_data[boxplot_data$procedure == proc, "time"]*10^3
+%     avg <- mean(time)
+%     ci <- quantile.colwise(time)
+%     incr_consist_lamb[idx, proc] <- paste0(signif(avg,3), " (", signif(ci[1],3), ", ", signif(ci[2],3), ")")
+%   }
+% }
+% mt <- M_LIST_LAMB[1]
+% names(incr_consist_lamb) <- c("m",
+%                               "\\textit{${DM}$}",
+%                               "\\textit{${TMB}$}",
+%                               "\\textit{${TMB_G}$}",
+%                               "\\textit{${TMB_H}$}",
+%                               "\\textit{${TMB_{GH}}$}")
+% table <- xtable(incr_consist_lamb,
+%                 # display = c("d", "d", rep("s", 4)),
+%                 caption = paste0("Duration (in millisecond) of m state Poisson HMM parameter estimation on the lamb dataset. Each procedure was timed ", BENCHMARK_SAMPLES, " times. This table summarizes the computer's performance across multiple attempts at the same computation, in order to verify how reliable timing an estimation is. With ", mt, " hidden states, estimation with $TMB_G$ took an average ", substr(incr_consist_lamb[1, 4], 1, 3), " ms to compute, with an empirical 95\\% quantile confidence interval of ", substr(incr_consist_lamb[1, 4], 4, 14)),
+%                 label = "table:speed-consistency-lamb",
+%                 digits = 0)
+% print(table, include.rownames = FALSE, sanitize.colnames.function = identity)
+% @
+
+% <<lamb-estimates, results='asis', echo = FALSE>>=
+% idx <- 1
+% # Parameters and covariates
+% m <- M_LIST_LAMB[idx]
+% if (m == 1) {
+%   gamma <- matrix(1)
+% } else {
+%   gamma <- matrix(0.2 / (m - 1), nrow = m, ncol = m)
+%   diag(gamma) <- 0.8
+% }
+% lambda <- seq(0.3, 4, length.out = m)
+% delta <- stat.dist(gamma)
+% 
+% # Parameters & covariates for TMB
+% working_params <- pois.HMM.pn2pw(m, lambda, gamma)
+% TMB_data <- list(x = lamb_data, m = m)
+% obj <- MakeADFun(TMB_data, working_params, DLL = "poi_hmm", silent = TRUE)
+% 
+% # Estimation
+% dm <- DM.estimate(x = lamb_data,
+%                   m = m,
+%                   lambda0 = lambda,
+%                   gamma0 = gamma)
+% tmb <- TMB.estimate(TMB_data = TMB_data,
+%                      parameters = working_params,
+%                      MakeADFun_obj = obj)
+% tmb_g <- TMB.estimate(TMB_data = TMB_data,
+%                      parameters = working_params,
+%                      MakeADFun_obj = obj,
+%                      gradient = TRUE)
+% tmb_h <- TMB.estimate(TMB_data = TMB_data,
+%                      parameters = working_params,
+%                      MakeADFun_obj = obj,
+%                      hessian = TRUE)
+% tmb_gh <- TMB.estimate(TMB_data = TMB_data,
+%                      parameters = working_params,
+%                      MakeADFun_obj = obj,
+%                      gradient = TRUE,
+%                      hessian = TRUE)
+% 
+% # Table
+% estimates_df <- data.frame("DM" = numeric(),
+%                            "TMB" = numeric(),
+%                            "TMB_G" = numeric(),
+%                            "TMB_H" = numeric(),
+%                            "TMB_GH" = numeric())
+% 
+% estimates_df[1:(m + m ^ 2 + m), "DM"] <- c(dm$lambda, as.numeric(dm$gamma), dm$delta)
+% estimates_df[1:(m + m ^ 2 + m), "TMB"] <- c(tmb$lambda, as.numeric(tmb$gamma), tmb$delta)
+% estimates_df[1:(m + m ^ 2 + m), "TMB_G"] <- c(tmb_g$lambda, as.numeric(tmb_g$gamma), tmb_g$delta)
+% estimates_df[1:(m + m ^ 2 + m), "TMB_H"] <- c(tmb_h$lambda, as.numeric(tmb_h$gamma), tmb_h$delta)
+% estimates_df[1:(m + m ^ 2 + m), "TMB_GH"] <- c(tmb_gh$lambda, as.numeric(tmb_gh$gamma), tmb_gh$delta)
+% 
+% row_names_latex <- paste0(rep("$\\lambda_{", m), 1:m, "}$")
+% for (gamma_idx in 1:m ^ 2) {
+%   row_col_idx <- matrix.col.idx.to.rowcol(gamma_idx, m)
+%   row_names_latex <- c(row_names_latex,
+%                        paste0("$\\gamma_{", paste0(row_col_idx, collapse = ""), "}$"))
+% }
+% row_names_latex <- c(row_names_latex,
+%                      paste0(rep("$\\delta_{", m), 1:m, "}$"))
+% row.names(estimates_df) <- row_names_latex
+% 
+% names(estimates_df) <- c("\\textit{${DM}$}",
+%                          "\\textit{${TMB}$}",
+%                          "\\textit{${TMB_G}$}",
+%                          "\\textit{${TMB_H}$}",
+%                          "\\textit{${TMB_{GH}}$}")
+% table <- xtable(estimates_df,
+%                 caption = "Estimates of 2 state Poisson HMM with and without using TMB, estimated on the lamb dataset.",
+%                 label = "table:2-state-lamb-estimates")
+% print(table,
+%       sanitize.rownames.function = identity,
+%       sanitize.colnames.function = identity)
+% @
+
+% <<tmb-acceleration-lamb-table-nll, results='asis', echo = FALSE>>=
+% incr_mllk_time_lamb <- data.frame(m = integer(),
+%                                   "TMB" = character(),
+%                                   "TMB_G" = character(),
+%                                   "TMB_H" = character(),
+%                                   "TMB_GH" = character())
+% for (idx in 1:length(M_LIST_LAMB)) {
+%   m <- M_LIST_LAMB[idx]
+%   incr_mllk_time_lamb[idx, "m"] <- m
+%   boxplot_data <- mllk_times_df_lamb[mllk_times_df_lamb$m == m, ]
+%   
+%   timeDM <- boxplot_data[boxplot_data$procedure == "DM", "time"]
+%   for (proc in PROCEDURES[-1]) {
+%     time <- boxplot_data[boxplot_data$procedure == proc, "time"]
+%     ratio <- timeDM / time
+%     avg <- mean(ratio)
+%     ci <- quantile.colwise(ratio)
+%     incr_mllk_time_lamb[idx, proc] <- paste0(signif(avg,3), " (", signif(ci[1],3), ", ", signif(ci[2],3), ")")
+%   }
+% }
+% mt <- M_LIST_LAMB[1]
+% names(incr_mllk_time_lamb) <- c("m",
+%                                 "\\textit{${TMB}$}",
+%                                 "\\textit{${TMB_G}$}",
+%                                 "\\textit{${TMB_H}$}",
+%                                 "\\textit{${TMB_{GH}}$}")
+% table <- xtable(incr_mllk_time_lamb,
+%                 # display = c("d", "d", rep("f", 4)),
+%                 caption = paste0("Acceleration when using TMB for m state Poisson HMM negative log-likelihood calculation, estimated on the lamb dataset. Each procedure was repeated and timed once on ", BENCHMARK_SAMPLES, " sample datasets. With ", mt, " hidden states, $TMB_G$ accelerated the estimation by an average factor of ", substr(incr_mllk_time_lamb[1, 3], 1, 2), ", with a 95\\% quantile confidence interval of ", substr(incr_mllk_time_lamb[1, 3], 4, 11)),
+%                 label = "table:speed-lamb-nll",
+%                 digits = 0)
+% print(table, include.rownames = FALSE, sanitize.colnames.function = identity)
+% @
+
+Next, \autoref{table:lamb_cis} shows parameter estimates and corresponding CIs in the columns to the left. Our estimates confirm the results of \cite{leroux}: the second state is not very persistent, and the conditional means $\lambda_1$ and $\lambda_2$ do not lie very far from each other. Concerning the CIs resulting from our three approaches, it is noticeable that the bootstrap CIs for the elements of the TPM are larger than those obtained by the other two approaches. The coverage probabilities presented in the columns to the right of \autoref{table:lamb_cis} show similar patterns as observed for the TYT data. Wald-type CIs show certain deviations from 95\% for the parameters related to the hidden state sequence, and the same is true for the profile CIs. Bootstrap CIs seem to be slightly too large for most parameters, leading to values greater than 95\%.
+
+% latex table generated in R 4.0.5 by xtable 1.8-4 package
+% Sat Jul 03 15:33:41 2021
+\begin{table}[ht]
+\centering
+\begin{tabular}{ccccccccccc}
+  && \multicolumn{2}{c}{Wald-type CI}& \multicolumn{2}{c}{Profile CI}& \multicolumn{2}{c}{Bootstrap CI}& \multicolumn{3}{c}{Coverage prob. (\%)}\\ \hline
+Par. & Est. & L. & U. & L. & U. & L. & U. & Wald & Profile & Bootst. \\ 
+  \hline
+$\lambda_{1}$ & 0.26 & 0.18 & 0.34 & 0.15 & 0.33 & 0.11 & 0.33 & 93.8 & 94.6 & 95.3 \\ 
+  $\lambda_{2}$ & 3.11 & 1.11 & 5.12 & 1.27 & 4.95 & 0.40 & 5.20 & 92.6 & 94.0 & 96.8 \\ 
+  $\gamma_{11}$ & 0.99 & 0.97 & 1.00 & 0.93 & 1.00 & 0.69 & 1.00 & 99.9 & 95.3 & 97.0 \\ 
+  $\gamma_{12}$ & 0.01 & 0.00 & 0.03 & 0.00 & 0.07 & 0.00 & 0.31 & 99.9 & 95.3 & 97.0 \\ 
+  $\gamma_{21}$ & 0.31 & 0.00 & 0.67 & 0.04 & 0.68 & 0.08 & 1.00 & 93.6 & 97.3 & 99.3 \\ 
+  $\gamma_{22}$ & 0.69 & 0.33 & 1.00 & 0.32 & 0.96 & 0.00 & 0.92 & 93.6 & 97.3 & 99.3 \\ 
+  $\delta_{1}$ & 0.96 & 0.90 & 1.00 &  &  & 0.45 & 0.99 & 98.5 &  & 98.2 \\ 
+  $\delta_{2}$ & 0.04 & 0.00 & 0.10 &  &  & 0.01 & 0.55 & 98.5 &  & 98.2 \\ 
+   \hline
+\end{tabular}
+\caption{CIs for the lamb dataset. From left to right, the columns contain: the parameter name, parameter estimate, and lower (L.) and upper (U.) bound of the corresponding 95\% CI derived via the Hessian provided by {\tt TMB}, likelihood profiling, and percentile bootstrap. Then follow coverage probabilities derived for these three methods in a Monte-Carlo study.} 
+\label{table:lamb_cis}
+\end{table}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Simulation study}
+\label{sec:simu_study}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%$m =M_LIST_SIMU$.
+
+The two previously analyzed data sets are both of comparably small size. In order to systematically investigate the performance of {\tt TMB} in the context of larger samples, we carried out a small simulation study. For this study, we simulated sequences of observations of length 2000 and 5000 from HMMs with two and three states, respectively. The parameters underlying the simulation are
+\begin{equation*}
+\bgamma =
+\begin{pmatrix}
+0.95 & 0.05\\
+0.15 & 0.85
+\end{pmatrix}, \quad
+\bflambda = (1, 7)
+\end{equation*}
+for the two-state HMM and
+\begin{equation*}
+\bgamma =
+\begin{pmatrix}
+0.95 & 0.025 & 0.025\\
+0.05 & 0.90 & 0.05\\
+0.075 & 0.075 & 0.85
+\end{pmatrix}, \quad
+\bflambda = (1, 4, 7)
+\end{equation*}
+for the HMM with three states. \autoref{fig:data_plot_simu1} and \autoref{fig:data_plot_simu2} display the first 500 observations of two exemplary sequences of observations generated for the two- and three-state model, respectively.
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[htb]
+
+{\centering \includegraphics[width=\maxwidth]{figure/data_plot_simu1-1} 
+
+}
+
+\caption{Plot of simulated data (of size 2000) generated by a two-state Poisson HMM. The solid horizontal lines correspond to the conditional mean of the inferred state at each time. For readability, the graph is truncated to 500 data points. See \autoref{table:simu1_cis} for the values of $\widehat{\lambda}_i$.}\label{fig:data_plot_simu1}
+\end{figure}
+
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[htb]
+
+{\centering \includegraphics[width=\maxwidth]{figure/data_plot_simu2-1} 
+
+}
+
+\caption{Plot of simulated data (of size 5000) generated by a three-state Poisson HMM. The solid horizontal lines correspond to the conditional mean of the inferred state at each time. For readability, the graph is truncated to 500 data points. See \autoref{table:simu2_cis} for the values of $\widehat{\lambda}_i$.}\label{fig:data_plot_simu2}
+\end{figure}
+
+\end{knitrout}
+
+
+% \autoref{fig:tmb-acceleration-simul} shows the time acceleration when using {\tt{TMB}} on a simulated dataset through boxplots.
+% Similarly to the other datasets, it shows that using {\tt{TMB}} results in faster estimations of Poisson HMMs' parameters.
+% <<tmb-acceleration-simul, fig.cap = 'm state Poisson HMM estimation time with and without using TMB, simulated data.', echo = FALSE>>=
+% # include_graphics(paste0("Plots/simul_m=", max(M_LIST_SIMU), ".png"))
+% # title <- paste0("Simulated data, size = ", DATA_SIZE_SIMU)
+% # ggplot(benchmarks_df_simul, aes(x = procedure, y = time)) +
+% #   geom_boxplot() +
+% #   facet_grid(. ~ m, space ="free_x", scales="free_x", switch="x") +
+% #   theme_Publication() +
+% #   xlab("Exact/inexact gradient and hessian") +
+% #   ylab("Time (seconds)") +
+% #   ggtitle(title, "Parameter estimation time") +
+% #   scale_y_log10()
+% plots <- list()
+% for (i in M_LIST_SIMU) {
+%   title <- paste0("Simulated data, m = ", i)
+%   plots[[i]] <- benchmarks_df_simul %>%
+%     filter(m == i) %>%
+%     ggplot(aes(x = procedure, y = time)) +
+%     geom_boxplot() +
+%     theme_Publication() +
+%     xlab("Exact/inexact gradient and hessian") +
+%     ylab("Time (seconds)") +
+%     ggtitle(title, "Parameter estimation time") +
+%     scale_y_log10()
+% }
+% ggarrange(plotlist = plots, ncol = 2, nrow = 2)
+% @
+
+The bootstrap setting described in the previous sections served for computing acceleration ratios for the simulated data sets. \autoref{table:speed-simu1} displays the results obtained for the two-state model. Again, $TMB_G$ provides the strongest acceleration compared to $DM$. Furthermore, $TMB_{GH}$ achieves the second place, closely followed by the remaining two approaches. This confirms the good performance of $TMB_G$ for large sample as well. Furthermore, it suggests a certain benefit from employing the Hessian computed by {\tt TMB} for longer observation sequences, since this method requires a much lower number of iterations than all other approaches.
+
+% latex table generated in R 4.0.5 by xtable 1.8-4 package
+% Sat Jul 03 15:33:42 2021
+\begin{table}[ht]
+\centering
+\begin{tabular}{lcccc}
+  \hline
+ & \textit{${TMB_0}$} & \textit{${TMB_G}$} & \textit{${TMB_H}$} & \textit{${TMB_{GH}}$} \\ 
+  \hline
+Acceleration ratio & 18.1 & 36.2 & 18.1 & 19.7 \\ 
+   &  (16.6, 21.1)  &  (30.9, 45.2)  &  (16.4, 21)  &  (14.6, 25.8)  \\ 
+  Iterations & 20.7 & 20.6 & 20.7 & 5.82 \\ 
+   &  (17, 25)  &  (16, 26)  &  (17, 25)  &  (5, 8)  \\ 
+   \hline
+\end{tabular}
+\caption{Acceleration and iterations for the simulated data of size 2000. The top lines show the acceleration ratios together with 95\% percentile bootstrap CIs when using {\tt TMB} in a bootstrap setting with 200 bootstrap samples. The bottom lines display the corresponding values for the number of iterations.} 
+\label{table:speed-simu1}
+\end{table}
+
+
+The results for the three-state model, as shown in \autoref{table:speed-simu2}, basically underline all findings from the two-state model. Most importantly, again $TMB_{GH}$ requires a much lower number of iterations than the other approaches. 
+
+% latex table generated in R 4.0.5 by xtable 1.8-4 package
+% Sat Jul 03 15:33:42 2021
+\begin{table}[ht]
+\centering
+\begin{tabular}{lcccc}
+  \hline
+ & \textit{${TMB_0}$} & \textit{${TMB_G}$} & \textit{${TMB_H}$} & \textit{${TMB_{GH}}$} \\ 
+  \hline
+Acceleration ratio & 12.9 & 49.5 & 12.9 & 27.5 \\ 
+   &  (11.8, 14.3)  &  (42.4, 57.8)  &  (11.5, 14.3)  &  (20.7, 32.7)  \\ 
+  Iterations & 44.7 & 44.2 & 44.7 & 5.33 \\ 
+   &  (36.9, 54)  &  (36, 52.1)  &  (36.9, 54)  &  (5, 8)  \\ 
+   \hline
+\end{tabular}
+\caption{Acceleration and iterations for the simulated data of size 5000. The top lines show the acceleration ratios together with 95\% percentile bootstrap CIs when using {\tt TMB} in a bootstrap setting with 200 bootstrap samples. The bottom lines display the corresponding values for the number of iterations.} 
+\label{table:speed-simu2}
+\end{table}
+
+
+Similar to the two previous sections, \autoref{table:simu1_cis} and \autoref{table:simu2_cis} show parameter estimates, CIs, and coverage probabilities. The two exemplary sequences of observations shown in \autoref{fig:data_plot_simu1} and \autoref{fig:data_plot_simu2} served for deriving parameter estimates and CIs. The coverage probabilities result from a Monte-Carlo study as the ones previously described. Overall, the CIs obtained by our three methods are very similar for all parameters. The coverage probabilities lie comparably close to the theoretical level of 95\% for all parameters of the two-state model. Moreover, no systematically too small or large CIs seem to result from any of the three methods. The same holds true for the three-state model, with minor exceptions for the profile CIs. For this method, the coverage probabilities of the CIs are close to 100\% for diagonal elements of the TPM, while the corresponding probabilities for off-diagonal elements are less than 95\%.
+
+% latex table generated in R 4.0.5 by xtable 1.8-4 package
+% Sat Jul 03 15:33:42 2021
+\begin{table}[ht]
+\centering
+\begin{tabular}{cccccccccccc}
+  &&& \multicolumn{2}{c}{Wald-type CI}& \multicolumn{2}{c}{Profile CI}& \multicolumn{2}{c}{Bootstrap CI}& \multicolumn{3}{c}{Coverage prob. (\%)}\\ \hline
+Par. & Value & Est. & L. & U. & L. & U. & L. & U. & {Wald} & Profile & Bootst. \\ 
+  \hline
+$\lambda_{1}$ & 1.00 & 1.04 & 0.99 & 1.10 & 0.99 & 1.10 & 0.99 & 1.10 & 95.3 & 95.1 & 95.4 \\ 
+  $\lambda_{2}$ & 7.00 & 6.95 & 6.71 & 7.19 & 6.72 & 7.19 & 6.69 & 7.21 & 96.0 & 95.7 & 96.0 \\ 
+  $\gamma_{11}$ & 0.95 & 0.95 & 0.94 & 0.96 & 0.94 & 0.96 & 0.94 & 0.96 & 95.8 & 95.5 & 95.3 \\ 
+  $\gamma_{12}$ & 0.05 & 0.05 & 0.04 & 0.06 & 0.04 & 0.06 & 0.04 & 0.06 & 95.8 & 95.5 & 95.3 \\ 
+  $\gamma_{21}$ & 0.15 & 0.14 & 0.11 & 0.18 & 0.11 & 0.18 & 0.11 & 0.18 & 93.8 & 94.5 & 94.5 \\ 
+  $\gamma_{22}$ & 0.85 & 0.86 & 0.82 & 0.89 & 0.82 & 0.89 & 0.82 & 0.89 & 93.8 & 94.5 & 94.5 \\ 
+  $\delta_{1}$ & 0.75 & 0.74 & 0.68 & 0.80 &  &  & 0.68 & 0.80 & 94.3 &  & 94.1 \\ 
+  $\delta_{2}$ & 0.25 & 0.26 & 0.20 & 0.32 &  &  & 0.20 & 0.32 & 94.3 &  & 94.1 \\ 
+   \hline
+\end{tabular}
+\caption{CIs for the simulated dataset of size 2000. From left to right, the columns contain: the number of hidden states, parameter name, true parameter value, parameter estimate, and lower (L.) and upper (U.) bound of the corresponding 95\% CI derived via the Hessian provided by {\tt TMB}, likelihood profiling, and percentile bootstrap. Then follow coverage probabilities derived for these three methods in a Monte-Carlo study.} 
+\label{table:simu1_cis}
+\end{table}
+
+
+% latex table generated in R 4.0.5 by xtable 1.8-4 package
+% Sat Jul 03 15:33:42 2021
+\begin{table}[ht]
+\centering
+\begin{tabular}{cccccccccccc}
+  &&& \multicolumn{2}{c}{Wald-type CI}& \multicolumn{2}{c}{Profile CI}& \multicolumn{2}{c}{Bootstrap CI}& \multicolumn{3}{c}{Coverage prob. (\%)}\\ \hline
+Par. & Value & Est. & L. & U. & L. & U. & L. & U. & {Wald} & Profile & Bootst. \\ 
+  \hline
+$\lambda_{1}$ & 1.000 & 1.000 & 0.96 & 1.04 & 0.96 & 1.04 & 0.96 & 1.04 & 93.6 & 93.6 & 93.5 \\ 
+  $\lambda_{2}$ & 4.000 & 4.027 & 3.85 & 4.20 & 3.85 & 4.20 & 3.87 & 4.19 & 95.6 & 95.6 & 95.0 \\ 
+  $\lambda_{3}$ & 7.000 & 6.906 & 6.66 & 7.15 & 6.67 & 7.16 & 6.65 & 7.18 & 94.4 & 94.8 & 95.4 \\ 
+  $\gamma_{11}$ & 0.950 & 0.943 & 0.93 & 0.95 & 0.92 & 0.96 & 0.93 & 0.95 & 95.3 & 99.9 & 94.5 \\ 
+  $\gamma_{12}$ & 0.025 & 0.029 & 0.02 & 0.04 & 0.02 & 0.04 & 0.02 & 0.04 & 94.2 & 93.4 & 93.8 \\ 
+  $\gamma_{13}$ & 0.025 & 0.029 & 0.02 & 0.04 & 0.02 & 0.04 & 0.02 & 0.04 & 94.8 & 93.8 & 94.6 \\ 
+  $\gamma_{21}$ & 0.050 & 0.039 & 0.02 & 0.06 & 0.02 & 0.05 & 0.02 & 0.06 & 94.7 & 93.1 & 94.7 \\ 
+  $\gamma_{22}$ & 0.900 & 0.907 & 0.88 & 0.93 & 0.87 & 0.94 & 0.88 & 0.93 & 94.0 & 99.6 & 94.6 \\ 
+  $\gamma_{23}$ & 0.050 & 0.054 & 0.03 & 0.08 & 0.03 & 0.08 & 0.03 & 0.08 & 93.3 & 93.8 & 94.6 \\ 
+  $\gamma_{31}$ & 0.075 & 0.094 & 0.07 & 0.12 & 0.07 & 0.11 & 0.07 & 0.12 & 94.5 & 90.6 & 94.4 \\ 
+  $\gamma_{32}$ & 0.075 & 0.055 & 0.03 & 0.08 & 0.03 & 0.08 & 0.03 & 0.09 & 93.0 & 90.8 & 93.4 \\ 
+  $\gamma_{33}$ & 0.850 & 0.851 & 0.82 & 0.88 & 0.80 & 0.89 & 0.81 & 0.88 & 94.1 & 99.7 & 94.5 \\ 
+  $\delta_{1}$ & 0.545 & 0.520 & 0.46 & 0.58 &  &  & 0.46 & 0.58 & 94.8 &  & 95.2 \\ 
+  $\delta_{2}$ & 0.273 & 0.279 & 0.22 & 0.33 &  &  & 0.23 & 0.34 & 94.9 &  & 94.9 \\ 
+  $\delta_{3}$ & 0.182 & 0.201 & 0.16 & 0.24 &  &  & 0.16 & 0.24 & 94.3 &  & 94.4 \\ 
+   \hline
+\end{tabular}
+\caption{CIs for the simulated dataset of size 5000. From left to right, the columns contain: the number of hidden states, parameter name, true parameter value, parameter estimate, and lower (L.) and upper (U.) bound of the corresponding 95\% CI derived via the Hessian provided by {\tt TMB}, likelihood profiling, and percentile bootstrap. Then follow coverage probabilities derived for these three methods in a Monte-Carlo study.} 
+\label{table:simu2_cis}
+\end{table}
+
+
+
+
+\clearpage
+% <<tmb-acceleration-consistency-simu-table, results='asis', echo = FALSE>>=
+% library(xtable)
+% incr_consist_simu <- data.frame(m = integer(),
+%                                 "TMB" = character(),
+%                                 "TMB_G" = character(),
+%                                 "TMB_H" = character(),
+%                                 "TMB_GH" = character())
+% for (idx in 1:length(M_LIST_SIMU)) {
+%   m <- M_LIST_SIMU[idx]
+%   incr_consist_simu[idx, "m"] <- m
+%   boxplot_data <- consistency_estim_benchmarks_df_simu[consistency_estim_benchmarks_df_simu$m == m, ]
+%   
+%   timeDM <- boxplot_data[boxplot_data$procedure == "DM", "time"]
+%   for (proc in PROCEDURES) {
+%     time <- boxplot_data[boxplot_data$procedure == proc, "time"]*10^3
+%     avg <- mean(time)
+%     ci <- quantile.colwise(time)
+%     incr_consist_simu[idx, proc] <- paste0(round(avg), " (", round(ci[1]), ", ", round(ci[2]), ")")
+%     incr_consist_simu[idx, proc] <- paste0(round(avg), " (", round(ci[1]), ", ", round(ci[2]), ")")
+%   }
+% }
+% mt <- M_LIST_SIMU[1]
+% names(incr_consist_simu) <- c("m",
+%                               "\\textit{${DM}$}",
+%                               "\\textit{${TMB}$}",
+%                               "\\textit{${TMB_G}$}",
+%                               "\\textit{${TMB_H}$}",
+%                               "\\textit{${TMB_{GH}}$}")
+% table <- xtable(incr_consist_simu,
+%                 # display = c("d", "d", rep("s", 4)),
+%                 caption = paste0("Duration (in millisecond) of m state Poisson HMM parameter estimation on the simulated dataset. Each procedure was timed ", BENCHMARK_SAMPLES, " times. This table summarizes the computer's performance across multiple attempts at the same computation, in order to verify how reliable timing an estimation is. With ", mt, " hidden states, estimation with $TMB_G$ took an average ", substr(incr_consist_simu[1, 4], 1, 3), " ms to compute, with an empirical 95\\% quantile confidence interval of ", substr(incr_consist_simu[1, 4], 4, 14)),
+%                 label = "table:speed-consistency-simu",
+%                 digits = 0)
+% print(table, include.rownames = FALSE, sanitize.colnames.function = identity)
+% @
+% The acceleration ratios displayed in \autoref{table:speed-simu} are all above 1, thus showing that on medium sized datasets, the estimation computation can be accelerated.
+% 
+% Moreover, the acceleration ratios from using {\tt{TMB}} (\autoref{table:speed-simu-nll}) are all above 1, thus showing that on a medium sized datasets, the objective function computation can be accelerated.
+% 
+% Similar conclusions are obtained for Poisson HMMs estimated on the hospital dataset and simulated datasets.
+% 
+% <<tmb-acceleration-simu-table-nll, results='asis', echo = FALSE>>=
+% incr_mllk_time_simu <- data.frame(m = integer(),
+%                                   "TMB" = character(),
+%                                   "TMB_G" = character(),
+%                                   "TMB_H" = character(),
+%                                   "TMB_GH" = character())
+% for (idx in 1:length(M_LIST_SIMU)) {
+%   m <- M_LIST_SIMU[idx]
+%   incr_mllk_time_simu[idx, "m"] <- m
+%   boxplot_data <- mllk_times_df_simu[mllk_times_df_simu$m == m, ]
+%   
+%   timeDM <- boxplot_data[boxplot_data$procedure == "DM", "time"]
+%   for (proc in PROCEDURES[-1]) {
+%     time <- boxplot_data[boxplot_data$procedure == proc, "time"]
+%     ratio <- timeDM / time
+%     avg <- mean(ratio)
+%     ci <- quantile.colwise(ratio)
+%     incr_mllk_time_simu[idx, proc] <- paste0(round(avg), " (", round(ci[1]), ", ", round(ci[2]), ")")
+%   }
+% }
+% mt <- M_LIST_SIMU[1]
+% names(incr_mllk_time_simu) <- c("m",
+%                                 "\\textit{${TMB}$}",
+%                                 "\\textit{${TMB_G}$}",
+%                                 "\\textit{${TMB_H}$}",
+%                                 "\\textit{${TMB_{GH}}$}")
+% table <- xtable(incr_mllk_time_simu,
+%                 # display = c("d", "d", rep("f", 4)),
+%                 caption = paste0("Acceleration when using TMB for m state Poisson HMM negative log-likelihood calculation, estimated on the simulated dataset. Each procedure was repeated and timed once on ", BENCHMARK_SAMPLES, " sample datasets. With ", mt, " hidden states, $TMB_G$ accelerated the estimation by an average factor of ", substr(incr_mllk_time_simu[1, 3], 1, 2), ", with a 95\\% quantile confidence interval of ", substr(incr_mllk_time_simu[1, 3], 4, 11)),
+%                 label = "table:speed-simu-nll",
+%                 digits = 0)
+% print(table, include.rownames = FALSE, sanitize.colnames.function = identity)
+% @
+
+
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Hospital data}
+% \label{sec:hosp_data}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+%  and ($M_LIST_HOSP$) for the hospital dataset) to compare speeds.
+
+
+% 
+% We timed $m$ states HMM parameter estimations using different parameters on a dataset provided by a hospital from Assistance Publique – Hôpitaux de Paris, a french hospital trust, with $m = M_LIST_HOSP$.
+% Other datasets are considered in \autoref{sec:speed_evaluation}.
+% 
+% The dataset contains the number of patients who entered a hospital each hour between the first hour of 2010 and the last hour of 2019.
+% The data was anonymized and grouped using the R package {\tt{dplyr}}.
+% That data contains DATA_SIZE_HOSP data points.\\
+% The column PATIENTS represents the number of people arriving at the hospital between the hour mentioned and the next.
+% The zeroes there indicate that no patient arrived at the hospital during the hour.\\
+% The column DATE is a datetime item useful for sorting and plotting the data.\\
+% The column WDAY represents the number of the day in the week: 1 is Monday and 7 is Sunday.\\
+% The columns YEAR is an integer taking values 2010, 2011, \ldots, 2019.\\
+% For example, the dataset starts on Januray $1^{st}$ 2010 on the hour 0 with an amount of patients of 6, indicating that 6 people arrived between 00:00 and 00:59.
+% 
+% See the supporting information for details on importing the data.
+% 
+
+% We timed the parameter estimation of $m$ states Poisson HMMs using the approaches DM, TMB1, TMB2, TMB3, and TMB4, with $m = M_LIST_HOSP$ and found that using {\tt{TMB}} accelerates the estimation in all cases as can be seen in \autoref{fig:tmb-acceleration-hosp} by the drop in time from DM to any estimation using {\tt{TMB}}.
+% The times can be found in the supporting information.
+% As could have been expected, estimating a model's parameters takes a longer time as the complexity of the model ($m$) increases.
+% <<tmb-acceleration-hosp, fig.cap = 'm state Poisson HMM estimation time with and without using TMB, estimated on the hospital dataset. Each procedure was repeated and timed. Boxplots are shown for visual comparison. The naming convention is found in \\autoref{table:notation}.', echo = FALSE>>=
+% # include_graphics(paste0("Plots/hosp_m=", max(M_LIST_HOSP), ".png"))
+% # title <- paste0("Hospital data, size = ", DATA_SIZE_HOSP)
+% # ggplot(benchmarks_df_hosp, aes(x = procedure, y = time)) +
+% #   geom_boxplot() +
+% #   facet_grid(. ~ m, space ="free_x", scales="free_x", switch="x") +
+% #   theme_Publication() +
+% #   xlab("Exact/inexact gradient and hessian") +
+% #   ylab("Time (seconds)") +
+% #   ggtitle(title, "Parameter estimation time") +
+% #   scale_y_log10()
+% plots <- list()
+% for (i in M_LIST_HOSP) {
+%   subtitle <- paste0("m = ", i)
+%   plots[[i]] <- benchmarks_df_hosp %>%
+%     filter(m == i) %>%
+%     ggplot(aes(x = procedure, y = time)) +
+%     geom_boxplot() +
+%     theme_Publication() +
+%     xlab("Exact/inexact gradient and hessian") +
+%     ylab("Time (seconds)") +
+%     ggtitle("Parameter estimation time", subtitle) +
+%     scale_y_log10()
+% }
+% ggarrange(plotlist = plots, ncol = 2, nrow = 2)
+% @
+% Interestingly, for $m > 1$, TMB3 shows a clear acceleration when compared to other estimations using {\tt{TMB}}.
+% The reason is unclear.
+% <<tmb-acceleration-hosp-table, results='asis', echo = FALSE>>=
+% library(xtable)
+% incr_hosp <- data.frame("text" = integer(),
+%                         "TMB" = character(),
+%                         "TMB_G" = character(),
+%                         "TMB_H" = character(),
+%                         "TMB_GH" = character())
+% counter <- 1
+% # idx needs to be 1,5,9 etc because each block has 4 lines in total
+% for (idx in seq(1, length.out = length(M_LIST_HOSP), by = 4)) {
+%   m <- M_LIST_HOSP[counter]
+%   # incr_hosp[idx, "m"] <- m
+%   incr_hosp[idx, "text"] <- paste0("Acceleration ratio, m = ", m)
+%   incr_hosp[idx + 2, "text"] <- paste0("Iterations, m = ", m)
+%   boxplot_data <- estim_benchmarks_df_hosp[estim_benchmarks_df_hosp$m == m, ]
+%   
+%   timeDM <- boxplot_data[boxplot_data$procedure == "DM", "time"]
+%   for (proc in PROCEDURES[-1]) {
+%     time <- boxplot_data[boxplot_data$procedure == proc, "time"]
+%     ratio <- timeDM / time
+%     avg_ratio <- mean(ratio)
+%     ci_ratio <- quantile.colwise(ratio)
+%     # ci_ratio <- c(avg_ratio - qnorm(0.975) * sd(ratio) / sqrt(BENCHMARK_SAMPLES),
+%     #               avg_ratio + qnorm(0.975) * sd(ratio) / sqrt(BENCHMARK_SAMPLES))
+%     incr_hosp[idx, proc] <- paste0(signif(avg_ratio, 3))
+%     incr_hosp[idx + 1, proc] <- paste0(" (", signif(ci_ratio[1], 3), ", ", signif(ci_ratio[2], 3), ") ")
+%     
+%     iter <- boxplot_data[boxplot_data$procedure == proc, "iterations"]
+%     avg_iter <- mean(iter)
+%     ci_iter <- quantile.colwise(iter)
+%     incr_hosp[idx + 2, proc] <- paste0(signif(avg_iter,3))
+%     incr_hosp[idx + 3, proc] <- paste0(" (", signif(ci_iter[1],3), ", ", signif(ci_iter[2],3), ") ")
+%   }
+%   counter <- counter + 1
+% }
+% mt <- M_LIST_HOSP[1]
+% names(incr_hosp) <- c("",
+%                       "\\textit{${TMB}$}",
+%                       "\\textit{${TMB_G}$}",
+%                       "\\textit{${TMB_H}$}",
+%                       "\\textit{${TMB_{GH}}$}")
+% table <- xtable(incr_hosp,
+%                 # display = c("d", "d", rep("s", 4)),
+%                 align = "llcccc",
+%                 caption = paste0("Acceleration and iterations for the hospital data. The top lines show the acceleration ratios together with 95\\% percentile bootstrap CIs when using {\\tt TMB} in a bootstrap setting with ", BENCHMARK_SAMPLES, " bootstrap samples. The bottom lines display the corresponding values for the number of iterations."),
+%                 label = "table:speed-hosp",
+%                 digits = 0)
+% print(table, include.rownames = FALSE, sanitize.colnames.function = identity,
+%       sanitize.text.function = identity,
+%       hline.after = c(-1, 0, 4, nrow(table)))
+% @
+
+% <<tmb-acceleration-consistency-hosp-table, results='asis', echo = FALSE>>=
+% library(xtable)
+% incr_consist_hosp <- data.frame(m = integer(),
+%                                 "TMB" = character(),
+%                                 "TMB_G" = character(),
+%                                 "TMB_H" = character(),
+%                                 "TMB_GH" = character())
+% for (idx in 1:length(M_LIST_HOSP)) {
+%   m <- M_LIST_HOSP[idx]
+%   incr_consist_hosp[idx, "m"] <- m
+%   boxplot_data <- consistency_estim_benchmarks_df_hosp[consistency_estim_benchmarks_df_hosp$m == m, ]
+%   
+%   timeDM <- boxplot_data[boxplot_data$procedure == "DM", "time"]
+%   for (proc in PROCEDURES) {
+%     time <- boxplot_data[boxplot_data$procedure == proc, "time"]*10^3
+%     avg <- mean(time)
+%     ci <- quantile.colwise(time)
+%     incr_consist_hosp[idx, proc] <- paste0(round(avg,1), " (", round(ci[1],1), ", ", round(ci[2],1), ")")
+%   }
+% }
+% mt <- M_LIST_HOSP[1]
+% names(incr_consist_hosp) <- c("m",
+%                               "\\textit{${DM}$}",
+%                               "\\textit{${TMB}$}",
+%                               "\\textit{${TMB_G}$}",
+%                               "\\textit{${TMB_H}$}",
+%                               "\\textit{${TMB_{GH}}$}")
+% table <- xtable(incr_consist_hosp,
+%                 # display = c("d", "d", rep("s", 4)),
+%                 caption = paste0("Duration (in millisecond) of m state Poisson HMM parameter estimation on the hospital dataset. Each procedure was timed ", BENCHMARK_SAMPLES, " times. This table summarizes the computer's performance across multiple attempts at the same computation, in order to verify how reliable timing an estimation is. With ", mt, " hidden states, estimation with $TMB_G$ took an average ", substr(incr_consist_hosp[1, 4], 1, 3), " ms to compute, with an empirical 95\\% quantile confidence interval of ", substr(incr_consist_hosp[1, 4], 4, 14)),
+%                 label = "table:speed-consistency-hosp",
+%                 digits = 0)
+% print(table, include.rownames = FALSE, sanitize.colnames.function = identity)
+% @
+% 
+% Each box of the boxplots summarizes $BENCHMARK_SAMPLES$ data points but shows little variation.
+% A percentage mean speed increase of TMB1, ..., TMB4 when compared to the mean times of DM summarizes these graphs nicely (see \autoref{table:speed-hospital}).
+% For example, the average 4 state Poisson HMM estimation speed when providing {\tt{TMB}}'s exact gradient to {\tt{nlminb}} and not the hessian (TMB3) is $round(incr_hosp[incr_hosp$m == 4, "TMB3"])$\% faster than without making use of {\tt{TMB}} (DM).
+% 
+% <<tmb-acceleration-hosp-print-table, results='asis', echo = FALSE>>=
+% print(table, include.rownames = FALSE)
+% @
+% 
+% TMB also accelerates the likelihood computation time.
+% The percentage speed gains from using {\tt{TMB}} (\autoref{table:increase-likelihood-hosp}) are all positive, thus showing that on large datasets, the objective function computation time can be accelerated.
+% <<tmb-acceleration-hosp-log, results='asis', echo = FALSE>>=
+% incr_mllk_time_hosp <- data.frame(m = integer(),
+%                                   "TMB" = numeric(),
+%                                   "TMB2" = numeric(),
+%                                   "TMB3" = numeric(),
+%                                   "TMB4" = numeric())
+% for (idx in 1:length(M_LIST_HOSP)) {
+%   m <- M_LIST_HOSP[idx]
+%   incr_mllk_time_hosp[idx, "m"] <- m
+%   boxplot_data <- mllk_times_hosp[[idx]]
+% 
+%   incr_mllk_time_hosp[idx, "TMB"] <- mean(with(boxplot_data, time[expr == "DM"])) /
+%     mean(with(boxplot_data, time[expr == "TMB"])) - 1
+%   incr_mllk_time_hosp[idx, "TMB2"] <- mean(with(boxplot_data, time[expr == "DM"])) /
+%     mean(with(boxplot_data, time[expr == "TMB2"])) - 1
+%   incr_mllk_time_hosp[idx, "TMB3"] <- mean(with(boxplot_data, time[expr == "DM"])) /
+%     mean(with(boxplot_data, time[expr == "TMB3"])) - 1
+%   incr_mllk_time_hosp[idx, "TMB4"] <- mean(with(boxplot_data, time[expr == "DM"])) /
+%     mean(with(boxplot_data, time[expr == "TMB4"])) - 1
+% }
+% incr_mllk_time_hosp[, - 1] <- incr_mllk_time_hosp[, - 1] * 100
+% table <- xtable(incr_mllk_time_hosp,
+%                 display = c("d", "d", rep("f", 4)),
+%                 caption = paste0("Speed percentage increase of using TMB for m state Poisson HMM negative log-likelihood calculation, estimated on the hospital dataset. Each procedure was repeated and timed. Their mean times are compared in this table. When m=1, the mean calculation time with TMB by providing the exact gradient but not the exact hessian (TMB3) was ", round(incr_mllk_time_hosp[1, 4]), "\\% lower than the mean estimation time with direct maximization without TMB (DM). Naming convention is found in \\autoref{table:notation}"),
+%                 digits = 0,
+%                 label = "table:increase-likelihood-hosp")
+% print(table, include.rownames = FALSE)
+% @
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Interpretation}
+% \label{sec:interpretation}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Looking at a boxplot of the data (\autoref{fig:hourly-hospital}) lets us discover the hourly distribution of the data.
+% We choose to use hours instead of days or other time durations because the difference in arrivals between night and day was already obvious to the doctors themselves, and we would likely find at least two distinct regimes there.
+% <<hourly-hospital, echo = FALSE, fig.cap = "Hourly amount of patient arrival in the hospital">>=
+% full_hosp_data %>%
+%   select(HOUR, PATIENTS) %>%
+%   mutate(type = ifelse(HOUR >= 9 & HOUR <= 22, "day", "night"),
+%          HOUR = as.factor(HOUR)) %>%
+%   ggplot(aes(x = HOUR, y = PATIENTS, fill = type)) +
+%   geom_boxplot() +
+%   theme_Publication() +
+%   theme(legend.title = element_blank()) +
+%   xlab("hour") +
+%   ylab("patients")
+% @
+% More patients arrive in the day rather than during the night as was guessed, but more patients arrive in the afternoon rather than in the evening.
+% Also, most patients show up in the early part of the day and around noon.
+% Given the amount of data (87648/24 = 3652 data points for each hour), we can apply a z-test to see if the means are different.
+% <<p-value, echo = FALSE>>=
+% library(tidyverse)
+% hour_0 <- full_hosp_data %>%
+%   filter(HOUR == 0) %>%
+%   select(PATIENTS)
+% hour_0 <- hour_0$PATIENTS
+% hour_12 <- full_hosp_data %>%
+%   filter(HOUR == 12) %>%
+%   select(PATIENTS)
+% hour_12 <- hour_12$PATIENTS
+% 
+% mean_12 <- mean(hour_12)
+% mean_0 <- mean(hour_0)
+% var_12 <- var(hour_12)
+% var_0 <- var(hour_0)
+% len <- length(hour_12)
+% z <- (mean_12 - mean_0) / sqrt(var_12 / len + var_0 / len)
+% pvalue <- pnorm(z, lower.tail = FALSE)
+% @
+% We find a p-value approximated to $pvalue$, so the test shows that the difference between the average amount of patient arrival between 6 and 6:59am and the one between 10 and 10:59am is statistically significant.
+% This agrees with the conclusion of the doctors and shows that there are likely at least 2 different distributions in the hourly arrivals of patients, justifying an educated guess of 2 or more hidden states.
+% 
+% To choose more accurately the number of hidden states, we tried a few, and looked at the quality of each fit (\autoref{table:model-selection-hosp}).
+% According to the AIC, the BIC, and the negative log-likelihood, the model with $m = 4$ is the most appropriate and we therefore pick it.
+% <<model-selection, results = 'asis', echo = FALSE>>=
+% temp <- mllk_values_hosp[mllk_values_hosp$procedure == "TMB4", - 2]
+% temp$m <- as.numeric(temp$m)
+% colnames(temp)[2] <- "nll"
+% table <- xtable(temp,
+%                 caption = "Model selection measures of m state Poisson HMMs estimated on the hospital dataset",
+%                 label = "table:model-selection-hosp",
+%                 digits = 0)
+% print(table, include.rownames = FALSE)
+% @
+% Once the 4 state HMM is estimated, we can look at the state distribution of a 4 state Poisson HMM fitted on the hourly arrivals (see \autoref{fig:states-hospital}) across the entire hospital dataset.
+% This HMM seems to agree with our previous guess.
+% It should be noted that for the hours 6 and 23, state 4 appeared 0 times and explains why the number 4 is missing in those columns.
+% <<states-hospital, fig.cap = "Hourly state distribution of a 4 state Poisson HMM estimated and fitted on the hospital dataset. The $1^{st}$ row in the horizontal axis denotes the hour, the $2^{nd}$ row denotes the state. The state is also color coded for clarity.", echo = FALSE>>=
+% m <- 4
+% gamma <- matrix(0.2 / (m - 1), nrow = m, ncol = m)
+% diag(gamma) <- 0.8
+% lambda <- seq(5, 20, length.out = m)
+% 
+% working_params <- pois.HMM.pn2pw(m, lambda, gamma)
+% TMB_data <- list(x = hosp_data, m = m)
+% 
+% tmb4 <- TMB.estimate(TMB_data = TMB_data,
+%                      parameters = working_params,
+%                      gradient = TRUE,
+%                      hessian = TRUE)
+% 
+% dec <- HMM.decode(tmb4$obj)$ldecode
+% dec <- enframe(dec) %>%
+%   rename(state = value) %>%
+%   mutate(state = as.factor(state)) %>%
+%   bind_cols(full_hosp_data)
+% 
+% hour <- dec %>%
+%   group_by(HOUR, state) %>%
+%   summarize(patients = n(), .groups = "drop")
+% ggplot(hour, aes(x = state, y = patients, fill = state)) +
+%   geom_bar(stat = "identity") +
+%   facet_grid(. ~ HOUR, space ="free_x", scales="free_x", switch="x") +
+%   xlab("hour and state") +
+%   theme_Publication()
+% @
+% States (1, 2, 3, 4) have Poisson means (round(tmb4$lambda, 3)) respectively.
+% 
+
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{Miscallaneous}
+% \label{sec:misc}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% 
+% \label{txt:all-methods-comparison} All optimization methods\\
+% Finally, we compare different optimization methods.
+% The ones we retain are BFGS, Nelder-Mead, L-BFGS-B, nlm, nlminb, and hjn, because the others don't converge in our case.
+% {\tt{marqLevAlg}} provides an algorithm for least-squares curve fitting, and is therefore included in the comparison.
+% Exact gradients and hessians are provided by {\tt{TMB}} and fed to each algorithm.
+% The speed comparisons are in the following \autoref{fig:all-methods-comparison}.
+% 
+% <<all-methods-comparison, fig.cap="Poisson HMM parameter estimation time per optimization method", echo = FALSE>>=
+% # include_graphics(c(paste0("Plots/lamb_all_methods_m=", 2, ".png"),
+% #                    paste0("Plots/simul_all_methods_m=", 3, ".png")))
+% title <- paste0("Lamb data, size = ", DATA_SIZE_LAMB, ", m = ", M_LIST_LAMB[1])
+% boxplot_data <- method_comparison_df_lamb
+% boxplot_data$time <- boxplot_data$time * 10 ^ 3
+% plot1 <- ggplot(boxplot_data, aes(x = procedure, y = time)) +
+%   geom_boxplot() +
+%   theme_Publication() +
+%   xlab("Method") +
+%   ylab("Time (milliseconds)") +
+%   ggtitle(title, "Parameter estimation time") +
+%   scale_y_log10()
+% 
+% title <- paste0("Simulated data, size = ", DATA_SIZE_SIMU, ", m = ", M_LIST_SIMU[1])
+% boxplot_data <- method_comparison_df_simu
+% boxplot_data$time <- boxplot_data$time * 10 ^ 3
+% plot2 <- ggplot(boxplot_data, aes(x = procedure, y = time)) +
+%   geom_boxplot() +
+%   theme_Publication() +
+%   xlab("Exact/inexact gradient and hessian") +
+%   ylab("Time (milliseconds)") +
+%   ggtitle(title, "Parameter estimation time") +
+%   scale_y_log10()
+% ggarrange(plot1, plot2, ncol = 2, nrow = 1)
+% @
+% 
+% The following tables summarize the estimates and their confidence intervals, for the simulated dataset.
+% Instead of showing the standard error, we display the lower and upper bounds of the confidence intervals.
+% This is due to profiling sometimes failing to provide both bounds of the interval.
+% 
+
+
+
+
+% <<hosp-estimates-table, results = 'asis', echo = FALSE>>=
+% addtorow <- list()
+% addtorow$pos <- list(- 1)
+% addtorow$command <- paste0('&&',
+%                            paste0('& \\multicolumn{2}{c}{',
+%                                   c('Wald-type CI', 'Profile CI', 'Bootstrap CI'),
+%                                   '}',
+%                                   collapse=''),
+%                            '\\\\')
+% 
+% table <- xtable(conf_int_hosp,
+%                 caption = "CIs for the hospital dataset. From left to right, the columns contain: the number of hidden states, parameter name, parameter estimate, and lower (L.) and upper (U.) bound of the corresponding 95\\% CI derived via the Hessian provided by {\\tt TMB}, likelihood profiling, and percentile bootstrap. Then follow coverage probabilities derived for these three methods in a Monte-Carlo study.",
+%                 label = "table:hosp_cis",
+%                 align = rep("c", ncol(conf_int_hosp) + 1))
+% 
+% names(table) <- c("m", "Parameter", "Estimate", rep(c("L.", "U."), 3))
+% print(table,
+%       include.rownames = FALSE,
+%       # scalebox = '0.8',
+%       sanitize.text.function = identity,
+%       add.to.row = addtorow,
+%       hline.after = c(-1, 0, nrow(conf_int_hosp[conf_int_hosp$m == 2, ]), nrow(table)))
+% @
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Discussion}
+\label{sec:discussion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this tutorial, we provide researchers from all applied fields with an introduction to parameter estimation for HMMs via {\tt{TMB}} using {\tt{R}}. Although some procedures need to be coded in {\tt{C++}}, the use of {\tt{TMB}} permits to accelerate existing parameter estimation procedures without having to carry out major changes to {\tt{R}} code which is already in use. Moreover, after finishing the estimation procedure, {\tt{TMB}} permits to obtain standard errors for the estimated parameters at a very low computational cost.\\
+We examined the performance of {\tt{TMB}} in the context of Poisson HMMs through two small real data sets and in a simulation setting with longer sequences of observations. Overall, it is notable that the parameter estimation process is strongly accelerated on the one hand. This applies even to small data sets, and the highest acceleration is obtained when only the gradient is supplied by {\tt{TMB}} (instead of both gradient and Hessian). On the other hand, the standard errors obtained through {\tt{TMB}} are very similar to the standard errors obtained by profiling the likelihood and bootstrapping while being (much) less computationally intensive. This is novel since Hessian-base CIs did not seem to be reliable in the past, as illustrated e.g.~by \cite{visser}.\\
+Along with the tutorial character of this paper comes the shortcoming that we restricted ourselves to only one comparably simple HMM with Poisson conditional distributions. The extension to other distributions is, however, not overly complicated. We briefly illustrate the case of Gaussian conditional distributions on the supporting GitHub page. Moreover, to keep the paper at acceptable length, we were not able to address a couple of potential extensions and research questions. For example, it would be interesting to investigate whether supplying the Hessian provided by {\tt{TMB}} to the optimizer has a positive impact on convergence properties, in particular, if the initial values are poor. Then, one could check to which extent other optimizing functions (e.g.~{\tt{nlm}}) benefit from employing {\tt{TMB}}. The reliability of Wald-type CIs provided by {\tt{TMB}} for other models and very long sequences with e.g.~hundreds of thousands or millions of observations could also be of interest. In a similar direction, it seems rather obvious to benefit from {\tt{TMB}} for more complex settings such as panel data with random effects, where computationally efficient routines play an important role. Last, in the bootstrap analysis of the TYT and in particular of the lamb data set, we noted that the {\tt{TMB}}-internal function {\tt tmbprofile} sometimes fails to provide CIs for parameters very close to a boundary. For these two data sets, this was the case for elements of the TPM close to one, and roughly 7\% (TYT) and 22\% (lamb), respectively, of the generated data sets were affected. It remains to clarify whether this problem can be solved by a suitable modification of {\tt tmbprofile}, or if the underlying difficulties require an entirely different approach.\\
+From an application perspective, the use of {\tt{TMB}} allows executing estimation procedures at a significantly reduced cost compared to the execution of plain {\tt{R}}. Such a performance gain could be of interest when repeatedly executing statistical procedures on mobile devices. It seems plausible to enrich the TYT app (or similar apps collecting a sufficient amount of data) by integrating a warning system that detects when the user enters a new state, inferred through a suitable HMM or another procedure accelerated via {\tt{TMB}} in real-time. This new state could, e.g., represent an improvement or worsening of a pre-defined medical condition and recommend the user to contact the consulting physician if the change persists for a certain period. Provided the agreement of the user, this collected information could also be pre-processed and transferred automatically to the treating physician and allow to identify personalized treatment options.
+
+% Although we have not tried, it should be possible to extend this approach to HMMs with random effects for panel data for example.
+% Introduced by \citet{altman}, Mixed HMM (MHMM) is a class of HMM that combines fixed and random effects, by using the framework of Generalized Linear Mixed Models.
+% {\tt{TMB}} should be usable for MHMMs since the likelihood can be optimized through direct maximization as shown by \citet{altman}, or through the EM algorithm as shown by \citet{maruotti}.
+% Both authors list possible approaches to estimate MHMMs.
+% \citet[p .~7]{altman} reports a numerical integration taking from 1 second with 1 random effect to several days when 4 random effects are included, and a Monte Carlo method requiring approximately 3 days to estimate a MHMM with 3 random effects.
+% In addition, both assume the observations (conditional on the random effects and the hidden states), to be distributed in the exponential family.
+% By default, {\tt{TMB}} integrates out the random effects and then uses a Laplace approximation on the negative joint log-likelihood.
+% However, if needed (for example because the minimizer with respect to the random effect is not unique) one can set this approximation explicitly in {\tt{C++}}.
+
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section*{Appendix}
+% \label{sec:appendix}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection*{A.1.\enspace R Code}
+% \label{subsec:rcode}
+% \begin{enumerate}
+% 
+% \item \label{code:setup_parameters.R} Code to setup global parameters and declare functions used
+% % \lstinputlisting[language={R}]{code/setup_parameters.R}
+% 
+% \item \label{code:packages.R} Packages
+% % \lstinputlisting[language={R}]{code/packages.R}
+% 
+% \item \label{code:utils.R} Functions
+% % \lstinputlisting[language={R}]{functions/utils.R}
+% 
+% \item \label{code:poi_hmm_lamb.R} Code to run estimations and comparisons using the lamb dataset
+% % \lstinputlisting[language={R}]{code/poi_hmm_lamb.R}
+% 
+% \item \label{code:poi_hmm_simul.R} Code to run estimations and comparisons using a simulated dataset
+% % \lstinputlisting[language={R}]{code/poi_hmm_simul.R}
+% 
+% \item \label{code:poi_hmm_hosp.R} Code to run estimations and comparisons using the hospital dataset
+% % \lstinputlisting[language={R}]{code/poi_hmm_hosp.R}
+% 
+% \end{enumerate}
+% 
+% \subsection*{A.2.\enspace C++ Code}
+% \label{subsec:cppcode}
+% \begin{enumerate}
+% 
+% \item \label{code:poi_hmm.cpp} Poisson HMM negative log-likelihood calculation
+% This is the file poi\_hmm.cpp which contains the negative likelihood function.
+% 
+% It should be noted that in the {\tt{C++}} file, testing if the value is missing (i.e. testing for NaN (Not A Number) values) requires a little trick.
+% The reason is that the standard test function \texttt{std::isnan()} doesn't currently work on a single data value inside {\tt{TMB}}.
+% Cuurently in C++, comparisons involving NaN values are always false, except when testing inequality between 2 NaN values.
+% In other words, for a float f, the expression f != f is true if and only if f is a NaN value.
+% Similarly, f == f returns false if and only if f is a NaN value.
+% \lstinputlisting{code/poi_hmm.cpp}
+% 
+% \item \label{code:Delta_w2n}
+% This optional function is in the file utils.cpp.
+% It is only necessary if a stationary distribution is not assumed, and $\bfdelta$ is used as a parameter instead of being derived from the transistion probability matrix $\bgamma$.
+% It codes the function to convert the working parameter \texttt{tdelta} into its natural format.
+% \lstinputlisting[linerange=//latex_Delta_w2n_start-//latex_Delta_w2n_end]{functions/utils.cpp}
+% 
+% \item \label{code:Gamma_w2n}
+% This function is in the file utils.cpp.
+% It transforms the transition probability matrix $\bgamma$ from its working format to its natural format.
+% \lstinputlisting[linerange=//latex_Gamma_w2n_start-//latex_Gamma_w2n_end]{functions/utils.cpp}
+% 
+% \item \label{code:Stat_dist}
+% This function is in the file utils.cpp.
+% It derives the stationary distribution from the transition probability matrix $\bgamma$.
+% \lstinputlisting[linerange=//latex_Stat_dist_start-//latex_Stat_dist_end]{functions/utils.cpp}
+% 
+% \item \label{code:utils.cpp} Functions used in {\tt{C++}} Poisson HMM code
+% % \lstinputlisting{functions/utils.cpp}
+% 
+% \item \label{code:linreg.cpp} Linear model negative log-likelihood calculation
+% % \lstinputlisting{code/linreg.cpp}
+% 
+% \item \label{code:utils_linreg.cpp} Functions used in {\tt{C++}} linear model code
+% % \lstinputlisting{functions/utils_linreg.cpp}
+% 
+% \end{enumerate}
+% 
+% % \begin{enumerate}
+% % \item simple C acceleration of Zucchini scripts p. 333, A 1.7, A 1.8 with conditional probabilities outside of the forward / backward loop
+% % \item Use same order as in Zucchini
+% % \item the .cpp file with transformation code
+% % \item the .cpp file with likelihood
+% % \item an .R file showcasing the use
+% % \end{enumerate}
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage %Before bibliography
+\bibliographystyle{plainnat}
+\bibliography{paper}
+% \addcontentsline{toc}{chapter}{References}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

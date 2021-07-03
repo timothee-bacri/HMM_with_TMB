@@ -1,315 +1,541 @@
 {
     "sources": [
         {
-            "URL": "http://yihui.org/knitr/",
+            "DOI": "10.1198/016214506000001086",
+            "ISSN": "0162-1459",
+            "abstract": "Hidden Markov models (HMMs) are a useful tool for capturing the behavior of overdispersed, autocorrelated data. These models have been applied to many different problems, including speech recognition, precipitation modeling, and gene finding and profiling. Typically, HMMs are applied to individual stochastic processes; HMMs for simultaneously modeling multiple processesas in the longitudinal data settinghave not been widely studied. In this article I present a new class of models, mixed HMMs (MHMMs), where I use both covariates and random effects to capture differences among processes. I define the models using the framework of generalized linear mixed models and discuss their interpretation. I then provide algorithms for parameter estimation and illustrate the properties of the estimators via a simulation study. Finally, to demonstrate the practical uses of MHMMs, I provide an application to data on lesion counts in multiple sclerosis patients. I show that my model, while parsimonious, can describe the heterogeneity among such patients.",
             "author": [
                 {
-                    "family": "Xie",
-                    "given": "Yihui"
+                    "family": "Altman",
+                    "given": "Rachel MacKay"
                 }
             ],
-            "edition": "2nd",
-            "id": "xie2015",
+            "container-title": "Journal of the American Statistical Association",
+            "id": "altman",
+            "issue": "477",
             "issued": {
                 "date-parts": [
                     [
-                        2015
+                        2007,
+                        3
                     ]
                 ]
             },
-            "note": "ISBN 978-1498716963",
-            "publisher": "Chapman; Hall/CRC",
-            "publisher-place": "Boca Raton, Florida",
-            "title": "Dynamic documents with R and knitr",
+            "keyword": "Hidden Markov model,Latent process,Longitudinal model,Mixed model,Random effect",
+            "page": "201-210",
+            "title": "Mixed Hidden Markov Models",
+            "type": "article-journal",
+            "volume": "102"
+        },
+        {
+            "ISBN": "978-1-4398-1708-7",
+            "author": [
+                {
+                    "family": "Bartolucci",
+                    "given": "F."
+                },
+                {
+                    "family": "Farcomeni",
+                    "given": "A."
+                },
+                {
+                    "family": "Pennoni",
+                    "given": "F."
+                }
+            ],
+            "collection-title": "Chapman & Hall/CRC statistics in the social and behavioral sciences",
+            "id": "bartolucci",
+            "issued": {
+                "date-parts": [
+                    [
+                        2012
+                    ]
+                ]
+            },
+            "publisher": "Taylor & Francis",
+            "title": "Latent markov models for longitudinal data",
             "type": "book"
         },
         {
-            "URL": "https://www.R-project.org/",
+            "DOI": "10.1214/aoms/1177699147",
+            "ISSN": "0003-4851",
             "author": [
                 {
-                    "literal": "R Core Team"
+                    "family": "Baum",
+                    "given": "Leonard E."
+                },
+                {
+                    "family": "Petrie",
+                    "given": "Ted"
                 }
             ],
-            "id": "R-base",
+            "container-title": "The Annals of Mathematical Statistics",
+            "id": "baum",
+            "issue": "6",
             "issued": {
                 "date-parts": [
                     [
-                        2020
+                        1966,
+                        12
                     ]
                 ]
             },
-            "publisher": "R Foundation for Statistical Computing",
-            "publisher-place": "Vienna, Austria",
-            "title": "R: A language and environment for statistical computing",
-            "title-short": "R",
+            "page": "1554-1563",
+            "title": "Statistical Inference for Probabilistic Functions of Finite State Markov Chains",
+            "type": "article-journal",
+            "volume": "37"
+        },
+        {
+            "ISSN": "00034851",
+            "author": [
+                {
+                    "family": "Baum",
+                    "given": "Leonard E."
+                },
+                {
+                    "family": "Petrie",
+                    "given": "Ted"
+                },
+                {
+                    "family": "Soules",
+                    "given": "George"
+                },
+                {
+                    "family": "Weiss",
+                    "given": "Norman"
+                }
+            ],
+            "container-title": "The Annals of Mathematical Statistics",
+            "id": "bauma",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        1970
+                    ]
+                ]
+            },
+            "page": "164-171",
+            "publisher": "Institute of Mathematical Statistics",
+            "title": "A Maximization Technique Occurring in the Statistical Analysis of Probabilistic Functions of Markov Chains",
+            "type": "article-journal",
+            "volume": "41"
+        },
+        {
+            "DOI": "10.1007/s00180-007-0063-y",
+            "ISSN": "1613-9658",
+            "abstract": "The parameters of a hidden Markov model (HMM) can be estimated by numerical maximization of the log-likelihood function or, more popularly, using the expectationmaximization (EM) algorithm. In its standard implementation the latter is unsuitable for fitting stationary hidden Markov models (HMMs). We show how it can be modified to achieve this. We propose a hybrid algorithm that is designed to combine the advantageous features of the two algorithms and compare the performance of the three algorithms using simulated data from a designed experiment, and a real data set. The properties investigated are speed of convergence, stability, dependence on initial values, different parameterizations. We also describe the results of an experiment to assess the true coverage probability of bootstrap-based confidence intervals for the parameters.",
+            "author": [
+                {
+                    "family": "Bulla",
+                    "given": "Jan"
+                },
+                {
+                    "family": "Berzel",
+                    "given": "Andreas"
+                }
+            ],
+            "container-title": "Computational Statistics",
+            "id": "bulla",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        2008,
+                        1
+                    ]
+                ]
+            },
+            "keyword": "computation,hidden Markov model,issues",
+            "page": "1-18",
+            "title": "Computational issues in parameter estimation for stationary hidden Markov models",
+            "type": "article-journal",
+            "volume": "23"
+        },
+        {
+            "ISBN": "978-0-387-28982-3",
+            "abstract": "Hidden Markov models have become a widely used class of statistical models with applications in diverse areas such as communications engineering, bioinformatics, finance and many more. This book is a comprehensive treatment of inference for hidden Markov models, including both algorithms and statistical theory. Topics range from filtering and smoothing of the hidden Markov chain to parameter estimation, Bayesian methods and estimation of the number of states. In a unified way the book covers both models with finite state spaces, which allow for exact algorithms for filtering, estimation etc. and models with continuous state spaces (also called state-space models) requiring approximate simulation-based algorithms that are also described in detail. Simulation in hidden Markov models is addressed in five different chapters that cover both Markov chain Monte Carlo and sequential Monte Carlo approaches. Many examples illustrate the algorithms and theory. The book also carefully treats Gaussian linear state-space models and their extensions and it contains a chapter on general Markov chain theory and probabilistic aspects of hidden Markov models. This volume will suit anybody with an interest in inference for stochastic processes, and it will be useful for researchers and practitioners in areas such as statistics, signal processing, communications engineering, control theory, econometrics, finance and more. The algorithmic parts of the book do not require an advanced mathematical background, while the more theoretical parts require knowledge of probability theory at the measure-theoretical level. From the reviews: \"By providing an overall survey of results obtained so far in a very readable manner, and also presenting some new ideas, this well-written book will appeal to academic researchers in the field of HMMs, with PhD students working on related topics included. It will also appeal to practitioners and researchers from other fields by guiding them through the computational steps needed for making inference HMMs and/or by providing them with the relevant underlying statistical theory. In the reviewer’s opinion this book will shortly become a reference work in its field.\" MathSciNet \"This monograph is a valuable resource. It provides a good literature review, an excellent account of the state of the art research on the necessary theory and algorithms, and ample illustrations of numerous applications of HMM. It goes much beyond the earlier resources on HMM...I anticipate this work to serve well many Technometrics readers in the coming years.\" Haikady N. Nagaraja for Technometrics, November 2006",
+            "author": [
+                {
+                    "family": "Cappé",
+                    "given": "Olivier"
+                },
+                {
+                    "family": "Moulines",
+                    "given": "Eric"
+                },
+                {
+                    "family": "Ryden",
+                    "given": "Tobias"
+                }
+            ],
+            "id": "cappe",
+            "issued": {
+                "date-parts": [
+                    [
+                        2006,
+                        4
+                    ]
+                ]
+            },
+            "keyword": "Business & Economics / Statistics,Computers / Computer Simulation,Mathematics / Probability & Statistics / General,Mathematics / Probability & Statistics / Stochastic Processes,Technology & Engineering / Electronics / General,Technology & Engineering / Imaging Systems",
+            "publisher": "Springer Science & Business Media",
+            "title": "Inference in Hidden Markov Models",
             "type": "book"
         },
         {
-            "URL": "https://github.com/rstudio/bookdown",
+            "ISBN": "978-0-357-75313-2",
+            "abstract": "This book builds theoretical statistics from the first principles of probability theory. Starting from the basics of probability, the authors develop the theory of statistical inference using techniques, definitions, and concepts that are statistical and are natural extensions and consequences of previous concepts. Intended for first-year graduate students, this book can be used for students majoring in statistics who have a solid mathematics background. It can also be used in a way that stresses the more practical uses of statistical theory, being more concerned with understanding basic statistical concepts and deriving reasonable statistical procedures for a variety of situations, and less concerned with formal optimality investigations.Important Notice: Media content referenced within the product description or the product text may not be available in the ebook version.",
             "author": [
                 {
-                    "family": "Xie",
-                    "given": "Yihui"
+                    "family": "Casella",
+                    "given": "George"
+                },
+                {
+                    "family": "Berger",
+                    "given": "Roger L."
                 }
             ],
-            "id": "R-bookdown",
+            "id": "casella",
             "issued": {
                 "date-parts": [
                     [
-                        2020
+                        2021,
+                        1
                     ]
                 ]
             },
-            "note": "R package version 0.21",
-            "title": "Bookdown: Authoring books and technical documents with r markdown",
-            "title-short": "Bookdown",
+            "keyword": "Mathematics / Probability & Statistics / General",
+            "publisher": "Cengage Learning",
+            "title": "Statistical Inference",
             "type": "book"
         },
         {
-            "URL": "https://yihui.org/knitr/",
+            "DOI": "10.1007/s00180-007-0097-1",
+            "ISSN": "1613-9658",
+            "abstract": "The problem of estimating the number of hidden states in a hidden Markov model is considered. Emphasis is placed on cross-validated likelihood criteria. Using cross-validation to assess the number of hidden states allows to circumvent the well-documented technical difficulties of the order identification problem in mixture models. Moreover, in a predictive perspective, it does not require that the sampling distribution belongs to one of the models in competition. However, computing cross-validated likelihood for hidden Markov models for which only one training sample is available, involves difficulties since the data are not independent. Two approaches are proposed to compute cross-validated likelihood for a hidden Markov model. The first one consists of using a deterministic half-sampling procedure, and the second one consists of an adaptation of the EM algorithm for hidden Markov models, to take into account randomly missing values induced by cross-validation. Numerical experiments on both simulated and real data sets compare different versions of cross-validated likelihood criterion and penalised likelihood criteria, including BIC and a penalised marginal likelihood criterion. Those numerical experiments highlight a promising behaviour of the deterministic half-sampling criterion.",
             "author": [
                 {
-                    "family": "Xie",
-                    "given": "Yihui"
+                    "family": "Celeux",
+                    "given": "Gilles"
+                },
+                {
+                    "family": "Durand",
+                    "given": "Jean-Baptiste"
                 }
             ],
-            "id": "R-knitr",
+            "container-title": "Computational Statistics",
+            "id": "celeux",
+            "issue": "4",
             "issued": {
                 "date-parts": [
                     [
-                        2021
+                        2008,
+                        10
                     ]
                 ]
             },
-            "note": "R package version 1.31",
-            "title": "Knitr: A general-purpose package for dynamic report generation in r",
-            "title-short": "Knitr",
+            "page": "541-564",
+            "title": "Selecting hidden Markov model state number with cross-validated likelihood",
+            "type": "article-journal",
+            "volume": "23"
+        },
+        {
+            "URL": "http://arxiv.org/abs/1309.0911",
+            "abstract": "We consider approximate Bayesian model choice for model selection problems that involve models whose Fisher-information matrices may fail to be invertible along other competing submodels. Such singular models do not obey the regularity conditions underlying the derivation of Schwarz’s Bayesian information criterion (BIC) and the penalty structure in BIC generally does not reflect the frequentist large-sample behavior of their marginal likelihood. While large-sample theory for the marginal likelihood of singular models has been developed recently, the resulting approximations depend on the true parameter value and lead to a paradox of circular reasoning. Guided by examples such as determining the number of components of mixture models, the number of factors in latent factor models or the rank in reduced-rank regression, we propose a resolution to this paradox and give a practical extension of BIC for singular model selection problems.",
+            "author": [
+                {
+                    "family": "Drton",
+                    "given": "Mathias"
+                },
+                {
+                    "family": "Plummer",
+                    "given": "Martyn"
+                }
+            ],
+            "container-title": "arXiv:1309.0911 [stat]",
+            "id": "drton",
+            "issued": {
+                "date-parts": [
+                    [
+                        2016,
+                        3
+                    ]
+                ]
+            },
+            "keyword": "Statistics - Methodology",
+            "title": "A Bayesian information criterion for singular models",
+            "type": "article-journal"
+        },
+        {
+            "ISBN": "978-0-412-04231-7",
+            "annote": "OCLC: 797437299",
+            "author": [
+                {
+                    "family": "Efron",
+                    "given": "Bradley"
+                },
+                {
+                    "family": "Tibshirani",
+                    "given": "Robert J"
+                }
+            ],
+            "id": "efron",
+            "issued": {
+                "date-parts": [
+                    [
+                        1993
+                    ]
+                ]
+            },
+            "publisher": "Chapman & Hall",
+            "publisher-place": "New York, N.Y.; London",
+            "title": "An introduction to the bootstrap",
             "type": "book"
         },
         {
-            "URL": "https://CRAN.R-project.org/package=rmarkdown",
+            "ISBN": "978-0-471-25708-0",
+            "abstract": "Major changes in this edition include the substitution of probabilistic arguments for combinatorial artifices, and the addition of new sections on branching processes, Markov chains, and the De Moivre-Laplace theorem.",
             "author": [
                 {
-                    "family": "Allaire",
-                    "given": "JJ"
-                },
-                {
-                    "family": "Xie",
-                    "given": "Yihui"
-                },
-                {
-                    "family": "McPherson",
-                    "given": "Jonathan"
-                },
-                {
-                    "family": "Luraschi",
-                    "given": "Javier"
-                },
-                {
-                    "family": "Ushey",
-                    "given": "Kevin"
-                },
-                {
-                    "family": "Atkins",
-                    "given": "Aron"
-                },
-                {
-                    "family": "Wickham",
-                    "given": "Hadley"
-                },
-                {
-                    "family": "Cheng",
-                    "given": "Joe"
-                },
-                {
-                    "family": "Chang",
-                    "given": "Winston"
-                },
-                {
-                    "family": "Iannone",
-                    "given": "Richard"
+                    "family": "Feller",
+                    "given": "William"
                 }
             ],
-            "id": "R-rmarkdown",
+            "id": "feller",
             "issued": {
                 "date-parts": [
                     [
-                        2021
+                        1968
                     ]
                 ]
             },
-            "note": "R package version 2.7",
-            "title": "Rmarkdown: Dynamic documents for r",
-            "title-short": "Rmarkdown",
+            "keyword": "aperiodic Markov chain,Business & Economics / Statistics,Fiction / General,Mathematics / General,Mathematics / Probability & Statistics / General",
+            "publisher": "Wiley",
+            "title": "An introduction to probability theory and its applications",
             "type": "book"
         },
         {
-            "URL": "https://github.com/kaskr/adcomp/wiki",
+            "DOI": "10.2307/2532301",
+            "ISSN": "0006341X, 15410420",
+            "abstract": "[The technique of patch clamp recording makes possible the measurement of current flowing through a single ion channel in a cell membrane. Examination of such recordings suggests that the current is quantal in nature, alternating in a seemingly random manner between \"on\" and \"off,\" but the recordings are corrupted by noise from a variety of sources. In this paper we propose and illustrate methods for restoring the underlying quantal signal from such noisy measurements. The methods use a Markov chain prior distribution for the underlying quantal process and base the restoration on the resulting posterior distribution.]",
             "author": [
                 {
-                    "family": "Kristensen",
-                    "given": "Kasper"
+                    "family": "Fredkin",
+                    "given": "Donald R."
+                },
+                {
+                    "family": "Rice",
+                    "given": "John A."
                 }
             ],
-            "id": "R-TMB",
+            "container-title": "Biometrics",
+            "id": "fredkin",
+            "issue": "2",
             "issued": {
                 "date-parts": [
                     [
-                        2021
+                        1992
                     ]
                 ]
             },
-            "note": "R package version 1.7.19",
-            "title": "TMB: Template model builder: A general random effect tool inspired by ADMB",
-            "title-short": "TMB",
+            "page": "427-448",
+            "publisher": "[Wiley, International Biometric Society]",
+            "title": "Bayesian Restoration of Single-Channel Patch Clamp Recordings",
+            "type": "article-journal",
+            "volume": "48"
+        },
+        {
+            "ISBN": "978-0-387-35768-3",
+            "abstract": "The past decade has seen powerful new computational tools for modeling which combine a Bayesian approach with recent Monte simulation techniques based on Markov chains. This book is the first to offer a systematic presentation of the Bayesian perspective of finite mixture modelling. The book is designed to show finite mixture and Markov switching models are formulated, what structures they imply on the data, their potential uses, and how they are estimated. Presenting its concepts informally without sacrificing mathematical correctness, it will serve a wide readership including statisticians as well as biologists, economists, engineers, financial and market researchers.",
+            "author": [
+                {
+                    "family": "Frühwirth-Schnatter",
+                    "given": "Sylvia"
+                }
+            ],
+            "id": "fruhwirth-schnatter",
+            "issued": {
+                "date-parts": [
+                    [
+                        2006,
+                        11
+                    ]
+                ]
+            },
+            "keyword": "Business & Economics / Econometrics,Computers / Mathematical & Statistical Software,HMM,Mathematics / Discrete Mathematics,Mathematics / Probability & Statistics / General,Mathematics / Probability & Statistics / Stochastic Processes,Psychology / Assessment; Testing & Measurement,Science / Life Sciences / Anatomy & Physiology,Science / Life Sciences / Molecular Biology,Time series",
+            "publisher": "Springer Science & Business Media",
+            "title": "Finite Mixture and Markov Switching Models",
             "type": "book"
         },
         {
-            "URL": "https://github.com/rstudio/bookdown",
+            "DOI": "10.1561/2000000004",
+            "ISSN": "1932-8346, 1932-8354",
+            "abstract": "The Application of Hidden Markov Models in Speech Recognition",
             "author": [
                 {
-                    "family": "Xie",
-                    "given": "Yihui"
+                    "family": "Gales",
+                    "given": "Mark"
+                },
+                {
+                    "family": "Young",
+                    "given": "Steve"
                 }
             ],
-            "id": "bookdown2016",
+            "container-title": "Foundations and Trends in Signal Processing",
+            "id": "gales",
+            "issue": "3",
             "issued": {
                 "date-parts": [
                     [
-                        2016
+                        2008,
+                        2
                     ]
                 ]
             },
-            "note": "ISBN 978-1138700109",
-            "publisher": "Chapman; Hall/CRC",
-            "publisher-place": "Boca Raton, Florida",
-            "title": "Bookdown: Authoring books and technical documents with R markdown",
-            "title-short": "Bookdown",
+            "page": "195-304",
+            "publisher": "Now Publishers, Inc.",
+            "title": "The Application of Hidden Markov Models in Speech Recognition",
+            "type": "article-journal",
+            "volume": "1"
+        },
+        {
+            "ISBN": "978-0-19-857222-0",
+            "abstract": "The third edition of this successful text gives a rigorous introduction to probability theory and the discussion of the most important random processes in some depth. It includes various topics which are suitable for undergraduate courses, but are not routinely taught. It is suitable to the beginner, and provides a taste and encouragement for more advanced work. There are four main aims: 1) to provide a thorough but straightforward account of basic probability, giving the reader a natural feel for the subject unburdened by oppressive technicalities, 2) to discuss important random processes in depth with many examples. 3) to cover a range of important but less routine topics, 4) to impart to the beginner the flavour of more advanced work. The books begins with basic ideas common to many undergraduate courses in mathematics, statistics and the sciences; in concludes with topics usually found at graduate level. The ordering and numbering of material in this third edition has been mostly preserved from the second. Minor alterations and additions have been added for clearer exposition. Highlights include new sections on sampling and Markov chain Monte Carlo, geometric probability, coupling and Poisson approximation, large deviations, spatial Poisson processes, renewal-reward, queueing networks, stochastic calculus, Itô’s formula and option pricing in the Black-Scholes model for financial markets. In addition there are many (nearly 400) new exercises and problems that are entertaining and instructive; their solutions can be found in the companion volume ’One Thousand Exercises in Probability’, (OUP 2001).",
+            "author": [
+                {
+                    "family": "Grimmett",
+                    "given": "Geoffrey"
+                },
+                {
+                    "family": "Grimmett",
+                    "given": "Geoffrey R."
+                },
+                {
+                    "family": "Grimmett",
+                    "given": "Professor of Mathematical Statistics Geoffrey"
+                },
+                {
+                    "family": "Stirzaker",
+                    "given": "David"
+                },
+                {
+                    "family": "Stirzaker",
+                    "given": "Mathematical Institute David R."
+                }
+            ],
+            "id": "grimmett",
+            "issued": {
+                "date-parts": [
+                    [
+                        2001,
+                        5
+                    ]
+                ]
+            },
+            "keyword": "irreducibile Markov chain,Mathematics / Probability & Statistics / General,Mathematics / Probability & Statistics / Stochastic Processes",
+            "publisher": "OUP Oxford",
+            "title": "Probability and Random Processes",
             "type": "book"
         },
         {
-            "URL": "https://yihui.org/knitr/",
+            "DOI": "10.1111/j.1751-5823.2003.tb00485.x",
+            "ISSN": "1751-5823",
+            "abstract": "The bootstrap is a method for estimating the distribution of an estimator or test statistic by resampling one’s data or a model estimated from the data. The methods that are available for implementing the bootstrap and the accuracy of bootstrap estimates depend on whether the data are an independent random sample or a time series. This paper is concerned with the application of the bootstrap to time-series data when one does not have a finite-dimensional parametric model that reduces the data generation process to independent random sampling. We review the methods that have been proposed for implementing the bootstrap in this situation and discuss the accuracy of these methods relative to that of first-order asymptotic approximations. We argue that methods for implementing the bootstrap with time-series data are not as well understood as methods for data that are independent random samples. Although promising bootstrap methods for time series are available, there is a considerable need for further research in the application of the bootstrap to time series. We describe some of the important unsolved problems. Résumé Le bootstrap est une méthode pour estimer la distribution d’un estimateur en rééchantillonnant ses données ou un modéle estiméà partir des données. Les méthodes disponibles pour mettre en oeuvre le bootstrap et la précision des estimateurs de bootstrap dépendent de ce que les données proviennent d’un échantillon aléatoire indépendant ou d’une série temporelle. Cet article concerne l’application du bootstrap aux données des séries temporelles quand on ne dispose pas de modéle paramétrique de dimension finie qui réduise le processus de génération des données à l’échantillonnage aléatoire indépendent. Nous examinons les méthodes qui ont été proposées pour mettre en oeuvre le bootstrap dans cette situation et discutons la precision de ces méthodes comparativement à celle des approximations asymptotiques de premier ordre. Nous montrons que les méthodes pour mettre en oeuvre le bootstrap avec les données des séries temporelles ne sont pas aussi bien comprises que les méthodes pour les données des échantillons aléatoires indépendants. Bien que des méthodes de bootstrap prometteuses pour les séries temporelles soient disponibles, il y a un besoin considérable de recherche supplémental re dans leur application. Nous décrivons quelques problémes importants non résolus.",
             "author": [
                 {
-                    "family": "Xie",
-                    "given": "Yihui"
+                    "family": "Härdle",
+                    "given": "Wolfgang"
+                },
+                {
+                    "family": "Horowitz",
+                    "given": "Joel"
+                },
+                {
+                    "family": "Kreiss",
+                    "given": "Jens-Peter"
                 }
             ],
-            "edition": "2nd",
-            "id": "knitr2015",
+            "container-title": "International Statistical Review",
+            "id": "hardle",
+            "issue": "2",
             "issued": {
                 "date-parts": [
                     [
-                        2015
+                        2003
                     ]
                 ]
             },
-            "note": "ISBN 978-1498716963",
-            "publisher": "Chapman; Hall/CRC",
-            "publisher-place": "Boca Raton, Florida",
-            "title": "Dynamic documents with R and knitr",
-            "type": "book"
+            "keyword": "Asymptotic approximation confidence interval,Block bootstrap,Resampling,Time series",
+            "page": "435-459",
+            "title": "Bootstrap Methods for Time Series",
+            "type": "article-journal",
+            "volume": "71"
         },
         {
-            "URL": "http://www.crcpress.com/product/isbn/9781466561595",
+            "DOI": "10.1080/00401706.1991.10484833",
+            "ISSN": "0040-1706",
             "author": [
                 {
-                    "family": "Xie",
-                    "given": "Yihui"
-                }
-            ],
-            "container-title": "Implementing reproducible computational research",
-            "editor": [
-                {
-                    "family": "Stodden",
-                    "given": "Victoria"
+                    "family": "Juang",
+                    "given": "B. H."
                 },
                 {
-                    "family": "Leisch",
-                    "given": "Friedrich"
-                },
-                {
-                    "family": "Peng",
-                    "given": "Roger D."
+                    "family": "Rabiner",
+                    "given": "L. R."
                 }
             ],
-            "id": "knitr2014",
+            "container-title": "Technometrics",
+            "id": "juang",
+            "issue": "3",
             "issued": {
                 "date-parts": [
                     [
-                        2014
+                        1991,
+                        8
                     ]
                 ]
             },
-            "note": "ISBN 978-1466561595",
-            "publisher": "Chapman; Hall/CRC",
-            "title": "Knitr: A comprehensive tool for reproducible research in R",
-            "title-short": "Knitr",
-            "type": "chapter"
+            "keyword": "Hidden Markov model",
+            "page": "251-272",
+            "publisher": "Taylor & Francis",
+            "title": "Hidden Markov Models for Speech Recognition",
+            "type": "article-journal",
+            "volume": "33"
         },
         {
-            "URL": "https://bookdown.org/yihui/rmarkdown",
+            "DOI": "10.1080/01621459.1989.10478825",
+            "ISSN": "0162-1459",
+            "abstract": "We consider two-stage models of the kind used in parametric empirical Bayes (PEB) methodology, calling them conditionally independent hierarchical models. We suppose that there are k “units,” which may be experimental subjects, cities, study centers, etcetera. At the first stage, the observation vectors Yi for units i = 1, …, k are independently distributed with densities p(yi | i ), or more generally, p(yi | i, \\lambda). At the second stage, the unit-specific parameter vectors i are iid with densities p(i | \\lambda). The PEB approach proceeds by regarding the second-stage distribution as a prior and noting that, if \\lambda were known, inference about  could be based on its posterior. Since \\lambda is not known, the simplest PEB methods estimate the parameter \\lambda by maximum likelihood or some variant, and then treat \\lambda as if it were known to be equal to this estimate. Although this procedure is sometimes satisfactory, a well-known defect is that it neglects the uncertainty due to the estimation of \\lambda. In this article we suggest that approximate Bayesian inference can provide simple and manageable solutions to this problem. In Bayesian inferences, a prior density \\pi(\\cdot) on \\lambda is introduced, the posterior p(\\lambda | y) is calculated, and the posterior density of i is then equal to the expectation, with respect to p(\\lambda | y), of the conditional posterior p(i | yi, \\lambda). From the Bayesian point of view, the PEB estimate is of interest because it is a first-order approximation to the posterior mean [having an error of order O(k -1)]. Letting E\\lambda and V\\lambda denote the expectation and variance with respect to p(\\lambda | y), we may write the posterior variance of i as V(i | y) = E\\lambda V(i | yi, \\lambda) + V\\lambda E(i | yi, \\lambda). The conditional posterior variance , where is the maximum likelihood estimator, approximates only the first term. When we include an approximation to the second term we obtain a first-order approximation to the posterior variance itself. In many examples, this elementary method, incorporating approximations to both terms, will substantially account for the estimation of \\lambda. We briefly consider second-order approximations, noting that the work of Deely and Lindley (1981) may be extended using expansions derived by Lindley (1980), Mosteller and Wallace (1964), Tierney and Kadane (1986), and Tierney, Kass, and Kadane (1989). We suggest that second-order approximations provide rough and, often, easily computed assessments of accuracy of first-order approximations. Although we confine our data-analytical examples to simple models, we believe the methods will be useful in general settings. An important area of application is longitudinal data analysis.",
             "author": [
                 {
-                    "family": "Xie",
-                    "given": "Yihui"
+                    "family": "Kass",
+                    "given": "Robert E."
                 },
                 {
-                    "family": "Allaire",
-                    "given": "J. J."
-                },
-                {
-                    "family": "Grolemund",
-                    "given": "Garrett"
+                    "family": "Steffey",
+                    "given": "Duane"
                 }
             ],
-            "id": "rmarkdown2018",
+            "container-title": "Journal of the American Statistical Association",
+            "id": "kass",
+            "issue": "407",
             "issued": {
                 "date-parts": [
                     [
-                        2018
+                        1989,
+                        9
                     ]
                 ]
             },
-            "note": "ISBN 9781138359338",
-            "publisher": "Chapman; Hall/CRC",
-            "publisher-place": "Boca Raton, Florida",
-            "title": "R markdown: The definitive guide",
-            "title-short": "R markdown",
-            "type": "book"
+            "keyword": "Asymptotic posterior,Asymptotic variance,Bayes empirical Bayes,Delta method,Hyperparameters,Laplace’s method,Longitudinal analysis,Mixed models,Random-effects models",
+            "page": "717-726",
+            "title": "Approximate Bayesian Inference in Conditionally Independent Hierarchical Models (Parametric Empirical Bayes Models)",
+            "type": "article-journal",
+            "volume": "84"
         },
         {
-            "URL": "https://bookdown.org/yihui/rmarkdown-cookbook",
-            "author": [
-                {
-                    "family": "Xie",
-                    "given": "Yihui"
-                },
-                {
-                    "family": "Dervieux",
-                    "given": "Christophe"
-                },
-                {
-                    "family": "Riederer",
-                    "given": "Emily"
-                }
-            ],
-            "id": "rmarkdown2020",
-            "issued": {
-                "date-parts": [
-                    [
-                        2020
-                    ]
-                ]
-            },
-            "note": "ISBN 9780367563837",
-            "publisher": "Chapman; Hall/CRC",
-            "publisher-place": "Boca Raton, Florida",
-            "title": "R markdown cookbook",
-            "type": "book"
-        },
-        {
-            "DOI": "10.18637/jss.v070.i05",
+            "URL": "http://arxiv.org/abs/1509.00660",
             "author": [
                 {
                     "family": "Kristensen",
@@ -329,12 +555,634 @@
                 },
                 {
                     "family": "Bell",
-                    "given": "Bradley M."
+                    "given": "Brad"
                 }
             ],
-            "container-title": "Journal of Statistical Software",
-            "id": "TMB2016",
-            "issue": "5",
+            "container-title": "arXiv preprint arXiv:1509.00660",
+            "id": "kristensen",
+            "issued": {
+                "date-parts": [
+                    [
+                        2015
+                    ]
+                ]
+            },
+            "keyword": "AD,automatic differentiation,C++ templates,latent variables,R,random effects",
+            "other-ids": "TMB,kristensenTMBAutomaticDifferentiation2016",
+            "title": "TMB: Automatic differentiation and Laplace approximation",
+            "title-short": "TMB",
+            "type": "article-journal"
+        },
+        {
+            "DOI": "10.1002/sim.6220",
+            "ISSN": "1097-0258",
+            "author": [
+                {
+                    "family": "Lagona",
+                    "given": "Francesco"
+                },
+                {
+                    "family": "Jdanov",
+                    "given": "Dmitri"
+                },
+                {
+                    "family": "Shkolnikova",
+                    "given": "Maria"
+                }
+            ],
+            "container-title": "Statistics in Medicine",
+            "id": "lagona",
+            "issue": "23",
+            "issued": {
+                "date-parts": [
+                    [
+                        2014
+                    ]
+                ]
+            },
+            "page": "4116-4134",
+            "title": "Latent time-varying factors in longitudinal analysis: A linear mixed hidden Markov model for heart rates",
+            "title-short": "Latent time-varying factors in longitudinal analysis",
+            "type": "article-journal",
+            "volume": "33"
+        },
+        {
+            "DOI": "10.1177/0049124196024004004",
+            "abstract": "When sparse data have to be fitted to a log-linear or latent class model, one cannot use the theoretical chi-square distribution to evaluate model fit, because with sparse data the observed cross-table has too many cells in relation to the number of observations to use a distribution that only holds asymptotically. The choice of a theoretical distribution is also difficult when model-expected frequencies are 0 or when model probabilities are estimated 0 or 1. The authors propose to solve these problems by estimating the distribution of a fit measure, using bootstrap methods. An algorithm is presented for estimating this distribution by drawing bootstrap samples from the model-expected proportions, the so-called nonnaive bootstrap method. For the first time the method is applied to empirical data of varying sparseness, from five different data sets. Results show that the asymptotic chi-square distribution is not at all valid for sparse data.",
+            "author": [
+                {
+                    "family": "Langeheine",
+                    "given": "Rolf"
+                },
+                {
+                    "family": "Pannekoek",
+                    "given": "Jeroen"
+                },
+                {
+                    "family": "Pol",
+                    "given": "Frank",
+                    "non-dropping-particle": "van de"
+                }
+            ],
+            "container-title": "Sociological Methods & Research",
+            "id": "langeheine",
+            "issued": {
+                "date-parts": [
+                    [
+                        1996,
+                        5
+                    ]
+                ]
+            },
+            "keyword": "Confidence intervals",
+            "page": "492-516",
+            "title": "Bootstrapping Goodness-of-Fit Measures in Categorical Data Analysis",
+            "type": "article-journal",
+            "volume": "24"
+        },
+        {
+            "DOI": "10.2307/2532308",
+            "ISSN": "0006-341X",
+            "abstract": "This paper concerns the use and implementation of maximum-penalized-likelihood procedures for choosing the number of mixing components and estimating the parameters in independent and Markov-dependent mixture models. Computation of the estimates is achieved via algorithms for the automatic generation of starting values for the EM algorithm. Computation of the information matrix is also discussed. Poisson mixture models are applied to a sequence of counts of movements by a fetal lamb in utero obtained by ultrasound. The resulting estimates are seen to provide plausible mechanisms for the physiological process.",
+            "author": [
+                {
+                    "family": "Leroux",
+                    "given": "Brian G."
+                },
+                {
+                    "family": "Puterman",
+                    "given": "Martin L."
+                }
+            ],
+            "container-title": "Biometrics",
+            "id": "leroux",
+            "issue": "2",
+            "issued": {
+                "date-parts": [
+                    [
+                        1992
+                    ]
+                ]
+            },
+            "keyword": "Hidden Markov model,lamb",
+            "page": "545-558",
+            "title": "Maximum-Penalized-Likelihood Estimation for Independent and Markov- Dependent Mixture Models",
+            "type": "article-journal",
+            "volume": "48"
+        },
+        {
+            "DOI": "10.1198/106186002402",
+            "ISSN": "1061-8600",
+            "abstract": "This article describes a new algorithm for exact computation of the observed information matrix in hidden Markov models that may be performed in a single pass through the data. The score vector and log-likelihood are computed in the same pass. The new algorithm is derived from the forwardbackward algorithm traditionally used to evaluate the likelihood in hidden Markov models. Our result is discussed in the context of previous approaches that have been used to obtain approximate standard errors of parameter estimates in these models. Implications for parameter estimation are also discussed. An application of the proposed methods to rainfall occurrence data is provided.",
+            "author": [
+                {
+                    "family": "Lystig",
+                    "given": "Theodore C"
+                },
+                {
+                    "family": "Hughes",
+                    "given": "James P"
+                }
+            ],
+            "container-title": "Journal of Computational and Graphical Statistics",
+            "id": "lystig",
+            "issue": "3",
+            "issued": {
+                "date-parts": [
+                    [
+                        2002,
+                        9
+                    ]
+                ]
+            },
+            "page": "678-689",
+            "publisher": "Taylor & Francis",
+            "title": "Exact Computation of the Observed Information Matrix for Hidden Markov Models",
+            "type": "article-journal",
+            "volume": "11"
+        },
+        {
+            "DOI": "10.1111/j.1751-5823.2011.00160.x",
+            "ISSN": "1751-5823",
+            "author": [
+                {
+                    "family": "Maruotti",
+                    "given": "Antonello"
+                }
+            ],
+            "container-title": "International Statistical Review",
+            "id": "maruotti",
+            "issue": "3",
+            "issued": {
+                "date-parts": [
+                    [
+                        2011
+                    ]
+                ]
+            },
+            "keyword": "Longitudinal data,mixed hidden Markov model,random effects model,unobserved heterogeneity",
+            "page": "427-454",
+            "publisher": "Blackwell Publishing Ltd",
+            "title": "Mixed hidden markov models for longitudinal data: An overview",
+            "title-short": "Mixed hidden markov models for longitudinal data",
+            "type": "article-journal",
+            "volume": "79"
+        },
+        {
+            "ISBN": "978-0-471-65406-3",
+            "abstract": "An up-to-date, comprehensive account of major issues in finite mixture modeling This volume provides an up-to-date account of the theory and applications of modeling via finite mixture distributions. With an emphasis on the applications of mixture models in both mainstream analysis and other areas such as unsupervised pattern recognition, speech recognition, and medical imaging, the book describes the formulations of the finite mixture approach, details its methodology, discusses aspects of its implementation, and illustrates its application in many common statistical contexts. Major issues discussed in this book include identifiability problems, actual fitting of finite mixtures through use of the EM algorithm, properties of the maximum likelihood estimators so obtained, assessment of the number of components to be used in the mixture, and the applicability of asymptotic theory in providing a basis for the solutions to some of these problems. The author also considers how the EM algorithm can be scaled to handle the fitting of mixture models to very large databases, as in data mining applications. This comprehensive, practical guide: * Provides more than 800 references-40% published since 1995 * Includes an appendix listing available mixture software * Links statistical literature with machine learning and pattern recognition literature * Contains more than 100 helpful graphs, charts, and tables Finite Mixture Models is an important resource for both applied and theoretical statisticians as well as for researchers in the many areas in which finite mixture models can be used to analyze data.",
+            "author": [
+                {
+                    "family": "McLachlan",
+                    "given": "Geoffrey J."
+                },
+                {
+                    "family": "Peel",
+                    "given": "David"
+                }
+            ],
+            "id": "mclachlan",
+            "issued": {
+                "date-parts": [
+                    [
+                        2004,
+                        3
+                    ]
+                ]
+            },
+            "keyword": "Mathematics / Probability & Statistics / General,Mathematics / Probability & Statistics / Stochastic Processes",
+            "publisher": "John Wiley & Sons",
+            "title": "Finite Mixture Models",
+            "type": "book"
+        },
+        {
+            "DOI": "10.1080/00031305.1995.10476112",
+            "ISSN": "0003-1305",
+            "abstract": "Maximum likelihood (ML) provides a powerful and extremely general method for making inferences over a wide range of data/model combinations. The likelihood function and likelihood ratios have clear intuitive meanings that make it easy for students to grasp the important concepts. Modern computing technology has made it possible to use these methods over a wide range of practical applications. However, many mathematical statistics textbooks, particularly those at the Senior/Masters level, do not give this important topic coverage commensurate with its place in the world of modern applications. Similarly, in nonlinear estimation problems, standard practice (as reflected by procedures available in the popular commercial statistical packages) has been slow to recognize the advantages of likelihood-based confidence regions/intervals over the commonly use “normal-theory” regions/intervals based on the asymptotic distribution of the “Wald statistic.” In this note we outline our approach for presenting, to students, confidence regions/intervals based on ML estimation.",
+            "author": [
+                {
+                    "family": "Meeker",
+                    "given": "William Q."
+                },
+                {
+                    "family": "Escobar",
+                    "given": "Luis A."
+                }
+            ],
+            "container-title": "The American Statistician",
+            "id": "meeker",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        1995,
+                        2
+                    ]
+                ]
+            },
+            "keyword": "Asymptotic approximation,Confidence interval,Large sample approximation,Profile likelihood",
+            "page": "48-53",
+            "title": "Teaching about Approximate Confidence Regions Based on Maximum Likelihood Estimation",
+            "type": "article-journal",
+            "volume": "49"
+        },
+        {
+            "DOI": "10.1007/s13253-017-0283-8",
+            "ISSN": "1537-2693",
+            "abstract": "We discuss the notorious problem of order selection in hidden Markov models, that is of selecting an adequate number of states, highlighting typical pitfalls and practical challenges arising when analyzing real data. Extensive simulations are used to demonstrate the reasons that render order selection particularly challenging in practice despite the conceptual simplicity of the task. In particular, we demonstrate why well-established formal procedures for model selection, such as those based on standard information criteria, tend to favor models with numbers of states that are undesirably large in situations where states shall be meaningful entities. We also offer a pragmatic step-by-step approach together with comprehensive advice for how practitioners can implement order selection. Our proposed strategy is illustrated with a real-data case study on muskox movement.",
+            "author": [
+                {
+                    "family": "Pohle",
+                    "given": "Jennifer"
+                },
+                {
+                    "family": "Langrock",
+                    "given": "Roland"
+                },
+                {
+                    "family": "Beest",
+                    "given": "Floris M.",
+                    "non-dropping-particle": "van"
+                },
+                {
+                    "family": "Schmidt",
+                    "given": "Niels Martin"
+                }
+            ],
+            "container-title": "Journal of Agricultural, Biological and Environmental Statistics",
+            "id": "pohle",
+            "issue": "3",
+            "issued": {
+                "date-parts": [
+                    [
+                        2017,
+                        9
+                    ]
+                ]
+            },
+            "keyword": "Hidden Markov model,number,select,states",
+            "page": "270-293",
+            "title": "Selecting the Number of States in Hidden Markov Models: Pragmatic Solutions Illustrated Using Animal Movement",
+            "title-short": "Selecting the Number of States in Hidden Markov Models",
+            "type": "article-journal",
+            "volume": "22"
+        },
+        {
+            "URL": "http://arxiv.org/abs/1701.08673",
+            "abstract": "We discuss the notorious problem of order selection in hidden Markov models, i.e. of selecting an adequate number of states, highlighting typical pitfalls and practical challenges arising when analyzing real data. Extensive simulations are used to demonstrate the reasons that render order selection particularly challenging in practice despite the conceptual simplicity of the task. In particular, we demonstrate why well-established formal procedures for model selection, such as those based on standard information criteria, tend to favor models with numbers of states that are undesirably large in situations where states shall be meaningful entities. We also offer a pragmatic step-by-step approach together with comprehensive advice for how practitioners can implement order selection. Our proposed strategy is illustrated with a real-data case study on muskox movement.",
+            "author": [
+                {
+                    "family": "Pohle",
+                    "given": "Jennifer"
+                },
+                {
+                    "family": "Langrock",
+                    "given": "Roland"
+                },
+                {
+                    "family": "Beest",
+                    "given": "Floris",
+                    "non-dropping-particle": "van"
+                },
+                {
+                    "family": "Schmidt",
+                    "given": "Niels Martin"
+                }
+            ],
+            "container-title": "arXiv:1701.08673 [q-bio, stat]",
+            "id": "pohlea",
+            "issued": {
+                "date-parts": [
+                    [
+                        2017,
+                        4
+                    ]
+                ]
+            },
+            "keyword": "Hidden Markov model,number,Quantitative Biology - Quantitative Methods,select,states,Statistics - Methodology",
+            "title": "Selecting the Number of States in Hidden Markov Models - Pitfalls, Practical Challenges and Pragmatic Solutions",
+            "type": "article-journal"
+        },
+        {
+            "DOI": "10.1038/srep31166",
+            "ISSN": "2045-2322",
+            "abstract": "It is well established that emotions influence tinnitus, but the role of emotion dynamics remains unclear. The present study investigated emotion dynamics in N = 306 users of the “TrackYourTinnitus” application who completed the Mini-Tinnitus Questionnaire (Mini-TQ) at one assessment point and provided complete data on at least five assessment points for the following state variables: tinnitus loudness, tinnitus distress, arousal, valence. The repeated arousal and valence ratings were used for two operationalizations of emotion dynamics: intra-individual variability of affect intensity (pulse) as well as intra-individual variability of affect quality (spin). Pearson correlation coefficients showed that the Mini-TQ was positively correlated with pulse (r = 0.19; p < 0.05) as well as with spin (r = 0.12; p < 0.05). Multilevel models revealed the following results: increases in tinnitus loudness were more strongly associated with increases in tinnitus distress at higher levels of pulse as well as at higher levels of spin (both p < 0.05), whereby increases in tinnitus loudness correlated even stronger with increases in tinnitus distress when both pulse as well as spin were high (p < 0.05). Moreover, increases in spin were associated with a less favorable time course of tinnitus loudness (p < 0.05). To conclude, equilibrating emotion dynamics might be a potential target in the prevention and treatment of tinnitus.",
+            "author": [
+                {
+                    "family": "Probst",
+                    "given": "Thomas"
+                },
+                {
+                    "family": "Pryss",
+                    "given": "Rüdiger"
+                },
+                {
+                    "family": "Langguth",
+                    "given": "Berthold"
+                },
+                {
+                    "family": "Schlee",
+                    "given": "Winfried"
+                }
+            ],
+            "container-title": "Scientific Reports",
+            "id": "probst",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        2016,
+                        8
+                    ]
+                ]
+            },
+            "page": "31166",
+            "publisher": "Nature Publishing Group",
+            "title": "Emotion dynamics and tinnitus: Daily life data from the “TrackYourTinnitus” application",
+            "title-short": "Emotion dynamics and tinnitus",
+            "type": "article-journal",
+            "volume": "6"
+        },
+        {
+            "DOI": "10.1109/CBMS.2015.26",
+            "ISSN": "2372-9198",
+            "abstract": "Many highly prevalent diseases (e.g., tinnitus, migraine, chronic pain) are difficult to treat and universally effective treatments are missing. Available treatments are only effective in patient subgroups, i.e., medical doctors and patients have to figure out which therapy might be helpful in the patient’s situation. Sufficiently large and qualitative longitudinal data sets, however, would be desirable to facilitate evidence-based treatment decisions for individual patients. On one hand, traditional sensing techniques (i.e., clinical trials) have many merits enabling evidence-based medicine. On the other, they have inherent limitations. First, clinical trials are very cost- and labour-intensive. Second, the traditional approach aims at reducing ecological heterogeneity to enable the investigation of homogeneous subsamples. Recently, a new paradigm emerged that offers promising perspectives for collecting large amounts of longitudinal patient data  Mobile Crowd Sensing. By utilizing smart mobile devices of a large number of patients, health information can be gathered from large patient collections as well as at many different time points and in various real life environmental situations. In the Track Your Tinnitus project, we implemented such a mobile crowd sensing platform to reveal new medical aspects about tinnitus with a particular focus on the variability of tinnitus over time depending on the environmental situation. In this paper, the current project status as well as first lessons learned from running the mobile application for twelve months are presented. In turn, the lessons learned are discussed in the context of the new perspectives offered by mobile crowd sensing in the medical field.",
+            "author": [
+                {
+                    "family": "Pryss",
+                    "given": "R."
+                },
+                {
+                    "family": "Reichert",
+                    "given": "M."
+                },
+                {
+                    "family": "Herrmann",
+                    "given": "J."
+                },
+                {
+                    "family": "Langguth",
+                    "given": "B."
+                },
+                {
+                    "family": "Schlee",
+                    "given": "W."
+                }
+            ],
+            "container-title": "2015 IEEE 28th International Symposium on Computer-Based Medical Systems",
+            "id": "pryss",
+            "issued": {
+                "date-parts": [
+                    [
+                        2015,
+                        6
+                    ]
+                ]
+            },
+            "keyword": "biomedical communication,biomedical measurement,clinical trial,clinical trials,Clinical trials,diseases,ecological heterogeneity,evidence-based medicine,evidence-based treatment decisions,health care,health information,homogeneous subsamples,large longitudinal data sets,medical computing,medical field,mobile application,Mobile communication,mobile computing,mobile crowd sensing,mobile crowd sensing platform,Mobile handsets,mobile healthcare application,patient subgroups,patient treatment,psychological trial,psychological trials,psychology,Psychology,qualitative longitudinal data sets,real life environmental situations,Sensors,smart mobile devices,smart phones,time 12 month,time points,tinnitus,tinnitus variablity,Track Your Tinnitus project,traditional sensing techniques,universally effective treatments",
+            "page": "23-24",
+            "title": "Mobile Crowd Sensing in Clinical and Psychological Trials  A Case Study",
+            "type": "paper-conference"
+        },
+        {
+            "DOI": "10.1109/MobServ.2015.55",
+            "ISSN": "2329-6453",
+            "abstract": "Tinnitus, the phantom sensation of sound, is a highly prevalent disorder that is difficult to treat, i.e., Available treatments are only effective for patient subgroups. Sufficiently large and qualitative longitudinal data sets, which aggregate the individuals’ demographic and clinical characteristics, together with their response to specific therapeutic interventions, would therefore facilitate evidence-based treatment suggestions for individual patients. Currently, clinical trials are the standard instrument for realizing evidence-based medicine. However, the related information gathering is limited. For example, clinical trials try to reduce the complexity of the individual case by generating homogeneous groups to obtain significant results. From the latter, individual treatment decisions are inferred. A complementary approach would be to assess the effect of specific interventions in large samples considering the individual peculiarity of each subject. This allows providing individualized treatment decisions. Recently, mobile crowd sensing emerged as an approach for collecting large and ecological valid datasets at rather low costs. By providing mobile crowd sensing services to large numbers of patients, large datasets can be gathered cheaply on a daily basis. In the TrackYourTinnitus project, we implemented a mobile crowd sensing platform to reveal new medical aspects on tinnitus and its treatment. Additionally, we work on mobile services exploring approaches for understanding tinnitus and for improving its diagnostic and therapeutic management. We present the TrackYourTinnitus platform as well as its goals, architecture and preliminary results. Overall, the platform and its mobile services offer promising perspectives for tinnitus research and treatment.",
+            "author": [
+                {
+                    "family": "Pryss",
+                    "given": "R."
+                },
+                {
+                    "family": "Reichert",
+                    "given": "M."
+                },
+                {
+                    "family": "Langguth",
+                    "given": "B."
+                },
+                {
+                    "family": "Schlee",
+                    "given": "W."
+                }
+            ],
+            "container-title": "2015 IEEE International Conference on Mobile Services",
+            "id": "pryssa",
+            "issued": {
+                "date-parts": [
+                    [
+                        2015,
+                        6
+                    ]
+                ]
+            },
+            "keyword": "Androids,clinical trial,Clinical trials,evidence-based medicine,health care,Humanoid robots,Mobile communication,mobile computing,mobile crowd sensing,mobile crowdsensing services,Mobile handsets,mobile healthcare application,Operating systems,patient treatment,Sensors,sound phantom sensation,tinnitus,tinnitus assessment,tinnitus therapy,tinnitus variablity,TrackYourTinnitus platform",
+            "page": "352-359",
+            "title": "Mobile Crowd Sensing Services for Tinnitus Assessment, Therapy, and Research",
+            "type": "paper-conference"
+        },
+        {
+            "DOI": "10.1101/gr.8.3.222",
+            "ISSN": "1088-9051, 1549-5469",
+            "PMID": "9521926",
+            "abstract": "We have developed a generalization of Kimura’s Markov chain model for base substitution at a single nucleotide site. This generalized model incorporates more flexible transition rates and consequently allows irreversible as well as reversible chains. Because the model embodies just the right amount of symmetry, it permits explicit calculation of finite-time transition probabilities and equilibrium distributions. The model also meshes well with maximum likelihood methods for phylogenetic analysis. Quick calculation of likelihoods and their derivatives can be carried out by adapting Baum’s forward and backward algorithms from the theory of hidden Markov chains. Analysis of HIV sequence data illustrates the speed of the algorithms on trees with many contemporary taxa. Analysis of some of Lake’s data on the origin of the eukaryotic nucleus contrasts the reversible and irreversible versions of the model.",
+            "author": [
+                {
+                    "family": "Schadt",
+                    "given": "Eric E."
+                },
+                {
+                    "family": "Sinsheimer",
+                    "given": "Janet S."
+                },
+                {
+                    "family": "Lange",
+                    "given": "Kenneth"
+                }
+            ],
+            "container-title": "Genome Research",
+            "id": "schadt",
+            "issue": "3",
+            "issued": {
+                "date-parts": [
+                    [
+                        1998,
+                        1
+                    ]
+                ]
+            },
+            "page": "222-233",
+            "publisher": "Cold Spring Harbor Lab",
+            "title": "Computational Advances in Maximum Likelihood Methods for Molecular Phylogeny",
+            "type": "article-journal",
+            "volume": "8"
+        },
+        {
+            "DOI": "10.1098/rsfs.2011.0077",
+            "ISSN": "2042-8898",
+            "author": [
+                {
+                    "family": "Schliehe-Diecks",
+                    "given": "S."
+                },
+                {
+                    "family": "Kappeler",
+                    "given": "P. M."
+                },
+                {
+                    "family": "Langrock",
+                    "given": "R."
+                }
+            ],
+            "container-title": "Interface Focus",
+            "id": "schliehe",
+            "issue": "2",
+            "issued": {
+                "date-parts": [
+                    [
+                        2012
+                    ]
+                ]
+            },
+            "page": "180-189",
+            "publisher": "Royal Society",
+            "title": "On the application of mixed hidden Markov models to multiple behavioural time series",
+            "type": "article-journal",
+            "volume": "2"
+        },
+        {
+            "DOI": "10.1016/j.csda.2008.01.029",
+            "ISSN": "0167-9473",
+            "abstract": "Ever since the introduction of hidden Markov models by Baum and his co-workers, the method of choice for fitting such models has been maximum likelihood via the EM algorithm. In recent years it has been noticed that the gradient and Hessian of the log likelihood of hidden Markov and related models may be calculated in parallel with a filtering process by which the likelihood may be calculated. Various authors have used, or suggested the use of, this idea in order to maximize the likelihood directly, without using the EM algorithm. In this paper we discuss an implementation of such an approach. We have found that a straightforward implementation of Newton’s method sometimes works but is unreliable. A form of the LevenbergMarquardt algorithm appears to provide excellent reliability. Two rather complex examples are given for applying this algorithm to the fitting of hidden Markov models. In the first a better than 6-fold increase in speed over the EM algorithm was achieved. The second example turned out to be problematic (somewhat interestingly) in that the maximum likelihood estimator appears to be inconsistent. Whatever its merit, this estimator is calculated much faster by LevenbergMarquardt than by EM. We also compared the LevenbergMarquardt algorithm, applied to the first example, with a generic numerical maximization procedure. The LevenbergMarquardt algorithm appeared to perform almost three times better than the generic procedure, even when analytic derivatives were provided, and 19 times better when they were not provided.",
+            "author": [
+                {
+                    "family": "Turner",
+                    "given": "Rolf"
+                }
+            ],
+            "container-title": "Computational Statistics & Data Analysis",
+            "id": "turner",
+            "issue": "9",
+            "issued": {
+                "date-parts": [
+                    [
+                        2008,
+                        5
+                    ]
+                ]
+            },
+            "page": "4147-4160",
+            "title": "Direct maximization of the likelihood of a hidden Markov model",
+            "type": "article-journal",
+            "volume": "52"
+        },
+        {
+            "DOI": "10.2307/2347496",
+            "ISSN": "1467-9876",
+            "abstract": "The method of constructing confidence regions based on the generalised likelihood ratio statistic is well known for parameter vectors. A similar construction of a confidence interval for a single entry of a vector can be implemented by repeatedly maximising over the other parameters. We present an algorithm for finding these confidence interval endpoints that requires less computation. It employs a modified Newton-Raphson iteration to solve a system of equations that defines the endpoints.",
+            "author": [
+                {
+                    "family": "Venzon",
+                    "given": "D. J."
+                },
+                {
+                    "family": "Moolgavkar",
+                    "given": "S. H."
+                }
+            ],
+            "container-title": "Journal of the Royal Statistical Society: Series C (Applied Statistics)",
+            "id": "venzon",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        1988
+                    ]
+                ]
+            },
+            "keyword": "Confidence intervals,Profile likelihood",
+            "page": "87-94",
+            "title": "A Method for Computing Profile-Likelihood-Based Confidence Intervals",
+            "type": "article-journal",
+            "volume": "37"
+        },
+        {
+            "DOI": "10.1348/000711000159240",
+            "ISSN": "2044-8317",
+            "author": [
+                {
+                    "family": "Visser",
+                    "given": "Ingmar"
+                },
+                {
+                    "family": "Raijmakers",
+                    "given": "Maartje E. J."
+                },
+                {
+                    "family": "Molenaar",
+                    "given": "Peter C. M."
+                }
+            ],
+            "container-title": "British Journal of Mathematical and Statistical Psychology",
+            "id": "visser",
+            "issue": "2",
+            "issued": {
+                "date-parts": [
+                    [
+                        2000
+                    ]
+                ]
+            },
+            "keyword": "bootstrap,confidence intervals,finite differences approximation,profile likelihood",
+            "page": "317-327",
+            "publisher": "Blackwell Publishing Ltd",
+            "title": "Confidence intervals for hidden Markov model parameters",
+            "type": "article-journal",
+            "volume": "53"
+        },
+        {
+            "DOI": "10.2307/1990256",
+            "ISSN": "0002-9947",
+            "author": [
+                {
+                    "family": "Wald",
+                    "given": "Abraham"
+                }
+            ],
+            "container-title": "Transactions of the American Mathematical Society",
+            "id": "wald",
+            "issue": "3",
+            "issued": {
+                "date-parts": [
+                    [
+                        1943
+                    ]
+                ]
+            },
+            "page": "426-482",
+            "publisher": "American Mathematical Society",
+            "title": "Tests of Statistical Hypotheses Concerning Several Parameters When the Number of Observations is Large",
+            "type": "article-journal",
+            "volume": "54"
+        },
+        {
+            "ISBN": "978-1-4822-5384-9",
+            "author": [
+                {
+                    "family": "Zucchini",
+                    "given": "W."
+                },
+                {
+                    "family": "MacDonald",
+                    "given": "I. L."
+                },
+                {
+                    "family": "Langrock",
+                    "given": "R."
+                }
+            ],
+            "collection-title": "Chapman & Hall/CRC monographs on statistics & applied probability",
+            "id": "zucchini",
             "issued": {
                 "date-parts": [
                     [
@@ -342,53 +1190,42 @@
                     ]
                 ]
             },
-            "page": "1-21",
-            "title": "TMB: Automatic differentiation and Laplace approximation",
-            "title-short": "TMB",
-            "type": "article-journal",
-            "volume": "70"
+            "publisher": "CRC Press",
+            "title": "Hidden markov models for time series: An introduction using r, second edition",
+            "title-short": "Hidden markov models for time series",
+            "type": "book"
         },
         {
-            "DOI": "10.1007/s10651-017-0372-4",
+            "URL": "https://books.google.no/books?id=KlWzDAAAQBAJ",
             "author": [
                 {
-                    "family": "Thygesen",
-                    "given": "Uffe H."
+                    "family": "Zucchini",
+                    "given": "W."
                 },
                 {
-                    "family": "Albertsen",
-                    "given": "Christoffer M."
+                    "family": "MacDonald",
+                    "given": "I.L."
                 },
                 {
-                    "family": "Berg",
-                    "given": "Casper W."
-                },
-                {
-                    "family": "Kristensen",
-                    "given": "Kasper"
-                },
-                {
-                    "family": "Nielsen",
-                    "given": "Anders"
+                    "family": "Langrock",
+                    "given": "R."
                 }
             ],
-            "container-title": "Environmental and Ecological Statistics",
-            "id": "TMB2017",
+            "collection-title": "Chapman & hall/CRC monographs on statistics & applied probability",
+            "id": "zucchinia",
             "issued": {
                 "date-parts": [
                     [
-                        2017
+                        2016
                     ]
                 ]
             },
-            "page": "1-23",
-            "title": "Validation of ecological state space models using the Laplace approximation",
-            "type": "article-journal"
+            "note": "Citation Key: zucchini",
+            "publisher": "CRC Press",
+            "title": "Hidden markov models for time series: An introduction using r, second edition",
+            "title-short": "Hidden markov models for time series",
+            "type": "book"
         }
     ],
-    "project_biblios": [
-        "book.bib",
-        "packages.bib",
-        "paper.json"
-    ]
+    "project_biblios": []
 }

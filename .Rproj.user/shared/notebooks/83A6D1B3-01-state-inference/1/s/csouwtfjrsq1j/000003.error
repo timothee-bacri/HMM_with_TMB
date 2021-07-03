@@ -1,1 +1,0 @@
-{"frames":[{"func":"load(\"data/fetal-lamb.RData\")","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0},{"func":"readChar(con, 5L, useBytes = TRUE)","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0}],"message":"Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection\n"}

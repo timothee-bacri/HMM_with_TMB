@@ -1,2 +1,0 @@
-"0","working_params <- pois.HMM.pn2pw(m, lambda, gamma)"
-"0","TMB_data <- list(x = simu_data, m = m)"

@@ -1,0 +1,37 @@
+--- 
+title: "[ UNDER CONSTRUCTION ] Fast parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder"
+author:
+  - Timothée Bacri [timothee.bacri@uib.no](mailto:timothee.bacri@uib.no?subject=[GitHub%20TMB%20HMM])
+  - Jan Bulla [jan.bulla@uib.no](mailto:jan.bulla@uib.no?subject=[GitHub%20TMB%20HMM])
+  - Geir Berentsen [geir.berentsen@nhh.no](mailto:geir.berentsen@nhh.no?subject=[GitHub%20TMB%20HMM])
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib, paper.json]
+biblio-style: apalike
+link-citations: yes
+description: "This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook."
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: yes
+header-includes:
+  - \usepackage{amsthm,amsmath,amssymb,amsfonts,amssymb}
+  - \usepackage{listings}
+  - \newcommand{\b}[1]{{\boldsymbol#1}}
+  # - \newcommand{\balpha}{{\boldsymbol \alpha}}
+  # - \newcommand{\bphi}{{\boldsymbol \varphi}}
+  # - \newcommand{\bone}{{\boldsymbol 1}}
+  # - \newcommand{\bgamma}{{\boldsymbol \gamma}}
+  # - \newcommand{\bp}{{\boldsymbol P}}
+  # - \newcommand{\bx}{{\boldsymbol x}}
+  # - \newcommand{\by}{{\boldsymbol y}}
+  - \DeclareMathOperator*{\argmax}{argmax}
+---
+
+# Summary {-}
+
+Welcome !
+Here we provide details on the examples shown in the paper. [DOI?]

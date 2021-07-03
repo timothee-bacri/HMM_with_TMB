@@ -1,6 +1,0 @@
-"0","library(TMB)"
-"0","source(""functions/utils.R"")"
-"0","load(""data/fetal-lamb.RData"")"
-"2","cannot open compressed file 'data/fetal-lamb.RData', probable reason 'No such file or directory'"
-"2","Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
-"
