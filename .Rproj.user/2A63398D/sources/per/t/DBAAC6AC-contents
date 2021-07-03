@@ -1,0 +1,62 @@
+
+suppressMessages(source("./code/setup_parameters.R"))
+begin <- Sys.time()
+## ---- Lamb
+if (RUN_LAMB) {
+  source("./code/poi_hmm_lamb.R")
+  save(M_LIST_LAMB, benchmarks_lamb, benchmarks_df_lamb, method_comparison_lamb,
+       mllk_values_lamb, mllk_times_lamb, conf_int_lamb,
+       file = "./data/results_lamb.RData")
+} else {
+  load("./data/results_lamb.RData")
+}
+lambtime <- Sys.time()
+# print(lambtime - begin)
+## ---- Simulation
+if (RUN_SIMULATION) {
+  source("./code/poi_hmm_simul.R")
+  save(M_LIST_SIMUL, benchmarks_simul, benchmarks_df_simul, method_comparison_simul,
+       mllk_values_simul, mllk_times_simul, conf_int_simul,
+       file = "./data/results_simul.RData")
+} else {
+  load("./data/results_simul.RData")
+}
+simultime <- Sys.time()
+# print(simultime - lambtime)
+## ---- Hospital
+if (RUN_HOSPITAL) {
+  source("./code/poi_hmm_hosp.R")
+  save(M_LIST_HOSP, benchmarks_hosp, benchmarks_df_hosp, method_comparison_hosp,
+       mllk_values_hosp, mllk_times_hosp, conf_int_hosp,
+       file = "./data/results_hosp.RData")
+} else {
+  load("./data/results_hosp.RData")
+}
+hosptime <- Sys.time()
+# print(hosptime - simultime)
+## ---- Tinnitus
+tinntime <- Sys.time()
+if (RUN_TINNITUS) {
+  source("./code/poi_hmm_tinn.R")
+  save(M_LIST_TINN, benchmarks_tinn, benchmarks_df_tinn, method_comparison_tinn,
+       mllk_values_tinn, mllk_times_tinn, conf_int_tinn,
+       file = "./data/results_tinn.RData")
+} else {
+  load("./data/results_tinn.RData")
+}
+# print(tinntime - hosptime)
+totaltime <- tinntime - begin
+# for(a in 1:3){
+#   i=0
+#   message(paste0("a=",a))
+#   repeat{
+#     message(i)
+#     i=i+1
+#     if(i!=7){
+#       next
+#     }
+#     break
+#   }
+#   message("out of inner loop")
+# }
+# sms(paste0("Calculs sur ordi fac finis en ", totaltime, units(totaltime)))

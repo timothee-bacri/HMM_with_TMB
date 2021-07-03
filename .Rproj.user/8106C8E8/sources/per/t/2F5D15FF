@@ -1,0 +1,26 @@
+{
+    "id": "2F5D15FF",
+    "path": "D:/Program Data/Dropbox/TMB_HMM/paper1/Data supplements/functions/utils.R",
+    "project_path": "functions/utils.R",
+    "type": "r_source",
+    "hash": "915669585",
+    "contents": "",
+    "dirty": true,
+    "created": 1621453564501.0,
+    "source_on_save": false,
+    "relative_order": 11,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "381,14",
+        "scrollLine": "0"
+    },
+    "folds": "6|36|13|0|\n16|32|21|0|\n23|33|33|0|\n57|32|64|0|\n67|37|93|0|\n95|33|104|0|\n107|39|115|0|\n117|39|124|0|\n153|23|160|2|\n219|29|275|0|\n278|36|280|0|\n283|46|288|0|\n291|46|303|0|\n308|30|311|0|\n316|47|328|0|\n332|59|346|0|\n350|48|359|0|\n478|139|529|0|\n533|73|562|0|\n567|43|586|0|\n589|51|594|0|\n",
+    "lastKnownWriteTime": 1624933882,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1624933963910,
+    "read_only": false,
+    "read_only_alternatives": []
+}

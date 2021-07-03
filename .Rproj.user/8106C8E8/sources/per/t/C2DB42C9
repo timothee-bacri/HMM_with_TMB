@@ -1,0 +1,30 @@
+{
+    "id": "C2DB42C9",
+    "path": "D:/Program Data/Dropbox/TMB_HMM/paper1/Data supplements/04-using-tmb.Rmd",
+    "project_path": "04-using-tmb.Rmd",
+    "type": "r_markdown",
+    "hash": "2643230044",
+    "contents": "",
+    "dirty": false,
+    "created": 1616728750252.0,
+    "source_on_save": false,
+    "relative_order": 5,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "292,250",
+        "scrollLine": "0",
+        "rmdVisualMode": "false",
+        "rmdVisualModeLocation": "476:0",
+        "rmdVisualWrapConfigured": "true",
+        "docOutlineVisible": "0"
+    },
+    "folds": "8|22|13|0|\n11|56|12|0|\n14|31|55|0|\n60|21|64|0|\n68|21|73|0|\n77|20|80|0|\n84|24|87|0|\n92|25|97|0|\n101|25|105|0|\n111|32|113|0|\n118|32|120|0|\n124|31|130|0|\n139|16|292|250|\n141|13|175|0|\n144|6|152|0|\n157|6|164|0|\n167|6|173|0|\n176|9|187|0|\n188|34|292|250|\n201|6|220|0|\n226|6|255|0|\n271|6|290|0|\n",
+    "lastKnownWriteTime": 1624852529,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1625064889845,
+    "read_only": false,
+    "read_only_alternatives": []
+}
