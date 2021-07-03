@@ -35,3 +35,4 @@ header-includes:
 
 Welcome !
 Here we provide details on the examples shown in the paper. [DOI?]
+Main page at https://github.com/timothee-bacri/HMM_with_TMB
