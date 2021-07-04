@@ -35,3 +35,7 @@ parametric-bootstrap
 bootstrap
 label-switching
 wald-type
+negative-log-likelihood-in-tmb
+utility-functions
+in-tmb
+in-r

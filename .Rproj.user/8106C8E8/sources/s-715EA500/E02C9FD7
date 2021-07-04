@@ -3,7 +3,7 @@
     "path": "D:/Program Data/Dropbox/TMB_HMM/paper1/Data supplements/08-references.Rmd",
     "project_path": "08-references.Rmd",
     "type": "r_markdown",
-    "hash": "1110410717",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1620392265252.0,
@@ -11,7 +11,9 @@
     "relative_order": 9,
     "properties": {
         "source_window_id": "",
-        "Source": "Source"
+        "Source": "Source",
+        "cursorPosition": "3,0",
+        "scrollLine": "0"
     },
     "folds": "",
     "lastKnownWriteTime": 1615693347,

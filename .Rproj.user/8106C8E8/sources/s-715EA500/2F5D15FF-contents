@@ -13,6 +13,7 @@ Beta_map <- function(Beta, sel_cov){
   
 }
 
+## Delta_n2w ----
 # Function to transform natural parameters to working
 Delta_n2w <- function(m, delta){
   
@@ -21,6 +22,7 @@ Delta_n2w <- function(m, delta){
   return(tdelta) 
 }
 
+## Delta_w2n ----
 Delta_w2n <- function(m, tdelta){
   if (m == 1) return(1)
   
@@ -33,6 +35,7 @@ Delta_w2n <- function(m, tdelta){
   return(delta)
 }
 
+## Old_code ----
 #Function to transform natural parameters to working (C ++ code as basis then add 1 to elements)
 # Gamma_n2w <- function(m, gamma){
 #   
@@ -55,6 +58,8 @@ Delta_w2n <- function(m, tdelta){
 #   
 #   return(tgamma)
 # }
+
+## Gamma_n2w ----
 Gamma_n2w <- function(m, gamma){
   
   foo <- log(gamma / diag(gamma))
@@ -93,6 +98,7 @@ Gamma_w2n_old <- function(m, tgamma){
   return(gamma);
 }
 
+## Gamma_n2w ----
 Gamma_w2n <- function(m, tgamma){
   
   gamma <- diag(m)
@@ -104,6 +110,7 @@ Gamma_w2n <- function(m, tgamma){
   return(gamma)
 }
 
+## Old_code ----
 # For sorting data
 TopMaxUsingFullSort <- function(x, N) {
   value <- sort(x, decreasing = TRUE)[1:min(N, length(x))]
@@ -361,10 +368,24 @@ pois.HMM.generate_sample  <- function(ns, mod) {
 
 ## ---- pois.HMM.generate_estimable_sample
 # Generate a random sample from a HMM
-pois.HMM.generate_estimable_sample <- function(ns, mod, testing_params, params_names = PARAMS_NAMES, test_marqLevAlg = FALSE, std_error = FALSE) {
+pois.HMM.generate_estimable_sample <- function(ns, mod, testing_params, params_names = PARAMS_NAMES, test_marqLevAlg = FALSE, std_error = FALSE, label_switch = FALSE) {
   if(anyNA(c(ns, mod, testing_params))) {
     stop("Some parameters are missing in pois.HMM.generate_estimable_sample")
   }
+  # Count occurrences for each error
+  failure <- c("state_number" = 0,
+               "TMB_null" = 0,
+               "TMB_converge" = 0,
+               "TMB_G_null" = 0,
+               "TMB_G_converge" = 0,
+               "TMB_H_null" = 0,
+               "TMB_H_converge" = 0,
+               "TMG_GH_null" = 0,
+               "TMG_GH_converge" = 0,
+               "marqLevAlg_null" = 0,
+               "marqLevAlg_converge" = 0,
+               "NA_value" = 0)
+  m <- mod$m
   # Loop as long as there is an issue with nlminb
   repeat {
     mod_temp <- NULL
@@ -372,23 +393,28 @@ pois.HMM.generate_estimable_sample <- function(ns, mod, testing_params, params_n
     new_data <- pois.HMM.generate_sample(ns = ns,
                                          mod = mod)
     
-    TMB_benchmark_data <- list(x = new_data$data, m = mod$m)
+    # If the number of states generated is different from m, discard the data
+    if (length(unique(new_data$state)) != m) {
+      failure["state_number"] <- failure["state_number"] + 1
+      next
+    }
     
-    testing_w_params <- pois.HMM.pn2pw(m = mod$m,
-                                       lambda = testing_params$lambda,
-                                       gamma = testing_params$gamma,
-                                       delta = testing_params$delta)
+    TMB_benchmark_data <- list(x = new_data$data, m = m)
+    
+    testing_w_params <- pois.HMM.pn2pw(m = m, lambda = testing_params$lambda, gamma = testing_params$gamma, delta = testing_params$delta)
     
     # Test TMB
     suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
                                               parameters = testing_w_params,
                                               std_error = std_error))
-    # If nlminb doesn't reach any result, retry
+    # If nlminb doesn't reach any result, discard the data
     if (is.null(mod_temp)) {
+      failure["TMB_null"] <- failure["TMB_null"] + 1
       next
     }
-    # If nlminb doesn't converge successfully, retry
+    # If nlminb doesn't converge successfully, discard the data
     if (mod_temp$convergence != 0) {
+      failure["TMB_converge"] <- failure["TMB_converge"] + 1
       next
     }
     
@@ -397,12 +423,14 @@ pois.HMM.generate_estimable_sample <- function(ns, mod, testing_params, params_n
                                               parameters = testing_w_params,
                                               gradient = TRUE,
                                               std_error = std_error))
-    # If nlminb doesn't reach any result, retry
+    # If nlminb doesn't reach any result, discard the data
     if (is.null(mod_temp)) {
+      failure["TMB_G_null"] <- failure["TMB_G_null"] + 1
       next
     }
-    # If nlminb doesn't converge successfully, retry
+    # If nlminb doesn't converge successfully, discard the data
     if (mod_temp$convergence != 0) {
+      failure["TMB_G_converge"] <- failure["TMB_G_converge"] + 1
       next
     }
     
@@ -411,12 +439,14 @@ pois.HMM.generate_estimable_sample <- function(ns, mod, testing_params, params_n
                                               parameters = testing_w_params,
                                               hessian = TRUE,
                                               std_error = std_error))
-    # If nlminb doesn't reach any result, retry
+    # If nlminb doesn't reach any result, discard the data
     if (is.null(mod_temp)) {
+      failure["TMB_H_null"] <- failure["TMB_H_null"] + 1
       next
     }
-    # If nlminb doesn't converge successfully, retry
+    # If nlminb doesn't converge successfully, discard the data
     if (mod_temp$convergence != 0) {
+      failure["TMB_H_converge"] <- failure["TMB_H_converge"] + 1
       next
     }
     
@@ -426,70 +456,103 @@ pois.HMM.generate_estimable_sample <- function(ns, mod, testing_params, params_n
                                               gradient = TRUE,
                                               hessian = TRUE,
                                               std_error = std_error))
-    # If nlminb doesn't reach any result, retry
+    # If nlminb doesn't reach any result, discard the data
     if (is.null(mod_temp)) {
+      failure["TMB_GH_null"] <- failure["TMB_GH_null"] + 1
       next
     }
-    # If nlminb doesn't converge successfully, retry
+    # If nlminb doesn't converge successfully, discard the data
     if (mod_temp$convergence != 0) {
+      failure["TMB_GH_converge"] <- failure["TMB_GH_converge"] + 1
       next
     }
     
     # Test marqLevAlg
-    # marqLevAlg sometimes doesn't converge either
+    # marqLevAlg sometimes doesn't converge either, discard the data in these cases
     if (test_marqLevAlg == TRUE) {
       testing_w_params <- unlist(testing_w_params)
-      # No need to spend a few seconds to compute the marqLevAlg optimization if it's unnecessary
-      if (marqLevAlg(b = testing_w_params,
-                     fn = mod_temp$obj$fn,
-                     gr = mod_temp$obj$gr,
-                     hess = mod_temp$obj$he,
-                     maxiter = 10000)$istop != 1) {
+      marq <- tryCatch({
+        marqLevAlg(b = testing_w_params,
+                   fn = mod_temp$obj$fn,
+                   gr = mod_temp$obj$gr,
+                   hess = mod_temp$obj$he,
+                   maxiter = 10000)
+      },
+      error = function(e) {
+        return()
+      })
+      # If nlminb doesn't reach any result, discard the data
+      if (is.null(marq)) {
+        failure["marqLevAlg_null"] <- failure["marqLevAlg_null"] + 1
+        next
+      }
+      # If marqLevAlg doesn't converge successfully, discard the data
+      if (marq$istop != 1) {
+        failure["marqLevAlg_converge"] <- failure["marqLevAlg_converge"] + 1
         next
       }
     }
     
-    l <- mod_temp$lambda
-    g <- mod_temp$gamma
-    d <- mod_temp$delta
-    l_se <- mod_temp$lambda_std_error
-    g_se <- mod_temp$gamma_std_error
-    d_se <- mod_temp$delta_std_error
+    if (label_switch == TRUE) {
+      # Label switching
+      # In practice, we don't use it for the tests because it doesn't sort mod$obj
+      # Sorting them could lead to bugs and errors, and although it is better in principle,
+      # there is little benefit in practice. The benefit would be to infer profile likelihood CIs
+      # more easily when calculating coverage probabilities.
+      natural_parameters <- pois.HMM.label.order(m = m,
+                                                 lambda = mod_temp$lambda,
+                                                 gamma = mod_temp$gamma,
+                                                 delta = mod_temp$delta,
+                                                 lambda_std_error = mod_temp$lambda_std_error,
+                                                 gamma_std_error = mod_temp$gamma_std_error,
+                                                 delta_std_error = mod_temp$delta_std_error)
+    } else {
+      natural_parameters <- list(m = m,
+                                 lambda = mod_temp$lambda,
+                                 gamma = mod_temp$gamma,
+                                 delta = mod_temp$delta,
+                                 lambda_std_error = mod_temp$lambda_std_error,
+                                 gamma_std_error = mod_temp$gamma_std_error,
+                                 delta_std_error = mod_temp$delta_std_error)
+    }
     
-    # Label switching
-    natural_parameters <- pois.HMM.label.order(m, lambda = l,
-                                               gamma = g, delta = d,
-                                               lambda_std_error = l_se,
-                                               gamma_std_error = g_se,
-                                               delta_std_error = d_se)
-    
-    # If some parameters are NA for some reason, retry
+    # If some parameters are NA for some reason, discard the data
     if (anyNA(natural_parameters[params_names], recursive = TRUE)) {
+      failure["NA_value"] <- failure["NA_value"] + 1
       next
     }
     
     # If everything went well, end the "repeat" loop
     break
   }
-  return(c(data = list(new_data$data), natural_parameters = list(natural_parameters), mod = list(mod_temp)))
+  return(c(data = list(new_data$data), natural_parameters = list(natural_parameters), mod = list(mod_temp), failure = list(failure)))
 }
 
 ## ---- pois.HMM.label.order
 # Relabel states by increasing Poisson means
 pois.HMM.label.order <- function(m, lambda, gamma, delta = NULL, lambda_std_error = NULL, gamma_std_error = NULL, delta_std_error = NULL) {
+  # gamma_vector_indices is used to calculate the indices of the reordered TPM gamma as a vector
+  # for reordering the rows of the complete CI data.frame used for the article.
+  gamma_vector_indices <- 1:(m ^ 2)
+  gamma_vector_matrix <- matrix(gamma_vector_indices, nrow = m, ncol = m)
+  ordered_gamma_vector_matrix <- matrix(0, nrow = m, ncol = m)
+  
   # Get the indexes of the sorted states
   # according to ascending lambda
   # sorted_lambda contains the permutations needed
-  sorted_lambda <- sort(lambda, index.return = TRUE)$ix
-  ordered_lambda <- lambda[sorted_lambda]
-  # Re-order the TPM according to the switched states
+  ordered_lambda_indices <- sort(lambda, index.return = TRUE)$ix
+  ordered_lambda <- lambda[ordered_lambda_indices]
+  # Reorder the TPM according to the switched states
   # in the sorted lambda
   ordered_gamma <- matrix(0, nrow = m, ncol = m)
   for (col in 1:m) {
-    new_col <- which(sorted_lambda == col)
+    new_col <- which(ordered_lambda_indices == col)
     for (row in 1:m) {
-      new_row <- which(sorted_lambda == row)
+      new_row <- which(ordered_lambda_indices == row)
       ordered_gamma[row, col] <- gamma[new_row, new_col]
+      
+      # Reorder the vector TPM
+      ordered_gamma_vector_matrix[row, col] <- gamma_vector_matrix[new_row, new_col]
     }
   }
   # Same for the TPM's standard errors
@@ -497,31 +560,40 @@ pois.HMM.label.order <- function(m, lambda, gamma, delta = NULL, lambda_std_erro
   if (!is.null(gamma_std_error)) {
     ordered_gamma_std_error <- matrix(0, nrow = m, ncol = m)
     for (col in 1:m) {
-      new_col <- which(sorted_lambda == col)
+      new_col <- which(ordered_lambda_indices == col)
       for (row in 1:m) {
-        new_row <- which(sorted_lambda == row)
+        new_row <- which(ordered_lambda_indices == row)
         ordered_gamma_std_error[row, col] <- gamma_std_error[new_row, new_col]
       }
     }
   }
   
-  # Re-order the stationary distribution if it is provided
+  # Reorder the stationary distribution if it is provided
   # Generate it otherwise
   if (is.null(delta)) {
     ordered_delta <- stat.dist(ordered_gamma)
   } else {
-    ordered_delta <- delta[sorted_lambda]
+    ordered_delta <- delta[ordered_lambda_indices]
   }
-  # Re-order the standard errors
-  ordered_lambda_std_error <- lambda_std_error[sorted_lambda]
-  ordered_delta_std_error <- delta_std_error[sorted_lambda]
+  # Reorder the standard errors
+  ordered_lambda_std_error <- lambda_std_error[ordered_lambda_indices]
+  ordered_delta_std_error <- delta_std_error[ordered_lambda_indices]
+  
+  # The vector is assumed filled column-wise instead of row-wise, because column-wise is the default way R handles matrix to vector conversion.
+  # Change to row-wise if needed by replacing ordered_gamma_vector_matrix with t(ordered_gamma_vector_matrix), or add byrow=TRUE to "ordered_gamma_vector_matrix <- matrix(0, nrow = m, ncol = m)"
+  # We don't use it in case there is a bug, but it makes logical sense that it should work
+  ordered_gamma_vector_matrix <- as.numeric(ordered_gamma_vector_matrix)
   
   result <- list(lambda = ordered_lambda,
                  gamma = ordered_gamma,
                  delta = ordered_delta,
                  lambda_std_error = ordered_lambda_std_error,
                  gamma_std_error = ordered_gamma_std_error,
-                 delta_std_error = ordered_delta_std_error)
+                 delta_std_error = ordered_delta_std_error,
+                 ordered_lambda_indices = ordered_lambda_indices,
+                 ordered_gamma_vector_indices = ordered_gamma_vector_matrix,
+                 # delta and lambda are the same size, so they are ordered the same way
+                 ordered_delta_indices = ordered_lambda_indices)
   
   # Remove the NULL elements
   result[sapply(result, is.null)] <- NULL

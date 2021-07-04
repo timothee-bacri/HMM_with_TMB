@@ -199,6 +199,7 @@ div.csl-indent {
 <li class="chapter" data-level="5.2.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>5.2.1</b> Generating data</a></li>
 <li class="chapter" data-level="5.2.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>5.2.2</b> Bootstrap</a></li>
 </ul></li>
+<li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#profiling-the-negative-log-likelihood"><i class="fa fa-check"></i><b>5.3</b> Profiling the negative log-likelihood</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a>
 <ul>
@@ -231,7 +232,8 @@ div.csl-indent {
 <div id="confidence-intervals" class="section level1" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Confidence intervals</h1>
 <p>From the parameters’ ML estimates, we generate new data and re-estimate the parameters  times.
-From that list of new estimates we can get the 2.5th and 97.5th percentiles and get 95% confidence intervals for the parameters.\</p>
+From that list of new estimates we can get the 2.5th and 97.5th percentiles and get 95% confidence intervals for the parameters.<br />
+</p>
 <p>We show below how to derive confidence intervals using <code>TMB</code>, a likelihood profile based method, and parametric bootstrap, based on the 2 state Poisson HMM estimates.</p>
 <p>For all three methods, we require a model, so we generate a 2-state Poisson HMM based on the TYT dataset</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="confidence-intervals.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
@@ -263,7 +265,7 @@ From that list of new estimates we can get the 2.5th and 97.5th percentiles and 
 <span id="cb3-23"><a href="confidence-intervals.html#cb3-23" aria-hidden="true" tabindex="-1"></a>                  <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
 <span id="cb3-24"><a href="confidence-intervals.html#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-25"><a href="confidence-intervals.html#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># MLE</span></span>
-<span id="cb3-26"><a href="confidence-intervals.html#cb3-26" aria-hidden="true" tabindex="-1"></a>ML_working_estimates <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span>env<span class="sc">$</span>last.par.best</span>
+<span id="cb3-26"><a href="confidence-intervals.html#cb3-26" aria-hidden="true" tabindex="-1"></a>ML_working_estimates <span class="ot">&lt;-</span> mod_tmb<span class="sc">$</span>par <span class="co"># obj_tmb$env$last.par.best is also possible</span></span>
 <span id="cb3-27"><a href="confidence-intervals.html#cb3-27" aria-hidden="true" tabindex="-1"></a>ML_natural_estimates <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(ML_working_estimates)</span>
 <span id="cb3-28"><a href="confidence-intervals.html#cb3-28" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> ML_natural_estimates<span class="sc">$</span>lambda</span>
 <span id="cb3-29"><a href="confidence-intervals.html#cb3-29" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> ML_natural_estimates<span class="sc">$</span>gamma</span>
@@ -605,15 +607,89 @@ This function relies on the custom function <code>TMB_estimate</code> which is a
 <span id="cb21-82"><a href="confidence-intervals.html#cb21-82" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(bootstrap_CI, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p>It should be noted that some bootstrap estimates can be very large or very small.
 One possible reason is that the randomly generated bootstrap sample might contain long chains of the same values, thus causing some probabilities in the TPM to be near the boundary 0 or 1.
-However, a large number of bootstrap samples lowers that risk since we automatically discard 5% of the most extreme values during the data generating process.
-## Profiling the negative log-likelihood
-Profile</p>
-
+However, a large number of bootstrap samples lowers that risk since we automatically discard 5% of the most extreme values during the data generating process.</p>
 </div>
+</div>
+<div id="profiling-the-negative-log-likelihood" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Profiling the negative log-likelihood</h2>
+<p>Our nll function is parametrized in terms of and optimized with respect to the working parameters.
+In practice, this aspect is easy to deal with.
+Once a profile CI for the working parameter (here <span class="math inline">\(\eta_2\)</span>) has been obtained following the procedure above, the corresponding CI for the natural parameter <span class="math inline">\(\lambda_2\)</span> results directly from transforming the upper and lower boundary of the CI for <span class="math inline">\(\eta_2\)</span> by the one-to-one transformation <span class="math inline">\(\lambda_2 = \exp(\eta_2)\)</span>.
+For further details on the invariance of likelihood-based CIs to parameter transformations, we refer to <span class="citation">(<a href="#ref-meeker" role="doc-biblioref">Meeker and Escobar 1995</a>)</span>.</p>
+<p>Profiling <span class="math inline">\(\eta_2\)</span> (the working parameter corresponding to <span class="math inline">\(\lambda_2\)</span>) with <code>TMB</code> can be done with</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="confidence-intervals.html#cb22-1" aria-hidden="true" tabindex="-1"></a>profile <span class="ot">&lt;-</span> <span class="fu">tmbprofile</span>(<span class="at">obj =</span> obj_tmb,</span>
+<span id="cb22-2"><a href="confidence-intervals.html#cb22-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="dv">2</span>,</span>
+<span id="cb22-3"><a href="confidence-intervals.html#cb22-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb22-4"><a href="confidence-intervals.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(profile)</span></code></pre></div>
+<pre><code>##     tlambda    value
+## 67 1.589247 170.5801
+## 66 1.592447 170.4783
+## 65 1.595647 170.3790
+## 64 1.598847 170.2821
+## 63 1.602047 170.1877
+## 62 1.605247 170.0957</code></pre>
+<p>A plot allows for a visual representation of the profile</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="confidence-intervals.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># par(mgp = c(2, 0.5, 0), mar = c(3, 3, 2.5, 1),</span></span>
+<span id="cb24-2"><a href="confidence-intervals.html#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># cex.lab = 1.5)</span></span>
+<span id="cb24-3"><a href="confidence-intervals.html#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(profile, <span class="at">level =</span> <span class="fl">0.95</span>, </span>
+<span id="cb24-4"><a href="confidence-intervals.html#cb24-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(eta[<span class="dv">2</span>]),</span>
+<span id="cb24-5"><a href="confidence-intervals.html#cb24-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;nll&quot;</span>)</span></code></pre></div>
+<p><img src="Data-supplements_files/figure-html/profile-plot-1.png" width="672" /></p>
+<p>Then we can infer <span class="math inline">\(\eta_2\)</span>’s confidence interval, and hence <span class="math inline">\(\lambda_2\)</span>’s confidence interval</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="confidence-intervals.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(profile)</span></code></pre></div>
+<pre><code>##            lower    upper
+## tlambda 1.593141 1.820641</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="confidence-intervals.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">confint</span>(profile))</span></code></pre></div>
+<pre><code>##            lower    upper
+## tlambda 4.919178 6.175815</code></pre>
+<p>Further, profiling the TPM is done similarly.
+However, since individual natural TPM parameters cannot be deduced from single working parameters, we need to profile the entire working TPM then transform it back to a natural TPM.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="confidence-intervals.html#cb29-1" aria-hidden="true" tabindex="-1"></a>profile3 <span class="ot">&lt;-</span> <span class="fu">tmbprofile</span>(<span class="at">obj =</span> obj_tmb,</span>
+<span id="cb29-2"><a href="confidence-intervals.html#cb29-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">name =</span> <span class="dv">3</span>,</span>
+<span id="cb29-3"><a href="confidence-intervals.html#cb29-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb29-4"><a href="confidence-intervals.html#cb29-4" aria-hidden="true" tabindex="-1"></a>profile4 <span class="ot">&lt;-</span> <span class="fu">tmbprofile</span>(<span class="at">obj =</span> obj_tmb,</span>
+<span id="cb29-5"><a href="confidence-intervals.html#cb29-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">name =</span> <span class="dv">4</span>,</span>
+<span id="cb29-6"><a href="confidence-intervals.html#cb29-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb29-7"><a href="confidence-intervals.html#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtain confidence intervals for working parameters</span></span>
+<span id="cb29-8"><a href="confidence-intervals.html#cb29-8" aria-hidden="true" tabindex="-1"></a>tgamma_3_confint <span class="ot">&lt;-</span> <span class="fu">confint</span>(profile3)</span>
+<span id="cb29-9"><a href="confidence-intervals.html#cb29-9" aria-hidden="true" tabindex="-1"></a>tgamma_4_confint <span class="ot">&lt;-</span> <span class="fu">confint</span>(profile4)</span>
+<span id="cb29-10"><a href="confidence-intervals.html#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="confidence-intervals.html#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Group lower bounds and upper bounds</span></span>
+<span id="cb29-12"><a href="confidence-intervals.html#cb29-12" aria-hidden="true" tabindex="-1"></a>lower <span class="ot">&lt;-</span> <span class="fu">c</span>(tgamma_3_confint[<span class="dv">1</span>], tgamma_4_confint[<span class="dv">1</span>])</span>
+<span id="cb29-13"><a href="confidence-intervals.html#cb29-13" aria-hidden="true" tabindex="-1"></a>upper <span class="ot">&lt;-</span> <span class="fu">c</span>(tgamma_3_confint[<span class="dv">2</span>], tgamma_4_confint[<span class="dv">2</span>])</span>
+<span id="cb29-14"><a href="confidence-intervals.html#cb29-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-15"><a href="confidence-intervals.html#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Infer bounds on natural parameters</span></span>
+<span id="cb29-16"><a href="confidence-intervals.html#cb29-16" aria-hidden="true" tabindex="-1"></a>gamma_1 <span class="ot">&lt;-</span> <span class="fu">Gamma_w2n</span>(m, lower)</span>
+<span id="cb29-17"><a href="confidence-intervals.html#cb29-17" aria-hidden="true" tabindex="-1"></a>gamma_2 <span class="ot">&lt;-</span> <span class="fu">Gamma_w2n</span>(m, upper)</span>
+<span id="cb29-18"><a href="confidence-intervals.html#cb29-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-19"><a href="confidence-intervals.html#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Display unsorted lower and upper bounds</span></span>
+<span id="cb29-20"><a href="confidence-intervals.html#cb29-20" aria-hidden="true" tabindex="-1"></a>gamma_1</span></code></pre></div>
+<pre><code>##            [,1]        [,2]
+## [1,] 0.99800287 0.001997133
+## [2,] 0.00154545 0.998454550</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="confidence-intervals.html#cb31-1" aria-hidden="true" tabindex="-1"></a>gamma_2</span></code></pre></div>
+<pre><code>##            [,1]      [,2]
+## [1,] 0.81653046 0.1834695
+## [2,] 0.08801416 0.9119858</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="confidence-intervals.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sorted confidence interval for gamma_11</span></span>
+<span id="cb33-2"><a href="confidence-intervals.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">c</span>(gamma_1[<span class="dv">1</span>, <span class="dv">1</span>], gamma_2[<span class="dv">1</span>, <span class="dv">1</span>]))</span></code></pre></div>
+<pre><code>## [1] 0.8165305 0.9980029</code></pre>
+<p>Last, we can display these confidence intervals in a more readable format</p>
+<p>Note that <code>gamma_1</code> is not necessarily lower than <code>gamma_2</code>.</p>
+<p>The <code>name</code> parameter should be the index of a parameter to profile.
+While the function’s help mentions it can be a parameter’s name, the first two parameters are both named <code>tlambda</code> as can be seen here</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="confidence-intervals.html#cb35-1" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>par</span></code></pre></div>
+<pre><code>##    tlambda    tlambda     tgamma     tgamma 
+##  0.4925054  1.7107475 -3.6263979 -2.9402803</code></pre>
+<p>It is noteworthy that linear combinations of parameters can be profiled by passing the <code>lincomb</code> argument. More details are available by executing <code>??TMB::tmbprofile</code> to access the function help.</p>
+
 </div>
 </div>
 <h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-meeker" class="csl-entry">
+Meeker, William Q., and Luis A. Escobar. 1995. <span>“Teaching about Approximate Confidence Regions Based on Maximum Likelihood Estimation.”</span> <em>The American Statistician</em> 49 (1): 48–53. <a href="https://doi.org/10.1080/00031305.1995.10476112">https://doi.org/10.1080/00031305.1995.10476112</a>.
+</div>
 <div id="ref-wald" class="csl-entry">
 Wald, Abraham. 1943. <span>“Tests of Statistical Hypotheses Concerning Several Parameters When the Number of Observations Is Large.”</span> <em>Transactions of the American Mathematical Society</em> 54 (3): 426–82. <a href="https://doi.org/10.2307/1990256">https://doi.org/10.2307/1990256</a>.
 </div>

@@ -1,6 +1,5 @@
-//Utility functions for mhmm
+//Utility functions
 
-//latex_Delta_w2n_start
 // Function transforming working parameters in initial distribution
 // to natural parameters
 template<class Type>
@@ -22,10 +21,7 @@ vector<Type> Delta_w2n(int m, vector<Type> tdelta) {
 
   return delta;
 }
-//latex_Delta_w2n_end
 
-// PAGE 332
-//latex_Gamma_w2n_start
 // Function transforming the working parameters in TPM to
 // natural parameters (w2n)
 template<class Type>
@@ -55,9 +51,7 @@ matrix<Type> Gamma_w2n(int m, vector<Type> tgamma) {
 
   return gamma;
 }
-//latex_Gamma_w2n_end
 
-//latex_Stat_dist_start
 // Function computing the stationary distribution of a Markov chain
 template<class Type>
 vector<Type> Stat_dist(int m, matrix<Type> gamma) {
@@ -76,4 +70,3 @@ vector<Type> Stat_dist(int m, matrix<Type> gamma) {
   
   return delta;
 }
-//latex_Stat_dist_end

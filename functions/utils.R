@@ -13,6 +13,7 @@ Beta_map <- function(Beta, sel_cov){
   
 }
 
+## Delta_n2w ----
 # Function to transform natural parameters to working
 Delta_n2w <- function(m, delta){
   
@@ -21,6 +22,7 @@ Delta_n2w <- function(m, delta){
   return(tdelta) 
 }
 
+## Delta_w2n ----
 Delta_w2n <- function(m, tdelta){
   if (m == 1) return(1)
   
@@ -33,6 +35,7 @@ Delta_w2n <- function(m, tdelta){
   return(delta)
 }
 
+## Old_code ----
 #Function to transform natural parameters to working (C ++ code as basis then add 1 to elements)
 # Gamma_n2w <- function(m, gamma){
 #   
@@ -55,6 +58,8 @@ Delta_w2n <- function(m, tdelta){
 #   
 #   return(tgamma)
 # }
+
+## Gamma_n2w ----
 Gamma_n2w <- function(m, gamma){
   
   foo <- log(gamma / diag(gamma))
@@ -93,6 +98,7 @@ Gamma_w2n_old <- function(m, tgamma){
   return(gamma);
 }
 
+## Gamma_n2w ----
 Gamma_w2n <- function(m, tgamma){
   
   gamma <- diag(m)
@@ -104,6 +110,7 @@ Gamma_w2n <- function(m, tgamma){
   return(gamma)
 }
 
+## Old_code ----
 # For sorting data
 TopMaxUsingFullSort <- function(x, N) {
   value <- sort(x, decreasing = TRUE)[1:min(N, length(x))]
