@@ -1,6 +1,0 @@
-"0","# Sorted confidence interval for gamma_11
-sort(c(gamma_1[1,1], gamma_2[1,1]))
-"
-"1","[1]"
-"1","
-"

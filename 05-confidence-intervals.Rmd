@@ -1,9 +1,10 @@
-```{r import-files, echo = FALSE, cache = FALSE}
-library(knitr)
-setwd(dir = "../")
-suppressMessages(source("code/main.R"))
-knitr::read_chunk('functions/utils.R')
-```
+<!-- ```{r 5import-files, echo = FALSE, cache = FALSE} -->
+<!-- library(knitr) -->
+<!-- setwd(dir = "../") -->
+<!-- # suppressMessages(source("code/main.R")) -->
+<!-- knitr::read_chunk('functions/utils.R') -->
+<!-- ``` -->
+
 # Confidence intervals
 
 From the parameters' ML estimates, we generate new data and re-estimate the parameters \Sexpr{BOOTSTRAP_SAMPLES} times.
@@ -12,7 +13,7 @@ From that list of new estimates we can get the 2.5th and 97.5th percentiles and 
 We show below how to derive confidence intervals using `TMB`, a likelihood profile based method, and parametric bootstrap, based on the 2 state Poisson HMM estimates.
 
 For all three methods, we require a model, so we generate a 2-state Poisson HMM based on the TYT dataset
-```{r}
+```{r 5ci_setup}
 set.seed(123)
 library(TMB)
 TMB::compile("code/poi_hmm.cpp")
@@ -58,13 +59,13 @@ The standard errors of the working parameters `tlambda` and `tgamma` can be retr
 However, it is usually more interesting to access the standard errors of the natural parameters `lambda`, `gamma` and `delta`. This requires adding a few lines to the C++ file to produce these standard errors, as detailed in [Getting started with a linear regression].
 
 Be careful: `adrep` lists `gamma` column-wise
-```{r}
+```{r 5adrep_warning}
 adrep <- summary(sdreport(obj_tmb), "report")
 adrep
 ```
 
 Standard errors for $\hat{\b{\lambda}}$
-```{r}
+```{r 5adrep_lambda}
 rows <- rownames(adrep) == "lambda"
 lambda <- adrep[rows, "Estimate"]
 lambda_std_error <- adrep[rows, "Std. Error"]
@@ -73,7 +74,7 @@ lambda_std_error
 ```
 
 Standard errors for $\hat{\b{\Gamma}}$
-```{r}
+```{r 5adrep_gamma}
 rows <- rownames(adrep) == "gamma"
 gamma <- adrep[rows, "Estimate"]
 gamma <- matrix(gamma, ncol = m)
@@ -84,7 +85,7 @@ gamma_std_error
 ```
 
 Standard errors for $\hat{\b{\delta}}$
-```{r}
+```{r 5adrep_delta}
 rows <- rownames(adrep) == "delta"
 delta <- adrep[rows, "Estimate"]
 delta_std_error <- adrep[rows, "Std. Error"]
@@ -99,7 +100,7 @@ In order to perform a parametric bootstrap, we need to be able to generate data 
 For readability and code maintenance, it is conventional to store procedures that will be used more than once into functions.
 
 The data-generating function is defined in \citet[A.1.5 ~p.333]{zucchini}.
-```{r generate_sample-original, eval=FALSE}
+```{r 5generate_sample-original, eval=FALSE}
 pois.HMM.generate_sample <- function(ns,mod) {
   mvect <- 1:mod$m
   state <- numeric(ns)
@@ -126,7 +127,7 @@ This function relies on the custom function `TMB_estimate` which is a wrapper of
 ```
 
 ### Bootstrap
-```{r bootstrap-code, eval = FALSE}
+```{r 5bootstrap-code, eval = FALSE}
 set.seed(123)
 library(TMB)
 TMB::compile("code/poi_hmm.cpp")
@@ -211,7 +212,6 @@ bootstrap_CI <- data.frame("Parameter" = PARAMS_NAMES,
 print(bootstrap_CI, row.names = FALSE)
 ```
 
-
 It should be noted that some bootstrap estimates can be very large or very small.
 One possible reason is that the randomly generated bootstrap sample might contain long chains of the same values, thus causing some probabilities in the TPM to be near the boundary 0 or 1.
 However, a large number of bootstrap samples lowers that risk since we automatically discard 5\% of the most extreme values during the data generating process.
@@ -224,7 +224,7 @@ Once a profile CI for the working parameter (here $\eta_2$) has been obtained fo
 For further details on the invariance of likelihood-based CIs to parameter transformations, we refer to [@meeker].
 
 Profiling $\eta_2$ (the working parameter corresponding to $\lambda_2$) with `TMB` can be done with
-```{r profile}
+```{r 5profile}
 profile <- tmbprofile(obj = obj_tmb,
                       name = 2,
                       trace = FALSE)
@@ -232,7 +232,7 @@ head(profile)
 ```
 
 A plot allows for a visual representation of the profile
-```{r profile-plot}
+```{r 5profile-plot}
 # par(mgp = c(2, 0.5, 0), mar = c(3, 3, 2.5, 1),
     # cex.lab = 1.5)
 plot(profile, level = 0.95, 
@@ -241,7 +241,7 @@ plot(profile, level = 0.95,
 ```
 
 Then we can infer $\eta_2$'s confidence interval, and hence $\lambda_2$'s confidence interval
-```{r profile-confint}
+```{r 5profile-confint}
 confint(profile)
 exp(confint(profile))
 ```
@@ -249,7 +249,7 @@ exp(confint(profile))
 Further, profiling the TPM is done similarly.
 However, since individual natural TPM parameters cannot be deduced from single working parameters, we need to profile the entire working TPM then transform it back to a natural TPM.
 
-```{r profile-tpm}
+```{r 5profile-tpm}
 profile3 <- tmbprofile(obj = obj_tmb,
                        name = 3,
                        trace = FALSE)
@@ -265,8 +265,8 @@ lower <- c(tgamma_3_confint[1], tgamma_4_confint[1])
 upper <- c(tgamma_3_confint[2], tgamma_4_confint[2])
 
 # Infer bounds on natural parameters
-gamma_1 <- Gamma_w2n(m, lower)
-gamma_2 <- Gamma_w2n(m, upper)
+gamma_1 <- gamma.w2n(m, lower)
+gamma_2 <- gamma.w2n(m, upper)
 
 # Display unsorted lower and upper bounds
 gamma_1
@@ -283,6 +283,6 @@ More details are available by executing `??TMB::tmbprofile` to access the `tmbpr
 
 The `name` parameter should be the index of a parameter to profile.
 While the function's help mentions it can be a parameter's name, the first two parameters are both named `tlambda` as can be seen here
-```{r w-param-name}
+```{r 5w-param-name}
 mod_tmb$par
 ```

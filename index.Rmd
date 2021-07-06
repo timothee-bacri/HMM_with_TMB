@@ -1,5 +1,5 @@
 --- 
-title: "[ UNDER CONSTRUCTION ] Fast parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder"
+title: "[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder"
 author:
   - Timothée Bacri [timothee.bacri@uib.no](mailto:timothee.bacri@uib.no?subject=[GitHub%20TMB%20HMM])
   - Jan Bulla [jan.bulla@uib.no](mailto:jan.bulla@uib.no?subject=[GitHub%20TMB%20HMM])
@@ -10,10 +10,18 @@ documentclass: book
 bibliography: [book.bib, packages.bib, paper.json]
 biblio-style: apalike
 link-citations: yes
-description: "This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook."
+description: "This accompanies the article published at [GITHUB LINK]."
+url: "https://github.com/timothee-bacri/HMM_with_TMB"
+github-repo: "timothee-bacri/HMM_with_TMB"
 output:
-  html_document:
-    toc: yes
+  # html_document:
+  #   toc: true
+  #   toc_float:
+  #     collapsed: false
+  #     smooth_scroll: true
+  # https://bookdown.org/yihui/bookdown/html.html#gitbook-style
+  bookdown::gitbook:
+    collapse: none
     toc_depth: 4
     fig_caption: yes
     number_sections: yes
@@ -32,7 +40,19 @@ header-includes:
 ---
 
 # Summary {-}
-
+<!-- bookdown::render_book("index.Rmd") -->
 Welcome !
-Here we provide details on the examples shown in the paper. [DOI?]
-Main page at https://github.com/timothee-bacri/HMM_with_TMB
+
+This website aims to accompany the reader of [Link to official article]
+
+The files used in this repository are available in https://github.com/timothee-bacri/HMM_with_TMB.
+
+For a description of the files and the directory structure, please read [GitHub directory structure].
+
+```{r 0import-files, echo = FALSE, cache = FALSE}
+library(knitr)
+# setwd(dir = "../")
+suppressMessages(source("code/packages.R"))
+knitr::read_chunk('functions/utils.R')
+```
+

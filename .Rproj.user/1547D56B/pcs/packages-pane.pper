@@ -1,7 +1,0 @@
-{
-    "installOptions": {
-        "installFromRepository": true,
-        "libraryPath": "D:/Dropbox/R/win-library",
-        "installDependencies": true
-    }
-}

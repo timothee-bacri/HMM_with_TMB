@@ -1,5 +1,3 @@
-//Utility functions
-
 // Function transforming working parameters in initial distribution
 // to natural parameters
 template<class Type>

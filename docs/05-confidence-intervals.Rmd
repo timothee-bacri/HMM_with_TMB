@@ -9,7 +9,7 @@ knitr::read_chunk('functions/utils.R')
 
 
 From the parameters' ML estimates, we generate new data and re-estimate the parameters \Sexpr{BOOTSTRAP_SAMPLES} times.
-From that list of new estimates we can get the 2.5th and 97.5th percentiles and get 95\% confidence intervals for the parameters.\\
+From that list of new estimates we can get the 2.5th and 97.5th percentiles and get 95\% confidence intervals for the parameters.\
 
 We show below how we get confidence intervals using bootstrap, based on the 2 state Poisson HMM estimates from above.
 

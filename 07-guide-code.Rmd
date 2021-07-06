@@ -1,3 +1,3 @@
-# Main GitHub page
+# GitHub directory structure
 
 Explanation of the files+folders

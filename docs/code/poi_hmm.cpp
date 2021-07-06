@@ -45,7 +45,7 @@ Type objective_function<Type>::operator() ()
     }
   }
 
-  // Corresponds to the Zucchini page 333
+  // Corresponds to Zucchini's book page 333
   matrix<Type> foo, P;
   Type mllk, sumfoo, lscale;
   

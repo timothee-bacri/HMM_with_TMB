@@ -1,29 +1,15 @@
+<!-- ```{r 1import-files, echo = FALSE, cache = FALSE} -->
+<!-- library(knitr) -->
+<!-- setwd(dir = "../") -->
+<!-- # suppressMessages(source("code/main.R")) -->
+<!-- knitr::read_chunk('functions/utils.R') -->
+<!-- ``` -->
+
 # State inference {#state-inf}
-
-You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(state-inf). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
-
-Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
-
-```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
-par(mar = c(4, 4, .1, .1))
-plot(pressure, type = 'b', pch = 19)
-```
-
-Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
-
-```{r nice-tab, tidy=FALSE}
-knitr::kable(
-  head(iris, 20), caption = 'Here is a nice table!',
-  booktabs = TRUE
-)
-```
-
-You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
-
 
 ## Prepare the model
 
-```{r prepare, results=FALSE}
+```{r 1prepare, results=FALSE}
 library(TMB)
 source("functions/utils.R")
 load("data/fetal-lamb.RData")
@@ -43,11 +29,10 @@ mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn,
 ```
 
 ## Setup
+### Define variables
+Given an optimized `MakeADFun` object `obj`, we need to setup some variables to compute the probabilities detailed below.
 
-Given an optimized **MakeADFun** object **obj**, we need to
-setup some variables to compute the probabilities detailed below.
-
-```{r init-decoding}
+```{r 1init-decoding}
 # Retrieve the objects at ML value
 adrep <- obj_tmb$report(obj_tmb$env$last.par.best)
 delta <- adrep$delta
@@ -58,6 +43,23 @@ m <- length(delta)
 mllk <- adrep$mllk
 ```
 
+Note that $\b{\lambda}$ is not needed as we already have access to the emission probabilities.
+
+### Emission/output probabilities
+Emission probabilities (also called output probabilities) are the conditional probabilities of the data given a state.
+
+Using the notation in the article Section 3.1, emission probabilities are the conditional distributions $p_i(x) = \text{P}(X_t = x \vert C_t = i) = \frac{e^{-\lambda_i} \lambda_i^x}{x!}$.
+We store all these in a data frame where each row and column represent a data and a state respectively.
+
+We compute these probabilities in `C++` rather than in `R` because it is faster and not more complicated to write
+
+```{Rcpp 1poi_hmm.cpp, code=readLines("code/poi_hmm.cpp")[32:46], eval=FALSE}
+```
+
+Nevertheless, we also need to compute them in `R` for [#forecast]
+```{r get.emission.probs}
+```
+
 ## Log-forward probabilities {#log-forward}
 
 The forward probabilities have been detailed in
@@ -66,7 +68,7 @@ TO FIX LINK_TO_hmm_likelihood!!!!!!!!!!!!!!!!!.
 We show here a way to compute the log of the forward probabilities,
 using a scaling scheme defined by [see @zucchini, p.66 and p.334].
 
-```{r log-forward}
+```{r 1log-forward}
 # Compute log-forward probabilities (scaling used)
 lalpha <- matrix(NA, m, n)
 foo <- delta * emission_probs[1, ]
@@ -90,7 +92,7 @@ lalpha[, 1:5]
 The backward probabilities have been defined in the same section
 @zucchini [p~.67 and p~.334].
 
-```{r log-backward}
+```{r 1log-backward}
 # Compute log-backwards probabilities (scaling used)
 lbeta <- matrix(NA, m, n)
 lbeta[, n] <- rep(0, m)
@@ -112,11 +114,11 @@ lbeta[, 1:4]
 The smoothing probabilities are defined in [@zucchini, p.87 and p.336] as
 <!-- P(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n} -->
 \[
-P(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
+\text{P}(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
 \]
 
 
-```{r smoothing}
+```{r 1smoothing}
 # Compute conditional state probabilities, smoothing probabilities
 stateprobs <- matrix(NA, ncol = n, nrow = m)
 llk <- - mllk
@@ -128,7 +130,7 @@ for(i in 1:n) {
 The local decoding is a straightforward maximum of the smoothing
 probabilities.
 
-```{r localdecoding}
+```{r 1localdecoding}
 # Most probable states (local decoding)
 ldecode <- rep(NA, n)
 for (i in 1:n) {
@@ -147,11 +149,11 @@ Then,
 <!-- Original -->
 <!-- P(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_T \b{\gamma}^h \bcp(x) \b{1}'}{\b{\alpha}_T \b{1}'} = \bfphi_T \b{\gamma}^h \bcp(x) \b{1}' -->
 \[
-P(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_T \b{\gamma}^h \b{P}(x) \b{1}'}{\b{\alpha}_T \b{1}'} = \b{\Phi}_T \b{\gamma}^h \b{P}(x) \b{1}'
+\text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_T \b{\gamma}^h \b{P}(x) \b{1}'}{\b{\alpha}_T \b{1}'} = \b{\Phi}_T \b{\gamma}^h \b{P}(x) \b{1}'
 \]
 An implementation of this, using a scaling scheme is
 
-```{r forecast}
+```{r 1forecast}
 # Number of steps
 h <- 1
 # Values for which we want the forecast probabilities
@@ -184,11 +186,12 @@ dxf[, 1:4]
 The Viterbi algorithm is detailed in [@zucchini, p.88 and p.334].
 It calculates the sequence of states $(i_1^*, \ldots, i_T^*)$ which
 maximizes the conditional probability of all states simultaneously, i.e.
-\begin{equation*}
-(i_1^*, \ldots, i_n^*) = \argmax_{i_1, \ldots, i_n \in \{1, \ldots, m \}} P(C_1 = i_1, \ldots, C_n = i_n \vert X^{(n)} = x^{(n)}).
-\end{equation*} An implementation of it is
+\[
+(i_1^*, \ldots, i_n^*) = \argmax_{i_1, \ldots, i_n \in \{1, \ldots, m \}} \text{P}(C_1 = i_1, \ldots, C_n = i_n \vert X^{(n)} = x^{(n)}).
+\]
+An implementation of it is
 
-```{r global}
+```{r 1global}
 xi <- matrix(0, n, m)
 foo <- delta * emission_probs[1, ]
 xi[1, ] <- foo / sum(foo)
@@ -204,35 +207,10 @@ for (i in (n - 1):1){
 iv
 ```
 
-```{r include=FALSE}
+```{r 1packages_in_bib, include=FALSE}
 # automatically create a bib database for R packages
 knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'
 ), 'packages.bib')
 ```
 
-## Label switching
-As the model gets estimated each time, we don't impose by default an order for the states.\
-This can lead to the label switching problem, where states aren't ordered the same way in each model.
-The issue can be relevant when comparing results of different optimizers, initial parameters, or class of models.
-
-To address this, we reordered the states by ascending Poisson means.
-Sorting the means is direct, however re-ordering the TPM is not as straightforward.
-To do so, we take the permutations of the states given by the sorted Poisson means, and permute each row index and column index to its new value.
-A function to achieve this is
-```{r pois.HMM.label.order}
-```
-
-We will go through an example to better understand the process.
-For readability, the TPM is filled with standard row and column indexes instead of probabilities.
-```{r relabel}
-lambda <- c(3, 1, 2)
-gamma <- matrix(c(11, 12, 13,
-                  21, 22, 23,
-                  31, 32, 33), byrow = TRUE, ncol = 3)
-pois.HMM.label.order(m = 3, lambda, gamma)
-```
-
-State 1 has been relabeled state 3, state 3 became state 2, and state 2 became state 1.
-
-Another way to address this issue is by parametrizing in terms of non-negative increments $\lambda_j - \lambda_{j-1}$ with $\lambda_0 \equiv 0$, as explained by [@zucchini Section 7.1.1 p.~112]

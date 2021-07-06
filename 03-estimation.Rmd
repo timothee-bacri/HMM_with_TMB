@@ -1,9 +1,16 @@
+<!-- ```{r 3import-files, echo = FALSE, cache = FALSE} -->
+<!-- library(knitr) -->
+<!-- setwd(dir = "../") -->
+<!-- # suppressMessages(source("code/main.R")) -->
+<!-- knitr::read_chunk('functions/utils.R') -->
+<!-- ``` -->
+
 # Parameter estimation techniques
 
 ## Negative log-likelihood in `TMB`
 
 The Poisson HMM negative log-likelihood function in R can be written this way
-```{Rcpp code=readLines("code/poi_hmm.cpp"), eval=FALSE}
+```{Rcpp 3poi_hmm.cpp, code=readLines("code/poi_hmm.cpp"), eval=FALSE}
 ```
 
 The case where $m = 1$ doesn't involve a hidden state, and thus is a Poisson regression instead of a Poisson HMM.
@@ -14,37 +21,61 @@ Nonetheless, `TMB` also accelerates its estimation and may be useful to the read
 ### In `TMB`
 
 Defining the negative log-likelihood function requires transforming the working parameters into their natural form.
-We define the function `Gamma_w2n` to perform this transformation.
+We define the function `gamma.w2n` to perform this transformation.
 
-`Stat_dist` handles computing the stationary distribution, although `Delta_w2n` can be used if a non-stationary distribution is provided.
+`stat_dist` handles computing the stationary distribution, although `delta.w2n` can be used if a non-stationary distribution is provided.
 
 They are defined
 
-```{Rcpp code=readLines("functions/utils.cpp"), eval=FALSE}
+```{Rcpp 3utils.cpp, code=readLines("functions/utils.cpp"), eval=FALSE}
 ```
 
 Transforming the Poisson means into their natural form can be done simply with the `exp` function and doesn't require a dedicated function.
 
 ### In `R`
-
+#### Parameters
 While `TMB` requires functions to transform working parameters to their natural form, pre-processing in `R` requires the opposite.
 
 Functions to achieve this are available in [@zucchini, p. ~51] and are displayed here for convenience
-```{r import-files, echo = FALSE, cache = FALSE}
-library(knitr)
-setwd(dir = "../")
-# suppressMessages(source("code/main.R"))
-knitr::read_chunk('functions/utils.R')
-```
 
-```{r, pois.HMM.pn2pw}
+```{r pois.HMM.pn2pw}
 ```
 
 This can be broken down into sub-functions if necessary
-```{r, Gamma_n2w}
+```{r gamma.n2w}
 ```
 
 In the case where a non-stationary distribution is specified, transforming $\b{\delta}$ is necessary
-```{r, Delta_n2w}
+```{r delta.n2w}
 ```
 
+When assuming a stationary distribution, computing it can be done via
+```{r stat.dist}
+```
+
+#### Label switching
+As the model gets estimated each time, we don't impose by default an order for the states.\
+This can lead to the label switching problem, where states aren't ordered the same way in each model.
+The issue can be relevant when comparing results of different optimizers, initial parameters, or class of models.
+
+To address the problem, we reorder the states by ascending Poisson means.
+Sorting the means is direct, however re-ordering the TPM is not as straightforward.
+To do so, we take the permutations of the states given by the sorted Poisson means, and permute each row index and column index to its new value.
+A function to achieve this is
+```{r pois.HMM.label.order}
+```
+
+We will go through an example to better understand the process.
+For readability, the TPM is filled with standard row and column indexes instead of probabilities.
+```{r 3relabel}
+lambda <- c(3, 1, 2)
+gamma <- matrix(c(11, 12, 13,
+                  21, 22, 23,
+                  31, 32, 33), byrow = TRUE, ncol = 3)
+pois.HMM.label.order(m = 3, lambda, gamma)
+```
+
+State 1 has been relabeled state 3, state 3 became state 2, and state 2 became state 1.
+
+Another way to address this issue is by parametrizing in terms of non-negative increments $\lambda_j - \lambda_{j-1}$ with $\lambda_0 \equiv 0$, as explained by [@zucchini Section 7.1.1 p. 112].
+However, [@bulla, Section 3.2 p. 7] shows this can pose optimization issues "We find that, over all series, the simplest parameterization, i.e., the use of log-transformed state-dependent parameters, leads to the best results as regards the number of failures and the convergence to the global maximum".

@@ -4,21 +4,21 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Confidence intervals | [ UNDER CONSTRUCTION ] Fast parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
-  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <title>Chapter 5 Confidence intervals | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Confidence intervals | [ UNDER CONSTRUCTION ] Fast parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:title" content="Chapter 5 Confidence intervals | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
   
-  
-  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
-  
+  <meta property="og:description" content="This accompanies the article published at [GITHUB LINK]." />
+  <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Confidence intervals | [ UNDER CONSTRUCTION ] Fast parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta name="twitter:title" content="Chapter 5 Confidence intervals | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   
-  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
   
 
 <meta name="author" content="Timothée Bacri timothee.bacri@uib.no" />
@@ -26,7 +26,7 @@
 <meta name="author" content="Geir Berentsen geir.berentsen@nhh.no" />
 
 
-<meta name="date" content="2021-07-03" />
+<meta name="date" content="2021-07-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -158,27 +158,43 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">Accompaniment of A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Summary</a></li>
 <li class="chapter" data-level="1" data-path="state-inf.html"><a href="state-inf.html"><i class="fa fa-check"></i><b>1</b> State inference</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="state-inf.html"><a href="state-inf.html#prepare-the-model"><i class="fa fa-check"></i><b>1.1</b> Prepare the model</a></li>
-<li class="chapter" data-level="1.2" data-path="state-inf.html"><a href="state-inf.html#setup"><i class="fa fa-check"></i><b>1.2</b> Setup</a></li>
+<li class="chapter" data-level="1.2" data-path="state-inf.html"><a href="state-inf.html#setup"><i class="fa fa-check"></i><b>1.2</b> Setup</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="state-inf.html"><a href="state-inf.html#define-variables"><i class="fa fa-check"></i><b>1.2.1</b> Define variables</a></li>
+<li class="chapter" data-level="1.2.2" data-path="state-inf.html"><a href="state-inf.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>1.2.2</b> Emission/output probabilities</a></li>
+</ul></li>
 <li class="chapter" data-level="1.3" data-path="state-inf.html"><a href="state-inf.html#log-forward"><i class="fa fa-check"></i><b>1.3</b> Log-forward probabilities</a></li>
 <li class="chapter" data-level="1.4" data-path="state-inf.html"><a href="state-inf.html#log-backward"><i class="fa fa-check"></i><b>1.4</b> Log-backward probabilities</a></li>
 <li class="chapter" data-level="1.5" data-path="state-inf.html"><a href="state-inf.html#local-decoding"><i class="fa fa-check"></i><b>1.5</b> Smoothing probabilities and local decoding</a></li>
 <li class="chapter" data-level="1.6" data-path="state-inf.html"><a href="state-inf.html#forecast"><i class="fa fa-check"></i><b>1.6</b> Forecast, h-step-ahead-probabilities</a></li>
 <li class="chapter" data-level="1.7" data-path="state-inf.html"><a href="state-inf.html#global-decoding"><i class="fa fa-check"></i><b>1.7</b> Global decoding using the Viterbi algorithm</a></li>
-<li class="chapter" data-level="1.8" data-path="state-inf.html"><a href="state-inf.html#label-switching"><i class="fa fa-check"></i><b>1.8</b> Label switching</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for Maximum Likelihood Estimation</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#setting-up-tmb"><i class="fa fa-check"></i><b>2.1</b> Setting up <code>TMB</code></a></li>
 <li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#getting-started-with-a-linear-regression"><i class="fa fa-check"></i><b>2.2</b> Getting started with a linear regression</a></li>
+<li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#extending-the-c-negative-log-likelihood"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> negative log-likelihood</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques</a></li>
+<li class="chapter" data-level="3" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#negative-log-likelihood-in-tmb"><i class="fa fa-check"></i><b>3.1</b> Negative log-likelihood in <code>TMB</code></a></li>
+<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#utility-functions"><i class="fa fa-check"></i><b>3.2</b> Utility functions</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-tmb"><i class="fa fa-check"></i><b>3.2.1</b> In <code>TMB</code></a></li>
+<li class="chapter" data-level="3.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-r"><i class="fa fa-check"></i><b>3.2.2</b> In <code>R</code></a>
+<ul>
+<li class="chapter" data-level="3.2.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#parameters"><i class="fa fa-check"></i><b>3.2.2.1</b> Parameters</a></li>
+<li class="chapter" data-level="3.2.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#label-switching"><i class="fa fa-check"></i><b>3.2.2.2</b> Label switching</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using TMB</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
@@ -188,7 +204,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="4.4.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>4.4.1</b> Principle</a></li>
 <li class="chapter" data-level="4.4.2" data-path="using-tmb.html"><a href="using-tmb.html#limit"><i class="fa fa-check"></i><b>4.4.2</b> Limit</a></li>
-<li class="chapter" data-level="4.4.3" data-path="using-tmb.html"><a href="using-tmb.html#parameters-equality-constraint"><i class="fa fa-check"></i><b>4.4.3</b> Parameters equality constraint</a></li>
+<li class="chapter" data-level="4.4.3" data-path="using-tmb.html"><a href="using-tmb.html#parameter-equality-constraints"><i class="fa fa-check"></i><b>4.4.3</b> Parameter equality constraints</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a>
@@ -207,7 +223,7 @@ div.csl-indent {
 <li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-dataset"><i class="fa fa-check"></i><b>6.2</b> Simulated dataset</a></li>
 <li class="chapter" data-level="6.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>6.3</b> Lamb data</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="main-github-page.html"><a href="main-github-page.html"><i class="fa fa-check"></i><b>7</b> Main GitHub page</a></li>
+<li class="chapter" data-level="7" data-path="github-directory-structure.html"><a href="github-directory-structure.html"><i class="fa fa-check"></i><b>7</b> GitHub directory structure</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -221,7 +237,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">[ UNDER CONSTRUCTION ] Fast parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
           </h1>
         </div>
 
@@ -236,40 +252,41 @@ From that list of new estimates we can get the 2.5th and 97.5th percentiles and 
 </p>
 <p>We show below how to derive confidence intervals using <code>TMB</code>, a likelihood profile based method, and parametric bootstrap, based on the 2 state Poisson HMM estimates.</p>
 <p>For all three methods, we require a model, so we generate a 2-state Poisson HMM based on the TYT dataset</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="confidence-intervals.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb1-2"><a href="confidence-intervals.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
-<span id="cb1-3"><a href="confidence-intervals.html#cb1-3" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="confidence-intervals.html#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb85-2"><a href="confidence-intervals.html#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
+<span id="cb85-3"><a href="confidence-intervals.html#cb85-3" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="confidence-intervals.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span>
-<span id="cb3-2"><a href="confidence-intervals.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
-<span id="cb3-3"><a href="confidence-intervals.html#cb3-3" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb3-4"><a href="confidence-intervals.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span>
-<span id="cb3-5"><a href="confidence-intervals.html#cb3-5" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
-<span id="cb3-6"><a href="confidence-intervals.html#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="confidence-intervals.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial set of parameters</span></span>
-<span id="cb3-8"><a href="confidence-intervals.html#cb3-8" aria-hidden="true" tabindex="-1"></a>lambda_init <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
-<span id="cb3-9"><a href="confidence-intervals.html#cb3-9" aria-hidden="true" tabindex="-1"></a>gamma_init <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
-<span id="cb3-10"><a href="confidence-intervals.html#cb3-10" aria-hidden="true" tabindex="-1"></a>                       <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> m)</span>
-<span id="cb3-11"><a href="confidence-intervals.html#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="confidence-intervals.html#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn them into working parameters</span></span>
-<span id="cb3-13"><a href="confidence-intervals.html#cb3-13" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda_init, gamma_init)</span>
-<span id="cb3-14"><a href="confidence-intervals.html#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="confidence-intervals.html#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the TMB object</span></span>
-<span id="cb3-16"><a href="confidence-intervals.html#cb3-16" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb3-17"><a href="confidence-intervals.html#cb3-17" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb3-18"><a href="confidence-intervals.html#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="confidence-intervals.html#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize</span></span>
-<span id="cb3-20"><a href="confidence-intervals.html#cb3-20" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
-<span id="cb3-21"><a href="confidence-intervals.html#cb3-21" aria-hidden="true" tabindex="-1"></a>                  <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
-<span id="cb3-22"><a href="confidence-intervals.html#cb3-22" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
-<span id="cb3-23"><a href="confidence-intervals.html#cb3-23" aria-hidden="true" tabindex="-1"></a>                  <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
-<span id="cb3-24"><a href="confidence-intervals.html#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-25"><a href="confidence-intervals.html#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># MLE</span></span>
-<span id="cb3-26"><a href="confidence-intervals.html#cb3-26" aria-hidden="true" tabindex="-1"></a>ML_working_estimates <span class="ot">&lt;-</span> mod_tmb<span class="sc">$</span>par <span class="co"># obj_tmb$env$last.par.best is also possible</span></span>
-<span id="cb3-27"><a href="confidence-intervals.html#cb3-27" aria-hidden="true" tabindex="-1"></a>ML_natural_estimates <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(ML_working_estimates)</span>
-<span id="cb3-28"><a href="confidence-intervals.html#cb3-28" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> ML_natural_estimates<span class="sc">$</span>lambda</span>
-<span id="cb3-29"><a href="confidence-intervals.html#cb3-29" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> ML_natural_estimates<span class="sc">$</span>gamma</span>
-<span id="cb3-30"><a href="confidence-intervals.html#cb3-30" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> ML_natural_estimates<span class="sc">$</span>delta</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="confidence-intervals.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span></code></pre></div>
+<pre><code>## Warning: 30 external pointers will be removed</code></pre>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="confidence-intervals.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
+<span id="cb89-2"><a href="confidence-intervals.html#cb89-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb89-3"><a href="confidence-intervals.html#cb89-3" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span>
+<span id="cb89-4"><a href="confidence-intervals.html#cb89-4" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
+<span id="cb89-5"><a href="confidence-intervals.html#cb89-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-6"><a href="confidence-intervals.html#cb89-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial set of parameters</span></span>
+<span id="cb89-7"><a href="confidence-intervals.html#cb89-7" aria-hidden="true" tabindex="-1"></a>lambda_init <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb89-8"><a href="confidence-intervals.html#cb89-8" aria-hidden="true" tabindex="-1"></a>gamma_init <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
+<span id="cb89-9"><a href="confidence-intervals.html#cb89-9" aria-hidden="true" tabindex="-1"></a>                       <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> m)</span>
+<span id="cb89-10"><a href="confidence-intervals.html#cb89-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-11"><a href="confidence-intervals.html#cb89-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn them into working parameters</span></span>
+<span id="cb89-12"><a href="confidence-intervals.html#cb89-12" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda_init, gamma_init)</span>
+<span id="cb89-13"><a href="confidence-intervals.html#cb89-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-14"><a href="confidence-intervals.html#cb89-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the TMB object</span></span>
+<span id="cb89-15"><a href="confidence-intervals.html#cb89-15" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb89-16"><a href="confidence-intervals.html#cb89-16" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb89-17"><a href="confidence-intervals.html#cb89-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-18"><a href="confidence-intervals.html#cb89-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize</span></span>
+<span id="cb89-19"><a href="confidence-intervals.html#cb89-19" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
+<span id="cb89-20"><a href="confidence-intervals.html#cb89-20" aria-hidden="true" tabindex="-1"></a>                  <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb89-21"><a href="confidence-intervals.html#cb89-21" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
+<span id="cb89-22"><a href="confidence-intervals.html#cb89-22" aria-hidden="true" tabindex="-1"></a>                  <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb89-23"><a href="confidence-intervals.html#cb89-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-24"><a href="confidence-intervals.html#cb89-24" aria-hidden="true" tabindex="-1"></a><span class="co"># MLE</span></span>
+<span id="cb89-25"><a href="confidence-intervals.html#cb89-25" aria-hidden="true" tabindex="-1"></a>ML_working_estimates <span class="ot">&lt;-</span> mod_tmb<span class="sc">$</span>par <span class="co"># obj_tmb$env$last.par.best is also possible</span></span>
+<span id="cb89-26"><a href="confidence-intervals.html#cb89-26" aria-hidden="true" tabindex="-1"></a>ML_natural_estimates <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(ML_working_estimates)</span>
+<span id="cb89-27"><a href="confidence-intervals.html#cb89-27" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> ML_natural_estimates<span class="sc">$</span>lambda</span>
+<span id="cb89-28"><a href="confidence-intervals.html#cb89-28" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> ML_natural_estimates<span class="sc">$</span>gamma</span>
+<span id="cb89-29"><a href="confidence-intervals.html#cb89-29" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> ML_natural_estimates<span class="sc">$</span>delta</span></code></pre></div>
 <div id="wald-type" class="section level2" number="5.1">
 <h2><span class="header-section-number">5.1</span> Wald-type</h2>
 <p>Now that we have a model estimated via <code>TMB</code>, we can derive Wald-type <span class="citation">(<a href="#ref-wald" role="doc-biblioref">Wald 1943</a>)</span> confidence intervals.
@@ -278,8 +295,8 @@ For example, the <span class="math inline">\((1 - \alpha) \%\)</span> CI for <sp
 The standard errors of the working parameters <code>tlambda</code> and <code>tgamma</code> can be retrieved without needing to add <code>ADREPORT</code> in the C++ file.
 However, it is usually more interesting to access the standard errors of the natural parameters <code>lambda</code>, <code>gamma</code> and <code>delta</code>. This requires adding a few lines to the C++ file to produce these standard errors, as detailed in <a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#getting-started-with-a-linear-regression">Getting started with a linear regression</a>.</p>
 <p>Be careful: <code>adrep</code> lists <code>gamma</code> column-wise</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="confidence-intervals.html#cb4-1" aria-hidden="true" tabindex="-1"></a>adrep <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
-<span id="cb4-2"><a href="confidence-intervals.html#cb4-2" aria-hidden="true" tabindex="-1"></a>adrep</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="confidence-intervals.html#cb90-1" aria-hidden="true" tabindex="-1"></a>adrep <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
+<span id="cb90-2"><a href="confidence-intervals.html#cb90-2" aria-hidden="true" tabindex="-1"></a>adrep</span></code></pre></div>
 <pre><code>##          Estimate Std. Error
 ## lambda 1.63641100 0.27758296
 ## lambda 5.53309576 0.31876147
@@ -290,37 +307,37 @@ However, it is usually more interesting to access the standard errors of the nat
 ## delta  0.34054200 0.23056437
 ## delta  0.65945800 0.23056437</code></pre>
 <p>Standard errors for <span class="math inline">\(\hat{{\boldsymbol\lambda}}\)</span></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="confidence-intervals.html#cb6-1" aria-hidden="true" tabindex="-1"></a>rows <span class="ot">&lt;-</span> <span class="fu">rownames</span>(adrep) <span class="sc">==</span> <span class="st">&quot;lambda&quot;</span></span>
-<span id="cb6-2"><a href="confidence-intervals.html#cb6-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> adrep[rows, <span class="st">&quot;Estimate&quot;</span>]</span>
-<span id="cb6-3"><a href="confidence-intervals.html#cb6-3" aria-hidden="true" tabindex="-1"></a>lambda_std_error <span class="ot">&lt;-</span> adrep[rows, <span class="st">&quot;Std. Error&quot;</span>]</span>
-<span id="cb6-4"><a href="confidence-intervals.html#cb6-4" aria-hidden="true" tabindex="-1"></a>lambda</span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="confidence-intervals.html#cb92-1" aria-hidden="true" tabindex="-1"></a>rows <span class="ot">&lt;-</span> <span class="fu">rownames</span>(adrep) <span class="sc">==</span> <span class="st">&quot;lambda&quot;</span></span>
+<span id="cb92-2"><a href="confidence-intervals.html#cb92-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> adrep[rows, <span class="st">&quot;Estimate&quot;</span>]</span>
+<span id="cb92-3"><a href="confidence-intervals.html#cb92-3" aria-hidden="true" tabindex="-1"></a>lambda_std_error <span class="ot">&lt;-</span> adrep[rows, <span class="st">&quot;Std. Error&quot;</span>]</span>
+<span id="cb92-4"><a href="confidence-intervals.html#cb92-4" aria-hidden="true" tabindex="-1"></a>lambda</span></code></pre></div>
 <pre><code>##   lambda   lambda 
 ## 1.636411 5.533096</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="confidence-intervals.html#cb8-1" aria-hidden="true" tabindex="-1"></a>lambda_std_error</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="confidence-intervals.html#cb94-1" aria-hidden="true" tabindex="-1"></a>lambda_std_error</span></code></pre></div>
 <pre><code>##    lambda    lambda 
 ## 0.2775830 0.3187615</code></pre>
 <p>Standard errors for <span class="math inline">\(\hat{{\boldsymbol\Gamma}}\)</span></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="confidence-intervals.html#cb10-1" aria-hidden="true" tabindex="-1"></a>rows <span class="ot">&lt;-</span> <span class="fu">rownames</span>(adrep) <span class="sc">==</span> <span class="st">&quot;gamma&quot;</span></span>
-<span id="cb10-2"><a href="confidence-intervals.html#cb10-2" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> adrep[rows, <span class="st">&quot;Estimate&quot;</span>]</span>
-<span id="cb10-3"><a href="confidence-intervals.html#cb10-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(gamma, <span class="at">ncol =</span> m)</span>
-<span id="cb10-4"><a href="confidence-intervals.html#cb10-4" aria-hidden="true" tabindex="-1"></a>gamma_std_error <span class="ot">&lt;-</span> adrep[rows, <span class="st">&quot;Std. Error&quot;</span>]</span>
-<span id="cb10-5"><a href="confidence-intervals.html#cb10-5" aria-hidden="true" tabindex="-1"></a>gamma_std_error <span class="ot">&lt;-</span> <span class="fu">matrix</span>(gamma_std_error, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
-<span id="cb10-6"><a href="confidence-intervals.html#cb10-6" aria-hidden="true" tabindex="-1"></a>gamma</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="confidence-intervals.html#cb96-1" aria-hidden="true" tabindex="-1"></a>rows <span class="ot">&lt;-</span> <span class="fu">rownames</span>(adrep) <span class="sc">==</span> <span class="st">&quot;gamma&quot;</span></span>
+<span id="cb96-2"><a href="confidence-intervals.html#cb96-2" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> adrep[rows, <span class="st">&quot;Estimate&quot;</span>]</span>
+<span id="cb96-3"><a href="confidence-intervals.html#cb96-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(gamma, <span class="at">ncol =</span> m)</span>
+<span id="cb96-4"><a href="confidence-intervals.html#cb96-4" aria-hidden="true" tabindex="-1"></a>gamma_std_error <span class="ot">&lt;-</span> adrep[rows, <span class="st">&quot;Std. Error&quot;</span>]</span>
+<span id="cb96-5"><a href="confidence-intervals.html#cb96-5" aria-hidden="true" tabindex="-1"></a>gamma_std_error <span class="ot">&lt;-</span> <span class="fu">matrix</span>(gamma_std_error, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
+<span id="cb96-6"><a href="confidence-intervals.html#cb96-6" aria-hidden="true" tabindex="-1"></a>gamma</span></code></pre></div>
 <pre><code>##            [,1]       [,2]
 ## [1,] 0.94980209 0.05019791
 ## [2,] 0.02592204 0.97407796</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="confidence-intervals.html#cb12-1" aria-hidden="true" tabindex="-1"></a>gamma_std_error</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="confidence-intervals.html#cb98-1" aria-hidden="true" tabindex="-1"></a>gamma_std_error</span></code></pre></div>
 <pre><code>##            [,1]       [,2]
 ## [1,] 0.04374676 0.04374676
 ## [2,] 0.02088688 0.02088688</code></pre>
 <p>Standard errors for <span class="math inline">\(\hat{{\boldsymbol\delta}}\)</span></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="confidence-intervals.html#cb14-1" aria-hidden="true" tabindex="-1"></a>rows <span class="ot">&lt;-</span> <span class="fu">rownames</span>(adrep) <span class="sc">==</span> <span class="st">&quot;delta&quot;</span></span>
-<span id="cb14-2"><a href="confidence-intervals.html#cb14-2" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> adrep[rows, <span class="st">&quot;Estimate&quot;</span>]</span>
-<span id="cb14-3"><a href="confidence-intervals.html#cb14-3" aria-hidden="true" tabindex="-1"></a>delta_std_error <span class="ot">&lt;-</span> adrep[rows, <span class="st">&quot;Std. Error&quot;</span>]</span>
-<span id="cb14-4"><a href="confidence-intervals.html#cb14-4" aria-hidden="true" tabindex="-1"></a>delta</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="confidence-intervals.html#cb100-1" aria-hidden="true" tabindex="-1"></a>rows <span class="ot">&lt;-</span> <span class="fu">rownames</span>(adrep) <span class="sc">==</span> <span class="st">&quot;delta&quot;</span></span>
+<span id="cb100-2"><a href="confidence-intervals.html#cb100-2" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> adrep[rows, <span class="st">&quot;Estimate&quot;</span>]</span>
+<span id="cb100-3"><a href="confidence-intervals.html#cb100-3" aria-hidden="true" tabindex="-1"></a>delta_std_error <span class="ot">&lt;-</span> adrep[rows, <span class="st">&quot;Std. Error&quot;</span>]</span>
+<span id="cb100-4"><a href="confidence-intervals.html#cb100-4" aria-hidden="true" tabindex="-1"></a>delta</span></code></pre></div>
 <pre><code>##    delta    delta 
 ## 0.340542 0.659458</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="confidence-intervals.html#cb16-1" aria-hidden="true" tabindex="-1"></a>delta_std_error</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="confidence-intervals.html#cb102-1" aria-hidden="true" tabindex="-1"></a>delta_std_error</span></code></pre></div>
 <pre><code>##     delta     delta 
 ## 0.2305644 0.2305644</code></pre>
 </div>
@@ -331,28 +348,28 @@ However, it is usually more interesting to access the standard errors of the nat
 <p>In order to perform a parametric bootstrap, we need to be able to generate data from a set of parameters.</p>
 <p>For readability and code maintenance, it is conventional to store procedures that will be used more than once into functions.</p>
 <p>The data-generating function is defined in .</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="confidence-intervals.html#cb18-1" aria-hidden="true" tabindex="-1"></a>pois.HMM.generate_sample <span class="ot">&lt;-</span> <span class="cf">function</span>(ns,mod) {</span>
-<span id="cb18-2"><a href="confidence-intervals.html#cb18-2" aria-hidden="true" tabindex="-1"></a>  mvect <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>mod<span class="sc">$</span>m</span>
-<span id="cb18-3"><a href="confidence-intervals.html#cb18-3" aria-hidden="true" tabindex="-1"></a>  state <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ns)</span>
-<span id="cb18-4"><a href="confidence-intervals.html#cb18-4" aria-hidden="true" tabindex="-1"></a>  state[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">sample</span>(mvect, <span class="dv">1</span>, <span class="at">prob =</span> mod<span class="sc">$</span>delta)</span>
-<span id="cb18-5"><a href="confidence-intervals.html#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>ns) {</span>
-<span id="cb18-6"><a href="confidence-intervals.html#cb18-6" aria-hidden="true" tabindex="-1"></a>    state[i] <span class="ot">&lt;-</span> <span class="fu">sample</span>(mvect, <span class="dv">1</span>, <span class="at">prob =</span> mod<span class="sc">$</span>gamma[state[i <span class="sc">-</span> <span class="dv">1</span>], ])</span>
-<span id="cb18-7"><a href="confidence-intervals.html#cb18-7" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb18-8"><a href="confidence-intervals.html#cb18-8" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rpois</span>(ns, <span class="at">lambda =</span> mod<span class="sc">$</span>lambda[state])</span>
-<span id="cb18-9"><a href="confidence-intervals.html#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
-<span id="cb18-10"><a href="confidence-intervals.html#cb18-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="confidence-intervals.html#cb104-1" aria-hidden="true" tabindex="-1"></a>pois.HMM.generate_sample <span class="ot">&lt;-</span> <span class="cf">function</span>(ns,mod) {</span>
+<span id="cb104-2"><a href="confidence-intervals.html#cb104-2" aria-hidden="true" tabindex="-1"></a>  mvect <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>mod<span class="sc">$</span>m</span>
+<span id="cb104-3"><a href="confidence-intervals.html#cb104-3" aria-hidden="true" tabindex="-1"></a>  state <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ns)</span>
+<span id="cb104-4"><a href="confidence-intervals.html#cb104-4" aria-hidden="true" tabindex="-1"></a>  state[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">sample</span>(mvect, <span class="dv">1</span>, <span class="at">prob =</span> mod<span class="sc">$</span>delta)</span>
+<span id="cb104-5"><a href="confidence-intervals.html#cb104-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>ns) {</span>
+<span id="cb104-6"><a href="confidence-intervals.html#cb104-6" aria-hidden="true" tabindex="-1"></a>    state[i] <span class="ot">&lt;-</span> <span class="fu">sample</span>(mvect, <span class="dv">1</span>, <span class="at">prob =</span> mod<span class="sc">$</span>gamma[state[i <span class="sc">-</span> <span class="dv">1</span>], ])</span>
+<span id="cb104-7"><a href="confidence-intervals.html#cb104-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb104-8"><a href="confidence-intervals.html#cb104-8" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rpois</span>(ns, <span class="at">lambda =</span> mod<span class="sc">$</span>lambda[state])</span>
+<span id="cb104-9"><a href="confidence-intervals.html#cb104-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb104-10"><a href="confidence-intervals.html#cb104-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Further, one can retrieve the state sequence used to generate the data by performing an adjustment:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="confidence-intervals.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a random sample from a HMM</span></span>
-<span id="cb19-2"><a href="confidence-intervals.html#cb19-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.generate_sample  <span class="ot">&lt;-</span> <span class="cf">function</span>(ns, mod) {</span>
-<span id="cb19-3"><a href="confidence-intervals.html#cb19-3" aria-hidden="true" tabindex="-1"></a>  mvect <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>mod<span class="sc">$</span>m</span>
-<span id="cb19-4"><a href="confidence-intervals.html#cb19-4" aria-hidden="true" tabindex="-1"></a>  state <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ns)</span>
-<span id="cb19-5"><a href="confidence-intervals.html#cb19-5" aria-hidden="true" tabindex="-1"></a>  state[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">sample</span>(mvect, <span class="dv">1</span>, <span class="at">prob =</span> mod<span class="sc">$</span>delta)</span>
-<span id="cb19-6"><a href="confidence-intervals.html#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>ns) {</span>
-<span id="cb19-7"><a href="confidence-intervals.html#cb19-7" aria-hidden="true" tabindex="-1"></a>    state[i] <span class="ot">&lt;-</span> <span class="fu">sample</span>(mvect, <span class="dv">1</span>, <span class="at">prob =</span> mod<span class="sc">$</span>gamma[state[i <span class="sc">-</span> <span class="dv">1</span>], ])</span>
-<span id="cb19-8"><a href="confidence-intervals.html#cb19-8" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb19-9"><a href="confidence-intervals.html#cb19-9" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rpois</span>(ns, <span class="at">lambda =</span> mod<span class="sc">$</span>lambda[state])</span>
-<span id="cb19-10"><a href="confidence-intervals.html#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">data =</span> x, <span class="at">state =</span> state))</span>
-<span id="cb19-11"><a href="confidence-intervals.html#cb19-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="confidence-intervals.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a random sample from a HMM</span></span>
+<span id="cb105-2"><a href="confidence-intervals.html#cb105-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.generate_sample  <span class="ot">&lt;-</span> <span class="cf">function</span>(ns, mod) {</span>
+<span id="cb105-3"><a href="confidence-intervals.html#cb105-3" aria-hidden="true" tabindex="-1"></a>  mvect <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>mod<span class="sc">$</span>m</span>
+<span id="cb105-4"><a href="confidence-intervals.html#cb105-4" aria-hidden="true" tabindex="-1"></a>  state <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ns)</span>
+<span id="cb105-5"><a href="confidence-intervals.html#cb105-5" aria-hidden="true" tabindex="-1"></a>  state[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">sample</span>(mvect, <span class="dv">1</span>, <span class="at">prob =</span> mod<span class="sc">$</span>delta)</span>
+<span id="cb105-6"><a href="confidence-intervals.html#cb105-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>ns) {</span>
+<span id="cb105-7"><a href="confidence-intervals.html#cb105-7" aria-hidden="true" tabindex="-1"></a>    state[i] <span class="ot">&lt;-</span> <span class="fu">sample</span>(mvect, <span class="dv">1</span>, <span class="at">prob =</span> mod<span class="sc">$</span>gamma[state[i <span class="sc">-</span> <span class="dv">1</span>], ])</span>
+<span id="cb105-8"><a href="confidence-intervals.html#cb105-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb105-9"><a href="confidence-intervals.html#cb105-9" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rpois</span>(ns, <span class="at">lambda =</span> mod<span class="sc">$</span>lambda[state])</span>
+<span id="cb105-10"><a href="confidence-intervals.html#cb105-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">data =</span> x, <span class="at">state =</span> state))</span>
+<span id="cb105-11"><a href="confidence-intervals.html#cb105-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>The results are returned in a list to simplify usage, as the intuitive way (<code>c(x, state)</code>) would append the state sequence to the data.</p>
 <p>In practice, HMMs sometimes cannot be estimated on generated samples.
 To deal with this, we can generate a new sample as long as HMMs cannot be estimated on it with the help of this more robust function which can easily be adapted to different needs.
@@ -360,251 +377,251 @@ Natural parameter estimates are returned for convenience.
 The argument <code>test_marqLevAlg</code> decides if convergence of <code>marqLevAlg</code> is required.
 The argument <code>std_error</code> decides if standard errors are returned along with TMB’s estimates.
 This function relies on the custom function <code>TMB_estimate</code> which is a wrapper of <code>nlminb</code> made for Poisson HMM estimation via TMB.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="confidence-intervals.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a random sample from a HMM</span></span>
-<span id="cb20-2"><a href="confidence-intervals.html#cb20-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.generate_estimable_sample <span class="ot">&lt;-</span> <span class="cf">function</span>(ns, mod, testing_params, <span class="at">params_names =</span> PARAMS_NAMES, <span class="at">test_marqLevAlg =</span> <span class="cn">FALSE</span>, <span class="at">std_error =</span> <span class="cn">FALSE</span>, <span class="at">label_switch =</span> <span class="cn">FALSE</span>) {</span>
-<span id="cb20-3"><a href="confidence-intervals.html#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">anyNA</span>(<span class="fu">c</span>(ns, mod, testing_params))) {</span>
-<span id="cb20-4"><a href="confidence-intervals.html#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Some parameters are missing in pois.HMM.generate_estimable_sample&quot;</span>)</span>
-<span id="cb20-5"><a href="confidence-intervals.html#cb20-5" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb20-6"><a href="confidence-intervals.html#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Count occurrences for each error</span></span>
-<span id="cb20-7"><a href="confidence-intervals.html#cb20-7" aria-hidden="true" tabindex="-1"></a>  failure <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;state_number&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
-<span id="cb20-8"><a href="confidence-intervals.html#cb20-8" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMB_null&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
-<span id="cb20-9"><a href="confidence-intervals.html#cb20-9" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMB_converge&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
-<span id="cb20-10"><a href="confidence-intervals.html#cb20-10" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMB_G_null&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
-<span id="cb20-11"><a href="confidence-intervals.html#cb20-11" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMB_G_converge&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
-<span id="cb20-12"><a href="confidence-intervals.html#cb20-12" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMB_H_null&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
-<span id="cb20-13"><a href="confidence-intervals.html#cb20-13" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMB_H_converge&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
-<span id="cb20-14"><a href="confidence-intervals.html#cb20-14" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMG_GH_null&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
-<span id="cb20-15"><a href="confidence-intervals.html#cb20-15" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMG_GH_converge&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
-<span id="cb20-16"><a href="confidence-intervals.html#cb20-16" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;marqLevAlg_null&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
-<span id="cb20-17"><a href="confidence-intervals.html#cb20-17" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;marqLevAlg_converge&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
-<span id="cb20-18"><a href="confidence-intervals.html#cb20-18" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;NA_value&quot;</span> <span class="ot">=</span> <span class="dv">0</span>)</span>
-<span id="cb20-19"><a href="confidence-intervals.html#cb20-19" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> mod<span class="sc">$</span>m</span>
-<span id="cb20-20"><a href="confidence-intervals.html#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Loop as long as there is an issue with nlminb</span></span>
-<span id="cb20-21"><a href="confidence-intervals.html#cb20-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">repeat</span> {</span>
-<span id="cb20-22"><a href="confidence-intervals.html#cb20-22" aria-hidden="true" tabindex="-1"></a>    mod_temp <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb20-23"><a href="confidence-intervals.html#cb20-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">#simulate the data</span></span>
-<span id="cb20-24"><a href="confidence-intervals.html#cb20-24" aria-hidden="true" tabindex="-1"></a>    new_data <span class="ot">&lt;-</span> <span class="fu">pois.HMM.generate_sample</span>(<span class="at">ns =</span> ns,</span>
-<span id="cb20-25"><a href="confidence-intervals.html#cb20-25" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">mod =</span> mod)</span>
-<span id="cb20-26"><a href="confidence-intervals.html#cb20-26" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-27"><a href="confidence-intervals.html#cb20-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If the number of states generated is different from m, discard the data</span></span>
-<span id="cb20-28"><a href="confidence-intervals.html#cb20-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(<span class="fu">unique</span>(new_data<span class="sc">$</span>state)) <span class="sc">!=</span> m) {</span>
-<span id="cb20-29"><a href="confidence-intervals.html#cb20-29" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;state_number&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;state_number&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb20-30"><a href="confidence-intervals.html#cb20-30" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
-<span id="cb20-31"><a href="confidence-intervals.html#cb20-31" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-32"><a href="confidence-intervals.html#cb20-32" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-33"><a href="confidence-intervals.html#cb20-33" aria-hidden="true" tabindex="-1"></a>    TMB_benchmark_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> new_data<span class="sc">$</span>data, <span class="at">m =</span> m)</span>
-<span id="cb20-34"><a href="confidence-intervals.html#cb20-34" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-35"><a href="confidence-intervals.html#cb20-35" aria-hidden="true" tabindex="-1"></a>    testing_w_params <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(<span class="at">m =</span> m, <span class="at">lambda =</span> testing_params<span class="sc">$</span>lambda, <span class="at">gamma =</span> testing_params<span class="sc">$</span>gamma, <span class="at">delta =</span> testing_params<span class="sc">$</span>delta)</span>
-<span id="cb20-36"><a href="confidence-intervals.html#cb20-36" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-37"><a href="confidence-intervals.html#cb20-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test TMB</span></span>
-<span id="cb20-38"><a href="confidence-intervals.html#cb20-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">suppressWarnings</span>(mod_temp <span class="ot">&lt;-</span> <span class="fu">TMB.estimate</span>(<span class="at">TMB_data =</span> TMB_benchmark_data,</span>
-<span id="cb20-39"><a href="confidence-intervals.html#cb20-39" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">parameters =</span> testing_w_params,</span>
-<span id="cb20-40"><a href="confidence-intervals.html#cb20-40" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">std_error =</span> std_error))</span>
-<span id="cb20-41"><a href="confidence-intervals.html#cb20-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t reach any result, discard the data</span></span>
-<span id="cb20-42"><a href="confidence-intervals.html#cb20-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.null</span>(mod_temp)) {</span>
-<span id="cb20-43"><a href="confidence-intervals.html#cb20-43" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_null&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_null&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb20-44"><a href="confidence-intervals.html#cb20-44" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
-<span id="cb20-45"><a href="confidence-intervals.html#cb20-45" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-46"><a href="confidence-intervals.html#cb20-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t converge successfully, discard the data</span></span>
-<span id="cb20-47"><a href="confidence-intervals.html#cb20-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (mod_temp<span class="sc">$</span>convergence <span class="sc">!=</span> <span class="dv">0</span>) {</span>
-<span id="cb20-48"><a href="confidence-intervals.html#cb20-48" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_converge&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_converge&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb20-49"><a href="confidence-intervals.html#cb20-49" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
-<span id="cb20-50"><a href="confidence-intervals.html#cb20-50" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-51"><a href="confidence-intervals.html#cb20-51" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-52"><a href="confidence-intervals.html#cb20-52" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test TMB_G</span></span>
-<span id="cb20-53"><a href="confidence-intervals.html#cb20-53" aria-hidden="true" tabindex="-1"></a>    <span class="fu">suppressWarnings</span>(mod_temp <span class="ot">&lt;-</span> <span class="fu">TMB.estimate</span>(<span class="at">TMB_data =</span> TMB_benchmark_data,</span>
-<span id="cb20-54"><a href="confidence-intervals.html#cb20-54" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">parameters =</span> testing_w_params,</span>
-<span id="cb20-55"><a href="confidence-intervals.html#cb20-55" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">gradient =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb20-56"><a href="confidence-intervals.html#cb20-56" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">std_error =</span> std_error))</span>
-<span id="cb20-57"><a href="confidence-intervals.html#cb20-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t reach any result, discard the data</span></span>
-<span id="cb20-58"><a href="confidence-intervals.html#cb20-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.null</span>(mod_temp)) {</span>
-<span id="cb20-59"><a href="confidence-intervals.html#cb20-59" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_G_null&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_G_null&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb20-60"><a href="confidence-intervals.html#cb20-60" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
-<span id="cb20-61"><a href="confidence-intervals.html#cb20-61" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-62"><a href="confidence-intervals.html#cb20-62" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t converge successfully, discard the data</span></span>
-<span id="cb20-63"><a href="confidence-intervals.html#cb20-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (mod_temp<span class="sc">$</span>convergence <span class="sc">!=</span> <span class="dv">0</span>) {</span>
-<span id="cb20-64"><a href="confidence-intervals.html#cb20-64" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_G_converge&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_G_converge&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb20-65"><a href="confidence-intervals.html#cb20-65" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
-<span id="cb20-66"><a href="confidence-intervals.html#cb20-66" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-67"><a href="confidence-intervals.html#cb20-67" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-68"><a href="confidence-intervals.html#cb20-68" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test TMB_H</span></span>
-<span id="cb20-69"><a href="confidence-intervals.html#cb20-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">suppressWarnings</span>(mod_temp <span class="ot">&lt;-</span> <span class="fu">TMB.estimate</span>(<span class="at">TMB_data =</span> TMB_benchmark_data,</span>
-<span id="cb20-70"><a href="confidence-intervals.html#cb20-70" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">parameters =</span> testing_w_params,</span>
-<span id="cb20-71"><a href="confidence-intervals.html#cb20-71" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">hessian =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb20-72"><a href="confidence-intervals.html#cb20-72" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">std_error =</span> std_error))</span>
-<span id="cb20-73"><a href="confidence-intervals.html#cb20-73" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t reach any result, discard the data</span></span>
-<span id="cb20-74"><a href="confidence-intervals.html#cb20-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.null</span>(mod_temp)) {</span>
-<span id="cb20-75"><a href="confidence-intervals.html#cb20-75" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_H_null&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_H_null&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb20-76"><a href="confidence-intervals.html#cb20-76" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
-<span id="cb20-77"><a href="confidence-intervals.html#cb20-77" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-78"><a href="confidence-intervals.html#cb20-78" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t converge successfully, discard the data</span></span>
-<span id="cb20-79"><a href="confidence-intervals.html#cb20-79" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (mod_temp<span class="sc">$</span>convergence <span class="sc">!=</span> <span class="dv">0</span>) {</span>
-<span id="cb20-80"><a href="confidence-intervals.html#cb20-80" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_H_converge&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_H_converge&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb20-81"><a href="confidence-intervals.html#cb20-81" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
-<span id="cb20-82"><a href="confidence-intervals.html#cb20-82" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-83"><a href="confidence-intervals.html#cb20-83" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-84"><a href="confidence-intervals.html#cb20-84" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test TMB_GH</span></span>
-<span id="cb20-85"><a href="confidence-intervals.html#cb20-85" aria-hidden="true" tabindex="-1"></a>    <span class="fu">suppressWarnings</span>(mod_temp <span class="ot">&lt;-</span> <span class="fu">TMB.estimate</span>(<span class="at">TMB_data =</span> TMB_benchmark_data,</span>
-<span id="cb20-86"><a href="confidence-intervals.html#cb20-86" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">parameters =</span> testing_w_params,</span>
-<span id="cb20-87"><a href="confidence-intervals.html#cb20-87" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">gradient =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb20-88"><a href="confidence-intervals.html#cb20-88" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">hessian =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb20-89"><a href="confidence-intervals.html#cb20-89" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">std_error =</span> std_error))</span>
-<span id="cb20-90"><a href="confidence-intervals.html#cb20-90" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t reach any result, discard the data</span></span>
-<span id="cb20-91"><a href="confidence-intervals.html#cb20-91" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.null</span>(mod_temp)) {</span>
-<span id="cb20-92"><a href="confidence-intervals.html#cb20-92" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_GH_null&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_GH_null&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb20-93"><a href="confidence-intervals.html#cb20-93" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
-<span id="cb20-94"><a href="confidence-intervals.html#cb20-94" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-95"><a href="confidence-intervals.html#cb20-95" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t converge successfully, discard the data</span></span>
-<span id="cb20-96"><a href="confidence-intervals.html#cb20-96" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (mod_temp<span class="sc">$</span>convergence <span class="sc">!=</span> <span class="dv">0</span>) {</span>
-<span id="cb20-97"><a href="confidence-intervals.html#cb20-97" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_GH_converge&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_GH_converge&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb20-98"><a href="confidence-intervals.html#cb20-98" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
-<span id="cb20-99"><a href="confidence-intervals.html#cb20-99" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-100"><a href="confidence-intervals.html#cb20-100" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-101"><a href="confidence-intervals.html#cb20-101" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test marqLevAlg</span></span>
-<span id="cb20-102"><a href="confidence-intervals.html#cb20-102" aria-hidden="true" tabindex="-1"></a>    <span class="co"># marqLevAlg sometimes doesn&#39;t converge either, discard the data in these cases</span></span>
-<span id="cb20-103"><a href="confidence-intervals.html#cb20-103" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (test_marqLevAlg <span class="sc">==</span> <span class="cn">TRUE</span>) {</span>
-<span id="cb20-104"><a href="confidence-intervals.html#cb20-104" aria-hidden="true" tabindex="-1"></a>      testing_w_params <span class="ot">&lt;-</span> <span class="fu">unlist</span>(testing_w_params)</span>
-<span id="cb20-105"><a href="confidence-intervals.html#cb20-105" aria-hidden="true" tabindex="-1"></a>      marq <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>({</span>
-<span id="cb20-106"><a href="confidence-intervals.html#cb20-106" aria-hidden="true" tabindex="-1"></a>        <span class="fu">marqLevAlg</span>(<span class="at">b =</span> testing_w_params,</span>
-<span id="cb20-107"><a href="confidence-intervals.html#cb20-107" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fn =</span> mod_temp<span class="sc">$</span>obj<span class="sc">$</span>fn,</span>
-<span id="cb20-108"><a href="confidence-intervals.html#cb20-108" aria-hidden="true" tabindex="-1"></a>                   <span class="at">gr =</span> mod_temp<span class="sc">$</span>obj<span class="sc">$</span>gr,</span>
-<span id="cb20-109"><a href="confidence-intervals.html#cb20-109" aria-hidden="true" tabindex="-1"></a>                   <span class="at">hess =</span> mod_temp<span class="sc">$</span>obj<span class="sc">$</span>he,</span>
-<span id="cb20-110"><a href="confidence-intervals.html#cb20-110" aria-hidden="true" tabindex="-1"></a>                   <span class="at">maxiter =</span> <span class="dv">10000</span>)</span>
-<span id="cb20-111"><a href="confidence-intervals.html#cb20-111" aria-hidden="true" tabindex="-1"></a>      },</span>
-<span id="cb20-112"><a href="confidence-intervals.html#cb20-112" aria-hidden="true" tabindex="-1"></a>      <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb20-113"><a href="confidence-intervals.html#cb20-113" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span>()</span>
-<span id="cb20-114"><a href="confidence-intervals.html#cb20-114" aria-hidden="true" tabindex="-1"></a>      })</span>
-<span id="cb20-115"><a href="confidence-intervals.html#cb20-115" aria-hidden="true" tabindex="-1"></a>      <span class="co"># If nlminb doesn&#39;t reach any result, discard the data</span></span>
-<span id="cb20-116"><a href="confidence-intervals.html#cb20-116" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.null</span>(marq)) {</span>
-<span id="cb20-117"><a href="confidence-intervals.html#cb20-117" aria-hidden="true" tabindex="-1"></a>        failure[<span class="st">&quot;marqLevAlg_null&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;marqLevAlg_null&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb20-118"><a href="confidence-intervals.html#cb20-118" aria-hidden="true" tabindex="-1"></a>        <span class="cf">next</span></span>
-<span id="cb20-119"><a href="confidence-intervals.html#cb20-119" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb20-120"><a href="confidence-intervals.html#cb20-120" aria-hidden="true" tabindex="-1"></a>      <span class="co"># If marqLevAlg doesn&#39;t converge successfully, discard the data</span></span>
-<span id="cb20-121"><a href="confidence-intervals.html#cb20-121" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (marq<span class="sc">$</span>istop <span class="sc">!=</span> <span class="dv">1</span>) {</span>
-<span id="cb20-122"><a href="confidence-intervals.html#cb20-122" aria-hidden="true" tabindex="-1"></a>        failure[<span class="st">&quot;marqLevAlg_converge&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;marqLevAlg_converge&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb20-123"><a href="confidence-intervals.html#cb20-123" aria-hidden="true" tabindex="-1"></a>        <span class="cf">next</span></span>
-<span id="cb20-124"><a href="confidence-intervals.html#cb20-124" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb20-125"><a href="confidence-intervals.html#cb20-125" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-126"><a href="confidence-intervals.html#cb20-126" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-127"><a href="confidence-intervals.html#cb20-127" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (label_switch <span class="sc">==</span> <span class="cn">TRUE</span>) {</span>
-<span id="cb20-128"><a href="confidence-intervals.html#cb20-128" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Label switching</span></span>
-<span id="cb20-129"><a href="confidence-intervals.html#cb20-129" aria-hidden="true" tabindex="-1"></a>      <span class="co"># In practice, we don&#39;t use it for the tests because it doesn&#39;t sort mod$obj</span></span>
-<span id="cb20-130"><a href="confidence-intervals.html#cb20-130" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Sorting them could lead to bugs and errors, and although it is better in principle,</span></span>
-<span id="cb20-131"><a href="confidence-intervals.html#cb20-131" aria-hidden="true" tabindex="-1"></a>      <span class="co"># there is little benefit in practice. The benefit would be to infer profile likelihood CIs</span></span>
-<span id="cb20-132"><a href="confidence-intervals.html#cb20-132" aria-hidden="true" tabindex="-1"></a>      <span class="co"># more easily when calculating coverage probabilities.</span></span>
-<span id="cb20-133"><a href="confidence-intervals.html#cb20-133" aria-hidden="true" tabindex="-1"></a>      natural_parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.label.order</span>(<span class="at">m =</span> m,</span>
-<span id="cb20-134"><a href="confidence-intervals.html#cb20-134" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">lambda =</span> mod_temp<span class="sc">$</span>lambda,</span>
-<span id="cb20-135"><a href="confidence-intervals.html#cb20-135" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">gamma =</span> mod_temp<span class="sc">$</span>gamma,</span>
-<span id="cb20-136"><a href="confidence-intervals.html#cb20-136" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">delta =</span> mod_temp<span class="sc">$</span>delta,</span>
-<span id="cb20-137"><a href="confidence-intervals.html#cb20-137" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">lambda_std_error =</span> mod_temp<span class="sc">$</span>lambda_std_error,</span>
-<span id="cb20-138"><a href="confidence-intervals.html#cb20-138" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">gamma_std_error =</span> mod_temp<span class="sc">$</span>gamma_std_error,</span>
-<span id="cb20-139"><a href="confidence-intervals.html#cb20-139" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">delta_std_error =</span> mod_temp<span class="sc">$</span>delta_std_error)</span>
-<span id="cb20-140"><a href="confidence-intervals.html#cb20-140" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb20-141"><a href="confidence-intervals.html#cb20-141" aria-hidden="true" tabindex="-1"></a>      natural_parameters <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">m =</span> m,</span>
-<span id="cb20-142"><a href="confidence-intervals.html#cb20-142" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">lambda =</span> mod_temp<span class="sc">$</span>lambda,</span>
-<span id="cb20-143"><a href="confidence-intervals.html#cb20-143" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">gamma =</span> mod_temp<span class="sc">$</span>gamma,</span>
-<span id="cb20-144"><a href="confidence-intervals.html#cb20-144" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">delta =</span> mod_temp<span class="sc">$</span>delta,</span>
-<span id="cb20-145"><a href="confidence-intervals.html#cb20-145" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">lambda_std_error =</span> mod_temp<span class="sc">$</span>lambda_std_error,</span>
-<span id="cb20-146"><a href="confidence-intervals.html#cb20-146" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">gamma_std_error =</span> mod_temp<span class="sc">$</span>gamma_std_error,</span>
-<span id="cb20-147"><a href="confidence-intervals.html#cb20-147" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">delta_std_error =</span> mod_temp<span class="sc">$</span>delta_std_error)</span>
-<span id="cb20-148"><a href="confidence-intervals.html#cb20-148" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-149"><a href="confidence-intervals.html#cb20-149" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-150"><a href="confidence-intervals.html#cb20-150" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If some parameters are NA for some reason, discard the data</span></span>
-<span id="cb20-151"><a href="confidence-intervals.html#cb20-151" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">anyNA</span>(natural_parameters[params_names], <span class="at">recursive =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb20-152"><a href="confidence-intervals.html#cb20-152" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;NA_value&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;NA_value&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb20-153"><a href="confidence-intervals.html#cb20-153" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
-<span id="cb20-154"><a href="confidence-intervals.html#cb20-154" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-155"><a href="confidence-intervals.html#cb20-155" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-156"><a href="confidence-intervals.html#cb20-156" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If everything went well, end the &quot;repeat&quot; loop</span></span>
-<span id="cb20-157"><a href="confidence-intervals.html#cb20-157" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
-<span id="cb20-158"><a href="confidence-intervals.html#cb20-158" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb20-159"><a href="confidence-intervals.html#cb20-159" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(<span class="at">data =</span> <span class="fu">list</span>(new_data<span class="sc">$</span>data), <span class="at">natural_parameters =</span> <span class="fu">list</span>(natural_parameters), <span class="at">mod =</span> <span class="fu">list</span>(mod_temp), <span class="at">failure =</span> <span class="fu">list</span>(failure)))</span>
-<span id="cb20-160"><a href="confidence-intervals.html#cb20-160" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="confidence-intervals.html#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a random sample from a HMM</span></span>
+<span id="cb106-2"><a href="confidence-intervals.html#cb106-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.generate_estimable_sample <span class="ot">&lt;-</span> <span class="cf">function</span>(ns, mod, testing_params, <span class="at">params_names =</span> PARAMS_NAMES, <span class="at">test_marqLevAlg =</span> <span class="cn">FALSE</span>, <span class="at">std_error =</span> <span class="cn">FALSE</span>, <span class="at">label_switch =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb106-3"><a href="confidence-intervals.html#cb106-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">anyNA</span>(<span class="fu">c</span>(ns, mod, testing_params))) {</span>
+<span id="cb106-4"><a href="confidence-intervals.html#cb106-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Some parameters are missing in pois.HMM.generate_estimable_sample&quot;</span>)</span>
+<span id="cb106-5"><a href="confidence-intervals.html#cb106-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb106-6"><a href="confidence-intervals.html#cb106-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Count occurrences for each error</span></span>
+<span id="cb106-7"><a href="confidence-intervals.html#cb106-7" aria-hidden="true" tabindex="-1"></a>  failure <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;state_number&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
+<span id="cb106-8"><a href="confidence-intervals.html#cb106-8" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMB_null&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
+<span id="cb106-9"><a href="confidence-intervals.html#cb106-9" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMB_converge&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
+<span id="cb106-10"><a href="confidence-intervals.html#cb106-10" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMB_G_null&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
+<span id="cb106-11"><a href="confidence-intervals.html#cb106-11" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMB_G_converge&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
+<span id="cb106-12"><a href="confidence-intervals.html#cb106-12" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMB_H_null&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
+<span id="cb106-13"><a href="confidence-intervals.html#cb106-13" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMB_H_converge&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
+<span id="cb106-14"><a href="confidence-intervals.html#cb106-14" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMG_GH_null&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
+<span id="cb106-15"><a href="confidence-intervals.html#cb106-15" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;TMG_GH_converge&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
+<span id="cb106-16"><a href="confidence-intervals.html#cb106-16" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;marqLevAlg_null&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
+<span id="cb106-17"><a href="confidence-intervals.html#cb106-17" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;marqLevAlg_converge&quot;</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
+<span id="cb106-18"><a href="confidence-intervals.html#cb106-18" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;NA_value&quot;</span> <span class="ot">=</span> <span class="dv">0</span>)</span>
+<span id="cb106-19"><a href="confidence-intervals.html#cb106-19" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> mod<span class="sc">$</span>m</span>
+<span id="cb106-20"><a href="confidence-intervals.html#cb106-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Loop as long as there is an issue with nlminb</span></span>
+<span id="cb106-21"><a href="confidence-intervals.html#cb106-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">repeat</span> {</span>
+<span id="cb106-22"><a href="confidence-intervals.html#cb106-22" aria-hidden="true" tabindex="-1"></a>    mod_temp <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb106-23"><a href="confidence-intervals.html#cb106-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">#simulate the data</span></span>
+<span id="cb106-24"><a href="confidence-intervals.html#cb106-24" aria-hidden="true" tabindex="-1"></a>    new_data <span class="ot">&lt;-</span> <span class="fu">pois.HMM.generate_sample</span>(<span class="at">ns =</span> ns,</span>
+<span id="cb106-25"><a href="confidence-intervals.html#cb106-25" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">mod =</span> mod)</span>
+<span id="cb106-26"><a href="confidence-intervals.html#cb106-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb106-27"><a href="confidence-intervals.html#cb106-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If the number of states generated is different from m, discard the data</span></span>
+<span id="cb106-28"><a href="confidence-intervals.html#cb106-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(<span class="fu">unique</span>(new_data<span class="sc">$</span>state)) <span class="sc">!=</span> m) {</span>
+<span id="cb106-29"><a href="confidence-intervals.html#cb106-29" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;state_number&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;state_number&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb106-30"><a href="confidence-intervals.html#cb106-30" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb106-31"><a href="confidence-intervals.html#cb106-31" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb106-32"><a href="confidence-intervals.html#cb106-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb106-33"><a href="confidence-intervals.html#cb106-33" aria-hidden="true" tabindex="-1"></a>    TMB_benchmark_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> new_data<span class="sc">$</span>data, <span class="at">m =</span> m)</span>
+<span id="cb106-34"><a href="confidence-intervals.html#cb106-34" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb106-35"><a href="confidence-intervals.html#cb106-35" aria-hidden="true" tabindex="-1"></a>    testing_w_params <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(<span class="at">m =</span> m, <span class="at">lambda =</span> testing_params<span class="sc">$</span>lambda, <span class="at">gamma =</span> testing_params<span class="sc">$</span>gamma, <span class="at">delta =</span> testing_params<span class="sc">$</span>delta)</span>
+<span id="cb106-36"><a href="confidence-intervals.html#cb106-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb106-37"><a href="confidence-intervals.html#cb106-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test TMB</span></span>
+<span id="cb106-38"><a href="confidence-intervals.html#cb106-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">suppressWarnings</span>(mod_temp <span class="ot">&lt;-</span> <span class="fu">TMB.estimate</span>(<span class="at">TMB_data =</span> TMB_benchmark_data,</span>
+<span id="cb106-39"><a href="confidence-intervals.html#cb106-39" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">parameters =</span> testing_w_params,</span>
+<span id="cb106-40"><a href="confidence-intervals.html#cb106-40" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">std_error =</span> std_error))</span>
+<span id="cb106-41"><a href="confidence-intervals.html#cb106-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t reach any result, discard the data</span></span>
+<span id="cb106-42"><a href="confidence-intervals.html#cb106-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.null</span>(mod_temp)) {</span>
+<span id="cb106-43"><a href="confidence-intervals.html#cb106-43" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_null&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_null&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb106-44"><a href="confidence-intervals.html#cb106-44" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb106-45"><a href="confidence-intervals.html#cb106-45" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb106-46"><a href="confidence-intervals.html#cb106-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t converge successfully, discard the data</span></span>
+<span id="cb106-47"><a href="confidence-intervals.html#cb106-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (mod_temp<span class="sc">$</span>convergence <span class="sc">!=</span> <span class="dv">0</span>) {</span>
+<span id="cb106-48"><a href="confidence-intervals.html#cb106-48" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_converge&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_converge&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb106-49"><a href="confidence-intervals.html#cb106-49" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb106-50"><a href="confidence-intervals.html#cb106-50" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb106-51"><a href="confidence-intervals.html#cb106-51" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb106-52"><a href="confidence-intervals.html#cb106-52" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test TMB_G</span></span>
+<span id="cb106-53"><a href="confidence-intervals.html#cb106-53" aria-hidden="true" tabindex="-1"></a>    <span class="fu">suppressWarnings</span>(mod_temp <span class="ot">&lt;-</span> <span class="fu">TMB.estimate</span>(<span class="at">TMB_data =</span> TMB_benchmark_data,</span>
+<span id="cb106-54"><a href="confidence-intervals.html#cb106-54" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">parameters =</span> testing_w_params,</span>
+<span id="cb106-55"><a href="confidence-intervals.html#cb106-55" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">gradient =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb106-56"><a href="confidence-intervals.html#cb106-56" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">std_error =</span> std_error))</span>
+<span id="cb106-57"><a href="confidence-intervals.html#cb106-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t reach any result, discard the data</span></span>
+<span id="cb106-58"><a href="confidence-intervals.html#cb106-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.null</span>(mod_temp)) {</span>
+<span id="cb106-59"><a href="confidence-intervals.html#cb106-59" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_G_null&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_G_null&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb106-60"><a href="confidence-intervals.html#cb106-60" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb106-61"><a href="confidence-intervals.html#cb106-61" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb106-62"><a href="confidence-intervals.html#cb106-62" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t converge successfully, discard the data</span></span>
+<span id="cb106-63"><a href="confidence-intervals.html#cb106-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (mod_temp<span class="sc">$</span>convergence <span class="sc">!=</span> <span class="dv">0</span>) {</span>
+<span id="cb106-64"><a href="confidence-intervals.html#cb106-64" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_G_converge&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_G_converge&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb106-65"><a href="confidence-intervals.html#cb106-65" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb106-66"><a href="confidence-intervals.html#cb106-66" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb106-67"><a href="confidence-intervals.html#cb106-67" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb106-68"><a href="confidence-intervals.html#cb106-68" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test TMB_H</span></span>
+<span id="cb106-69"><a href="confidence-intervals.html#cb106-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">suppressWarnings</span>(mod_temp <span class="ot">&lt;-</span> <span class="fu">TMB.estimate</span>(<span class="at">TMB_data =</span> TMB_benchmark_data,</span>
+<span id="cb106-70"><a href="confidence-intervals.html#cb106-70" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">parameters =</span> testing_w_params,</span>
+<span id="cb106-71"><a href="confidence-intervals.html#cb106-71" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">hessian =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb106-72"><a href="confidence-intervals.html#cb106-72" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">std_error =</span> std_error))</span>
+<span id="cb106-73"><a href="confidence-intervals.html#cb106-73" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t reach any result, discard the data</span></span>
+<span id="cb106-74"><a href="confidence-intervals.html#cb106-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.null</span>(mod_temp)) {</span>
+<span id="cb106-75"><a href="confidence-intervals.html#cb106-75" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_H_null&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_H_null&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb106-76"><a href="confidence-intervals.html#cb106-76" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb106-77"><a href="confidence-intervals.html#cb106-77" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb106-78"><a href="confidence-intervals.html#cb106-78" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t converge successfully, discard the data</span></span>
+<span id="cb106-79"><a href="confidence-intervals.html#cb106-79" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (mod_temp<span class="sc">$</span>convergence <span class="sc">!=</span> <span class="dv">0</span>) {</span>
+<span id="cb106-80"><a href="confidence-intervals.html#cb106-80" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_H_converge&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_H_converge&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb106-81"><a href="confidence-intervals.html#cb106-81" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb106-82"><a href="confidence-intervals.html#cb106-82" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb106-83"><a href="confidence-intervals.html#cb106-83" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb106-84"><a href="confidence-intervals.html#cb106-84" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test TMB_GH</span></span>
+<span id="cb106-85"><a href="confidence-intervals.html#cb106-85" aria-hidden="true" tabindex="-1"></a>    <span class="fu">suppressWarnings</span>(mod_temp <span class="ot">&lt;-</span> <span class="fu">TMB.estimate</span>(<span class="at">TMB_data =</span> TMB_benchmark_data,</span>
+<span id="cb106-86"><a href="confidence-intervals.html#cb106-86" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">parameters =</span> testing_w_params,</span>
+<span id="cb106-87"><a href="confidence-intervals.html#cb106-87" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">gradient =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb106-88"><a href="confidence-intervals.html#cb106-88" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">hessian =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb106-89"><a href="confidence-intervals.html#cb106-89" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">std_error =</span> std_error))</span>
+<span id="cb106-90"><a href="confidence-intervals.html#cb106-90" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t reach any result, discard the data</span></span>
+<span id="cb106-91"><a href="confidence-intervals.html#cb106-91" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.null</span>(mod_temp)) {</span>
+<span id="cb106-92"><a href="confidence-intervals.html#cb106-92" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_GH_null&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_GH_null&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb106-93"><a href="confidence-intervals.html#cb106-93" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb106-94"><a href="confidence-intervals.html#cb106-94" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb106-95"><a href="confidence-intervals.html#cb106-95" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If nlminb doesn&#39;t converge successfully, discard the data</span></span>
+<span id="cb106-96"><a href="confidence-intervals.html#cb106-96" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (mod_temp<span class="sc">$</span>convergence <span class="sc">!=</span> <span class="dv">0</span>) {</span>
+<span id="cb106-97"><a href="confidence-intervals.html#cb106-97" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;TMB_GH_converge&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;TMB_GH_converge&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb106-98"><a href="confidence-intervals.html#cb106-98" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb106-99"><a href="confidence-intervals.html#cb106-99" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb106-100"><a href="confidence-intervals.html#cb106-100" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb106-101"><a href="confidence-intervals.html#cb106-101" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test marqLevAlg</span></span>
+<span id="cb106-102"><a href="confidence-intervals.html#cb106-102" aria-hidden="true" tabindex="-1"></a>    <span class="co"># marqLevAlg sometimes doesn&#39;t converge either, discard the data in these cases</span></span>
+<span id="cb106-103"><a href="confidence-intervals.html#cb106-103" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (test_marqLevAlg <span class="sc">==</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb106-104"><a href="confidence-intervals.html#cb106-104" aria-hidden="true" tabindex="-1"></a>      testing_w_params <span class="ot">&lt;-</span> <span class="fu">unlist</span>(testing_w_params)</span>
+<span id="cb106-105"><a href="confidence-intervals.html#cb106-105" aria-hidden="true" tabindex="-1"></a>      marq <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>({</span>
+<span id="cb106-106"><a href="confidence-intervals.html#cb106-106" aria-hidden="true" tabindex="-1"></a>        <span class="fu">marqLevAlg</span>(<span class="at">b =</span> testing_w_params,</span>
+<span id="cb106-107"><a href="confidence-intervals.html#cb106-107" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fn =</span> mod_temp<span class="sc">$</span>obj<span class="sc">$</span>fn,</span>
+<span id="cb106-108"><a href="confidence-intervals.html#cb106-108" aria-hidden="true" tabindex="-1"></a>                   <span class="at">gr =</span> mod_temp<span class="sc">$</span>obj<span class="sc">$</span>gr,</span>
+<span id="cb106-109"><a href="confidence-intervals.html#cb106-109" aria-hidden="true" tabindex="-1"></a>                   <span class="at">hess =</span> mod_temp<span class="sc">$</span>obj<span class="sc">$</span>he,</span>
+<span id="cb106-110"><a href="confidence-intervals.html#cb106-110" aria-hidden="true" tabindex="-1"></a>                   <span class="at">maxiter =</span> <span class="dv">10000</span>)</span>
+<span id="cb106-111"><a href="confidence-intervals.html#cb106-111" aria-hidden="true" tabindex="-1"></a>      },</span>
+<span id="cb106-112"><a href="confidence-intervals.html#cb106-112" aria-hidden="true" tabindex="-1"></a>      <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb106-113"><a href="confidence-intervals.html#cb106-113" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span>()</span>
+<span id="cb106-114"><a href="confidence-intervals.html#cb106-114" aria-hidden="true" tabindex="-1"></a>      })</span>
+<span id="cb106-115"><a href="confidence-intervals.html#cb106-115" aria-hidden="true" tabindex="-1"></a>      <span class="co"># If nlminb doesn&#39;t reach any result, discard the data</span></span>
+<span id="cb106-116"><a href="confidence-intervals.html#cb106-116" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.null</span>(marq)) {</span>
+<span id="cb106-117"><a href="confidence-intervals.html#cb106-117" aria-hidden="true" tabindex="-1"></a>        failure[<span class="st">&quot;marqLevAlg_null&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;marqLevAlg_null&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb106-118"><a href="confidence-intervals.html#cb106-118" aria-hidden="true" tabindex="-1"></a>        <span class="cf">next</span></span>
+<span id="cb106-119"><a href="confidence-intervals.html#cb106-119" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb106-120"><a href="confidence-intervals.html#cb106-120" aria-hidden="true" tabindex="-1"></a>      <span class="co"># If marqLevAlg doesn&#39;t converge successfully, discard the data</span></span>
+<span id="cb106-121"><a href="confidence-intervals.html#cb106-121" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (marq<span class="sc">$</span>istop <span class="sc">!=</span> <span class="dv">1</span>) {</span>
+<span id="cb106-122"><a href="confidence-intervals.html#cb106-122" aria-hidden="true" tabindex="-1"></a>        failure[<span class="st">&quot;marqLevAlg_converge&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;marqLevAlg_converge&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb106-123"><a href="confidence-intervals.html#cb106-123" aria-hidden="true" tabindex="-1"></a>        <span class="cf">next</span></span>
+<span id="cb106-124"><a href="confidence-intervals.html#cb106-124" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb106-125"><a href="confidence-intervals.html#cb106-125" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb106-126"><a href="confidence-intervals.html#cb106-126" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb106-127"><a href="confidence-intervals.html#cb106-127" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (label_switch <span class="sc">==</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb106-128"><a href="confidence-intervals.html#cb106-128" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Label switching</span></span>
+<span id="cb106-129"><a href="confidence-intervals.html#cb106-129" aria-hidden="true" tabindex="-1"></a>      <span class="co"># In practice, we don&#39;t use it for the tests because it doesn&#39;t sort mod$obj</span></span>
+<span id="cb106-130"><a href="confidence-intervals.html#cb106-130" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Sorting them could lead to bugs and errors, and although it is better in principle,</span></span>
+<span id="cb106-131"><a href="confidence-intervals.html#cb106-131" aria-hidden="true" tabindex="-1"></a>      <span class="co"># there is little benefit in practice. The benefit would be to infer profile likelihood CIs</span></span>
+<span id="cb106-132"><a href="confidence-intervals.html#cb106-132" aria-hidden="true" tabindex="-1"></a>      <span class="co"># more easily when calculating coverage probabilities.</span></span>
+<span id="cb106-133"><a href="confidence-intervals.html#cb106-133" aria-hidden="true" tabindex="-1"></a>      natural_parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.label.order</span>(<span class="at">m =</span> m,</span>
+<span id="cb106-134"><a href="confidence-intervals.html#cb106-134" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">lambda =</span> mod_temp<span class="sc">$</span>lambda,</span>
+<span id="cb106-135"><a href="confidence-intervals.html#cb106-135" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">gamma =</span> mod_temp<span class="sc">$</span>gamma,</span>
+<span id="cb106-136"><a href="confidence-intervals.html#cb106-136" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">delta =</span> mod_temp<span class="sc">$</span>delta,</span>
+<span id="cb106-137"><a href="confidence-intervals.html#cb106-137" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">lambda_std_error =</span> mod_temp<span class="sc">$</span>lambda_std_error,</span>
+<span id="cb106-138"><a href="confidence-intervals.html#cb106-138" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">gamma_std_error =</span> mod_temp<span class="sc">$</span>gamma_std_error,</span>
+<span id="cb106-139"><a href="confidence-intervals.html#cb106-139" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">delta_std_error =</span> mod_temp<span class="sc">$</span>delta_std_error)</span>
+<span id="cb106-140"><a href="confidence-intervals.html#cb106-140" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb106-141"><a href="confidence-intervals.html#cb106-141" aria-hidden="true" tabindex="-1"></a>      natural_parameters <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">m =</span> m,</span>
+<span id="cb106-142"><a href="confidence-intervals.html#cb106-142" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">lambda =</span> mod_temp<span class="sc">$</span>lambda,</span>
+<span id="cb106-143"><a href="confidence-intervals.html#cb106-143" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">gamma =</span> mod_temp<span class="sc">$</span>gamma,</span>
+<span id="cb106-144"><a href="confidence-intervals.html#cb106-144" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">delta =</span> mod_temp<span class="sc">$</span>delta,</span>
+<span id="cb106-145"><a href="confidence-intervals.html#cb106-145" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">lambda_std_error =</span> mod_temp<span class="sc">$</span>lambda_std_error,</span>
+<span id="cb106-146"><a href="confidence-intervals.html#cb106-146" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">gamma_std_error =</span> mod_temp<span class="sc">$</span>gamma_std_error,</span>
+<span id="cb106-147"><a href="confidence-intervals.html#cb106-147" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">delta_std_error =</span> mod_temp<span class="sc">$</span>delta_std_error)</span>
+<span id="cb106-148"><a href="confidence-intervals.html#cb106-148" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb106-149"><a href="confidence-intervals.html#cb106-149" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb106-150"><a href="confidence-intervals.html#cb106-150" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If some parameters are NA for some reason, discard the data</span></span>
+<span id="cb106-151"><a href="confidence-intervals.html#cb106-151" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">anyNA</span>(natural_parameters[params_names], <span class="at">recursive =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb106-152"><a href="confidence-intervals.html#cb106-152" aria-hidden="true" tabindex="-1"></a>      failure[<span class="st">&quot;NA_value&quot;</span>] <span class="ot">&lt;-</span> failure[<span class="st">&quot;NA_value&quot;</span>] <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb106-153"><a href="confidence-intervals.html#cb106-153" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb106-154"><a href="confidence-intervals.html#cb106-154" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb106-155"><a href="confidence-intervals.html#cb106-155" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb106-156"><a href="confidence-intervals.html#cb106-156" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If everything went well, end the &quot;repeat&quot; loop</span></span>
+<span id="cb106-157"><a href="confidence-intervals.html#cb106-157" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
+<span id="cb106-158"><a href="confidence-intervals.html#cb106-158" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb106-159"><a href="confidence-intervals.html#cb106-159" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(<span class="at">data =</span> <span class="fu">list</span>(new_data<span class="sc">$</span>data), <span class="at">natural_parameters =</span> <span class="fu">list</span>(natural_parameters), <span class="at">mod =</span> <span class="fu">list</span>(mod_temp), <span class="at">failure =</span> <span class="fu">list</span>(failure)))</span>
+<span id="cb106-160"><a href="confidence-intervals.html#cb106-160" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div id="bootstrap" class="section level3" number="5.2.2">
 <h3><span class="header-section-number">5.2.2</span> Bootstrap</h3>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="confidence-intervals.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb21-2"><a href="confidence-intervals.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
-<span id="cb21-3"><a href="confidence-intervals.html#cb21-3" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span>
-<span id="cb21-4"><a href="confidence-intervals.html#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span>
-<span id="cb21-5"><a href="confidence-intervals.html#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
-<span id="cb21-6"><a href="confidence-intervals.html#cb21-6" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb21-7"><a href="confidence-intervals.html#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span>
-<span id="cb21-8"><a href="confidence-intervals.html#cb21-8" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
-<span id="cb21-9"><a href="confidence-intervals.html#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-10"><a href="confidence-intervals.html#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial set of parameters</span></span>
-<span id="cb21-11"><a href="confidence-intervals.html#cb21-11" aria-hidden="true" tabindex="-1"></a>lambda_init <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
-<span id="cb21-12"><a href="confidence-intervals.html#cb21-12" aria-hidden="true" tabindex="-1"></a>gamma_init <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
-<span id="cb21-13"><a href="confidence-intervals.html#cb21-13" aria-hidden="true" tabindex="-1"></a>                       <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> m)</span>
-<span id="cb21-14"><a href="confidence-intervals.html#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-15"><a href="confidence-intervals.html#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn them into working parameters</span></span>
-<span id="cb21-16"><a href="confidence-intervals.html#cb21-16" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda_init, gamma_init)</span>
-<span id="cb21-17"><a href="confidence-intervals.html#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-18"><a href="confidence-intervals.html#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the TMB object</span></span>
-<span id="cb21-19"><a href="confidence-intervals.html#cb21-19" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb21-20"><a href="confidence-intervals.html#cb21-20" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb21-21"><a href="confidence-intervals.html#cb21-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-22"><a href="confidence-intervals.html#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize</span></span>
-<span id="cb21-23"><a href="confidence-intervals.html#cb21-23" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
-<span id="cb21-24"><a href="confidence-intervals.html#cb21-24" aria-hidden="true" tabindex="-1"></a>                  <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
-<span id="cb21-25"><a href="confidence-intervals.html#cb21-25" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
-<span id="cb21-26"><a href="confidence-intervals.html#cb21-26" aria-hidden="true" tabindex="-1"></a>                  <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
-<span id="cb21-27"><a href="confidence-intervals.html#cb21-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-28"><a href="confidence-intervals.html#cb21-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrap procedure</span></span>
-<span id="cb21-29"><a href="confidence-intervals.html#cb21-29" aria-hidden="true" tabindex="-1"></a>bootstrap_estimates <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
-<span id="cb21-30"><a href="confidence-intervals.html#cb21-30" aria-hidden="true" tabindex="-1"></a>DATA_SIZE <span class="ot">&lt;-</span> <span class="fu">length</span>(tinn_data)</span>
-<span id="cb21-31"><a href="confidence-intervals.html#cb21-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Set how many parametric bootstrap samples we create</span></span>
-<span id="cb21-32"><a href="confidence-intervals.html#cb21-32" aria-hidden="true" tabindex="-1"></a>BOOTSTRAP_SAMPLES <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb21-33"><a href="confidence-intervals.html#cb21-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-34"><a href="confidence-intervals.html#cb21-34" aria-hidden="true" tabindex="-1"></a><span class="co"># MLE</span></span>
-<span id="cb21-35"><a href="confidence-intervals.html#cb21-35" aria-hidden="true" tabindex="-1"></a>ML_working_estimates <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span>env<span class="sc">$</span>last.par.best</span>
-<span id="cb21-36"><a href="confidence-intervals.html#cb21-36" aria-hidden="true" tabindex="-1"></a>ML_natural_estimates <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(ML_working_estimates)</span>
-<span id="cb21-37"><a href="confidence-intervals.html#cb21-37" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> ML_natural_estimates<span class="sc">$</span>lambda</span>
-<span id="cb21-38"><a href="confidence-intervals.html#cb21-38" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> ML_natural_estimates<span class="sc">$</span>gamma</span>
-<span id="cb21-39"><a href="confidence-intervals.html#cb21-39" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> ML_natural_estimates<span class="sc">$</span>delta</span>
-<span id="cb21-40"><a href="confidence-intervals.html#cb21-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-41"><a href="confidence-intervals.html#cb21-41" aria-hidden="true" tabindex="-1"></a>PARAMS_NAMES <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;lambda&quot;</span>, <span class="st">&quot;gamma&quot;</span>, <span class="st">&quot;delta&quot;</span>)</span>
-<span id="cb21-42"><a href="confidence-intervals.html#cb21-42" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (idx_sample <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>BOOTSTRAP_SAMPLES) {</span>
-<span id="cb21-43"><a href="confidence-intervals.html#cb21-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate a sample based on mod, and ensure a HMM can be estimated on it</span></span>
-<span id="cb21-44"><a href="confidence-intervals.html#cb21-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># with testing_params as initial parameters</span></span>
-<span id="cb21-45"><a href="confidence-intervals.html#cb21-45" aria-hidden="true" tabindex="-1"></a>  temp <span class="ot">&lt;-</span> <span class="fu">pois.HMM.generate_estimable_sample</span>(<span class="at">ns =</span> DATA_SIZE,</span>
-<span id="cb21-46"><a href="confidence-intervals.html#cb21-46" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">mod =</span> <span class="fu">list</span>(<span class="at">m =</span> m,</span>
-<span id="cb21-47"><a href="confidence-intervals.html#cb21-47" aria-hidden="true" tabindex="-1"></a>                                                        <span class="at">lambda =</span> lambda,</span>
-<span id="cb21-48"><a href="confidence-intervals.html#cb21-48" aria-hidden="true" tabindex="-1"></a>                                                        <span class="at">gamma =</span> gamma),</span>
-<span id="cb21-49"><a href="confidence-intervals.html#cb21-49" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">testing_params =</span> <span class="fu">list</span>(<span class="at">m =</span> m,</span>
-<span id="cb21-50"><a href="confidence-intervals.html#cb21-50" aria-hidden="true" tabindex="-1"></a>                                                                   <span class="at">lambda =</span> lambda_init,</span>
-<span id="cb21-51"><a href="confidence-intervals.html#cb21-51" aria-hidden="true" tabindex="-1"></a>                                                                   <span class="at">gamma =</span> gamma_init))<span class="sc">$</span>natural_parameters</span>
-<span id="cb21-52"><a href="confidence-intervals.html#cb21-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The values from gamma are taken columnwise</span></span>
-<span id="cb21-53"><a href="confidence-intervals.html#cb21-53" aria-hidden="true" tabindex="-1"></a>  natural_parameters <span class="ot">&lt;-</span> <span class="fu">unlist</span>(temp[PARAMS_NAMES])</span>
-<span id="cb21-54"><a href="confidence-intervals.html#cb21-54" aria-hidden="true" tabindex="-1"></a>  len_par <span class="ot">&lt;-</span> <span class="fu">length</span>(natural_parameters)</span>
-<span id="cb21-55"><a href="confidence-intervals.html#cb21-55" aria-hidden="true" tabindex="-1"></a>  bootstrap_estimates[idx_sample, <span class="dv">1</span><span class="sc">:</span>len_par] <span class="ot">&lt;-</span> natural_parameters</span>
-<span id="cb21-56"><a href="confidence-intervals.html#cb21-56" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb21-57"><a href="confidence-intervals.html#cb21-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-58"><a href="confidence-intervals.html#cb21-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Lower and upper (2.5% and 97.5%) bounds</span></span>
-<span id="cb21-59"><a href="confidence-intervals.html#cb21-59" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fu">apply</span>(bootstrap_estimates, <span class="dv">2</span>, <span class="cf">function</span>(par_estimate) {</span>
-<span id="cb21-60"><a href="confidence-intervals.html#cb21-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quantile</span>(par_estimate, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
-<span id="cb21-61"><a href="confidence-intervals.html#cb21-61" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb21-62"><a href="confidence-intervals.html#cb21-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-63"><a href="confidence-intervals.html#cb21-63" aria-hidden="true" tabindex="-1"></a>PARAMS_NAMES <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">rep</span>(<span class="st">&quot;lambda&quot;</span>, m), <span class="dv">1</span><span class="sc">:</span>m)</span>
-<span id="cb21-64"><a href="confidence-intervals.html#cb21-64" aria-hidden="true" tabindex="-1"></a><span class="co"># Get row and column indexes for gamma instead of the default</span></span>
-<span id="cb21-65"><a href="confidence-intervals.html#cb21-65" aria-hidden="true" tabindex="-1"></a><span class="co"># columnwise index: the default indexes are 1:m for the 1st column,</span></span>
-<span id="cb21-66"><a href="confidence-intervals.html#cb21-66" aria-hidden="true" tabindex="-1"></a><span class="co"># then (m + 1):(2 * m) for the 2nd, etc...</span></span>
-<span id="cb21-67"><a href="confidence-intervals.html#cb21-67" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (gamma_idx <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m <span class="sc">^</span> <span class="dv">2</span>) {</span>
-<span id="cb21-68"><a href="confidence-intervals.html#cb21-68" aria-hidden="true" tabindex="-1"></a>  row <span class="ot">&lt;-</span> (gamma_idx <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> m <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb21-69"><a href="confidence-intervals.html#cb21-69" aria-hidden="true" tabindex="-1"></a>  col <span class="ot">&lt;-</span> (gamma_idx <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%/%</span> m <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb21-70"><a href="confidence-intervals.html#cb21-70" aria-hidden="true" tabindex="-1"></a>  row_col_idx <span class="ot">&lt;-</span> <span class="fu">c</span>(row, col)</span>
-<span id="cb21-71"><a href="confidence-intervals.html#cb21-71" aria-hidden="true" tabindex="-1"></a>  PARAMS_NAMES <span class="ot">&lt;-</span> <span class="fu">c</span>(PARAMS_NAMES,</span>
-<span id="cb21-72"><a href="confidence-intervals.html#cb21-72" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">paste0</span>(<span class="st">&quot;gamma&quot;</span>,</span>
-<span id="cb21-73"><a href="confidence-intervals.html#cb21-73" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">paste0</span>(row_col_idx, <span class="at">collapse =</span> <span class="st">&quot;&quot;</span>)))</span>
-<span id="cb21-74"><a href="confidence-intervals.html#cb21-74" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb21-75"><a href="confidence-intervals.html#cb21-75" aria-hidden="true" tabindex="-1"></a>PARAMS_NAMES <span class="ot">&lt;-</span> <span class="fu">c</span>(PARAMS_NAMES,</span>
-<span id="cb21-76"><a href="confidence-intervals.html#cb21-76" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">paste0</span>(<span class="fu">rep</span>(<span class="st">&quot;delta&quot;</span>, m), <span class="dv">1</span><span class="sc">:</span>m))</span>
-<span id="cb21-77"><a href="confidence-intervals.html#cb21-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-78"><a href="confidence-intervals.html#cb21-78" aria-hidden="true" tabindex="-1"></a>bootstrap_CI <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;Parameter&quot;</span> <span class="ot">=</span> PARAMS_NAMES,</span>
-<span id="cb21-79"><a href="confidence-intervals.html#cb21-79" aria-hidden="true" tabindex="-1"></a>                           <span class="st">&quot;Estimate&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(lambda, gamma, delta),</span>
-<span id="cb21-80"><a href="confidence-intervals.html#cb21-80" aria-hidden="true" tabindex="-1"></a>                           <span class="st">&quot;Lower bound&quot;</span> <span class="ot">=</span> q[<span class="dv">1</span>, ],</span>
-<span id="cb21-81"><a href="confidence-intervals.html#cb21-81" aria-hidden="true" tabindex="-1"></a>                           <span class="st">&quot;Upper bound&quot;</span> <span class="ot">=</span> q[<span class="dv">2</span>, ])</span>
-<span id="cb21-82"><a href="confidence-intervals.html#cb21-82" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(bootstrap_CI, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="confidence-intervals.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb107-2"><a href="confidence-intervals.html#cb107-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
+<span id="cb107-3"><a href="confidence-intervals.html#cb107-3" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span>
+<span id="cb107-4"><a href="confidence-intervals.html#cb107-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span>
+<span id="cb107-5"><a href="confidence-intervals.html#cb107-5" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
+<span id="cb107-6"><a href="confidence-intervals.html#cb107-6" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb107-7"><a href="confidence-intervals.html#cb107-7" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span>
+<span id="cb107-8"><a href="confidence-intervals.html#cb107-8" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
+<span id="cb107-9"><a href="confidence-intervals.html#cb107-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-10"><a href="confidence-intervals.html#cb107-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial set of parameters</span></span>
+<span id="cb107-11"><a href="confidence-intervals.html#cb107-11" aria-hidden="true" tabindex="-1"></a>lambda_init <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb107-12"><a href="confidence-intervals.html#cb107-12" aria-hidden="true" tabindex="-1"></a>gamma_init <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
+<span id="cb107-13"><a href="confidence-intervals.html#cb107-13" aria-hidden="true" tabindex="-1"></a>                       <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> m)</span>
+<span id="cb107-14"><a href="confidence-intervals.html#cb107-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-15"><a href="confidence-intervals.html#cb107-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn them into working parameters</span></span>
+<span id="cb107-16"><a href="confidence-intervals.html#cb107-16" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda_init, gamma_init)</span>
+<span id="cb107-17"><a href="confidence-intervals.html#cb107-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-18"><a href="confidence-intervals.html#cb107-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the TMB object</span></span>
+<span id="cb107-19"><a href="confidence-intervals.html#cb107-19" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb107-20"><a href="confidence-intervals.html#cb107-20" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb107-21"><a href="confidence-intervals.html#cb107-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-22"><a href="confidence-intervals.html#cb107-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize</span></span>
+<span id="cb107-23"><a href="confidence-intervals.html#cb107-23" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
+<span id="cb107-24"><a href="confidence-intervals.html#cb107-24" aria-hidden="true" tabindex="-1"></a>                  <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb107-25"><a href="confidence-intervals.html#cb107-25" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
+<span id="cb107-26"><a href="confidence-intervals.html#cb107-26" aria-hidden="true" tabindex="-1"></a>                  <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb107-27"><a href="confidence-intervals.html#cb107-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-28"><a href="confidence-intervals.html#cb107-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrap procedure</span></span>
+<span id="cb107-29"><a href="confidence-intervals.html#cb107-29" aria-hidden="true" tabindex="-1"></a>bootstrap_estimates <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb107-30"><a href="confidence-intervals.html#cb107-30" aria-hidden="true" tabindex="-1"></a>DATA_SIZE <span class="ot">&lt;-</span> <span class="fu">length</span>(tinn_data)</span>
+<span id="cb107-31"><a href="confidence-intervals.html#cb107-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Set how many parametric bootstrap samples we create</span></span>
+<span id="cb107-32"><a href="confidence-intervals.html#cb107-32" aria-hidden="true" tabindex="-1"></a>BOOTSTRAP_SAMPLES <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb107-33"><a href="confidence-intervals.html#cb107-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-34"><a href="confidence-intervals.html#cb107-34" aria-hidden="true" tabindex="-1"></a><span class="co"># MLE</span></span>
+<span id="cb107-35"><a href="confidence-intervals.html#cb107-35" aria-hidden="true" tabindex="-1"></a>ML_working_estimates <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span>env<span class="sc">$</span>last.par.best</span>
+<span id="cb107-36"><a href="confidence-intervals.html#cb107-36" aria-hidden="true" tabindex="-1"></a>ML_natural_estimates <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(ML_working_estimates)</span>
+<span id="cb107-37"><a href="confidence-intervals.html#cb107-37" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> ML_natural_estimates<span class="sc">$</span>lambda</span>
+<span id="cb107-38"><a href="confidence-intervals.html#cb107-38" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> ML_natural_estimates<span class="sc">$</span>gamma</span>
+<span id="cb107-39"><a href="confidence-intervals.html#cb107-39" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> ML_natural_estimates<span class="sc">$</span>delta</span>
+<span id="cb107-40"><a href="confidence-intervals.html#cb107-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-41"><a href="confidence-intervals.html#cb107-41" aria-hidden="true" tabindex="-1"></a>PARAMS_NAMES <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;lambda&quot;</span>, <span class="st">&quot;gamma&quot;</span>, <span class="st">&quot;delta&quot;</span>)</span>
+<span id="cb107-42"><a href="confidence-intervals.html#cb107-42" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (idx_sample <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>BOOTSTRAP_SAMPLES) {</span>
+<span id="cb107-43"><a href="confidence-intervals.html#cb107-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate a sample based on mod, and ensure a HMM can be estimated on it</span></span>
+<span id="cb107-44"><a href="confidence-intervals.html#cb107-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># with testing_params as initial parameters</span></span>
+<span id="cb107-45"><a href="confidence-intervals.html#cb107-45" aria-hidden="true" tabindex="-1"></a>  temp <span class="ot">&lt;-</span> <span class="fu">pois.HMM.generate_estimable_sample</span>(<span class="at">ns =</span> DATA_SIZE,</span>
+<span id="cb107-46"><a href="confidence-intervals.html#cb107-46" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">mod =</span> <span class="fu">list</span>(<span class="at">m =</span> m,</span>
+<span id="cb107-47"><a href="confidence-intervals.html#cb107-47" aria-hidden="true" tabindex="-1"></a>                                                        <span class="at">lambda =</span> lambda,</span>
+<span id="cb107-48"><a href="confidence-intervals.html#cb107-48" aria-hidden="true" tabindex="-1"></a>                                                        <span class="at">gamma =</span> gamma),</span>
+<span id="cb107-49"><a href="confidence-intervals.html#cb107-49" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">testing_params =</span> <span class="fu">list</span>(<span class="at">m =</span> m,</span>
+<span id="cb107-50"><a href="confidence-intervals.html#cb107-50" aria-hidden="true" tabindex="-1"></a>                                                                   <span class="at">lambda =</span> lambda_init,</span>
+<span id="cb107-51"><a href="confidence-intervals.html#cb107-51" aria-hidden="true" tabindex="-1"></a>                                                                   <span class="at">gamma =</span> gamma_init))<span class="sc">$</span>natural_parameters</span>
+<span id="cb107-52"><a href="confidence-intervals.html#cb107-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The values from gamma are taken columnwise</span></span>
+<span id="cb107-53"><a href="confidence-intervals.html#cb107-53" aria-hidden="true" tabindex="-1"></a>  natural_parameters <span class="ot">&lt;-</span> <span class="fu">unlist</span>(temp[PARAMS_NAMES])</span>
+<span id="cb107-54"><a href="confidence-intervals.html#cb107-54" aria-hidden="true" tabindex="-1"></a>  len_par <span class="ot">&lt;-</span> <span class="fu">length</span>(natural_parameters)</span>
+<span id="cb107-55"><a href="confidence-intervals.html#cb107-55" aria-hidden="true" tabindex="-1"></a>  bootstrap_estimates[idx_sample, <span class="dv">1</span><span class="sc">:</span>len_par] <span class="ot">&lt;-</span> natural_parameters</span>
+<span id="cb107-56"><a href="confidence-intervals.html#cb107-56" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb107-57"><a href="confidence-intervals.html#cb107-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-58"><a href="confidence-intervals.html#cb107-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Lower and upper (2.5% and 97.5%) bounds</span></span>
+<span id="cb107-59"><a href="confidence-intervals.html#cb107-59" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fu">apply</span>(bootstrap_estimates, <span class="dv">2</span>, <span class="cf">function</span>(par_estimate) {</span>
+<span id="cb107-60"><a href="confidence-intervals.html#cb107-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quantile</span>(par_estimate, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb107-61"><a href="confidence-intervals.html#cb107-61" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb107-62"><a href="confidence-intervals.html#cb107-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-63"><a href="confidence-intervals.html#cb107-63" aria-hidden="true" tabindex="-1"></a>PARAMS_NAMES <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">rep</span>(<span class="st">&quot;lambda&quot;</span>, m), <span class="dv">1</span><span class="sc">:</span>m)</span>
+<span id="cb107-64"><a href="confidence-intervals.html#cb107-64" aria-hidden="true" tabindex="-1"></a><span class="co"># Get row and column indexes for gamma instead of the default</span></span>
+<span id="cb107-65"><a href="confidence-intervals.html#cb107-65" aria-hidden="true" tabindex="-1"></a><span class="co"># columnwise index: the default indexes are 1:m for the 1st column,</span></span>
+<span id="cb107-66"><a href="confidence-intervals.html#cb107-66" aria-hidden="true" tabindex="-1"></a><span class="co"># then (m + 1):(2 * m) for the 2nd, etc...</span></span>
+<span id="cb107-67"><a href="confidence-intervals.html#cb107-67" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (gamma_idx <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m <span class="sc">^</span> <span class="dv">2</span>) {</span>
+<span id="cb107-68"><a href="confidence-intervals.html#cb107-68" aria-hidden="true" tabindex="-1"></a>  row <span class="ot">&lt;-</span> (gamma_idx <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> m <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb107-69"><a href="confidence-intervals.html#cb107-69" aria-hidden="true" tabindex="-1"></a>  col <span class="ot">&lt;-</span> (gamma_idx <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%/%</span> m <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb107-70"><a href="confidence-intervals.html#cb107-70" aria-hidden="true" tabindex="-1"></a>  row_col_idx <span class="ot">&lt;-</span> <span class="fu">c</span>(row, col)</span>
+<span id="cb107-71"><a href="confidence-intervals.html#cb107-71" aria-hidden="true" tabindex="-1"></a>  PARAMS_NAMES <span class="ot">&lt;-</span> <span class="fu">c</span>(PARAMS_NAMES,</span>
+<span id="cb107-72"><a href="confidence-intervals.html#cb107-72" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">paste0</span>(<span class="st">&quot;gamma&quot;</span>,</span>
+<span id="cb107-73"><a href="confidence-intervals.html#cb107-73" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">paste0</span>(row_col_idx, <span class="at">collapse =</span> <span class="st">&quot;&quot;</span>)))</span>
+<span id="cb107-74"><a href="confidence-intervals.html#cb107-74" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb107-75"><a href="confidence-intervals.html#cb107-75" aria-hidden="true" tabindex="-1"></a>PARAMS_NAMES <span class="ot">&lt;-</span> <span class="fu">c</span>(PARAMS_NAMES,</span>
+<span id="cb107-76"><a href="confidence-intervals.html#cb107-76" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">paste0</span>(<span class="fu">rep</span>(<span class="st">&quot;delta&quot;</span>, m), <span class="dv">1</span><span class="sc">:</span>m))</span>
+<span id="cb107-77"><a href="confidence-intervals.html#cb107-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-78"><a href="confidence-intervals.html#cb107-78" aria-hidden="true" tabindex="-1"></a>bootstrap_CI <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;Parameter&quot;</span> <span class="ot">=</span> PARAMS_NAMES,</span>
+<span id="cb107-79"><a href="confidence-intervals.html#cb107-79" aria-hidden="true" tabindex="-1"></a>                           <span class="st">&quot;Estimate&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(lambda, gamma, delta),</span>
+<span id="cb107-80"><a href="confidence-intervals.html#cb107-80" aria-hidden="true" tabindex="-1"></a>                           <span class="st">&quot;Lower bound&quot;</span> <span class="ot">=</span> q[<span class="dv">1</span>, ],</span>
+<span id="cb107-81"><a href="confidence-intervals.html#cb107-81" aria-hidden="true" tabindex="-1"></a>                           <span class="st">&quot;Upper bound&quot;</span> <span class="ot">=</span> q[<span class="dv">2</span>, ])</span>
+<span id="cb107-82"><a href="confidence-intervals.html#cb107-82" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(bootstrap_CI, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p>It should be noted that some bootstrap estimates can be very large or very small.
 One possible reason is that the randomly generated bootstrap sample might contain long chains of the same values, thus causing some probabilities in the TPM to be near the boundary 0 or 1.
 However, a large number of bootstrap samples lowers that risk since we automatically discard 5% of the most extreme values during the data generating process.</p>
@@ -617,10 +634,10 @@ In practice, this aspect is easy to deal with.
 Once a profile CI for the working parameter (here <span class="math inline">\(\eta_2\)</span>) has been obtained following the procedure above, the corresponding CI for the natural parameter <span class="math inline">\(\lambda_2\)</span> results directly from transforming the upper and lower boundary of the CI for <span class="math inline">\(\eta_2\)</span> by the one-to-one transformation <span class="math inline">\(\lambda_2 = \exp(\eta_2)\)</span>.
 For further details on the invariance of likelihood-based CIs to parameter transformations, we refer to <span class="citation">(<a href="#ref-meeker" role="doc-biblioref">Meeker and Escobar 1995</a>)</span>.</p>
 <p>Profiling <span class="math inline">\(\eta_2\)</span> (the working parameter corresponding to <span class="math inline">\(\lambda_2\)</span>) with <code>TMB</code> can be done with</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="confidence-intervals.html#cb22-1" aria-hidden="true" tabindex="-1"></a>profile <span class="ot">&lt;-</span> <span class="fu">tmbprofile</span>(<span class="at">obj =</span> obj_tmb,</span>
-<span id="cb22-2"><a href="confidence-intervals.html#cb22-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="dv">2</span>,</span>
-<span id="cb22-3"><a href="confidence-intervals.html#cb22-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb22-4"><a href="confidence-intervals.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(profile)</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="confidence-intervals.html#cb108-1" aria-hidden="true" tabindex="-1"></a>profile <span class="ot">&lt;-</span> <span class="fu">tmbprofile</span>(<span class="at">obj =</span> obj_tmb,</span>
+<span id="cb108-2"><a href="confidence-intervals.html#cb108-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="dv">2</span>,</span>
+<span id="cb108-3"><a href="confidence-intervals.html#cb108-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb108-4"><a href="confidence-intervals.html#cb108-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(profile)</span></code></pre></div>
 <pre><code>##     tlambda    value
 ## 67 1.589247 170.5801
 ## 66 1.592447 170.4783
@@ -629,60 +646,66 @@ For further details on the invariance of likelihood-based CIs to parameter trans
 ## 63 1.602047 170.1877
 ## 62 1.605247 170.0957</code></pre>
 <p>A plot allows for a visual representation of the profile</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="confidence-intervals.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># par(mgp = c(2, 0.5, 0), mar = c(3, 3, 2.5, 1),</span></span>
-<span id="cb24-2"><a href="confidence-intervals.html#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># cex.lab = 1.5)</span></span>
-<span id="cb24-3"><a href="confidence-intervals.html#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(profile, <span class="at">level =</span> <span class="fl">0.95</span>, </span>
-<span id="cb24-4"><a href="confidence-intervals.html#cb24-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(eta[<span class="dv">2</span>]),</span>
-<span id="cb24-5"><a href="confidence-intervals.html#cb24-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;nll&quot;</span>)</span></code></pre></div>
-<p><img src="Data-supplements_files/figure-html/profile-plot-1.png" width="672" /></p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="confidence-intervals.html#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="co"># par(mgp = c(2, 0.5, 0), mar = c(3, 3, 2.5, 1),</span></span>
+<span id="cb110-2"><a href="confidence-intervals.html#cb110-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># cex.lab = 1.5)</span></span>
+<span id="cb110-3"><a href="confidence-intervals.html#cb110-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(profile, <span class="at">level =</span> <span class="fl">0.95</span>, </span>
+<span id="cb110-4"><a href="confidence-intervals.html#cb110-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(eta[<span class="dv">2</span>]),</span>
+<span id="cb110-5"><a href="confidence-intervals.html#cb110-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;nll&quot;</span>)</span></code></pre></div>
+<p><img src="Data-supplements_files/figure-html/5profile-plot-1.png" width="672" /></p>
 <p>Then we can infer <span class="math inline">\(\eta_2\)</span>’s confidence interval, and hence <span class="math inline">\(\lambda_2\)</span>’s confidence interval</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="confidence-intervals.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(profile)</span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="confidence-intervals.html#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(profile)</span></code></pre></div>
 <pre><code>##            lower    upper
 ## tlambda 1.593141 1.820641</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="confidence-intervals.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">confint</span>(profile))</span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="confidence-intervals.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">confint</span>(profile))</span></code></pre></div>
 <pre><code>##            lower    upper
 ## tlambda 4.919178 6.175815</code></pre>
 <p>Further, profiling the TPM is done similarly.
 However, since individual natural TPM parameters cannot be deduced from single working parameters, we need to profile the entire working TPM then transform it back to a natural TPM.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="confidence-intervals.html#cb29-1" aria-hidden="true" tabindex="-1"></a>profile3 <span class="ot">&lt;-</span> <span class="fu">tmbprofile</span>(<span class="at">obj =</span> obj_tmb,</span>
-<span id="cb29-2"><a href="confidence-intervals.html#cb29-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">name =</span> <span class="dv">3</span>,</span>
-<span id="cb29-3"><a href="confidence-intervals.html#cb29-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb29-4"><a href="confidence-intervals.html#cb29-4" aria-hidden="true" tabindex="-1"></a>profile4 <span class="ot">&lt;-</span> <span class="fu">tmbprofile</span>(<span class="at">obj =</span> obj_tmb,</span>
-<span id="cb29-5"><a href="confidence-intervals.html#cb29-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">name =</span> <span class="dv">4</span>,</span>
-<span id="cb29-6"><a href="confidence-intervals.html#cb29-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb29-7"><a href="confidence-intervals.html#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtain confidence intervals for working parameters</span></span>
-<span id="cb29-8"><a href="confidence-intervals.html#cb29-8" aria-hidden="true" tabindex="-1"></a>tgamma_3_confint <span class="ot">&lt;-</span> <span class="fu">confint</span>(profile3)</span>
-<span id="cb29-9"><a href="confidence-intervals.html#cb29-9" aria-hidden="true" tabindex="-1"></a>tgamma_4_confint <span class="ot">&lt;-</span> <span class="fu">confint</span>(profile4)</span>
-<span id="cb29-10"><a href="confidence-intervals.html#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-11"><a href="confidence-intervals.html#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Group lower bounds and upper bounds</span></span>
-<span id="cb29-12"><a href="confidence-intervals.html#cb29-12" aria-hidden="true" tabindex="-1"></a>lower <span class="ot">&lt;-</span> <span class="fu">c</span>(tgamma_3_confint[<span class="dv">1</span>], tgamma_4_confint[<span class="dv">1</span>])</span>
-<span id="cb29-13"><a href="confidence-intervals.html#cb29-13" aria-hidden="true" tabindex="-1"></a>upper <span class="ot">&lt;-</span> <span class="fu">c</span>(tgamma_3_confint[<span class="dv">2</span>], tgamma_4_confint[<span class="dv">2</span>])</span>
-<span id="cb29-14"><a href="confidence-intervals.html#cb29-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-15"><a href="confidence-intervals.html#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Infer bounds on natural parameters</span></span>
-<span id="cb29-16"><a href="confidence-intervals.html#cb29-16" aria-hidden="true" tabindex="-1"></a>gamma_1 <span class="ot">&lt;-</span> <span class="fu">Gamma_w2n</span>(m, lower)</span>
-<span id="cb29-17"><a href="confidence-intervals.html#cb29-17" aria-hidden="true" tabindex="-1"></a>gamma_2 <span class="ot">&lt;-</span> <span class="fu">Gamma_w2n</span>(m, upper)</span>
-<span id="cb29-18"><a href="confidence-intervals.html#cb29-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-19"><a href="confidence-intervals.html#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Display unsorted lower and upper bounds</span></span>
-<span id="cb29-20"><a href="confidence-intervals.html#cb29-20" aria-hidden="true" tabindex="-1"></a>gamma_1</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="confidence-intervals.html#cb115-1" aria-hidden="true" tabindex="-1"></a>profile3 <span class="ot">&lt;-</span> <span class="fu">tmbprofile</span>(<span class="at">obj =</span> obj_tmb,</span>
+<span id="cb115-2"><a href="confidence-intervals.html#cb115-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">name =</span> <span class="dv">3</span>,</span>
+<span id="cb115-3"><a href="confidence-intervals.html#cb115-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb115-4"><a href="confidence-intervals.html#cb115-4" aria-hidden="true" tabindex="-1"></a>profile4 <span class="ot">&lt;-</span> <span class="fu">tmbprofile</span>(<span class="at">obj =</span> obj_tmb,</span>
+<span id="cb115-5"><a href="confidence-intervals.html#cb115-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">name =</span> <span class="dv">4</span>,</span>
+<span id="cb115-6"><a href="confidence-intervals.html#cb115-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb115-7"><a href="confidence-intervals.html#cb115-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtain confidence intervals for working parameters</span></span>
+<span id="cb115-8"><a href="confidence-intervals.html#cb115-8" aria-hidden="true" tabindex="-1"></a>tgamma_3_confint <span class="ot">&lt;-</span> <span class="fu">confint</span>(profile3)</span>
+<span id="cb115-9"><a href="confidence-intervals.html#cb115-9" aria-hidden="true" tabindex="-1"></a>tgamma_4_confint <span class="ot">&lt;-</span> <span class="fu">confint</span>(profile4)</span>
+<span id="cb115-10"><a href="confidence-intervals.html#cb115-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-11"><a href="confidence-intervals.html#cb115-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Group lower bounds and upper bounds</span></span>
+<span id="cb115-12"><a href="confidence-intervals.html#cb115-12" aria-hidden="true" tabindex="-1"></a>lower <span class="ot">&lt;-</span> <span class="fu">c</span>(tgamma_3_confint[<span class="dv">1</span>], tgamma_4_confint[<span class="dv">1</span>])</span>
+<span id="cb115-13"><a href="confidence-intervals.html#cb115-13" aria-hidden="true" tabindex="-1"></a>upper <span class="ot">&lt;-</span> <span class="fu">c</span>(tgamma_3_confint[<span class="dv">2</span>], tgamma_4_confint[<span class="dv">2</span>])</span>
+<span id="cb115-14"><a href="confidence-intervals.html#cb115-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-15"><a href="confidence-intervals.html#cb115-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Infer bounds on natural parameters</span></span>
+<span id="cb115-16"><a href="confidence-intervals.html#cb115-16" aria-hidden="true" tabindex="-1"></a>gamma_1 <span class="ot">&lt;-</span> <span class="fu">gamma.w2n</span>(m, lower)</span>
+<span id="cb115-17"><a href="confidence-intervals.html#cb115-17" aria-hidden="true" tabindex="-1"></a>gamma_2 <span class="ot">&lt;-</span> <span class="fu">gamma.w2n</span>(m, upper)</span>
+<span id="cb115-18"><a href="confidence-intervals.html#cb115-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-19"><a href="confidence-intervals.html#cb115-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Display unsorted lower and upper bounds</span></span>
+<span id="cb115-20"><a href="confidence-intervals.html#cb115-20" aria-hidden="true" tabindex="-1"></a>gamma_1</span></code></pre></div>
 <pre><code>##            [,1]        [,2]
 ## [1,] 0.99800287 0.001997133
 ## [2,] 0.00154545 0.998454550</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="confidence-intervals.html#cb31-1" aria-hidden="true" tabindex="-1"></a>gamma_2</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="confidence-intervals.html#cb117-1" aria-hidden="true" tabindex="-1"></a>gamma_2</span></code></pre></div>
 <pre><code>##            [,1]      [,2]
 ## [1,] 0.81653046 0.1834695
 ## [2,] 0.08801416 0.9119858</code></pre>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="confidence-intervals.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sorted confidence interval for gamma_11</span></span>
-<span id="cb33-2"><a href="confidence-intervals.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">c</span>(gamma_1[<span class="dv">1</span>, <span class="dv">1</span>], gamma_2[<span class="dv">1</span>, <span class="dv">1</span>]))</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="confidence-intervals.html#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sorted confidence interval for gamma_11</span></span>
+<span id="cb119-2"><a href="confidence-intervals.html#cb119-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">c</span>(gamma_1[<span class="dv">1</span>, <span class="dv">1</span>], gamma_2[<span class="dv">1</span>, <span class="dv">1</span>]))</span></code></pre></div>
 <pre><code>## [1] 0.8165305 0.9980029</code></pre>
-<p>Last, we can display these confidence intervals in a more readable format</p>
-<p>Note that <code>gamma_1</code> is not necessarily lower than <code>gamma_2</code>.</p>
+<p>It is noteworthy that <code>gamma_1</code> is not necessarily lower than <code>gamma_2</code>, because only the working confidence intervals are automatically sorted.</p>
+<p>Also note that linear combinations of parameters can be profiled by passing the <code>lincomb</code> argument.
+More details are available by executing <code>??TMB::tmbprofile</code> to access the <code>tmbprofile</code>’s help.</p>
 <p>The <code>name</code> parameter should be the index of a parameter to profile.
 While the function’s help mentions it can be a parameter’s name, the first two parameters are both named <code>tlambda</code> as can be seen here</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="confidence-intervals.html#cb35-1" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>par</span></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="confidence-intervals.html#cb121-1" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>par</span></code></pre></div>
 <pre><code>##    tlambda    tlambda     tgamma     tgamma 
 ##  0.4925054  1.7107475 -3.6263979 -2.9402803</code></pre>
-<p>It is noteworthy that linear combinations of parameters can be profiled by passing the <code>lincomb</code> argument. More details are available by executing <code>??TMB::tmbprofile</code> to access the function help.</p>
 
+<!-- ```{r 6import-files, echo = FALSE, cache = FALSE} -->
+<!-- library(knitr) -->
+<!-- setwd(dir = "../") -->
+<!-- # suppressMessages(source("code/main.R")) -->
+<!-- knitr::read_chunk('functions/utils.R') -->
+<!-- ``` -->
 </div>
 </div>
 <h3>References</h3>

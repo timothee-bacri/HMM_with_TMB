@@ -1,4 +1,0 @@
-"0","profile <- tmbprofile(obj = obj_tmb,"
-"0","                      name = 2,"
-"0","                      trace = FALSE)"
-"0","head(profile)"

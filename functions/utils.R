@@ -13,17 +13,15 @@ Beta_map <- function(Beta, sel_cov){
   
 }
 
-## Delta_n2w ----
+## ---- delta.n2w
 # Function to transform natural parameters to working
-Delta_n2w <- function(m, delta){
-  
+delta.n2w <- function(m, delta){
   tdelta <- log(delta[- 1] / delta[1])
-  
   return(tdelta) 
 }
 
-## Delta_w2n ----
-Delta_w2n <- function(m, tdelta){
+## ---- delta.w2n
+delta.w2n <- function(m, tdelta){
   if (m == 1) return(1)
   
   # set first element to one and fill in the last m - 1 elements with working parameters and take exp
@@ -35,9 +33,8 @@ Delta_w2n <- function(m, tdelta){
   return(delta)
 }
 
-## Old_code ----
 #Function to transform natural parameters to working (C ++ code as basis then add 1 to elements)
-# Gamma_n2w <- function(m, gamma){
+# gamma.n2w <- function(m, gamma){
 #   
 #   foo <- log(gamma / diag(gamma))
 #   
@@ -59,18 +56,16 @@ Delta_w2n <- function(m, tdelta){
 #   return(tgamma)
 # }
 
-## Gamma_n2w ----
-Gamma_n2w <- function(m, gamma){
-  
+## ---- gamma.n2w
+gamma.n2w <- function(m, gamma){
   foo <- log(gamma / diag(gamma))
-  
   tgamma <- as.vector(foo[!diag(m)])
-  
   return(tgamma)
 }
 
+## ---- Old_function
 #Function tranforming working parameters to natural parameters (C ++ code as basis then add 1 to elements)
-Gamma_w2n_old <- function(m, tgamma){
+gamma.w2n_old <- function(m, tgamma){
   
   # Construct m x m identity matrix
   gamma <- diag(m)
@@ -98,19 +93,16 @@ Gamma_w2n_old <- function(m, tgamma){
   return(gamma);
 }
 
-## Gamma_n2w ----
-Gamma_w2n <- function(m, tgamma){
-  
+## ---- gamma.w2n
+gamma.w2n <- function(m, tgamma){
   gamma <- diag(m)
   if (m == 1) return(gamma)
-  
   gamma[!gamma] <- exp(tgamma)
   gamma <- gamma/apply(gamma, 1, sum)
-  
   return(gamma)
 }
 
-## Old_code ----
+## ---- Old_function
 # For sorting data
 TopMaxUsingFullSort <- function(x, N) {
   value <- sort(x, decreasing = TRUE)[1:min(N, length(x))]
@@ -282,6 +274,7 @@ HMM.decode <- function(obj) {
        stateprobs = stateprobs, ldecode = ldecode)
 }
 
+## ---- quantile.colwise
 # 2.5% and 97.5% quantiles
 quantile.colwise <- function(data) {
   return(quantile(data, probs = c(0.05 / 2, 1 - 0.05 / 2)))
@@ -295,6 +288,7 @@ matrix.col.idx.to.rowcol <- function(idx, m) {
   return(c(row, col))
 }
 
+## ---- get.emission.probs
 # Calculate emission probabilities
 get.emission.probs <- function(data, lambda) {
   n <- length(data)
@@ -314,7 +308,7 @@ get.emission.probs <- function(data, lambda) {
 # Compute the stationary distribution of a Markov chain
 # with transition probability gamma
 stat.dist <- function(gamma) {
-  m <- dim(gamma)[1]
+  m <- nrow(gamma)
   return(solve(t(diag(m) - gamma + 1), rep(1, m)))
 }
 
@@ -331,6 +325,7 @@ pois.HMM.pn2pw <- function(m, lambda, gamma, delta = NULL,
     return(list(tlambda = tlambda, tgamma = tgamma))
   } else {
     tdelta <- log(delta[- 1] / delta[1])
+    # TMB requires a list
     return(list(tlambda = tlambda, tgamma = tgamma, tdelta = tdelta))
   }
 }
@@ -658,6 +653,7 @@ DM.estimate = function(x, m, lambda0, gamma0, delta0 = NULL,
   
 }
 
+## ---- nlmfn
 # Function to use TMB's gradient and/or hessian in nlm
 nlmfn <- function(par, obj, gr = TRUE, he = TRUE) {
   res <- as.numeric(obj$fn(par))
