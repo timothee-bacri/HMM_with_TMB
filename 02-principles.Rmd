@@ -1,10 +1,17 @@
 # Principles of using `TMB` for Maximum Likelihood Estimation
 
 ## Setting up `TMB`
+In order to run the scripts and example code, you first need to set up TMB by going through the following steps:
 
 - Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/)
-- Install the R-package `TMB` [@R-TMB]
-- (Optional) Setup error debugging in `RStudio` by running the command `TMB:::setupRstudio()`
+- Install the R-package `TMB` [@R-TMB] by executing the following code in R:
+
+  ```{r, eval =FALSE}
+  install.packages("TMB")
+  ```
+
+- (Optional) Setup error debugging in `RStudio` by running the command  `TMB:::setupRstudio()`
+
 
 Advanced use is detailed in https://kaskr.github.io/adcomp/_book/Tutorial.html
 
@@ -43,7 +50,9 @@ parameters <- list(a = 0, b = 0, tsigma = 0)
 obj_linreg <- MakeADFun(data, parameters, DLL = "linreg",
                         silent = TRUE)
 # Optimization of the objective function with nlminb
-mod_linreg <- nlminb(obj_linreg$par, obj_linreg$fn)
+mod_linreg <- nlminb(obj_linreg$par, obj_linreg$fn,
+                     obj_linreg$gr,
+                     obj_linreg$he)
 mod_linreg$par
 ```
 
@@ -64,8 +73,12 @@ summary(sdreport(obj_linreg), select = "report")
 
 Lastly, we display the estimates from `lm` to compare them to the ones from `TMB`.
 ```{r 2lm}
-lm(y ~ x, data = data)$coefficients
+rbind(
+  "lm"  = lm(y ~ x, data = data)$coef, # linear regression using R
+  "TMB" = mod_linreg$par[1:2] # intercept and slope from TMB fit
+)
 ```
+As we can see, the parameter estimates are exactly the same.
 
 ## Extending the `C++` negative log-likelihood
 
