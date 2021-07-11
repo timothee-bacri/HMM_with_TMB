@@ -38,3 +38,5 @@ tyt-dataset
 simulated-dataset
 lamb-data
 github-directory-structure
+tab:4tinnitus-table2
+fig:4tinnitus-fig

@@ -14,36 +14,42 @@ The function is defined in [poi_hmm.cpp](code/poi_hmm.cpp)
 ```
 
 ## Preparing data and functions
-Loading of the necessary packages, compilation of the nll function with TMB and subsequent loading, and loading of the auxiliary functions for parameter transformation
+Before we can fit the model, we need to load some necessary packages and data files. We also need to compile the c++ code and load the functions into our working environment in R. 
+<!-- Loading of the necessary packages, compilation of the nll function with TMB and subsequent loading, and loading of the auxiliary functions for parameter transformation -->
 
-With the nll function available in `C++`, we can carry out the parameter estimation and all pre-/post-processing in `R`. In the following we describe the steps to be carried out.
+<!-- With the nll function available in `C++`, we can carry out the parameter estimation and all pre-/post-processing in `R`. In the following we describe the steps to be carried out. -->
 
-1. Loading of the necessary packages, compilation of the nll function with TMB and subsequent loading, and loading of the auxiliary functions for parameter transformation.
+<!-- 1. Loading of the necessary packages, compilation of the nll function with TMB and subsequent loading, and loading of the auxiliary functions for parameter transformation. -->
 
-```{r 4init-example}
+We start by loading the necessary packages and the utility R functions.
+
+```{r 4init-example1, message = FALSE, warning = FALSE, results = FALSE}
 # Load TMB and optimization packages
 library(TMB)
 library(optimr)
+# Load the parameter transformation function
+source("functions/utils.R")
+```
+Next, we need to compile the c++ code for computing the likelihood and its gradients. Once it is compiled, we can load the TMB likelihood object into R -- making it available from R. 
+```{r 4init-example2, message = FALSE, warning = FALSE, results = FALSE}
 # Run the `C++` file containing the TMB code
 TMB::compile("code/poi_hmm.cpp")
 # Load it
 dyn.load(dynlib("code/poi_hmm"))
-# Load the parameter transformation function
-source("functions/utils.R")
 ```
 
-2. Loading of the observations. The data are part of a large data set collected with the "Track Your Tinnitus" (TYT) mobile application, a detailed description of which is presented in [@pryss; @pryssa].
-We analyze 87 successive days of the ``arousal'' variable, which is measured on a discrete scale. Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state [for details, see @probst].
-
-Loading the ``arousal'' variable can be achieved simply with
-
+The data are part of a large data set collected with the "Track Your Tinnitus" (TYT) mobile application, a detailed description of which is presented in [@pryss; @pryssa].
+We analyze 87 successive days of the "arousal" variable, which is measured on a discrete scale. Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state [for details, see @probst]. The data is stored in the file `data/tinnitus.Rdata` and can be loaded by a simple call. 
 ```{r 4load-example}
 load("data/tinnitus.RData")
 ```
 
 \@ref(table:tinnitus_data) presents the raw data, which are also available for download at INSERT GITHUB LINK.
 
+
+
 ```{r 4tinnitus-table, results = 'asis', echo = FALSE}
+library(xtable)
 temp <- paste(tinn_data, collapse = " ")
 temp <- as.data.frame(temp)
 temp <- xtable(temp,
@@ -51,8 +57,22 @@ temp <- xtable(temp,
                caption = "TYT data. Observations collected by the TYT app on 87 successive days (from left to right).",
                label = "table:tinnitus_data")
 print(temp, include.rownames = FALSE, include.colnames = FALSE,
-      hline.after = c(0, nrow(temp)))
+      hline.after = c(0, nrow(temp)),
+      type = "html")
 ```
+
+Table \@ref(tab:4tinnitus-table2)  and Figure \@ref(fig:4tinnitus-fig) presents the raw data, which are also available for download in the data folder on [github.com/timothee-bacri/HMM_with_TMB/](https://github.com/timothee-bacri/HMM_with_TMB).
+
+```{r 4tinnitus-table2, echo = FALSE, warning = FALSE}
+temp <- matrix(c(tinn_data,rep("",3)), nrow = 6, byrow =T)
+knitr::kable(temp, booktabs = TRUE,
+  caption = "TYT data. Observations collected by the TYT app on 87 successive days (from left to right).")
+```
+
+```{r 4tinnitus-fig, echo = FALSE, warning = FALSE, fig.cap = "Plot of observations from TYT app data for 87 succesive days."}
+plot(tinn_data, ylab = "Arousal", xlab = "Day (#)")
+```
+
 
 ## Modeling
 
@@ -285,16 +305,16 @@ mod_tmb$convergence == 0
 summary(sdreport(obj_tmb), "report")
 ```
 
-The transformed constraint becomes $\tau_{12} = \log(\gamma_{12}/\gamma_{11} = \log(\gamma_{13}/\gamma_{11} = \tau_{13}$.
+The transformed constraint becomes $\tau_{12} = \log(\gamma_{12}/\gamma_{11}) = \log(\gamma_{13}/\gamma_{11}) = \tau_{13}$.
 
 We need to be careful how we specify the constraint, because the vector `tgamma` will be converted into a matrix column-wise since this is R's default way to handle matrix-vector conversions.
 
 The `tgamma` matrix looks naturally like
-\begin{pmatrix}
-         &\tau_{12}&\tau_{13}\
-\tau_{21}&         &\tau_{23}\
+$$\begin{pmatrix}
+         &\tau_{12}&\tau_{13}\\
+\tau_{21}&         &\tau_{23}\\
 \tau_{31}&\tau_{32}&
-\end{pmatrix}
+\end{pmatrix}$$
 
 As a vector in `R`, it becomes
 $\left(\tau_{21}, \tau_{31}, \tau_{12}, \tau_{32}, \tau_{13}, \tau_{23}\right)$.
