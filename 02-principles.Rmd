@@ -10,7 +10,7 @@ In order to run the scripts and example code, you first need to set up TMB by go
   install.packages("TMB")
   ```
 
-- (Optional) Setup error debugging in `RStudio` by running the command  `TMB:::setupRstudio()`
+- (Optional) Setup error debugging in `RStudio` by running the command  `TMB::setupRstudio()`
 
 
 Advanced use is detailed in https://kaskr.github.io/adcomp/_book/Tutorial.html
@@ -20,7 +20,7 @@ Advanced use is detailed in https://kaskr.github.io/adcomp/_book/Tutorial.html
 Let $\b{x}$ and $\b{y}$ denote the predictor and response vector, respectively, both of length $n$.
 For a simple linear regression model with intercept $a$ and slope $b$, the negative log-likelihood equals
 \begin{equation*}
-- \log L(a, b, \sigma^2) = - \sum_{i=1}^n \log(\phi(y_i; a + bx_i, \sigma^2))),
+- \log L(a, b, \sigma^2) = - \sum_{i=1}^n \log(\phi(y_i; a + bx_i, \sigma^2)),
 \end{equation*}
 where $\phi(\cdot; \mu, \sigma^2)$ corresponds to the density function of the univariate normal distribution with mean $\mu$ and variance $\sigma^2$.
 
@@ -56,22 +56,22 @@ mod_linreg <- nlminb(obj_linreg$par, obj_linreg$fn,
 mod_linreg$par
 ```
 
-Now that the optimization is taken care of, we can display the estimates details
+Now that the optimization is taken care of, we can display the estimates with standard errors using the `sdreport` function.
 ```{r sdreport}
 sdreport(obj_linreg)
 ```
-or every variable
+If we use `summary` on this object, we also get the variables we have passed to `ADREPORT` in the [*linreg.cpp*](code/linreg.cpp) file. In this example, this is only the residual standard deviation;  `sigma`.
 ```{r summary_sdreport}
 summary(sdreport(obj_linreg))
 ```
 The `select` argument restricts the output to variables passed
-by `ADREPORT(variable_name);` in the [*linreg.cpp*](code/linreg.cpp) file.
+by `ADREPORT(variable_name);` in the cpp file.
 As we will see in [Wald-type], this lets us derive confidence intervals for these natural parameters easily.
 ```{r 2summary_sdreport_report}
 summary(sdreport(obj_linreg), select = "report")
 ```
 
-Lastly, we display the estimates from `lm` to compare them to the ones from `TMB`.
+Certainly, you would not build a TMB model to fit a linear regression. We can use standard R functions for that. Therefore, we use `stats::lm` on the same data and compare the estimates to those obtained by `TMB`.
 ```{r 2lm}
 rbind(
   "lm"  = lm(y ~ x, data = data)$coef, # linear regression using R
@@ -82,11 +82,13 @@ As we can see, the parameter estimates are exactly the same.
 
 ## Extending the `C++` negative log-likelihood
 
-It is noteworthy that `linreg.cpp` doesn't have to contains many lines of code, as they can be distributed in other files and loaded.
-Writing extra files to define functions compatible with `TMB` requires some care, as these must follow `TMB`'s template.
-For example, we can define this function
+Sometimes it is useful to write subroutines as a separate function that can be used within your TMB likelihood function. This can increase readability of your code and reduce the number of lines of code in your main cpp file. Writing extra files to define functions compatible with `TMB` requires some care, as these must follow `TMB`'s template.
+<!-- It is noteworthy that `linreg.cpp` doesn't have to contain many lines of code, as they can be distributed in other files and loaded. -->
+
+To illustrate how this works, we add a separate function to the [*linreg.cpp*](code/linreg.cpp) example. The following function does not do anything meaningful, but is just meant to show you how you can add write an additional function and load it into your C++. We start by writing the subroutine function as a separate file called [*functions/utils_linreg.cpp*](functions/utils_linreg.cpp).
 ```{Rcpp 2utils_linreg.cpp, code=readLines("functions/utils_linreg.cpp"), eval=FALSE}
 ```
- which doesn't do anything useful and import it in `linreg.cpp`
+ We then import it into `linreg.cpp` ([*code/linreg_utils.cpp*](code/linreg_utils.cpp)). 
 ```{Rcpp 2linreg_utils.cpp, code=readLines("code/linreg_utils.cpp"), eval=FALSE}
 ```
+

@@ -4,6 +4,7 @@ author:
   - Timothée Bacri [timothee.bacri@uib.no](mailto:timothee.bacri@uib.no?subject=[GitHub%20TMB%20HMM])
   - Jan Bulla [jan.bulla@uib.no](mailto:jan.bulla@uib.no?subject=[GitHub%20TMB%20HMM])
   - Geir Berentsen [geir.berentsen@nhh.no](mailto:geir.berentsen@nhh.no?subject=[GitHub%20TMB%20HMM])
+  - Sondre Hølleland [sondre.hoelleland@hi.no](mailto:sondre.hoelleland@hi.no?subject=[GitHub%20TMB%20HMM])
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
@@ -49,7 +50,7 @@ The files used in this repository are available in https://github.com/timothee-b
 
 For a description of the files and the directory structure, please read [GitHub directory structure].
 
-```{r 0import-files, echo = FALSE, cache = FALSE}
+```{r 0import-files, echo = FALSE, cache = FALSE, message = FALSE}
 library(knitr)
 # setwd(dir = "../")
 suppressMessages(source("code/packages.R"))

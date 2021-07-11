@@ -1,5 +1,5 @@
 #include <TMB.hpp> //import the TMB template
-#include <code/utils_linreg.cpp>
+#include "../functions/utils_linreg.cpp"
 
 template<class Type>
 Type objective_function<Type>::operator() ()
