@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>References | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
-  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
   <meta property="og:title" content="References | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
@@ -24,9 +24,10 @@
 <meta name="author" content="Timothée Bacri timothee.bacri@uib.no" />
 <meta name="author" content="Jan Bulla jan.bulla@uib.no" />
 <meta name="author" content="Geir Berentsen geir.berentsen@nhh.no" />
+<meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-07-06" />
+<meta name="date" content="2021-07-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -35,7 +36,6 @@
   
 <link rel="prev" href="github-directory-structure.html"/>
 
-<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -53,23 +53,22 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -89,7 +88,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -122,29 +121,6 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<style type="text/css">
-/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}
-</style>
-
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -162,11 +138,9 @@ div.csl-indent {
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="1" data-path="state-inf.html"><a href="state-inf.html"><i class="fa fa-check"></i><b>1</b> State inference</a>
-<ul>
+<li class="chapter" data-level="1" data-path="state-inf.html"><a href="state-inf.html"><i class="fa fa-check"></i><b>1</b> State inference</a><ul>
 <li class="chapter" data-level="1.1" data-path="state-inf.html"><a href="state-inf.html#prepare-the-model"><i class="fa fa-check"></i><b>1.1</b> Prepare the model</a></li>
-<li class="chapter" data-level="1.2" data-path="state-inf.html"><a href="state-inf.html#setup"><i class="fa fa-check"></i><b>1.2</b> Setup</a>
-<ul>
+<li class="chapter" data-level="1.2" data-path="state-inf.html"><a href="state-inf.html#setup"><i class="fa fa-check"></i><b>1.2</b> Setup</a><ul>
 <li class="chapter" data-level="1.2.1" data-path="state-inf.html"><a href="state-inf.html#define-variables"><i class="fa fa-check"></i><b>1.2.1</b> Define variables</a></li>
 <li class="chapter" data-level="1.2.2" data-path="state-inf.html"><a href="state-inf.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>1.2.2</b> Emission/output probabilities</a></li>
 </ul></li>
@@ -176,49 +150,40 @@ div.csl-indent {
 <li class="chapter" data-level="1.6" data-path="state-inf.html"><a href="state-inf.html#forecast"><i class="fa fa-check"></i><b>1.6</b> Forecast, h-step-ahead-probabilities</a></li>
 <li class="chapter" data-level="1.7" data-path="state-inf.html"><a href="state-inf.html#global-decoding"><i class="fa fa-check"></i><b>1.7</b> Global decoding using the Viterbi algorithm</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for Maximum Likelihood Estimation</a>
-<ul>
+<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for Maximum Likelihood Estimation</a><ul>
 <li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#setting-up-tmb"><i class="fa fa-check"></i><b>2.1</b> Setting up <code>TMB</code></a></li>
 <li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#getting-started-with-a-linear-regression"><i class="fa fa-check"></i><b>2.2</b> Getting started with a linear regression</a></li>
 <li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#extending-the-c-negative-log-likelihood"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> negative log-likelihood</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques</a>
-<ul>
+<li class="chapter" data-level="3" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques</a><ul>
 <li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#negative-log-likelihood-in-tmb"><i class="fa fa-check"></i><b>3.1</b> Negative log-likelihood in <code>TMB</code></a></li>
-<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#utility-functions"><i class="fa fa-check"></i><b>3.2</b> Utility functions</a>
-<ul>
+<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#utility-functions"><i class="fa fa-check"></i><b>3.2</b> Utility functions</a><ul>
 <li class="chapter" data-level="3.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-tmb"><i class="fa fa-check"></i><b>3.2.1</b> In <code>TMB</code></a></li>
-<li class="chapter" data-level="3.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-r"><i class="fa fa-check"></i><b>3.2.2</b> In <code>R</code></a>
-<ul>
+<li class="chapter" data-level="3.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-r"><i class="fa fa-check"></i><b>3.2.2</b> In <code>R</code></a><ul>
 <li class="chapter" data-level="3.2.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#parameters"><i class="fa fa-check"></i><b>3.2.2.1</b> Parameters</a></li>
 <li class="chapter" data-level="3.2.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#label-switching"><i class="fa fa-check"></i><b>3.2.2.2</b> Label switching</a></li>
 </ul></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using TMB</a>
-<ul>
+<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using TMB</a><ul>
 <li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
 <li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions"><i class="fa fa-check"></i><b>4.2</b> Preparing data and functions</a></li>
 <li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#modeling"><i class="fa fa-check"></i><b>4.3</b> Modeling</a></li>
-<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>4.4</b> Nested models</a>
-<ul>
+<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>4.4</b> Nested models</a><ul>
 <li class="chapter" data-level="4.4.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>4.4.1</b> Principle</a></li>
 <li class="chapter" data-level="4.4.2" data-path="using-tmb.html"><a href="using-tmb.html#limit"><i class="fa fa-check"></i><b>4.4.2</b> Limit</a></li>
 <li class="chapter" data-level="4.4.3" data-path="using-tmb.html"><a href="using-tmb.html#parameter-equality-constraints"><i class="fa fa-check"></i><b>4.4.3</b> Parameter equality constraints</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a>
-<ul>
+<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a><ul>
 <li class="chapter" data-level="5.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#wald-type"><i class="fa fa-check"></i><b>5.1</b> Wald-type</a></li>
-<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#parametric-bootstrap"><i class="fa fa-check"></i><b>5.2</b> Parametric bootstrap</a>
-<ul>
+<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#parametric-bootstrap"><i class="fa fa-check"></i><b>5.2</b> Parametric bootstrap</a><ul>
 <li class="chapter" data-level="5.2.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>5.2.1</b> Generating data</a></li>
 <li class="chapter" data-level="5.2.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>5.2.2</b> Bootstrap</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#profiling-the-negative-log-likelihood"><i class="fa fa-check"></i><b>5.3</b> Profiling the negative log-likelihood</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a>
-<ul>
+<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a><ul>
 <li class="chapter" data-level="6.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-dataset"><i class="fa fa-check"></i><b>6.1</b> TYT dataset</a></li>
 <li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-dataset"><i class="fa fa-check"></i><b>6.2</b> Simulated dataset</a></li>
 <li class="chapter" data-level="6.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>6.3</b> Lamb data</a></li>
@@ -248,42 +213,42 @@ div.csl-indent {
 <div id="references" class="section level1 unnumbered">
 <h1>References</h1>
 
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div class="csl-entry">
-Bulla, Jan, and Andreas Berzel. 2008. <span>“Computational Issues in Parameter Estimation for Stationary Hidden Markov Models.”</span> <em>Computational Statistics</em> 23 (1): 1–18. <a href="https://doi.org/10.1007/s00180-007-0063-y">https://doi.org/10.1007/s00180-007-0063-y</a>.
+<div id="refs" class="references">
+<div>
+<p>Bulla, Jan, and Andreas Berzel. 2008. “Computational Issues in Parameter Estimation for Stationary Hidden Markov Models.” <em>Computational Statistics</em> 23 (1): 1–18. <a href="https://doi.org/10.1007/s00180-007-0063-y">https://doi.org/10.1007/s00180-007-0063-y</a>.</p>
 </div>
-<div class="csl-entry">
-Celeux, Gilles, and Jean-Baptiste Durand. 2008. <span>“Selecting Hidden Markov Model State Number with Cross-Validated Likelihood.”</span> <em>Computational Statistics</em> 23 (4): 541–64. <a href="https://doi.org/10.1007/s00180-007-0097-1">https://doi.org/10.1007/s00180-007-0097-1</a>.
+<div>
+<p>Celeux, Gilles, and Jean-Baptiste Durand. 2008. “Selecting Hidden Markov Model State Number with Cross-Validated Likelihood.” <em>Computational Statistics</em> 23 (4): 541–64. <a href="https://doi.org/10.1007/s00180-007-0097-1">https://doi.org/10.1007/s00180-007-0097-1</a>.</p>
 </div>
-<div class="csl-entry">
-Kristensen, Kasper. 2021. <em>TMB: Template Model Builder: A General Random Effect Tool Inspired by ADMB</em>. <a href="https://github.com/kaskr/adcomp/wiki">https://github.com/kaskr/adcomp/wiki</a>.
+<div>
+<p>Kristensen, Kasper. 2021. <em>TMB: Template Model Builder: A General Random Effect Tool Inspired by Admb</em>. <a href="https://github.com/kaskr/adcomp/wiki">https://github.com/kaskr/adcomp/wiki</a>.</p>
 </div>
-<div class="csl-entry">
-Leroux, Brian G., and Martin L. Puterman. 1992. <span>“Maximum-Penalized-Likelihood Estimation for Independent and Markov- Dependent Mixture Models.”</span> <em>Biometrics</em> 48 (2): 545–58. <a href="https://doi.org/10.2307/2532308">https://doi.org/10.2307/2532308</a>.
+<div>
+<p>Leroux, Brian G., and Martin L. Puterman. 1992. “Maximum-Penalized-Likelihood Estimation for Independent and Markov- Dependent Mixture Models.” <em>Biometrics</em> 48 (2): 545–58. <a href="https://doi.org/10.2307/2532308">https://doi.org/10.2307/2532308</a>.</p>
 </div>
-<div class="csl-entry">
-Meeker, William Q., and Luis A. Escobar. 1995. <span>“Teaching about Approximate Confidence Regions Based on Maximum Likelihood Estimation.”</span> <em>The American Statistician</em> 49 (1): 48–53. <a href="https://doi.org/10.1080/00031305.1995.10476112">https://doi.org/10.1080/00031305.1995.10476112</a>.
+<div>
+<p>Meeker, William Q., and Luis A. Escobar. 1995. “Teaching About Approximate Confidence Regions Based on Maximum Likelihood Estimation.” <em>The American Statistician</em> 49 (1): 48–53. <a href="https://doi.org/10.1080/00031305.1995.10476112">https://doi.org/10.1080/00031305.1995.10476112</a>.</p>
 </div>
-<div class="csl-entry">
-Pohle, Jennifer, Roland Langrock, Floris M. van Beest, and Niels Martin Schmidt. 2017a. <span>“Selecting the Number of States in Hidden Markov Models: Pragmatic Solutions Illustrated Using Animal Movement.”</span> <em>Journal of Agricultural, Biological and Environmental Statistics</em> 22 (3): 270–93. <a href="https://doi.org/10.1007/s13253-017-0283-8">https://doi.org/10.1007/s13253-017-0283-8</a>.
+<div>
+<p>Pohle, Jennifer, Roland Langrock, Floris M. van Beest, and Niels Martin Schmidt. 2017a. “Selecting the Number of States in Hidden Markov Models: Pragmatic Solutions Illustrated Using Animal Movement.” <em>Journal of Agricultural, Biological and Environmental Statistics</em> 22 (3): 270–93. <a href="https://doi.org/10.1007/s13253-017-0283-8">https://doi.org/10.1007/s13253-017-0283-8</a>.</p>
 </div>
-<div class="csl-entry">
-Pohle, Jennifer, Roland Langrock, Floris van Beest, and Niels Martin Schmidt. 2017b. <span>“Selecting the Number of States in Hidden Markov Models - Pitfalls, Practical Challenges and Pragmatic Solutions.”</span> <em>arXiv:1701.08673 [q-Bio, Stat]</em>, April. <a href="http://arxiv.org/abs/1701.08673">http://arxiv.org/abs/1701.08673</a>.
+<div>
+<p>Pohle, Jennifer, Roland Langrock, Floris van Beest, and Niels Martin Schmidt. 2017b. “Selecting the Number of States in Hidden Markov Models - Pitfalls, Practical Challenges and Pragmatic Solutions.” <em>arXiv:1701.08673 [Q-Bio, Stat]</em>, April. <a href="http://arxiv.org/abs/1701.08673">http://arxiv.org/abs/1701.08673</a>.</p>
 </div>
-<div class="csl-entry">
-Probst, Thomas, Rüdiger Pryss, Berthold Langguth, and Winfried Schlee. 2016. <span>“Emotion Dynamics and Tinnitus: Daily Life Data from the <span>‘TrackYourTinnitus’</span> Application.”</span> <em>Scientific Reports</em> 6 (1): 31166. <a href="https://doi.org/10.1038/srep31166">https://doi.org/10.1038/srep31166</a>.
+<div>
+<p>Probst, Thomas, Rüdiger Pryss, Berthold Langguth, and Winfried Schlee. 2016. “Emotion Dynamics and Tinnitus: Daily Life Data from the ‘TrackYourTinnitus’ Application.” <em>Scientific Reports</em> 6 (1): 31166. <a href="https://doi.org/10.1038/srep31166">https://doi.org/10.1038/srep31166</a>.</p>
 </div>
-<div class="csl-entry">
-Pryss, R., M. Reichert, J. Herrmann, B. Langguth, and W. Schlee. 2015. <span>“Mobile Crowd Sensing in Clinical and Psychological Trials – A Case Study.”</span> In <em>2015 IEEE 28th International Symposium on Computer-Based Medical Systems</em>, 23–24. <a href="https://doi.org/10.1109/CBMS.2015.26">https://doi.org/10.1109/CBMS.2015.26</a>.
+<div>
+<p>Pryss, R., M. Reichert, J. Herrmann, B. Langguth, and W. Schlee. 2015. “Mobile Crowd Sensing in Clinical and Psychological Trials – A Case Study.” In <em>2015 IEEE 28th International Symposium on Computer-Based Medical Systems</em>, 23–24. <a href="https://doi.org/10.1109/CBMS.2015.26">https://doi.org/10.1109/CBMS.2015.26</a>.</p>
 </div>
-<div class="csl-entry">
-Pryss, R., M. Reichert, B. Langguth, and W. Schlee. 2015. <span>“Mobile Crowd Sensing Services for Tinnitus Assessment, Therapy, and Research.”</span> In <em>2015 IEEE International Conference on Mobile Services</em>, 352–59. <a href="https://doi.org/10.1109/MobServ.2015.55">https://doi.org/10.1109/MobServ.2015.55</a>.
+<div>
+<p>Pryss, R., M. Reichert, B. Langguth, and W. Schlee. 2015. “Mobile Crowd Sensing Services for Tinnitus Assessment, Therapy, and Research.” In <em>2015 IEEE International Conference on Mobile Services</em>, 352–59. <a href="https://doi.org/10.1109/MobServ.2015.55">https://doi.org/10.1109/MobServ.2015.55</a>.</p>
 </div>
-<div class="csl-entry">
-Wald, Abraham. 1943. <span>“Tests of Statistical Hypotheses Concerning Several Parameters When the Number of Observations Is Large.”</span> <em>Transactions of the American Mathematical Society</em> 54 (3): 426–82. <a href="https://doi.org/10.2307/1990256">https://doi.org/10.2307/1990256</a>.
+<div>
+<p>Wald, Abraham. 1943. “Tests of Statistical Hypotheses Concerning Several Parameters When the Number of Observations Is Large.” <em>Transactions of the American Mathematical Society</em> 54 (3): 426–82. <a href="https://doi.org/10.2307/1990256">https://doi.org/10.2307/1990256</a>.</p>
 </div>
-<div class="csl-entry">
-Zucchini, W., I.L. MacDonald, and R. Langrock. 2016. <em>Hidden Markov Models for Time Series: An Introduction Using r, Second Edition</em>. Chapman &amp; Hall/CRC Monographs on Statistics &amp; Applied Probability. CRC Press. <a href="https://books.google.no/books?id=KlWzDAAAQBAJ">https://books.google.no/books?id=KlWzDAAAQBAJ</a>.
+<div>
+<p>Zucchini, W., I. L. MacDonald, and R. Langrock. 2016. <em>Hidden Markov Models for Time Series: An Introduction Using R, Second Edition</em>. Chapman &amp; Hall/CRC Monographs on Statistics &amp; Applied Probability. CRC Press. <a href="https://books.google.no/books?id=KlWzDAAAQBAJ">https://books.google.no/books?id=KlWzDAAAQBAJ</a>.</p>
 </div>
 </div>
 </div>
@@ -316,7 +281,6 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {

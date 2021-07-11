@@ -62,7 +62,8 @@ To address the problem, we reorder the states by ascending Poisson means.
 Sorting the means is direct, however re-ordering the TPM is not as straightforward.
 To do so, we take the permutations of the states given by the sorted Poisson means, and permute each row index and column index to its new value.
 A function to achieve this is
-```{r pois.HMM.label.order}
+```{r pois.HMM.label.order, echo = FALSE}
+
 ```
 
 We will go through an example to better understand the process.
