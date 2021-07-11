@@ -10,7 +10,7 @@ In order to run the scripts and example code, you first need to set up TMB by go
   install.packages("TMB")
   ```
 
-- (Optional) Setup error debugging in `RStudio` by running the command  `TMB::setupRstudio()`
+- (Optional) Setup error debugging in `RStudio` by running the command  `TMB:::setupRstudio()`
 
 
 Advanced use is detailed in https://kaskr.github.io/adcomp/_book/Tutorial.html

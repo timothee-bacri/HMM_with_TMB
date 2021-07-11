@@ -14,7 +14,7 @@ The function is defined in [poi_hmm.cpp](code/poi_hmm.cpp)
 ```
 
 ## Preparing data and functions
-Before we can fit the model, we need to load some necessary packages and data files. We also need to compile the c++ code and load the functions into our working environment in R. 
+Before we can fit the model, we need to load some necessary packages and data files. We also need to compile the `C++` code and load the functions into our working environment in `R`.
 <!-- Loading of the necessary packages, compilation of the nll function with TMB and subsequent loading, and loading of the auxiliary functions for parameter transformation -->
 
 <!-- With the nll function available in `C++`, we can carry out the parameter estimation and all pre-/post-processing in `R`. In the following we describe the steps to be carried out. -->

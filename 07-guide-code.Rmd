@@ -1,3 +1,24 @@
 # GitHub directory structure
+For an easier reading, we recommend opening the file `hmm-tmb.Rproj` with R-Studio.
+Most of the code can be folded/collapsed into sections easily by clicking in the menu `Edit`->`Collapse All Output`.
+Unfolding can be done by clicking on the arrows to the left of the folded sections, or in the menu `Edit`->`Expand All Output`.
 
-Explanation of the files+folders
+## Folder `code`
+The file `main.R` is used to run the procedures related to timing and comparisons presented in the article.
+
+The first chunk of code it runs can be found in the file `setup_parameters.R` in the same folder.
+Its role is to set up multiple variables, either to define some global constants or to store useful results for easier maintenance.
+
+The following chunks of code are `poi_hmm_tinn.R`, `poi_hmm_lamb.R`, `poi_hmm_simu1.R`, and `poi_hmm_simu2.R`.
+Most of their code is common.\
+
+`Parameters and covariates` defines parameters and covariates in natural form. The simulation files generate data there.\
+`Parameters & covariates for TMB` transforms parameters and covariates to their working form.\
+`Estimation` computes estimates with and without TMB for further comparison.\
+`Store negative log-likelihoods`
+
+**Randomness**: A unique randomness seed is set in each of these four files before all time-consuming tasks which involve some randomness.
+`setup_parameters.R` defines the random number generator's version.
+
+## Folder `data`
+`main.R` stores important results in this folder
