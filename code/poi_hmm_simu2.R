@@ -3,12 +3,6 @@ for (idx in 1:length(M_LIST_SIMU2)) {
   set.seed(14)
   # Parameters and covariates --------------------------
   m <- M_LIST_SIMU2[idx]
-  # if (m == 1) {
-  #   true_gamma <- matrix(1)
-  # } else {
-  #   true_gamma <- matrix(0.2 / (m - 1), nrow = m, ncol = m)
-  #   diag(true_gamma) <- 0.8
-  # }
   if (m == 2) {
     true_gamma <- matrix(c(0.95, 0.05,
                            0.15, 0.85), byrow = TRUE, nrow = m, ncol = m)
@@ -18,9 +12,9 @@ for (idx in 1:length(M_LIST_SIMU2)) {
                            0.075, 0.075, 0.85), byrow = TRUE, nrow = m, ncol = m)
   }
   true_lambda <- seq(1, 7, length.out = m)
-  true_delta <- stat.dist(true_gamma)
+  true_delta <- stat_dist(true_gamma)
   
-  simu2_data <- pois.HMM.generate_sample(ns = DATA_SIZE_SIMU2,
+  simu2_data <- pois_HMM_generate_sample(ns = DATA_SIZE_SIMU2,
                                          mod = list(m = m,
                                                     lambda = true_lambda,
                                                     gamma = true_gamma,
@@ -34,32 +28,32 @@ for (idx in 1:length(M_LIST_SIMU2)) {
     gamma_init <- matrix(1)
   }
   lambda_init <- seq(2, 6, length.out = m)
-  delta_init <- stat.dist(gamma_init)
+  delta_init <- stat_dist(gamma_init)
   
   # Parameters & covariates for TMB ------------------
-  working_params_init <- pois.HMM.pn2pw(m, lambda_init, gamma_init)
+  working_params_init <- pois_HMM_pn2pw(m, lambda_init, gamma_init)
   TMB_data <- list(x = simu2_data, m = m)
   obj_init <- MakeADFun(TMB_data, working_params_init, DLL = "poi_hmm", silent = TRUE)
-  parvect_init <- pois.HMM.pn2pw(m = m, lambda = lambda_init, gamma = gamma_init, delta = delta_init)
+  parvect_init <- pois_HMM_pn2pw(m = m, lambda = lambda_init, gamma = gamma_init, delta = delta_init)
   parvect_init <- unlist(parvect_init)
   
   # Estimation ------------------------------------
-  dm <- DM.estimate(x = simu2_data,
+  dm <- DM_estimate(x = simu2_data,
                     m = m,
                     lambda0 = lambda_init,
                     gamma0 = gamma_init)
-  tmb <- TMB.estimate(TMB_data = TMB_data,
+  tmb <- TMB_estimate(TMB_data = TMB_data,
                       parameters = working_params_init,
                       MakeADFun_obj = obj_init)
-  tmb_g <- TMB.estimate(TMB_data = TMB_data,
+  tmb_g <- TMB_estimate(TMB_data = TMB_data,
                         parameters = working_params_init,
                         MakeADFun_obj = obj_init,
                         gradient = TRUE)
-  tmb_h <- TMB.estimate(TMB_data = TMB_data,
+  tmb_h <- TMB_estimate(TMB_data = TMB_data,
                         parameters = working_params_init,
                         MakeADFun_obj = obj_init,
                         hessian = TRUE)
-  tmb_gh <- TMB.estimate(TMB_data = TMB_data,
+  tmb_gh <- TMB_estimate(TMB_data = TMB_data,
                          parameters = working_params_init,
                          MakeADFun_obj = obj_init,
                          gradient = TRUE,
@@ -113,7 +107,7 @@ for (idx in 1:length(M_LIST_SIMU2)) {
     # Get row and column indices for gamma instead of the default
     # columnwise index: the default indices are 1:m for the 1st column,
     # then (m + 1):(2 * m) for the 2nd, etc...
-    row_col_idx <- matrix.col.idx.to.rowcol(gamma_idx, m)
+    row_col_idx <- matrix_col_idx_to_rowcol(gamma_idx, m)
     params_names_latex <- c(params_names_latex,
                             paste0("$\\gamma_{", paste0(row_col_idx, collapse = ""), "}$"))
   }
@@ -127,7 +121,7 @@ for (idx in 1:length(M_LIST_SIMU2)) {
   conf_int_simu2[indices, "Estimate"] <- unlist(tmb_CI[PARAMS_NAMES])
   conf_int_simu2[indices, "True.value"] <- as.numeric(c(true_lambda, true_gamma, true_delta))
   
-  param_tmb_CI <- pois.HMM.pn2pw(m = m, lambda = tmb_CI$lambda, gamma = tmb_CI$gamma)
+  param_tmb_CI <- pois_HMM_pn2pw(m = m, lambda = tmb_CI$lambda, gamma = tmb_CI$gamma)
   
   if (m == 1) {
     w_params_names <- c("tlambda1")
@@ -150,7 +144,7 @@ for (idx in 1:length(M_LIST_SIMU2)) {
       # and is tested on the slightly off parameters from the beginning of this file
       # The goal is to have a dataset that poses no estimation problem,
       # when estimated with guessed initial parameters
-      benchmark_model <- pois.HMM.generate_estimable_sample(ns = DATA_SIZE_SIMU2,
+      benchmark_model <- pois_HMM_generate_estimable_sample(ns = DATA_SIZE_SIMU2,
                                                             mod = list(m = m,
                                                                        lambda = tmb_CI$lambda,
                                                                        gamma = tmb_CI$gamma,
@@ -165,11 +159,11 @@ for (idx in 1:length(M_LIST_SIMU2)) {
       # Parameters & covariates for DM and TMB
       TMB_benchmark_data <- list(x = benchmark_data, m = m)
       obj_benchmark <- MakeADFun(TMB_benchmark_data, working_params_init, DLL = "poi_hmm", silent = TRUE)
-      parvect_benchmark <- pois.HMM.pn2pw(m = m, lambda = lambda_init, gamma = gamma_init, delta = delta_init)
+      parvect_benchmark <- pois_HMM_pn2pw(m = m, lambda = lambda_init, gamma = gamma_init, delta = delta_init)
       # nlminb needs a vector, not a list
       parvect_benchmark <- unlist(parvect_benchmark)
       # Estimation benchmark
-      temp <- microbenchmark("DM" = nlminb(parvect_benchmark, pois.HMM.mllk, x_alias = benchmark_data, m_alias = m)$convergence==0,
+      temp <- microbenchmark("DM" = nlminb(parvect_benchmark, pois_HMM_mllk, x_alias = benchmark_data, m_alias = m)$convergence==0,
                              "TMB" = nlminb(obj_benchmark$par, obj_benchmark$fn)$convergence==0,
                              "TMB_G" = nlminb(obj_benchmark$par, obj_benchmark$fn, gradient = obj_benchmark$gr)$convergence==0,
                              "TMB_H" = nlminb(obj_benchmark$par, obj_benchmark$fn, hessian = obj_benchmark$he)$convergence==0,
@@ -184,7 +178,7 @@ for (idx in 1:length(M_LIST_SIMU2)) {
       timeTMB_H <- times[temp$expr == "TMB_H"]
       timeTMB_GH <- times[temp$expr == "TMB_GH"]
       
-      iterDM <- nlminb(parvect_benchmark, pois.HMM.mllk, x_alias = benchmark_data, m_alias = m)$iterations
+      iterDM <- nlminb(parvect_benchmark, pois_HMM_mllk, x_alias = benchmark_data, m_alias = m)$iterations
       iterTMB <- nlminb(obj_benchmark$par, obj_benchmark$fn)$iterations
       iterTMB_G <- nlminb(obj_benchmark$par, obj_benchmark$fn, gradient = obj_benchmark$gr)$iterations
       iterTMB_H <- nlminb(obj_benchmark$par, obj_benchmark$fn, hessian = obj_benchmark$he)$iterations
@@ -198,45 +192,22 @@ for (idx in 1:length(M_LIST_SIMU2)) {
                                                     dataset_number = rep(idx_counter, length(PROCEDURES))))
       
       # Benchmark mllk times --------------------------------------------------
-      # tmb_benchmark <- TMB.estimate(TMB_data = TMB_benchmark_data,
-      #                               parameters = parvect_benchmark,
-      #                               MakeADFun_obj = obj_benchmark)
-      # tmb_g_benchmark <- TMB.estimate(TMB_data = TMB_benchmark_data,
-      #                                 parameters = parvect_benchmark,
-      #                                 MakeADFun_obj = obj_benchmark,
-      #                                 gradient = TRUE)
-      # tmb_h_benchmark <- TMB.estimate(TMB_data = TMB_benchmark_data,
-      #                                 parameters = parvect_benchmark,
-      #                                 MakeADFun_obj = obj_benchmark,
-      #                                 hessian = TRUE)
-      tmb_gh_benchmark <- TMB.estimate(TMB_data = TMB_benchmark_data,
+      tmb_gh_benchmark <- TMB_estimate(TMB_data = TMB_benchmark_data,
                                        parameters = parvect_benchmark,
                                        MakeADFun_obj = obj_benchmark,
                                        gradient = TRUE,
                                        hessian = TRUE)
       
-      # param_tmb <- pois.HMM.pn2pw(m = m, lambda = tmb_benchmark$lambda, gamma = tmb_benchmark$gamma)
-      # param_tmb_g <- pois.HMM.pn2pw(m = m, lambda = tmb_g_benchmark$lambda, gamma = tmb_g_benchmark$gamma)
-      # param_tmb_h <- pois.HMM.pn2pw(m = m, lambda = tmb_h_benchmark$lambda, gamma = tmb_h_benchmark$gamma)
-      param_tmb_gh <- pois.HMM.pn2pw(m = m, lambda = tmb_gh_benchmark$lambda, gamma = tmb_gh_benchmark$gamma)
-      # model1 <- MakeADFun(TMB_data, param_tmb, DLL = "poi_hmm", silent = TRUE)
-      # model2 <- MakeADFun(TMB_data, param_tmb_g, DLL = "poi_hmm", silent = TRUE)
-      # model3 <- MakeADFun(TMB_data, param_tmb_h, DLL = "poi_hmm", silent = TRUE)
+      param_tmb_gh <- pois_HMM_pn2pw(m = m, lambda = tmb_gh_benchmark$lambda, gamma = tmb_gh_benchmark$gamma)
       model4 <- MakeADFun(TMB_data, param_tmb_gh, DLL = "poi_hmm", silent = TRUE)
-      parvect_mllk <- pois.HMM.pn2pw(m, lambda = tmb_gh_benchmark$lambda, gamma = tmb_gh_benchmark$gamma)
+      parvect_mllk <- pois_HMM_pn2pw(m, lambda = tmb_gh_benchmark$lambda, gamma = tmb_gh_benchmark$gamma)
       
-      temp <- microbenchmark("DM" = pois.HMM.mllk(parvect_mllk, simu2_data, m),
-                             # "TMB" = model1$fn(model1$par),
-                             # "TMB_G" = model2$fn(model2$par),
-                             # "TMB_H" = model3$fn(model3$par),
+      temp <- microbenchmark("DM" = pois_HMM_mllk(parvect_mllk, simu2_data, m),
                              "TMB_GH" = model4$fn(model4$par),
                              times = 1)
       
       times <- temp$time/10^9
       timeDM <- times[temp$expr == "DM"]
-      # timeTMB <- times[temp$expr == "TMB"]
-      # timeTMB_G <- times[temp$expr == "TMB_G"]
-      # timeTMB_H <- times[temp$expr == "TMB_H"]
       timeTMB_GH <- times[temp$expr == "TMB_GH"]
       mllk_times_df_simu2 <- rbind(mllk_times_df_simu2,
                                    data.frame(time = c(timeDM, timeTMB_GH),
@@ -285,10 +256,6 @@ for (idx in 1:length(M_LIST_SIMU2)) {
     error = function(e){
       return(rep(NA, 2))
     })
-    
-    # w_param_name <- w_params_names[idx_param]
-    # working_conf_int$lower[working_conf_int$w_parameter == w_param_name] <- ci[1]
-    # working_conf_int$upper[working_conf_int$w_parameter == w_param_name] <- ci[2]
     return(ci)
   }
   stopImplicitCluster()
@@ -299,14 +266,14 @@ for (idx in 1:length(M_LIST_SIMU2)) {
   conf_int_simu2$Profile.L[which(conf_int_simu2$m == m)][lambda_indices] <- exp(working_conf_int$lower[lambda_indices])
   # Gamma (m^2-m working parameters, m^2 natural ones)
   if (!anyNA(working_conf_int$lower[tgamma_indices])) {
-    natural_gamma <- as.numeric(gamma.w2n(m, working_conf_int$lower[tgamma_indices]))
+    natural_gamma <- as.numeric(gamma_w2n(m, working_conf_int$lower[tgamma_indices]))
     conf_int_simu2$Profile.L[which(conf_int_simu2$m == m)][gamma_indices] <- natural_gamma
   }
   # Lambda (m values)
   conf_int_simu2$Profile.U[which(conf_int_simu2$m == m)][lambda_indices] <- exp(working_conf_int$upper[lambda_indices])
   # Gamma (m^2-m working parameters, m^2 natural ones)
   if (!anyNA(working_conf_int$upper[tgamma_indices])) {
-    natural_gamma <- as.numeric(gamma.w2n(m, working_conf_int$upper[tgamma_indices]))
+    natural_gamma <- as.numeric(gamma_w2n(m, working_conf_int$upper[tgamma_indices]))
     conf_int_simu2$Profile.U[which(conf_int_simu2$m == m)][gamma_indices] <- natural_gamma
   }
   
@@ -317,7 +284,7 @@ for (idx in 1:length(M_LIST_SIMU2)) {
     bootstrap_simu2 <- foreach (idx_sample = 1:BOOTSTRAP_SAMPLES, .packages = packages, .combine = rbind) %dopar% {
       TMB::compile("code/poi_hmm.cpp")
       dyn.load(dynlib("code/poi_hmm"))
-      temp <- pois.HMM.generate_estimable_sample(ns = DATA_SIZE_SIMU2,
+      temp <- pois_HMM_generate_estimable_sample(ns = DATA_SIZE_SIMU2,
                                                  mod = list(m = m,
                                                             lambda = tmb_CI$lambda,
                                                             gamma = tmb_CI$gamma,
@@ -333,7 +300,7 @@ for (idx in 1:length(M_LIST_SIMU2)) {
     }
     stopImplicitCluster()
     colnames(bootstrap_simu2) <- params_names_latex
-    q <- apply(bootstrap_simu2, 2, quantile.colwise)
+    q <- apply(bootstrap_simu2, 2, quantile_colwise)
     conf_int_simu2$Bootstrap.L[which(conf_int_simu2$m == m)] <- q[1, ]
     conf_int_simu2$Bootstrap.U[which(conf_int_simu2$m == m)] <- q[2, ]
   }
@@ -364,7 +331,7 @@ for (idx in 1:length(M_LIST_SIMU2)) {
     # Get row and column indices for gamma instead of the default
     # columnwise index: the default indices are 1:m for the 1st column,
     # then (m + 1):(2 * m) for the 2nd, etc...
-    row_col_idx <- matrix.col.idx.to.rowcol(gamma_idx, m)
+    row_col_idx <- matrix_col_idx_to_rowcol(gamma_idx, m)
     parameter_names <- c(parameter_names,
                          paste0("gamma", toString(row_col_idx)))
   }
@@ -379,7 +346,7 @@ for (idx in 1:length(M_LIST_SIMU2)) {
     # Loop as long as there is an issue with nlminb
     # Estimate a model
     # Unlike with the other datasets, we know the true parameters of this one
-    coverage_model <- pois.HMM.generate_estimable_sample(ns = DATA_SIZE_SIMU2,
+    coverage_model <- pois_HMM_generate_estimable_sample(ns = DATA_SIZE_SIMU2,
                                                          mod = list(m = m,
                                                                     lambda = true_lambda,
                                                                     gamma = true_gamma,
@@ -412,10 +379,6 @@ for (idx in 1:length(M_LIST_SIMU2)) {
       error = function(e){
         return(rep(NA, 2))
       })
-      
-      # w_param_name <- w_params_names[idx_param]
-      # working_conf_int$lower[working_conf_int$w_parameter == w_param_name] <- ci[1]
-      # working_conf_int$upper[working_conf_int$w_parameter == w_param_name] <- ci[2]
       return(ci)
     }
     stopImplicitCluster()
@@ -423,8 +386,8 @@ for (idx in 1:length(M_LIST_SIMU2)) {
     rownames(working_conf_int) <- w_params_names
     lambda_profile_lower <- exp(working_conf_int$lower[lambda_indices])
     lambda_profile_upper <- exp(working_conf_int$upper[lambda_indices])
-    gamma_profile_lower <- as.numeric(gamma.w2n(m, working_conf_int$lower[tgamma_indices]))
-    gamma_profile_upper <- as.numeric(gamma.w2n(m, working_conf_int$upper[tgamma_indices]))
+    gamma_profile_lower <- as.numeric(gamma_w2n(m, working_conf_int$lower[tgamma_indices]))
+    gamma_profile_upper <- as.numeric(gamma_w2n(m, working_conf_int$upper[tgamma_indices]))
     
     # If profiling doesn't yield results for all parameters, try a new coverage sample
     if (anyNA(c(lambda_profile_lower, lambda_profile_upper, gamma_profile_lower, gamma_profile_upper), recursive = TRUE)) {
@@ -445,27 +408,13 @@ for (idx in 1:length(M_LIST_SIMU2)) {
     indices <- indices + m
     coverage_count_profile[indices, "count"] <- coverage_count_profile[indices, "count"] + 1
     
-    # # Sometimes, there are no profile CIs for gamma because of the need to transform the CIs to their natural form
-    # # In these cases, we reduce the total coverage_adjusted_sample_size_gamma_simu2[idx, "size"]
-    # # Either or both bounds for gamma can be missing due to missing tgamma values
-    # # If there are missing tgamma values, the confidence interval has 0 or 1 bound
-    # # and is thus useless for coverage probabilities
-    # if (anyNA(gamma_profile_lower, recursive = TRUE) || anyNA(gamma_profile_upper, recursive = TRUE)) {
-    #   coverage_adjusted_sample_size_gamma_simu2[idx, "size"] <- coverage_adjusted_sample_size_gamma_simu2[idx, "size"] - 1
-    # } else {
-    #   # Same as above for gamma
-    #   indices <- which(as.vector(tmb_CI$gamma) >= gamma_profile_lower & as.vector(tmb_CI$gamma) <= gamma_profile_upper)
-    #   indices <- indices + m
-    #   coverage_count_profile[indices, "count"] <- coverage_count_profile[indices, "count"] + 1
-    # }
-    
     # Confidence interval bootstrap -----------------------------------
     if (BOOTSTRAP_SAMPLES != 0) {
       registerDoParallel(cores = detectCores() - 1)
       bootstrap_simu2 <- foreach (idx_sample = 1:BOOTSTRAP_SAMPLES, .packages = packages, .combine = rbind) %dopar% {
         TMB::compile("code/poi_hmm.cpp")
         dyn.load(dynlib("code/poi_hmm"))
-        temp <- pois.HMM.generate_estimable_sample(ns = DATA_SIZE_SIMU2,
+        temp <- pois_HMM_generate_estimable_sample(ns = DATA_SIZE_SIMU2,
                                                    mod = list(m = m,
                                                               lambda = coverage_model$mod$lambda,
                                                               gamma = coverage_model$mod$gamma,
@@ -481,7 +430,7 @@ for (idx in 1:length(M_LIST_SIMU2)) {
       }
       stopImplicitCluster()
       # colnames(bootstrap_simu2) <- params_names_latex
-      q <- apply(bootstrap_simu2, 2, quantile.colwise)
+      q <- apply(bootstrap_simu2, 2, quantile_colwise)
       indices <- which(as.vector(true_lambda) >= q[1, lambda_indices] & as.vector(true_lambda) <= q[2, lambda_indices])
       coverage_count_bootstrap[indices, "count"] <- coverage_count_bootstrap[indices, "count"] + 1
       indices <- which(as.vector(true_gamma) >= q[1, gamma_indices] & as.vector(true_gamma) <= q[2, gamma_indices]) + m
@@ -509,7 +458,6 @@ for (idx in 1:length(M_LIST_SIMU2)) {
     
   }
   coverage_count_profile[lambda_indices, "ratio"] <- coverage_count_profile[lambda_indices, "count"] / COVERAGE_SAMPLES
-  # coverage_count_profile[gamma_indices, "ratio"] <- coverage_count_profile[gamma_indices, "count"] / coverage_adjusted_sample_size_gamma_simu2[idx, "size"]
   coverage_count_profile[gamma_indices, "ratio"] <- coverage_count_profile[gamma_indices, "count"] / COVERAGE_SAMPLES
   coverage_count_profile[delta_indices, "ratio"] <- NA # delta is not a parameter for us, so it has no profile CI
   
@@ -523,7 +471,7 @@ for (idx in 1:length(M_LIST_SIMU2)) {
   
   # Fixes -------------------------
   # Fix label switching in conf_int_simu2
-  ordered_params <- pois.HMM.label.order(m = m,
+  ordered_params <- pois_HMM_label_order(m = m,
                                          lambda = true_lambda,
                                          gamma = true_gamma,
                                          delta = true_delta)
@@ -553,10 +501,5 @@ mllk_values_simu2$mllk <- as.numeric(mllk_values_simu2$mllk)
 mllk_values_simu2$AIC <- as.numeric(mllk_values_simu2$AIC)
 mllk_values_simu2$BIC <- as.numeric(mllk_values_simu2$BIC)
 conf_int_simu2$m <- as.integer(conf_int_simu2$m)
-
-# Remove gamma and delta when m = 1 because they're pointless
-if (1 %in% M_LIST_SIMU2) {
-  conf_int_simu2 <- conf_int_simu2[- c(2,3), ]
-}
 
 estim_benchmarks_df_simu2$m <- factor(estim_benchmarks_df_simu2$m, levels = M_LIST_SIMU2)

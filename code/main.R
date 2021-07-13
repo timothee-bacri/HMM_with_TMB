@@ -108,7 +108,7 @@ tinntime <- Sys.time()
 #                          0.075, 0.075, 0.85), byrow = TRUE, nrow = m, ncol = m)
 # }
 # true_lambda <- seq(1, 7, length.out = m)
-# true_delta <- stat.dist(true_gamma)
+# true_delta <- stat_dist(true_gamma)
 # conf_int_simu1[conf_int_simu1$m==m, "True.value"] <- as.numeric(c(true_lambda, true_gamma, true_delta))
 # m <- 3
 # if (m == 2) {
@@ -120,7 +120,7 @@ tinntime <- Sys.time()
 #                          0.075, 0.075, 0.85), byrow = TRUE, nrow = m, ncol = m)
 # }
 # true_lambda <- seq(1, 7, length.out = m)
-# true_delta <- stat.dist(true_gamma)
+# true_delta <- stat_dist(true_gamma)
 # conf_int_simu2[conf_int_simu2$m==m, "True.value"] <- as.numeric(c(true_lambda, true_gamma, true_delta))
 
 

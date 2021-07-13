@@ -27,12 +27,12 @@ m <- 2
 gamma <- matrix(c(0.8, 0.2,
                   0.2, 0.8), nrow = m, ncol = m)
 lambda <- seq(quantile(tinn_data, 0.1), quantile(tinn_data, 0.9), length.out = m)
-delta <- stat.dist(gamma)
+delta <- stat_dist(gamma)
 ```
 
 - Transform them into working parameters
 ```{r 6tyt-pn2pw}
-working_params <- pois.HMM.pn2pw(m, lambda, gamma)
+working_params <- pois_HMM_pn2pw(m, lambda, gamma)
 TMB_data <- list(x = tinn_data, m = m)
 ```
 
@@ -69,13 +69,13 @@ lambda <- seq(10, 14, length.out = m)
 # Create the transition probability matrix with 0.8 on its diagonal
 gamma <- matrix(c(0.8, 0.2,
                   0.2, 0.8), nrow = m, ncol = m)
-delta <- stat.dist(gamma)
+delta <- stat_dist(gamma)
 ```
-The `stat.dist` function computes the stationary distribution.
+The `stat_dist` function computes the stationary distribution.
 
 - Generate data with one of the functions defined in \@ref(generating-data)
 ```{r 6simu-gen-data}
-simu_data <- pois.HMM.generate_sample(ns = DATA_SIZE_SIMU,
+simu_data <- pois_HMM_generate_sample(ns = DATA_SIZE_SIMU,
                                       mod = list(m = m,
                                                  lambda = lambda,
                                                  gamma = gamma,
@@ -89,14 +89,14 @@ m <- 2
 gamma <- matrix(c(0.6, 0.4,
                   0.4, 0.6), nrow = m, ncol = m)
 lambda <- seq(quantile(simu_data, 0.1), quantile(simu_data, 0.9), length.out = m)
-delta <- stat.dist(gamma)
+delta <- stat_dist(gamma)
 # Display Poisson means
 lambda
 ```
 
 - Transform them into working parameters
 ```{r 6simu-pn2pw}
-working_params <- pois.HMM.pn2pw(m, lambda, gamma)
+working_params <- pois_HMM_pn2pw(m, lambda, gamma)
 TMB_data <- list(x = simu_data, m = m)
 ```
 
@@ -142,12 +142,12 @@ m <- 2
 gamma <- matrix(c(0.8, 0.2,
                   0.2, 0.8), nrow = m, ncol = m)
 lambda <- seq(0.3, 4, length.out = m)
-delta <- stat.dist(gamma)
+delta <- stat_dist(gamma)
 ```
 
 - Transform them into working parameters
 ```{r 6lamb-pn2pw}
-working_params <- pois.HMM.pn2pw(m, lambda, gamma)
+working_params <- pois_HMM_pn2pw(m, lambda, gamma)
 TMB_data <- list(x = lamb_data, m = m)
 ```
 
