@@ -4,10 +4,10 @@ source("code/setup_parameters.R")
 # knitr::knit2pdf("paper.rnw")
 
 # Which dataset are tests run on
-RUN_LAMB <- TRUE
-RUN_SIMULATION1 <- TRUE
-RUN_SIMULATION2 <- TRUE
-RUN_TINNITUS <- TRUE
+RUN_LAMB <- FALSE
+RUN_SIMULATION1 <- FALSE
+RUN_SIMULATION2 <- FALSE
+RUN_TINNITUS <- FALSE
 
 ## ---- Lamb
 if (RUN_LAMB) {
