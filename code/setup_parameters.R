@@ -18,7 +18,7 @@ q95_norm <- qnorm(1 - 0.05 / 2)
 # Number of benchmark runs used to time the estimation of HMM parameters (CAN = 0)
 BENCHMARK_SAMPLES <- 200
 
-# Number of bootstrap samples used to obtain confidence intervals (CAN = 0)
+# Number of bootstrap samples used to obtain confidence intervals (CAN NOT = 1, will pose issues with parallelization)
 BOOTSTRAP_SAMPLES <- 1000
 
 # Number of confidence intervals used to obtain coverage probabilities (CAN = 0)
@@ -76,9 +76,9 @@ method_comparison_df_simu1 <- data.frame(time = numeric(),
                                          procedure = factor(levels = PROCEDURES_METHOD),
                                          dataset_number = integer())
 method_comparison_df_simu2 <- data.frame(time = numeric(),
-                                           m = factor(levels = M_LIST_SIMU2),
-                                           procedure = factor(levels = PROCEDURES_METHOD),
-                                           dataset_number = integer())
+                                         m = factor(levels = M_LIST_SIMU2),
+                                         procedure = factor(levels = PROCEDURES_METHOD),
+                                         dataset_number = integer())
 
 # Container for the time benchmarks of HMMs' negative likelihood function for each dataset
 mllk_times_df_lamb <- data.frame(time = numeric(),
