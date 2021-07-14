@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 1 State inference | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 1 State inference | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-07-11" />
+<meta name="date" content="2021-07-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -35,7 +35,8 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="principles-of-using-tmb-for-maximum-likelihood-estimation.html"/>
+<link rel="next" href="principles-of-using-tmb-for-mle.html"/>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -53,22 +54,23 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -88,7 +90,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -121,6 +123,29 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -138,57 +163,76 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="1" data-path="state-inf.html"><a href="state-inf.html"><i class="fa fa-check"></i><b>1</b> State inference</a><ul>
+<li class="chapter" data-level="1" data-path="state-inf.html"><a href="state-inf.html"><i class="fa fa-check"></i><b>1</b> State inference</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="state-inf.html"><a href="state-inf.html#prepare-the-model"><i class="fa fa-check"></i><b>1.1</b> Prepare the model</a></li>
-<li class="chapter" data-level="1.2" data-path="state-inf.html"><a href="state-inf.html#setup"><i class="fa fa-check"></i><b>1.2</b> Setup</a><ul>
+<li class="chapter" data-level="1.2" data-path="state-inf.html"><a href="state-inf.html#setup"><i class="fa fa-check"></i><b>1.2</b> Setup</a>
+<ul>
 <li class="chapter" data-level="1.2.1" data-path="state-inf.html"><a href="state-inf.html#define-variables"><i class="fa fa-check"></i><b>1.2.1</b> Define variables</a></li>
 <li class="chapter" data-level="1.2.2" data-path="state-inf.html"><a href="state-inf.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>1.2.2</b> Emission/output probabilities</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="state-inf.html"><a href="state-inf.html#log-forward"><i class="fa fa-check"></i><b>1.3</b> Log-forward probabilities</a></li>
 <li class="chapter" data-level="1.4" data-path="state-inf.html"><a href="state-inf.html#log-backward"><i class="fa fa-check"></i><b>1.4</b> Log-backward probabilities</a></li>
-<li class="chapter" data-level="1.5" data-path="state-inf.html"><a href="state-inf.html#local-decoding"><i class="fa fa-check"></i><b>1.5</b> Smoothing probabilities and local decoding</a></li>
-<li class="chapter" data-level="1.6" data-path="state-inf.html"><a href="state-inf.html#forecast"><i class="fa fa-check"></i><b>1.6</b> Forecast, h-step-ahead-probabilities</a></li>
-<li class="chapter" data-level="1.7" data-path="state-inf.html"><a href="state-inf.html#global-decoding"><i class="fa fa-check"></i><b>1.7</b> Global decoding using the Viterbi algorithm</a></li>
+<li class="chapter" data-level="1.5" data-path="state-inf.html"><a href="state-inf.html#local-decoding"><i class="fa fa-check"></i><b>1.5</b> Local decoding</a></li>
+<li class="chapter" data-level="1.6" data-path="state-inf.html"><a href="state-inf.html#forecast"><i class="fa fa-check"></i><b>1.6</b> Forecast</a></li>
+<li class="chapter" data-level="1.7" data-path="state-inf.html"><a href="state-inf.html#global-decoding"><i class="fa fa-check"></i><b>1.7</b> Global decoding</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for Maximum Likelihood Estimation</a><ul>
-<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#setting-up-tmb"><i class="fa fa-check"></i><b>2.1</b> Setting up <code>TMB</code></a></li>
-<li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#getting-started-with-a-linear-regression"><i class="fa fa-check"></i><b>2.2</b> Getting started with a linear regression</a></li>
-<li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#extending-the-c-negative-log-likelihood"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> negative log-likelihood</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques</a><ul>
-<li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#negative-log-likelihood-in-tmb"><i class="fa fa-check"></i><b>3.1</b> Negative log-likelihood in <code>TMB</code></a></li>
-<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#utility-functions"><i class="fa fa-check"></i><b>3.2</b> Utility functions</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-tmb"><i class="fa fa-check"></i><b>3.2.1</b> In <code>TMB</code></a></li>
-<li class="chapter" data-level="3.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-r"><i class="fa fa-check"></i><b>3.2.2</b> In <code>R</code></a><ul>
-<li class="chapter" data-level="3.2.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#parameters"><i class="fa fa-check"></i><b>3.2.2.1</b> Parameters</a></li>
-<li class="chapter" data-level="3.2.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#label-switching"><i class="fa fa-check"></i><b>3.2.2.2</b> Label switching</a></li>
+<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for MLE</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#setting-up-tmb"><i class="fa fa-check"></i><b>2.1</b> Setting up <code>TMB</code></a></li>
+<li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#getting-started"><i class="fa fa-check"></i><b>2.2</b> Getting started</a></li>
+<li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#extending-the-c-nll"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> nll</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#minimal-example"><i class="fa fa-check"></i><b>2.3.1</b> Minimal example</a></li>
+<li class="chapter" data-level="2.3.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#advanced-example"><i class="fa fa-check"></i><b>2.3.2</b> Advanced example</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="3" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#utility-functions"><i class="fa fa-check"></i><b>3.1</b> Utility functions</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-tmb"><i class="fa fa-check"></i><b>3.1.1</b> In <code>TMB</code></a></li>
+<li class="chapter" data-level="3.1.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-r"><i class="fa fa-check"></i><b>3.1.2</b> In <code>R</code></a>
+<ul>
+<li class="chapter" data-level="3.1.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#parameters"><i class="fa fa-check"></i><b>3.1.2.1</b> Parameters</a></li>
+<li class="chapter" data-level="3.1.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#label-switching"><i class="fa fa-check"></i><b>3.1.2.2</b> Label switching</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using TMB</a><ul>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#nll-in-tmb"><i class="fa fa-check"></i><b>3.2</b> Nll in <code>TMB</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using TMB</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
 <li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions"><i class="fa fa-check"></i><b>4.2</b> Preparing data and functions</a></li>
 <li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#modeling"><i class="fa fa-check"></i><b>4.3</b> Modeling</a></li>
-<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>4.4</b> Nested models</a><ul>
+<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>4.4</b> Nested models</a>
+<ul>
 <li class="chapter" data-level="4.4.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>4.4.1</b> Principle</a></li>
 <li class="chapter" data-level="4.4.2" data-path="using-tmb.html"><a href="using-tmb.html#limit"><i class="fa fa-check"></i><b>4.4.2</b> Limit</a></li>
 <li class="chapter" data-level="4.4.3" data-path="using-tmb.html"><a href="using-tmb.html#parameter-equality-constraints"><i class="fa fa-check"></i><b>4.4.3</b> Parameter equality constraints</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a><ul>
+<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#wald-type"><i class="fa fa-check"></i><b>5.1</b> Wald-type</a></li>
-<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#parametric-bootstrap"><i class="fa fa-check"></i><b>5.2</b> Parametric bootstrap</a><ul>
+<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#parametric-bootstrap"><i class="fa fa-check"></i><b>5.2</b> Parametric bootstrap</a>
+<ul>
 <li class="chapter" data-level="5.2.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>5.2.1</b> Generating data</a></li>
 <li class="chapter" data-level="5.2.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>5.2.2</b> Bootstrap</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#profiling-the-negative-log-likelihood"><i class="fa fa-check"></i><b>5.3</b> Profiling the negative log-likelihood</a></li>
+<li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#profiling-the-nll"><i class="fa fa-check"></i><b>5.3</b> Profiling the nll</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a><ul>
+<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-dataset"><i class="fa fa-check"></i><b>6.1</b> TYT dataset</a></li>
 <li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-dataset"><i class="fa fa-check"></i><b>6.2</b> Simulated dataset</a></li>
 <li class="chapter" data-level="6.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>6.3</b> Lamb data</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="github-directory-structure.html"><a href="github-directory-structure.html"><i class="fa fa-check"></i><b>7</b> GitHub directory structure</a></li>
+<li class="chapter" data-level="7" data-path="github-directory-structure.html"><a href="github-directory-structure.html"><i class="fa fa-check"></i><b>7</b> GitHub directory structure</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="github-directory-structure.html"><a href="github-directory-structure.html#folder-code"><i class="fa fa-check"></i><b>7.1</b> Folder <code>code</code></a></li>
+<li class="chapter" data-level="7.2" data-path="github-directory-structure.html"><a href="github-directory-structure.html#folder-data"><i class="fa fa-check"></i><b>7.2</b> Folder <code>data</code></a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -210,159 +254,159 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="state-inf" class="section level1">
+<div id="state-inf" class="section level1" number="1">
 <h1><span class="header-section-number">Chapter 1</span> State inference</h1>
-<div id="prepare-the-model" class="section level2">
+<div id="prepare-the-model" class="section level2" number="1.1">
 <h2><span class="header-section-number">1.1</span> Prepare the model</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="state-inf.html#cb1-1"></a><span class="kw">library</span>(TMB)</span>
-<span id="cb1-2"><a href="state-inf.html#cb1-2"></a><span class="kw">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
-<span id="cb1-3"><a href="state-inf.html#cb1-3"></a><span class="kw">load</span>(<span class="st">&quot;data/fetal-lamb.RData&quot;</span>)</span>
-<span id="cb1-4"><a href="state-inf.html#cb1-4"></a>TMB<span class="op">::</span><span class="kw">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span>
-<span id="cb1-5"><a href="state-inf.html#cb1-5"></a><span class="kw">dyn.load</span>(<span class="kw">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span>
-<span id="cb1-6"><a href="state-inf.html#cb1-6"></a>lamb_data &lt;-<span class="st"> </span>lamb</span>
-<span id="cb1-7"><a href="state-inf.html#cb1-7"></a>m &lt;-<span class="st"> </span><span class="dv">2</span></span>
-<span id="cb1-8"><a href="state-inf.html#cb1-8"></a>TMB_data &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">x =</span> lamb_data, <span class="dt">m =</span> m)</span>
-<span id="cb1-9"><a href="state-inf.html#cb1-9"></a>lambda &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
-<span id="cb1-10"><a href="state-inf.html#cb1-10"></a>gamma &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
-<span id="cb1-11"><a href="state-inf.html#cb1-11"></a>                  <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="dt">byrow =</span> <span class="ot">TRUE</span>, <span class="dt">nrow =</span> m)</span>
-<span id="cb1-12"><a href="state-inf.html#cb1-12"></a>parameters &lt;-<span class="st"> </span><span class="kw">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
-<span id="cb1-13"><a href="state-inf.html#cb1-13"></a>obj_tmb &lt;-<span class="st"> </span><span class="kw">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb1-14"><a href="state-inf.html#cb1-14"></a>                     <span class="dt">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="dt">silent =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb1-15"><a href="state-inf.html#cb1-15"></a>mod_tmb &lt;-<span class="st"> </span><span class="kw">nlminb</span>(<span class="dt">start =</span> obj_tmb<span class="op">$</span>par, <span class="dt">objective =</span> obj_tmb<span class="op">$</span>fn,</span>
-<span id="cb1-16"><a href="state-inf.html#cb1-16"></a>                  <span class="dt">gradient =</span> obj_tmb<span class="op">$</span>gr, <span class="dt">hessian =</span> obj_tmb<span class="op">$</span>he)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="state-inf.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
+<span id="cb1-2"><a href="state-inf.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
+<span id="cb1-3"><a href="state-inf.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/fetal-lamb.RData&quot;</span>)</span>
+<span id="cb1-4"><a href="state-inf.html#cb1-4" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span>
+<span id="cb1-5"><a href="state-inf.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span>
+<span id="cb1-6"><a href="state-inf.html#cb1-6" aria-hidden="true" tabindex="-1"></a>lamb_data <span class="ot">&lt;-</span> lamb</span>
+<span id="cb1-7"><a href="state-inf.html#cb1-7" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb1-8"><a href="state-inf.html#cb1-8" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> lamb_data, <span class="at">m =</span> m)</span>
+<span id="cb1-9"><a href="state-inf.html#cb1-9" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb1-10"><a href="state-inf.html#cb1-10" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
+<span id="cb1-11"><a href="state-inf.html#cb1-11" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> m)</span>
+<span id="cb1-12"><a href="state-inf.html#cb1-12" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois_HMM_pn2pw</span>(m, lambda, gamma)</span>
+<span id="cb1-13"><a href="state-inf.html#cb1-13" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb1-14"><a href="state-inf.html#cb1-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-15"><a href="state-inf.html#cb1-15" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb1-16"><a href="state-inf.html#cb1-16" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr, <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span></code></pre></div>
 </div>
-<div id="setup" class="section level2">
+<div id="setup" class="section level2" number="1.2">
 <h2><span class="header-section-number">1.2</span> Setup</h2>
-<div id="define-variables" class="section level3">
+<div id="define-variables" class="section level3" number="1.2.1">
 <h3><span class="header-section-number">1.2.1</span> Define variables</h3>
 <p>Given an optimized <code>MakeADFun</code> object <code>obj</code>, we need to setup some variables to compute the probabilities detailed below.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="state-inf.html#cb2-1"></a><span class="co"># Retrieve the objects at ML value</span></span>
-<span id="cb2-2"><a href="state-inf.html#cb2-2"></a>adrep &lt;-<span class="st"> </span>obj_tmb<span class="op">$</span><span class="kw">report</span>(obj_tmb<span class="op">$</span>env<span class="op">$</span>last.par.best)</span>
-<span id="cb2-3"><a href="state-inf.html#cb2-3"></a>delta &lt;-<span class="st"> </span>adrep<span class="op">$</span>delta</span>
-<span id="cb2-4"><a href="state-inf.html#cb2-4"></a>gamma &lt;-<span class="st"> </span>adrep<span class="op">$</span>gamma</span>
-<span id="cb2-5"><a href="state-inf.html#cb2-5"></a>emission_probs &lt;-<span class="st"> </span>adrep<span class="op">$</span>emission_probs</span>
-<span id="cb2-6"><a href="state-inf.html#cb2-6"></a>n &lt;-<span class="st"> </span>adrep<span class="op">$</span>n</span>
-<span id="cb2-7"><a href="state-inf.html#cb2-7"></a>m &lt;-<span class="st"> </span><span class="kw">length</span>(delta)</span>
-<span id="cb2-8"><a href="state-inf.html#cb2-8"></a>mllk &lt;-<span class="st"> </span>adrep<span class="op">$</span>mllk</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="state-inf.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve the objects at ML value</span></span>
+<span id="cb2-2"><a href="state-inf.html#cb2-2" aria-hidden="true" tabindex="-1"></a>adrep <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(obj_tmb<span class="sc">$</span>env<span class="sc">$</span>last.par.best)</span>
+<span id="cb2-3"><a href="state-inf.html#cb2-3" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> adrep<span class="sc">$</span>delta</span>
+<span id="cb2-4"><a href="state-inf.html#cb2-4" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> adrep<span class="sc">$</span>gamma</span>
+<span id="cb2-5"><a href="state-inf.html#cb2-5" aria-hidden="true" tabindex="-1"></a>emission_probs <span class="ot">&lt;-</span> adrep<span class="sc">$</span>emission_probs</span>
+<span id="cb2-6"><a href="state-inf.html#cb2-6" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> adrep<span class="sc">$</span>n</span>
+<span id="cb2-7"><a href="state-inf.html#cb2-7" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(delta)</span>
+<span id="cb2-8"><a href="state-inf.html#cb2-8" aria-hidden="true" tabindex="-1"></a>mllk <span class="ot">&lt;-</span> adrep<span class="sc">$</span>mllk</span></code></pre></div>
 <p>Note that <span class="math inline">\({\boldsymbol\lambda}\)</span> is not needed as we already have access to the emission probabilities.</p>
 </div>
-<div id="emissionoutput-probabilities" class="section level3">
+<div id="emissionoutput-probabilities" class="section level3" number="1.2.2">
 <h3><span class="header-section-number">1.2.2</span> Emission/output probabilities</h3>
 <p>Emission probabilities (also called output probabilities) are the conditional probabilities of the data given a state.</p>
 <p>Using the notation in the article Section 3.1, emission probabilities are the conditional distributions <span class="math inline">\(p_i(x) = \text{P}(X_t = x \vert C_t = i) = \frac{e^{-\lambda_i} \lambda_i^x}{x!}\)</span>.
 We store all these in a data frame where each row and column represent a data and a state respectively.</p>
 <p>We compute these probabilities in <code>C++</code> rather than in <code>R</code> because it is faster and not more complicated to write</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="state-inf.html#cb3-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
-<span id="cb3-2"><a href="state-inf.html#cb3-2"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
-<span id="cb3-3"><a href="state-inf.html#cb3-3"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
-<span id="cb3-4"><a href="state-inf.html#cb3-4"></a>  matrix&lt;Type&gt; emission_probs(n, m);</span>
-<span id="cb3-5"><a href="state-inf.html#cb3-5"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
-<span id="cb3-6"><a href="state-inf.html#cb3-6"></a>  row1vec.setOnes();</span>
-<span id="cb3-7"><a href="state-inf.html#cb3-7"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
-<span id="cb3-8"><a href="state-inf.html#cb3-8"></a>    <span class="cf">if</span> (x[i] != x[i]) { <span class="co">// f != f returns true if and only if f is NaN. </span></span>
-<span id="cb3-9"><a href="state-inf.html#cb3-9"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
-<span id="cb3-10"><a href="state-inf.html#cb3-10"></a>      emission_probs.row(i) = row1vec;</span>
-<span id="cb3-11"><a href="state-inf.html#cb3-11"></a>    }</span>
-<span id="cb3-12"><a href="state-inf.html#cb3-12"></a>    <span class="cf">else</span> {</span>
-<span id="cb3-13"><a href="state-inf.html#cb3-13"></a>      emission_probs.row(i) = dpois(x[i], lambda, <span class="kw">false</span>);</span>
-<span id="cb3-14"><a href="state-inf.html#cb3-14"></a>    }</span>
-<span id="cb3-15"><a href="state-inf.html#cb3-15"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="state-inf.html#cb3-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
+<span id="cb3-2"><a href="state-inf.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
+<span id="cb3-3"><a href="state-inf.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
+<span id="cb3-4"><a href="state-inf.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; emission_probs(n, m);</span>
+<span id="cb3-5"><a href="state-inf.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
+<span id="cb3-6"><a href="state-inf.html#cb3-6" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
+<span id="cb3-7"><a href="state-inf.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
+<span id="cb3-8"><a href="state-inf.html#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (x[i] != x[i]) { <span class="co">// f != f returns true if and only if f is NaN. </span></span>
+<span id="cb3-9"><a href="state-inf.html#cb3-9" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
+<span id="cb3-10"><a href="state-inf.html#cb3-10" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = row1vec;</span>
+<span id="cb3-11"><a href="state-inf.html#cb3-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-12"><a href="state-inf.html#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
+<span id="cb3-13"><a href="state-inf.html#cb3-13" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = dpois(x[i], lambda, <span class="kw">false</span>);</span>
+<span id="cb3-14"><a href="state-inf.html#cb3-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-15"><a href="state-inf.html#cb3-15" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
 <p>Nevertheless, we also need to compute them in <code>R</code> for [#forecast]</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="state-inf.html#cb4-1"></a><span class="co"># Calculate emission probabilities</span></span>
-<span id="cb4-2"><a href="state-inf.html#cb4-2"></a>get.emission.probs &lt;-<span class="st"> </span><span class="cf">function</span>(data, lambda) {</span>
-<span id="cb4-3"><a href="state-inf.html#cb4-3"></a>  n &lt;-<span class="st"> </span><span class="kw">length</span>(data)</span>
-<span id="cb4-4"><a href="state-inf.html#cb4-4"></a>  m &lt;-<span class="st"> </span><span class="kw">length</span>(lambda)</span>
-<span id="cb4-5"><a href="state-inf.html#cb4-5"></a>  emission_probs &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> n, <span class="dt">ncol =</span> m)</span>
-<span id="cb4-6"><a href="state-inf.html#cb4-6"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</span>
-<span id="cb4-7"><a href="state-inf.html#cb4-7"></a>    <span class="cf">if</span> (<span class="kw">is.na</span>(data[i])) {</span>
-<span id="cb4-8"><a href="state-inf.html#cb4-8"></a>      emission_probs[i, ] &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span>, m)</span>
-<span id="cb4-9"><a href="state-inf.html#cb4-9"></a>    } <span class="cf">else</span> {</span>
-<span id="cb4-10"><a href="state-inf.html#cb4-10"></a>      emission_probs[i, ] &lt;-<span class="st"> </span><span class="kw">dpois</span>(data[i], lambda)</span>
-<span id="cb4-11"><a href="state-inf.html#cb4-11"></a>    }</span>
-<span id="cb4-12"><a href="state-inf.html#cb4-12"></a>  }</span>
-<span id="cb4-13"><a href="state-inf.html#cb4-13"></a>  <span class="kw">return</span>(emission_probs)</span>
-<span id="cb4-14"><a href="state-inf.html#cb4-14"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="state-inf.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate emission probabilities</span></span>
+<span id="cb4-2"><a href="state-inf.html#cb4-2" aria-hidden="true" tabindex="-1"></a>get_emission_probs <span class="ot">&lt;-</span> <span class="cf">function</span>(data, lambda) {</span>
+<span id="cb4-3"><a href="state-inf.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(data)</span>
+<span id="cb4-4"><a href="state-inf.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">length</span>(lambda)</span>
+<span id="cb4-5"><a href="state-inf.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  emission_probs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> n, <span class="at">ncol =</span> m)</span>
+<span id="cb4-6"><a href="state-inf.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb4-7"><a href="state-inf.html#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(data[i])) {</span>
+<span id="cb4-8"><a href="state-inf.html#cb4-8" aria-hidden="true" tabindex="-1"></a>      emission_probs[i, ] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, m)</span>
+<span id="cb4-9"><a href="state-inf.html#cb4-9" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb4-10"><a href="state-inf.html#cb4-10" aria-hidden="true" tabindex="-1"></a>      emission_probs[i, ] <span class="ot">&lt;-</span> <span class="fu">dpois</span>(data[i], lambda)</span>
+<span id="cb4-11"><a href="state-inf.html#cb4-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-12"><a href="state-inf.html#cb4-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-13"><a href="state-inf.html#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(emission_probs)</span>
+<span id="cb4-14"><a href="state-inf.html#cb4-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>
-<div id="log-forward" class="section level2">
+<div id="log-forward" class="section level2" number="1.3">
 <h2><span class="header-section-number">1.3</span> Log-forward probabilities</h2>
 <p>The forward probabilities have been detailed in
 TO FIX LINK_TO_hmm_likelihood!!!!!!!!!!!!!!!!!.</p>
 <p>We show here a way to compute the log of the forward probabilities,
-using a scaling scheme defined by <span class="citation">(see Zucchini, MacDonald, and Langrock <a href="#ref-zucchini" role="doc-biblioref">2016</a>, 66 and p.334)</span>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="state-inf.html#cb5-1"></a><span class="co"># Compute log-forward probabilities (scaling used)</span></span>
-<span id="cb5-2"><a href="state-inf.html#cb5-2"></a>lalpha &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, m, n)</span>
-<span id="cb5-3"><a href="state-inf.html#cb5-3"></a>foo &lt;-<span class="st"> </span>delta <span class="op">*</span><span class="st"> </span>emission_probs[<span class="dv">1</span>, ]</span>
-<span id="cb5-4"><a href="state-inf.html#cb5-4"></a>sumfoo &lt;-<span class="st"> </span><span class="kw">sum</span>(foo)</span>
-<span id="cb5-5"><a href="state-inf.html#cb5-5"></a>lscale &lt;-<span class="st"> </span><span class="kw">log</span>(sumfoo)</span>
-<span id="cb5-6"><a href="state-inf.html#cb5-6"></a>foo &lt;-<span class="st"> </span>foo <span class="op">/</span><span class="st"> </span>sumfoo</span>
-<span id="cb5-7"><a href="state-inf.html#cb5-7"></a>lalpha[, <span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">log</span>(foo) <span class="op">+</span><span class="st"> </span>lscale</span>
-<span id="cb5-8"><a href="state-inf.html#cb5-8"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>n) {</span>
-<span id="cb5-9"><a href="state-inf.html#cb5-9"></a>  foo &lt;-<span class="st"> </span>foo <span class="op">%*%</span><span class="st"> </span>gamma <span class="op">*</span><span class="st"> </span>emission_probs[i, ]</span>
-<span id="cb5-10"><a href="state-inf.html#cb5-10"></a>  sumfoo &lt;-<span class="st"> </span><span class="kw">sum</span>(foo)</span>
-<span id="cb5-11"><a href="state-inf.html#cb5-11"></a>  lscale &lt;-<span class="st"> </span>lscale <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(sumfoo)</span>
-<span id="cb5-12"><a href="state-inf.html#cb5-12"></a>  foo &lt;-<span class="st"> </span>foo <span class="op">/</span><span class="st"> </span>sumfoo</span>
-<span id="cb5-13"><a href="state-inf.html#cb5-13"></a>  lalpha[, i] &lt;-<span class="st"> </span><span class="kw">log</span>(foo) <span class="op">+</span><span class="st"> </span>lscale</span>
-<span id="cb5-14"><a href="state-inf.html#cb5-14"></a>}</span>
-<span id="cb5-15"><a href="state-inf.html#cb5-15"></a><span class="co"># lalpha contains n=240 columns, so we only display 5 for readability</span></span>
-<span id="cb5-16"><a href="state-inf.html#cb5-16"></a>lalpha[, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</span></code></pre></div>
+using a scaling scheme defined by <span class="citation">(see <a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 66</a> and p.334)</span>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="state-inf.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-forward probabilities (scaling used)</span></span>
+<span id="cb5-2"><a href="state-inf.html#cb5-2" aria-hidden="true" tabindex="-1"></a>lalpha <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
+<span id="cb5-3"><a href="state-inf.html#cb5-3" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
+<span id="cb5-4"><a href="state-inf.html#cb5-4" aria-hidden="true" tabindex="-1"></a>sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb5-5"><a href="state-inf.html#cb5-5" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb5-6"><a href="state-inf.html#cb5-6" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb5-7"><a href="state-inf.html#cb5-7" aria-hidden="true" tabindex="-1"></a>lalpha[, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
+<span id="cb5-8"><a href="state-inf.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
+<span id="cb5-9"><a href="state-inf.html#cb5-9" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma <span class="sc">*</span> emission_probs[i, ]</span>
+<span id="cb5-10"><a href="state-inf.html#cb5-10" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb5-11"><a href="state-inf.html#cb5-11" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb5-12"><a href="state-inf.html#cb5-12" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb5-13"><a href="state-inf.html#cb5-13" aria-hidden="true" tabindex="-1"></a>  lalpha[, i] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
+<span id="cb5-14"><a href="state-inf.html#cb5-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-15"><a href="state-inf.html#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># lalpha contains n=240 columns, so we only display 5 for readability</span></span>
+<span id="cb5-16"><a href="state-inf.html#cb5-16" aria-hidden="true" tabindex="-1"></a>lalpha[, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
 <pre><code>##            [,1]       [,2]       [,3]      [,4]      [,5]
 ## [1,] -0.2920639 -0.5591179 -0.8265948 -1.094088 -1.361583
 ## [2,] -6.4651986 -7.7716769 -8.1146145 -8.385232 -8.652850</code></pre>
 </div>
-<div id="log-backward" class="section level2">
+<div id="log-backward" class="section level2" number="1.4">
 <h2><span class="header-section-number">1.4</span> Log-backward probabilities</h2>
 <p>The backward probabilities have been defined in the same section
-<span class="citation">Zucchini, MacDonald, and Langrock (<a href="#ref-zucchini" role="doc-biblioref">2016</a>, p~.67 and p~.334)</span>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="state-inf.html#cb7-1"></a><span class="co"># Compute log-backwards probabilities (scaling used)</span></span>
-<span id="cb7-2"><a href="state-inf.html#cb7-2"></a>lbeta &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, m, n)</span>
-<span id="cb7-3"><a href="state-inf.html#cb7-3"></a>lbeta[, n] &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, m)</span>
-<span id="cb7-4"><a href="state-inf.html#cb7-4"></a>foo &lt;-<span class="st"> </span><span class="kw">rep</span> (<span class="dv">1</span> <span class="op">/</span><span class="st"> </span>m, m)</span>
-<span id="cb7-5"><a href="state-inf.html#cb7-5"></a>lscale &lt;-<span class="st"> </span><span class="kw">log</span>(m)</span>
-<span id="cb7-6"><a href="state-inf.html#cb7-6"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span><span class="dv">1</span>) {</span>
-<span id="cb7-7"><a href="state-inf.html#cb7-7"></a>  foo &lt;-<span class="st"> </span>gamma <span class="op">%*%</span><span class="st"> </span>(emission_probs[i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, ] <span class="op">*</span><span class="st"> </span>foo)</span>
-<span id="cb7-8"><a href="state-inf.html#cb7-8"></a>  lbeta[, i] &lt;-<span class="st"> </span><span class="kw">log</span>(foo) <span class="op">+</span><span class="st"> </span>lscale</span>
-<span id="cb7-9"><a href="state-inf.html#cb7-9"></a>  sumfoo &lt;-<span class="st"> </span><span class="kw">sum</span>(foo)</span>
-<span id="cb7-10"><a href="state-inf.html#cb7-10"></a>  foo &lt;-<span class="st"> </span>foo <span class="op">/</span><span class="st"> </span>sumfoo</span>
-<span id="cb7-11"><a href="state-inf.html#cb7-11"></a>  lscale &lt;-<span class="st"> </span>lscale <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(sumfoo)</span>
-<span id="cb7-12"><a href="state-inf.html#cb7-12"></a>}</span>
-<span id="cb7-13"><a href="state-inf.html#cb7-13"></a><span class="co"># lbeta contains n=240 columns, so we only display 4 for readability</span></span>
-<span id="cb7-14"><a href="state-inf.html#cb7-14"></a>lbeta[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</span></code></pre></div>
+<span class="citation"><a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="#ref-zucchini" role="doc-biblioref">2016, p~.67</a> and p~.334)</span>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="state-inf.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-backwards probabilities (scaling used)</span></span>
+<span id="cb7-2"><a href="state-inf.html#cb7-2" aria-hidden="true" tabindex="-1"></a>lbeta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
+<span id="cb7-3"><a href="state-inf.html#cb7-3" aria-hidden="true" tabindex="-1"></a>lbeta[, n] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, m)</span>
+<span id="cb7-4"><a href="state-inf.html#cb7-4" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="fu">rep</span> (<span class="dv">1</span> <span class="sc">/</span> m, m)</span>
+<span id="cb7-5"><a href="state-inf.html#cb7-5" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(m)</span>
+<span id="cb7-6"><a href="state-inf.html#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span><span class="dv">1</span>) {</span>
+<span id="cb7-7"><a href="state-inf.html#cb7-7" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> gamma <span class="sc">%*%</span> (emission_probs[i <span class="sc">+</span> <span class="dv">1</span>, ] <span class="sc">*</span> foo)</span>
+<span id="cb7-8"><a href="state-inf.html#cb7-8" aria-hidden="true" tabindex="-1"></a>  lbeta[, i] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
+<span id="cb7-9"><a href="state-inf.html#cb7-9" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb7-10"><a href="state-inf.html#cb7-10" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb7-11"><a href="state-inf.html#cb7-11" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb7-12"><a href="state-inf.html#cb7-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-13"><a href="state-inf.html#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># lbeta contains n=240 columns, so we only display 4 for readability</span></span>
+<span id="cb7-14"><a href="state-inf.html#cb7-14" aria-hidden="true" tabindex="-1"></a>lbeta[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
 <pre><code>##           [,1]      [,2]      [,3]      [,4]
 ## [1,] -177.2275 -176.9600 -176.6925 -176.4250
 ## [2,] -178.3456 -178.0781 -177.8099 -177.5253</code></pre>
 </div>
-<div id="local-decoding" class="section level2">
-<h2><span class="header-section-number">1.5</span> Smoothing probabilities and local decoding</h2>
-<p>The smoothing probabilities are defined in <span class="citation">(Zucchini, MacDonald, and Langrock <a href="#ref-zucchini" role="doc-biblioref">2016</a>, 87 and p.336)</span> as
+<div id="local-decoding" class="section level2" number="1.5">
+<h2><span class="header-section-number">1.5</span> Local decoding</h2>
+<p>The smoothing probabilities are defined in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 87</a> and p.336)</span> as
 <!-- P(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n} -->
 <span class="math display">\[
 \text{P}(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
 \]</span></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="state-inf.html#cb9-1"></a><span class="co"># Compute conditional state probabilities, smoothing probabilities</span></span>
-<span id="cb9-2"><a href="state-inf.html#cb9-2"></a>stateprobs &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dt">ncol =</span> n, <span class="dt">nrow =</span> m)</span>
-<span id="cb9-3"><a href="state-inf.html#cb9-3"></a>llk &lt;-<span class="st"> </span><span class="op">-</span><span class="st"> </span>mllk</span>
-<span id="cb9-4"><a href="state-inf.html#cb9-4"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</span>
-<span id="cb9-5"><a href="state-inf.html#cb9-5"></a>  stateprobs[, i] &lt;-<span class="st"> </span><span class="kw">exp</span>(lalpha[, i] <span class="op">+</span><span class="st"> </span>lbeta[, i] <span class="op">-</span><span class="st"> </span>llk)</span>
-<span id="cb9-6"><a href="state-inf.html#cb9-6"></a>}</span></code></pre></div>
-<p>The local decoding is a straightforward maximum of the smoothing
-probabilities.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="state-inf.html#cb10-1"></a><span class="co"># Most probable states (local decoding)</span></span>
-<span id="cb10-2"><a href="state-inf.html#cb10-2"></a>ldecode &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, n)</span>
-<span id="cb10-3"><a href="state-inf.html#cb10-3"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</span>
-<span id="cb10-4"><a href="state-inf.html#cb10-4"></a>  ldecode[i] &lt;-<span class="st"> </span><span class="kw">which.max</span>(stateprobs[, i])</span>
-<span id="cb10-5"><a href="state-inf.html#cb10-5"></a>}</span>
-<span id="cb10-6"><a href="state-inf.html#cb10-6"></a>ldecode</span></code></pre></div>
-<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-##  [50] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1
-##  [99] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [148] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1
-## [197] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="state-inf.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute conditional state probabilities, smoothing probabilities</span></span>
+<span id="cb9-2"><a href="state-inf.html#cb9-2" aria-hidden="true" tabindex="-1"></a>stateprobs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> n, <span class="at">nrow =</span> m)</span>
+<span id="cb9-3"><a href="state-inf.html#cb9-3" aria-hidden="true" tabindex="-1"></a>llk <span class="ot">&lt;-</span> <span class="sc">-</span> mllk</span>
+<span id="cb9-4"><a href="state-inf.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb9-5"><a href="state-inf.html#cb9-5" aria-hidden="true" tabindex="-1"></a>  stateprobs[, i] <span class="ot">&lt;-</span> <span class="fu">exp</span>(lalpha[, i] <span class="sc">+</span> lbeta[, i] <span class="sc">-</span> llk)</span>
+<span id="cb9-6"><a href="state-inf.html#cb9-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Local decoding is a straightforward maximum of the smoothing probabilities.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="state-inf.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Most probable states (local decoding)</span></span>
+<span id="cb10-2"><a href="state-inf.html#cb10-2" aria-hidden="true" tabindex="-1"></a>ldecode <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n)</span>
+<span id="cb10-3"><a href="state-inf.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb10-4"><a href="state-inf.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  ldecode[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(stateprobs[, i])</span>
+<span id="cb10-5"><a href="state-inf.html#cb10-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-6"><a href="state-inf.html#cb10-6" aria-hidden="true" tabindex="-1"></a>ldecode</span></code></pre></div>
+<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [48] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1
+##  [95] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [142] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [189] 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [236] 1 1 1 1 1</code></pre>
 </div>
-<div id="forecast" class="section level2">
-<h2><span class="header-section-number">1.6</span> Forecast, h-step-ahead-probabilities</h2>
+<div id="forecast" class="section level2" number="1.6">
+<h2><span class="header-section-number">1.6</span> Forecast</h2>
 <p>The forecast distribution or h-step-ahead-probabilities as well as its
-implementation in R is detailed in <span class="citation">(Zucchini, MacDonald, and Langrock <a href="#ref-zucchini" role="doc-biblioref">2016</a>, 85 and p.337)</span></p>
+implementation in R is detailed in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 85</a> and p.337)</span></p>
 <p>Then,</p>
 <!-- Original -->
 <!-- P(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_T \b{\gamma}^h \bcp(x) \b{1}'}{\b{\alpha}_T \b{1}'} = \bfphi_T \b{\gamma}^h \bcp(x) \b{1}' -->
@@ -370,68 +414,69 @@ implementation in R is detailed in <span class="citation">(Zucchini, MacDonald, 
 \text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{{\boldsymbol\alpha}_T {\boldsymbol\gamma}^h {\boldsymbol P}(x) {\boldsymbol 1}&#39;}{{\boldsymbol\alpha}_T {\boldsymbol 1}&#39;} = {\boldsymbol\Phi}_T {\boldsymbol\gamma}^h {\boldsymbol P}(x) {\boldsymbol 1}&#39;
 \]</span>
 An implementation of this, using a scaling scheme is</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="state-inf.html#cb12-1"></a><span class="co"># Number of steps</span></span>
-<span id="cb12-2"><a href="state-inf.html#cb12-2"></a>h &lt;-<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb12-3"><a href="state-inf.html#cb12-3"></a><span class="co"># Values for which we want the forecast probabilities</span></span>
-<span id="cb12-4"><a href="state-inf.html#cb12-4"></a>xf &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">50</span></span>
-<span id="cb12-5"><a href="state-inf.html#cb12-5"></a></span>
-<span id="cb12-6"><a href="state-inf.html#cb12-6"></a>nxf &lt;-<span class="st"> </span><span class="kw">length</span>(xf)</span>
-<span id="cb12-7"><a href="state-inf.html#cb12-7"></a>dxf &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> h, <span class="dt">ncol =</span> nxf)</span>
-<span id="cb12-8"><a href="state-inf.html#cb12-8"></a>foo &lt;-<span class="st"> </span>delta <span class="op">*</span><span class="st"> </span>emission_probs[<span class="dv">1</span>, ]</span>
-<span id="cb12-9"><a href="state-inf.html#cb12-9"></a>sumfoo &lt;-<span class="st"> </span><span class="kw">sum</span>(foo)</span>
-<span id="cb12-10"><a href="state-inf.html#cb12-10"></a>lscale &lt;-<span class="st"> </span><span class="kw">log</span>(sumfoo)</span>
-<span id="cb12-11"><a href="state-inf.html#cb12-11"></a>foo &lt;-<span class="st"> </span>foo <span class="op">/</span><span class="st"> </span>sumfoo</span>
-<span id="cb12-12"><a href="state-inf.html#cb12-12"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>n) {</span>
-<span id="cb12-13"><a href="state-inf.html#cb12-13"></a>  foo &lt;-<span class="st"> </span>foo <span class="op">%*%</span><span class="st"> </span>gamma <span class="op">*</span><span class="st"> </span>emission_probs[i, ]</span>
-<span id="cb12-14"><a href="state-inf.html#cb12-14"></a>  sumfoo &lt;-<span class="st"> </span><span class="kw">sum</span>( foo)</span>
-<span id="cb12-15"><a href="state-inf.html#cb12-15"></a>  lscale &lt;-<span class="st"> </span>lscale <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(sumfoo)</span>
-<span id="cb12-16"><a href="state-inf.html#cb12-16"></a>  foo &lt;-<span class="st"> </span>foo <span class="op">/</span><span class="st"> </span>sumfoo</span>
-<span id="cb12-17"><a href="state-inf.html#cb12-17"></a>}</span>
-<span id="cb12-18"><a href="state-inf.html#cb12-18"></a>emission_probs_xf &lt;-<span class="st"> </span><span class="kw">get.emission.probs</span>(xf, lambda)</span>
-<span id="cb12-19"><a href="state-inf.html#cb12-19"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>h) {</span>
-<span id="cb12-20"><a href="state-inf.html#cb12-20"></a>  foo &lt;-<span class="st"> </span>foo <span class="op">%*%</span><span class="st"> </span>gamma</span>
-<span id="cb12-21"><a href="state-inf.html#cb12-21"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>m) {</span>
-<span id="cb12-22"><a href="state-inf.html#cb12-22"></a>    dxf[i, ] &lt;-<span class="st"> </span>dxf[i, ] <span class="op">+</span><span class="st"> </span>foo[j] <span class="op">*</span><span class="st"> </span>emission_probs_xf[, j]</span>
-<span id="cb12-23"><a href="state-inf.html#cb12-23"></a>  }</span>
-<span id="cb12-24"><a href="state-inf.html#cb12-24"></a>}</span>
-<span id="cb12-25"><a href="state-inf.html#cb12-25"></a><span class="co"># dxf contains n=240 columns, so we only display 4 for readability</span></span>
-<span id="cb12-26"><a href="state-inf.html#cb12-26"></a>dxf[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="state-inf.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of steps</span></span>
+<span id="cb12-2"><a href="state-inf.html#cb12-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb12-3"><a href="state-inf.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Values for which we want the forecast probabilities</span></span>
+<span id="cb12-4"><a href="state-inf.html#cb12-4" aria-hidden="true" tabindex="-1"></a>xf <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">50</span></span>
+<span id="cb12-5"><a href="state-inf.html#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="state-inf.html#cb12-6" aria-hidden="true" tabindex="-1"></a>nxf <span class="ot">&lt;-</span> <span class="fu">length</span>(xf)</span>
+<span id="cb12-7"><a href="state-inf.html#cb12-7" aria-hidden="true" tabindex="-1"></a>dxf <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> h, <span class="at">ncol =</span> nxf)</span>
+<span id="cb12-8"><a href="state-inf.html#cb12-8" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
+<span id="cb12-9"><a href="state-inf.html#cb12-9" aria-hidden="true" tabindex="-1"></a>sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb12-10"><a href="state-inf.html#cb12-10" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb12-11"><a href="state-inf.html#cb12-11" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb12-12"><a href="state-inf.html#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
+<span id="cb12-13"><a href="state-inf.html#cb12-13" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma <span class="sc">*</span> emission_probs[i, ]</span>
+<span id="cb12-14"><a href="state-inf.html#cb12-14" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>( foo)</span>
+<span id="cb12-15"><a href="state-inf.html#cb12-15" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb12-16"><a href="state-inf.html#cb12-16" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb12-17"><a href="state-inf.html#cb12-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-18"><a href="state-inf.html#cb12-18" aria-hidden="true" tabindex="-1"></a>emission_probs_xf <span class="ot">&lt;-</span> <span class="fu">get_emission_probs</span>(xf, lambda)</span>
+<span id="cb12-19"><a href="state-inf.html#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>h) {</span>
+<span id="cb12-20"><a href="state-inf.html#cb12-20" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma</span>
+<span id="cb12-21"><a href="state-inf.html#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb12-22"><a href="state-inf.html#cb12-22" aria-hidden="true" tabindex="-1"></a>    dxf[i, ] <span class="ot">&lt;-</span> dxf[i, ] <span class="sc">+</span> foo[j] <span class="sc">*</span> emission_probs_xf[, j]</span>
+<span id="cb12-23"><a href="state-inf.html#cb12-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-24"><a href="state-inf.html#cb12-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-25"><a href="state-inf.html#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co"># dxf contains n=240 columns, so we only display 4 for readability</span></span>
+<span id="cb12-26"><a href="state-inf.html#cb12-26" aria-hidden="true" tabindex="-1"></a>dxf[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
 <pre><code>## [1] 0.36414482 0.36531388 0.18441055 0.06322379</code></pre>
 </div>
-<div id="global-decoding" class="section level2">
-<h2><span class="header-section-number">1.7</span> Global decoding using the Viterbi algorithm</h2>
-<p>The Viterbi algorithm is detailed in <span class="citation">(Zucchini, MacDonald, and Langrock <a href="#ref-zucchini" role="doc-biblioref">2016</a>, 88 and p.334)</span>.
+<div id="global-decoding" class="section level2" number="1.7">
+<h2><span class="header-section-number">1.7</span> Global decoding</h2>
+<p>The Viterbi algorithm is detailed in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 88</a> and p.334)</span>.
 It calculates the sequence of states <span class="math inline">\((i_1^*, \ldots, i_T^*)\)</span> which
 maximizes the conditional probability of all states simultaneously, i.e.
 <span class="math display">\[
 (i_1^*, \ldots, i_n^*) = \mathop{\mathrm{argmax}}_{i_1, \ldots, i_n \in \{1, \ldots, m \}} \text{P}(C_1 = i_1, \ldots, C_n = i_n \vert X^{(n)} = x^{(n)}).
 \]</span>
 An implementation of it is</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="state-inf.html#cb14-1"></a>xi &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, n, m)</span>
-<span id="cb14-2"><a href="state-inf.html#cb14-2"></a>foo &lt;-<span class="st"> </span>delta <span class="op">*</span><span class="st"> </span>emission_probs[<span class="dv">1</span>, ]</span>
-<span id="cb14-3"><a href="state-inf.html#cb14-3"></a>xi[<span class="dv">1</span>, ] &lt;-<span class="st"> </span>foo <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(foo)</span>
-<span id="cb14-4"><a href="state-inf.html#cb14-4"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>n) {</span>
-<span id="cb14-5"><a href="state-inf.html#cb14-5"></a>  foo &lt;-<span class="st"> </span><span class="kw">apply</span>(xi[i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, ] <span class="op">*</span><span class="st"> </span>gamma, <span class="dv">2</span>, max) <span class="op">*</span><span class="st"> </span>emission_probs[i, ]</span>
-<span id="cb14-6"><a href="state-inf.html#cb14-6"></a>  xi[i, ] &lt;-<span class="st"> </span>foo <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(foo)</span>
-<span id="cb14-7"><a href="state-inf.html#cb14-7"></a>}</span>
-<span id="cb14-8"><a href="state-inf.html#cb14-8"></a>iv &lt;-<span class="st"> </span><span class="kw">numeric</span>(n)</span>
-<span id="cb14-9"><a href="state-inf.html#cb14-9"></a>iv[n] &lt;-<span class="st"> </span><span class="kw">which.max</span>(xi[n, ])</span>
-<span id="cb14-10"><a href="state-inf.html#cb14-10"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span><span class="dv">1</span>){</span>
-<span id="cb14-11"><a href="state-inf.html#cb14-11"></a>  iv[i] &lt;-<span class="st"> </span><span class="kw">which.max</span>(gamma[, iv[i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>]] <span class="op">*</span><span class="st"> </span>xi[i, ])</span>
-<span id="cb14-12"><a href="state-inf.html#cb14-12"></a>}</span>
-<span id="cb14-13"><a href="state-inf.html#cb14-13"></a>iv</span></code></pre></div>
-<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-##  [50] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1
-##  [99] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [148] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1
-## [197] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="state-inf.html#cb14-1" aria-hidden="true" tabindex="-1"></a>xi <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, m)</span>
+<span id="cb14-2"><a href="state-inf.html#cb14-2" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
+<span id="cb14-3"><a href="state-inf.html#cb14-3" aria-hidden="true" tabindex="-1"></a>xi[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> foo <span class="sc">/</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb14-4"><a href="state-inf.html#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
+<span id="cb14-5"><a href="state-inf.html#cb14-5" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">apply</span>(xi[i <span class="sc">-</span> <span class="dv">1</span>, ] <span class="sc">*</span> gamma, <span class="dv">2</span>, max) <span class="sc">*</span> emission_probs[i, ]</span>
+<span id="cb14-6"><a href="state-inf.html#cb14-6" aria-hidden="true" tabindex="-1"></a>  xi[i, ] <span class="ot">&lt;-</span> foo <span class="sc">/</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb14-7"><a href="state-inf.html#cb14-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-8"><a href="state-inf.html#cb14-8" aria-hidden="true" tabindex="-1"></a>iv <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n)</span>
+<span id="cb14-9"><a href="state-inf.html#cb14-9" aria-hidden="true" tabindex="-1"></a>iv[n] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(xi[n, ])</span>
+<span id="cb14-10"><a href="state-inf.html#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span><span class="dv">1</span>){</span>
+<span id="cb14-11"><a href="state-inf.html#cb14-11" aria-hidden="true" tabindex="-1"></a>  iv[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(gamma[, iv[i <span class="sc">+</span> <span class="dv">1</span>]] <span class="sc">*</span> xi[i, ])</span>
+<span id="cb14-12"><a href="state-inf.html#cb14-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-13"><a href="state-inf.html#cb14-13" aria-hidden="true" tabindex="-1"></a>iv</span></code></pre></div>
+<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [48] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1
+##  [95] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [142] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [189] 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [236] 1 1 1 1 1</code></pre>
 
 </div>
 </div>
 <h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-zucchini">
-<p>Zucchini, W., I. L. MacDonald, and R. Langrock. 2016. <em>Hidden Markov Models for Time Series: An Introduction Using R, Second Edition</em>. Chapman &amp; Hall/CRC Monographs on Statistics &amp; Applied Probability. CRC Press. <a href="https://books.google.no/books?id=KlWzDAAAQBAJ">https://books.google.no/books?id=KlWzDAAAQBAJ</a>.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-zucchini" class="csl-entry">
+Zucchini, W., I.L. MacDonald, and R. Langrock. 2016. <em>Hidden Markov Models for Time Series: An Introduction Using r, Second Edition</em>. Chapman &amp; Hall/CRC Monographs on Statistics &amp; Applied Probability. CRC Press. <a href="https://books.google.no/books?id=KlWzDAAAQBAJ">https://books.google.no/books?id=KlWzDAAAQBAJ</a>.
 </div>
 </div>
             </section>
@@ -440,7 +485,7 @@ An implementation of it is</p>
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="principles-of-using-tmb-for-mle.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -463,6 +508,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {

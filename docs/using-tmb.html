@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 4 Using TMB | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 4 Using TMB | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-07-11" />
+<meta name="date" content="2021-07-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -36,6 +36,7 @@
   
 <link rel="prev" href="parameter-estimation-techniques.html"/>
 <link rel="next" href="confidence-intervals.html"/>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -53,22 +54,23 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -88,7 +90,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -121,6 +123,29 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -138,57 +163,76 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="1" data-path="state-inf.html"><a href="state-inf.html"><i class="fa fa-check"></i><b>1</b> State inference</a><ul>
+<li class="chapter" data-level="1" data-path="state-inf.html"><a href="state-inf.html"><i class="fa fa-check"></i><b>1</b> State inference</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="state-inf.html"><a href="state-inf.html#prepare-the-model"><i class="fa fa-check"></i><b>1.1</b> Prepare the model</a></li>
-<li class="chapter" data-level="1.2" data-path="state-inf.html"><a href="state-inf.html#setup"><i class="fa fa-check"></i><b>1.2</b> Setup</a><ul>
+<li class="chapter" data-level="1.2" data-path="state-inf.html"><a href="state-inf.html#setup"><i class="fa fa-check"></i><b>1.2</b> Setup</a>
+<ul>
 <li class="chapter" data-level="1.2.1" data-path="state-inf.html"><a href="state-inf.html#define-variables"><i class="fa fa-check"></i><b>1.2.1</b> Define variables</a></li>
 <li class="chapter" data-level="1.2.2" data-path="state-inf.html"><a href="state-inf.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>1.2.2</b> Emission/output probabilities</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="state-inf.html"><a href="state-inf.html#log-forward"><i class="fa fa-check"></i><b>1.3</b> Log-forward probabilities</a></li>
 <li class="chapter" data-level="1.4" data-path="state-inf.html"><a href="state-inf.html#log-backward"><i class="fa fa-check"></i><b>1.4</b> Log-backward probabilities</a></li>
-<li class="chapter" data-level="1.5" data-path="state-inf.html"><a href="state-inf.html#local-decoding"><i class="fa fa-check"></i><b>1.5</b> Smoothing probabilities and local decoding</a></li>
-<li class="chapter" data-level="1.6" data-path="state-inf.html"><a href="state-inf.html#forecast"><i class="fa fa-check"></i><b>1.6</b> Forecast, h-step-ahead-probabilities</a></li>
-<li class="chapter" data-level="1.7" data-path="state-inf.html"><a href="state-inf.html#global-decoding"><i class="fa fa-check"></i><b>1.7</b> Global decoding using the Viterbi algorithm</a></li>
+<li class="chapter" data-level="1.5" data-path="state-inf.html"><a href="state-inf.html#local-decoding"><i class="fa fa-check"></i><b>1.5</b> Local decoding</a></li>
+<li class="chapter" data-level="1.6" data-path="state-inf.html"><a href="state-inf.html#forecast"><i class="fa fa-check"></i><b>1.6</b> Forecast</a></li>
+<li class="chapter" data-level="1.7" data-path="state-inf.html"><a href="state-inf.html#global-decoding"><i class="fa fa-check"></i><b>1.7</b> Global decoding</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for Maximum Likelihood Estimation</a><ul>
-<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#setting-up-tmb"><i class="fa fa-check"></i><b>2.1</b> Setting up <code>TMB</code></a></li>
-<li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#getting-started-with-a-linear-regression"><i class="fa fa-check"></i><b>2.2</b> Getting started with a linear regression</a></li>
-<li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#extending-the-c-negative-log-likelihood"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> negative log-likelihood</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques</a><ul>
-<li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#negative-log-likelihood-in-tmb"><i class="fa fa-check"></i><b>3.1</b> Negative log-likelihood in <code>TMB</code></a></li>
-<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#utility-functions"><i class="fa fa-check"></i><b>3.2</b> Utility functions</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-tmb"><i class="fa fa-check"></i><b>3.2.1</b> In <code>TMB</code></a></li>
-<li class="chapter" data-level="3.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-r"><i class="fa fa-check"></i><b>3.2.2</b> In <code>R</code></a><ul>
-<li class="chapter" data-level="3.2.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#parameters"><i class="fa fa-check"></i><b>3.2.2.1</b> Parameters</a></li>
-<li class="chapter" data-level="3.2.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#label-switching"><i class="fa fa-check"></i><b>3.2.2.2</b> Label switching</a></li>
+<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for MLE</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#setting-up-tmb"><i class="fa fa-check"></i><b>2.1</b> Setting up <code>TMB</code></a></li>
+<li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#getting-started"><i class="fa fa-check"></i><b>2.2</b> Getting started</a></li>
+<li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#extending-the-c-nll"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> nll</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#minimal-example"><i class="fa fa-check"></i><b>2.3.1</b> Minimal example</a></li>
+<li class="chapter" data-level="2.3.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#advanced-example"><i class="fa fa-check"></i><b>2.3.2</b> Advanced example</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="3" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#utility-functions"><i class="fa fa-check"></i><b>3.1</b> Utility functions</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-tmb"><i class="fa fa-check"></i><b>3.1.1</b> In <code>TMB</code></a></li>
+<li class="chapter" data-level="3.1.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-r"><i class="fa fa-check"></i><b>3.1.2</b> In <code>R</code></a>
+<ul>
+<li class="chapter" data-level="3.1.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#parameters"><i class="fa fa-check"></i><b>3.1.2.1</b> Parameters</a></li>
+<li class="chapter" data-level="3.1.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#label-switching"><i class="fa fa-check"></i><b>3.1.2.2</b> Label switching</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using TMB</a><ul>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#nll-in-tmb"><i class="fa fa-check"></i><b>3.2</b> Nll in <code>TMB</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using TMB</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
 <li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions"><i class="fa fa-check"></i><b>4.2</b> Preparing data and functions</a></li>
 <li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#modeling"><i class="fa fa-check"></i><b>4.3</b> Modeling</a></li>
-<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>4.4</b> Nested models</a><ul>
+<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>4.4</b> Nested models</a>
+<ul>
 <li class="chapter" data-level="4.4.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>4.4.1</b> Principle</a></li>
 <li class="chapter" data-level="4.4.2" data-path="using-tmb.html"><a href="using-tmb.html#limit"><i class="fa fa-check"></i><b>4.4.2</b> Limit</a></li>
 <li class="chapter" data-level="4.4.3" data-path="using-tmb.html"><a href="using-tmb.html#parameter-equality-constraints"><i class="fa fa-check"></i><b>4.4.3</b> Parameter equality constraints</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a><ul>
+<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#wald-type"><i class="fa fa-check"></i><b>5.1</b> Wald-type</a></li>
-<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#parametric-bootstrap"><i class="fa fa-check"></i><b>5.2</b> Parametric bootstrap</a><ul>
+<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#parametric-bootstrap"><i class="fa fa-check"></i><b>5.2</b> Parametric bootstrap</a>
+<ul>
 <li class="chapter" data-level="5.2.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>5.2.1</b> Generating data</a></li>
 <li class="chapter" data-level="5.2.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>5.2.2</b> Bootstrap</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#profiling-the-negative-log-likelihood"><i class="fa fa-check"></i><b>5.3</b> Profiling the negative log-likelihood</a></li>
+<li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#profiling-the-nll"><i class="fa fa-check"></i><b>5.3</b> Profiling the nll</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a><ul>
+<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-dataset"><i class="fa fa-check"></i><b>6.1</b> TYT dataset</a></li>
 <li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-dataset"><i class="fa fa-check"></i><b>6.2</b> Simulated dataset</a></li>
 <li class="chapter" data-level="6.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>6.3</b> Lamb data</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="github-directory-structure.html"><a href="github-directory-structure.html"><i class="fa fa-check"></i><b>7</b> GitHub directory structure</a></li>
+<li class="chapter" data-level="7" data-path="github-directory-structure.html"><a href="github-directory-structure.html"><i class="fa fa-check"></i><b>7</b> GitHub directory structure</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="github-directory-structure.html"><a href="github-directory-structure.html#folder-code"><i class="fa fa-check"></i><b>7.1</b> Folder <code>code</code></a></li>
+<li class="chapter" data-level="7.2" data-path="github-directory-structure.html"><a href="github-directory-structure.html#folder-data"><i class="fa fa-check"></i><b>7.2</b> Folder <code>data</code></a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -210,130 +254,130 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="using-tmb" class="section level1">
+<div id="using-tmb" class="section level1" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Using TMB</h1>
-<div id="likelihood-function" class="section level2">
+<div id="likelihood-function" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Likelihood function</h2>
 <p>The function is defined in <a href="code/poi_hmm.cpp">poi_hmm.cpp</a></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="using-tmb.html#cb1-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
-<span id="cb1-2"><a href="using-tmb.html#cb1-2"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
-<span id="cb1-3"><a href="using-tmb.html#cb1-3"></a></span>
-<span id="cb1-4"><a href="using-tmb.html#cb1-4"></a><span class="co">// Likelihood for a poisson hidden markov model. </span></span>
-<span id="cb1-5"><a href="using-tmb.html#cb1-5"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb1-6"><a href="using-tmb.html#cb1-6"></a>Type objective_function&lt;Type&gt;::<span class="kw">operator</span>() ()</span>
-<span id="cb1-7"><a href="using-tmb.html#cb1-7"></a>{</span>
-<span id="cb1-8"><a href="using-tmb.html#cb1-8"></a>  </span>
-<span id="cb1-9"><a href="using-tmb.html#cb1-9"></a>  <span class="co">// Data</span></span>
-<span id="cb1-10"><a href="using-tmb.html#cb1-10"></a>  DATA_VECTOR(x);          <span class="co">// timeseries vector</span></span>
-<span id="cb1-11"><a href="using-tmb.html#cb1-11"></a>  DATA_INTEGER(m);         <span class="co">// Number of states m</span></span>
-<span id="cb1-12"><a href="using-tmb.html#cb1-12"></a>  </span>
-<span id="cb1-13"><a href="using-tmb.html#cb1-13"></a>  <span class="co">// Parameters</span></span>
-<span id="cb1-14"><a href="using-tmb.html#cb1-14"></a>  PARAMETER_VECTOR(tlambda);     <span class="co">// conditional log_lambdas&#39;s</span></span>
-<span id="cb1-15"><a href="using-tmb.html#cb1-15"></a>  PARAMETER_VECTOR(tgamma);      <span class="co">// m(m-1) working parameters of TPM</span></span>
-<span id="cb1-16"><a href="using-tmb.html#cb1-16"></a>  </span>
-<span id="cb1-17"><a href="using-tmb.html#cb1-17"></a>  <span class="co">// Uncomment only when using a non-stationary distribution</span></span>
-<span id="cb1-18"><a href="using-tmb.html#cb1-18"></a>  <span class="co">//PARAMETER_VECTOR(tdelta);    // transformed stationary distribution,</span></span>
-<span id="cb1-19"><a href="using-tmb.html#cb1-19"></a></span>
-<span id="cb1-20"><a href="using-tmb.html#cb1-20"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
-<span id="cb1-21"><a href="using-tmb.html#cb1-21"></a>  vector&lt;Type&gt; lambda = tlambda.exp();</span>
-<span id="cb1-22"><a href="using-tmb.html#cb1-22"></a>  matrix&lt;Type&gt; gamma = Gamma_w2n(m, tgamma);</span>
-<span id="cb1-23"><a href="using-tmb.html#cb1-23"></a>  </span>
-<span id="cb1-24"><a href="using-tmb.html#cb1-24"></a>  <span class="co">// Construct stationary distribution</span></span>
-<span id="cb1-25"><a href="using-tmb.html#cb1-25"></a>  vector&lt;Type&gt; delta = Stat_dist(m, gamma);</span>
-<span id="cb1-26"><a href="using-tmb.html#cb1-26"></a>  <span class="co">// If using a non-stationary distribution, use this instead</span></span>
-<span id="cb1-27"><a href="using-tmb.html#cb1-27"></a>  <span class="co">//vector&lt;Type&gt; delta = Delta_w2n(m, tdelta);</span></span>
-<span id="cb1-28"><a href="using-tmb.html#cb1-28"></a>  </span>
-<span id="cb1-29"><a href="using-tmb.html#cb1-29"></a>  <span class="co">// Get number of timesteps (n)</span></span>
-<span id="cb1-30"><a href="using-tmb.html#cb1-30"></a>  <span class="dt">int</span> n = x.size();</span>
-<span id="cb1-31"><a href="using-tmb.html#cb1-31"></a>  </span>
-<span id="cb1-32"><a href="using-tmb.html#cb1-32"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
-<span id="cb1-33"><a href="using-tmb.html#cb1-33"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
-<span id="cb1-34"><a href="using-tmb.html#cb1-34"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
-<span id="cb1-35"><a href="using-tmb.html#cb1-35"></a>  matrix&lt;Type&gt; emission_probs(n, m);</span>
-<span id="cb1-36"><a href="using-tmb.html#cb1-36"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
-<span id="cb1-37"><a href="using-tmb.html#cb1-37"></a>  row1vec.setOnes();</span>
-<span id="cb1-38"><a href="using-tmb.html#cb1-38"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
-<span id="cb1-39"><a href="using-tmb.html#cb1-39"></a>    <span class="cf">if</span> (x[i] != x[i]) { <span class="co">// f != f returns true if and only if f is NaN. </span></span>
-<span id="cb1-40"><a href="using-tmb.html#cb1-40"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
-<span id="cb1-41"><a href="using-tmb.html#cb1-41"></a>      emission_probs.row(i) = row1vec;</span>
-<span id="cb1-42"><a href="using-tmb.html#cb1-42"></a>    }</span>
-<span id="cb1-43"><a href="using-tmb.html#cb1-43"></a>    <span class="cf">else</span> {</span>
-<span id="cb1-44"><a href="using-tmb.html#cb1-44"></a>      emission_probs.row(i) = dpois(x[i], lambda, <span class="kw">false</span>);</span>
-<span id="cb1-45"><a href="using-tmb.html#cb1-45"></a>    }</span>
-<span id="cb1-46"><a href="using-tmb.html#cb1-46"></a>  }</span>
-<span id="cb1-47"><a href="using-tmb.html#cb1-47"></a></span>
-<span id="cb1-48"><a href="using-tmb.html#cb1-48"></a>  <span class="co">// Corresponds to Zucchini&#39;s book page 333</span></span>
-<span id="cb1-49"><a href="using-tmb.html#cb1-49"></a>  matrix&lt;Type&gt; foo, P;</span>
-<span id="cb1-50"><a href="using-tmb.html#cb1-50"></a>  Type mllk, sumfoo, lscale;</span>
-<span id="cb1-51"><a href="using-tmb.html#cb1-51"></a>  </span>
-<span id="cb1-52"><a href="using-tmb.html#cb1-52"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>) {</span>
-<span id="cb1-53"><a href="using-tmb.html#cb1-53"></a>    mllk = - emission_probs.col(<span class="dv">0</span>).array().log().sum();</span>
-<span id="cb1-54"><a href="using-tmb.html#cb1-54"></a>    </span>
-<span id="cb1-55"><a href="using-tmb.html#cb1-55"></a>    <span class="co">// Use adreport on variables we are interested in:</span></span>
-<span id="cb1-56"><a href="using-tmb.html#cb1-56"></a>    ADREPORT(lambda);</span>
-<span id="cb1-57"><a href="using-tmb.html#cb1-57"></a>    ADREPORT(gamma);</span>
-<span id="cb1-58"><a href="using-tmb.html#cb1-58"></a>    ADREPORT(delta);</span>
-<span id="cb1-59"><a href="using-tmb.html#cb1-59"></a>    </span>
-<span id="cb1-60"><a href="using-tmb.html#cb1-60"></a>    <span class="co">// Things we need for local decoding</span></span>
-<span id="cb1-61"><a href="using-tmb.html#cb1-61"></a>    REPORT(lambda);</span>
-<span id="cb1-62"><a href="using-tmb.html#cb1-62"></a>    REPORT(gamma);</span>
-<span id="cb1-63"><a href="using-tmb.html#cb1-63"></a>    REPORT(delta);</span>
-<span id="cb1-64"><a href="using-tmb.html#cb1-64"></a>    </span>
-<span id="cb1-65"><a href="using-tmb.html#cb1-65"></a>    <span class="cf">return</span> mllk;</span>
-<span id="cb1-66"><a href="using-tmb.html#cb1-66"></a>  }</span>
-<span id="cb1-67"><a href="using-tmb.html#cb1-67"></a>  foo = (delta * vector&lt;Type&gt;(emission_probs.row(<span class="dv">0</span>))).matrix();</span>
-<span id="cb1-68"><a href="using-tmb.html#cb1-68"></a>  sumfoo = foo.sum();</span>
-<span id="cb1-69"><a href="using-tmb.html#cb1-69"></a>  lscale = log(sumfoo);</span>
-<span id="cb1-70"><a href="using-tmb.html#cb1-70"></a>  foo.transposeInPlace();</span>
-<span id="cb1-71"><a href="using-tmb.html#cb1-71"></a>  foo /= sumfoo;</span>
-<span id="cb1-72"><a href="using-tmb.html#cb1-72"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">2</span>; i &lt;= n; i++) {</span>
-<span id="cb1-73"><a href="using-tmb.html#cb1-73"></a>    P = emission_probs.row(i - <span class="dv">1</span>);</span>
-<span id="cb1-74"><a href="using-tmb.html#cb1-74"></a>    foo = ((foo * gamma).array() * P.array()).matrix();</span>
-<span id="cb1-75"><a href="using-tmb.html#cb1-75"></a>    sumfoo = foo.sum();</span>
-<span id="cb1-76"><a href="using-tmb.html#cb1-76"></a>    lscale += log(sumfoo);</span>
-<span id="cb1-77"><a href="using-tmb.html#cb1-77"></a>    foo /= sumfoo;</span>
-<span id="cb1-78"><a href="using-tmb.html#cb1-78"></a>  }</span>
-<span id="cb1-79"><a href="using-tmb.html#cb1-79"></a>  mllk = -lscale;</span>
-<span id="cb1-80"><a href="using-tmb.html#cb1-80"></a>  </span>
-<span id="cb1-81"><a href="using-tmb.html#cb1-81"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
-<span id="cb1-82"><a href="using-tmb.html#cb1-82"></a>  ADREPORT(lambda);</span>
-<span id="cb1-83"><a href="using-tmb.html#cb1-83"></a>  ADREPORT(gamma);</span>
-<span id="cb1-84"><a href="using-tmb.html#cb1-84"></a>  ADREPORT(delta);</span>
-<span id="cb1-85"><a href="using-tmb.html#cb1-85"></a>  </span>
-<span id="cb1-86"><a href="using-tmb.html#cb1-86"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
-<span id="cb1-87"><a href="using-tmb.html#cb1-87"></a>  REPORT(lambda);</span>
-<span id="cb1-88"><a href="using-tmb.html#cb1-88"></a>  REPORT(gamma);</span>
-<span id="cb1-89"><a href="using-tmb.html#cb1-89"></a>  REPORT(delta);</span>
-<span id="cb1-90"><a href="using-tmb.html#cb1-90"></a>  REPORT(n);</span>
-<span id="cb1-91"><a href="using-tmb.html#cb1-91"></a>  REPORT(emission_probs);</span>
-<span id="cb1-92"><a href="using-tmb.html#cb1-92"></a>  REPORT(mllk);</span>
-<span id="cb1-93"><a href="using-tmb.html#cb1-93"></a>  </span>
-<span id="cb1-94"><a href="using-tmb.html#cb1-94"></a>  <span class="cf">return</span> mllk;</span>
-<span id="cb1-95"><a href="using-tmb.html#cb1-95"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb55-1"><a href="using-tmb.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
+<span id="cb55-2"><a href="using-tmb.html#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
+<span id="cb55-3"><a href="using-tmb.html#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-4"><a href="using-tmb.html#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood for a poisson hidden markov model. </span></span>
+<span id="cb55-5"><a href="using-tmb.html#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb55-6"><a href="using-tmb.html#cb55-6" aria-hidden="true" tabindex="-1"></a>Type objective_function&lt;Type&gt;::<span class="kw">operator</span>() ()</span>
+<span id="cb55-7"><a href="using-tmb.html#cb55-7" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb55-8"><a href="using-tmb.html#cb55-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb55-9"><a href="using-tmb.html#cb55-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Data</span></span>
+<span id="cb55-10"><a href="using-tmb.html#cb55-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR(x);          <span class="co">// timeseries vector</span></span>
+<span id="cb55-11"><a href="using-tmb.html#cb55-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER(m);         <span class="co">// Number of states m</span></span>
+<span id="cb55-12"><a href="using-tmb.html#cb55-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb55-13"><a href="using-tmb.html#cb55-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters</span></span>
+<span id="cb55-14"><a href="using-tmb.html#cb55-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tlambda);     <span class="co">// conditional log_lambdas&#39;s</span></span>
+<span id="cb55-15"><a href="using-tmb.html#cb55-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tgamma);      <span class="co">// m(m-1) working parameters of TPM</span></span>
+<span id="cb55-16"><a href="using-tmb.html#cb55-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb55-17"><a href="using-tmb.html#cb55-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Uncomment only when using a non-stationary distribution</span></span>
+<span id="cb55-18"><a href="using-tmb.html#cb55-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">//PARAMETER_VECTOR(tdelta);    // transformed stationary distribution,</span></span>
+<span id="cb55-19"><a href="using-tmb.html#cb55-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-20"><a href="using-tmb.html#cb55-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
+<span id="cb55-21"><a href="using-tmb.html#cb55-21" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; lambda = tlambda.exp();</span>
+<span id="cb55-22"><a href="using-tmb.html#cb55-22" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma = Gamma_w2n(m, tgamma);</span>
+<span id="cb55-23"><a href="using-tmb.html#cb55-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb55-24"><a href="using-tmb.html#cb55-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
+<span id="cb55-25"><a href="using-tmb.html#cb55-25" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = Stat_dist(m, gamma);</span>
+<span id="cb55-26"><a href="using-tmb.html#cb55-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If using a non-stationary distribution, use this instead</span></span>
+<span id="cb55-27"><a href="using-tmb.html#cb55-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">//vector&lt;Type&gt; delta = Delta_w2n(m, tdelta);</span></span>
+<span id="cb55-28"><a href="using-tmb.html#cb55-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb55-29"><a href="using-tmb.html#cb55-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
+<span id="cb55-30"><a href="using-tmb.html#cb55-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n = x.size();</span>
+<span id="cb55-31"><a href="using-tmb.html#cb55-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb55-32"><a href="using-tmb.html#cb55-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
+<span id="cb55-33"><a href="using-tmb.html#cb55-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
+<span id="cb55-34"><a href="using-tmb.html#cb55-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
+<span id="cb55-35"><a href="using-tmb.html#cb55-35" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; emission_probs(n, m);</span>
+<span id="cb55-36"><a href="using-tmb.html#cb55-36" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
+<span id="cb55-37"><a href="using-tmb.html#cb55-37" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
+<span id="cb55-38"><a href="using-tmb.html#cb55-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
+<span id="cb55-39"><a href="using-tmb.html#cb55-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (x[i] != x[i]) { <span class="co">// f != f returns true if and only if f is NaN. </span></span>
+<span id="cb55-40"><a href="using-tmb.html#cb55-40" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
+<span id="cb55-41"><a href="using-tmb.html#cb55-41" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = row1vec;</span>
+<span id="cb55-42"><a href="using-tmb.html#cb55-42" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb55-43"><a href="using-tmb.html#cb55-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
+<span id="cb55-44"><a href="using-tmb.html#cb55-44" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = dpois(x[i], lambda, <span class="kw">false</span>);</span>
+<span id="cb55-45"><a href="using-tmb.html#cb55-45" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb55-46"><a href="using-tmb.html#cb55-46" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb55-47"><a href="using-tmb.html#cb55-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-48"><a href="using-tmb.html#cb55-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to Zucchini&#39;s book page 333</span></span>
+<span id="cb55-49"><a href="using-tmb.html#cb55-49" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; foo, P;</span>
+<span id="cb55-50"><a href="using-tmb.html#cb55-50" aria-hidden="true" tabindex="-1"></a>  Type mllk, sumfoo, lscale;</span>
+<span id="cb55-51"><a href="using-tmb.html#cb55-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb55-52"><a href="using-tmb.html#cb55-52" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>) {</span>
+<span id="cb55-53"><a href="using-tmb.html#cb55-53" aria-hidden="true" tabindex="-1"></a>    mllk = - emission_probs.col(<span class="dv">0</span>).array().log().sum();</span>
+<span id="cb55-54"><a href="using-tmb.html#cb55-54" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb55-55"><a href="using-tmb.html#cb55-55" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Use adreport on variables we are interested in:</span></span>
+<span id="cb55-56"><a href="using-tmb.html#cb55-56" aria-hidden="true" tabindex="-1"></a>    ADREPORT(lambda);</span>
+<span id="cb55-57"><a href="using-tmb.html#cb55-57" aria-hidden="true" tabindex="-1"></a>    ADREPORT(gamma);</span>
+<span id="cb55-58"><a href="using-tmb.html#cb55-58" aria-hidden="true" tabindex="-1"></a>    ADREPORT(delta);</span>
+<span id="cb55-59"><a href="using-tmb.html#cb55-59" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb55-60"><a href="using-tmb.html#cb55-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Things we need for local decoding</span></span>
+<span id="cb55-61"><a href="using-tmb.html#cb55-61" aria-hidden="true" tabindex="-1"></a>    REPORT(lambda);</span>
+<span id="cb55-62"><a href="using-tmb.html#cb55-62" aria-hidden="true" tabindex="-1"></a>    REPORT(gamma);</span>
+<span id="cb55-63"><a href="using-tmb.html#cb55-63" aria-hidden="true" tabindex="-1"></a>    REPORT(delta);</span>
+<span id="cb55-64"><a href="using-tmb.html#cb55-64" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb55-65"><a href="using-tmb.html#cb55-65" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mllk;</span>
+<span id="cb55-66"><a href="using-tmb.html#cb55-66" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb55-67"><a href="using-tmb.html#cb55-67" aria-hidden="true" tabindex="-1"></a>  foo = (delta * vector&lt;Type&gt;(emission_probs.row(<span class="dv">0</span>))).matrix();</span>
+<span id="cb55-68"><a href="using-tmb.html#cb55-68" aria-hidden="true" tabindex="-1"></a>  sumfoo = foo.sum();</span>
+<span id="cb55-69"><a href="using-tmb.html#cb55-69" aria-hidden="true" tabindex="-1"></a>  lscale = log(sumfoo);</span>
+<span id="cb55-70"><a href="using-tmb.html#cb55-70" aria-hidden="true" tabindex="-1"></a>  foo.transposeInPlace();</span>
+<span id="cb55-71"><a href="using-tmb.html#cb55-71" aria-hidden="true" tabindex="-1"></a>  foo /= sumfoo;</span>
+<span id="cb55-72"><a href="using-tmb.html#cb55-72" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">2</span>; i &lt;= n; i++) {</span>
+<span id="cb55-73"><a href="using-tmb.html#cb55-73" aria-hidden="true" tabindex="-1"></a>    P = emission_probs.row(i - <span class="dv">1</span>);</span>
+<span id="cb55-74"><a href="using-tmb.html#cb55-74" aria-hidden="true" tabindex="-1"></a>    foo = ((foo * gamma).array() * P.array()).matrix();</span>
+<span id="cb55-75"><a href="using-tmb.html#cb55-75" aria-hidden="true" tabindex="-1"></a>    sumfoo = foo.sum();</span>
+<span id="cb55-76"><a href="using-tmb.html#cb55-76" aria-hidden="true" tabindex="-1"></a>    lscale += log(sumfoo);</span>
+<span id="cb55-77"><a href="using-tmb.html#cb55-77" aria-hidden="true" tabindex="-1"></a>    foo /= sumfoo;</span>
+<span id="cb55-78"><a href="using-tmb.html#cb55-78" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb55-79"><a href="using-tmb.html#cb55-79" aria-hidden="true" tabindex="-1"></a>  mllk = -lscale;</span>
+<span id="cb55-80"><a href="using-tmb.html#cb55-80" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb55-81"><a href="using-tmb.html#cb55-81" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
+<span id="cb55-82"><a href="using-tmb.html#cb55-82" aria-hidden="true" tabindex="-1"></a>  ADREPORT(lambda);</span>
+<span id="cb55-83"><a href="using-tmb.html#cb55-83" aria-hidden="true" tabindex="-1"></a>  ADREPORT(gamma);</span>
+<span id="cb55-84"><a href="using-tmb.html#cb55-84" aria-hidden="true" tabindex="-1"></a>  ADREPORT(delta);</span>
+<span id="cb55-85"><a href="using-tmb.html#cb55-85" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb55-86"><a href="using-tmb.html#cb55-86" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
+<span id="cb55-87"><a href="using-tmb.html#cb55-87" aria-hidden="true" tabindex="-1"></a>  REPORT(lambda);</span>
+<span id="cb55-88"><a href="using-tmb.html#cb55-88" aria-hidden="true" tabindex="-1"></a>  REPORT(gamma);</span>
+<span id="cb55-89"><a href="using-tmb.html#cb55-89" aria-hidden="true" tabindex="-1"></a>  REPORT(delta);</span>
+<span id="cb55-90"><a href="using-tmb.html#cb55-90" aria-hidden="true" tabindex="-1"></a>  REPORT(n);</span>
+<span id="cb55-91"><a href="using-tmb.html#cb55-91" aria-hidden="true" tabindex="-1"></a>  REPORT(emission_probs);</span>
+<span id="cb55-92"><a href="using-tmb.html#cb55-92" aria-hidden="true" tabindex="-1"></a>  REPORT(mllk);</span>
+<span id="cb55-93"><a href="using-tmb.html#cb55-93" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb55-94"><a href="using-tmb.html#cb55-94" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk;</span>
+<span id="cb55-95"><a href="using-tmb.html#cb55-95" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
-<div id="preparing-data-and-functions" class="section level2">
+<div id="preparing-data-and-functions" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> Preparing data and functions</h2>
-<p>Before we can fit the model, we need to load some necessary packages and data files. We also need to compile the c++ code and load the functions into our working environment in R.
+<p>Before we can fit the model, we need to load some necessary packages and data files. We also need to compile the <code>C++</code> code and load the functions into our working environment in <code>R</code>.
 <!-- Loading of the necessary packages, compilation of the nll function with TMB and subsequent loading, and loading of the auxiliary functions for parameter transformation --></p>
 <!-- With the nll function available in `C++`, we can carry out the parameter estimation and all pre-/post-processing in `R`. In the following we describe the steps to be carried out. -->
 <!-- 1. Loading of the necessary packages, compilation of the nll function with TMB and subsequent loading, and loading of the auxiliary functions for parameter transformation. -->
 <p>We start by loading the necessary packages and the utility R functions.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="using-tmb.html#cb2-1"></a><span class="co"># Load TMB and optimization packages</span></span>
-<span id="cb2-2"><a href="using-tmb.html#cb2-2"></a><span class="kw">library</span>(TMB)</span>
-<span id="cb2-3"><a href="using-tmb.html#cb2-3"></a><span class="kw">library</span>(optimr)</span>
-<span id="cb2-4"><a href="using-tmb.html#cb2-4"></a><span class="co"># Load the parameter transformation function</span></span>
-<span id="cb2-5"><a href="using-tmb.html#cb2-5"></a><span class="kw">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="using-tmb.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load TMB and optimization packages</span></span>
+<span id="cb56-2"><a href="using-tmb.html#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
+<span id="cb56-3"><a href="using-tmb.html#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(optimr)</span>
+<span id="cb56-4"><a href="using-tmb.html#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the parameter transformation function</span></span>
+<span id="cb56-5"><a href="using-tmb.html#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span></code></pre></div>
 <p>Next, we need to compile the c++ code for computing the likelihood and its gradients. Once it is compiled, we can load the TMB likelihood object into R – making it available from R.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="using-tmb.html#cb3-1"></a><span class="co"># Run the `C++` file containing the TMB code</span></span>
-<span id="cb3-2"><a href="using-tmb.html#cb3-2"></a>TMB<span class="op">::</span><span class="kw">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span>
-<span id="cb3-3"><a href="using-tmb.html#cb3-3"></a><span class="co"># Load it</span></span>
-<span id="cb3-4"><a href="using-tmb.html#cb3-4"></a><span class="kw">dyn.load</span>(<span class="kw">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span></code></pre></div>
-<p>The data are part of a large data set collected with the “Track Your Tinnitus” (TYT) mobile application, a detailed description of which is presented in <span class="citation">(R. Pryss, Reichert, Herrmann, et al. <a href="#ref-pryss" role="doc-biblioref">2015</a>; R. Pryss, Reichert, Langguth, et al. <a href="#ref-pryssa" role="doc-biblioref">2015</a>)</span>.
-We analyze 87 successive days of the “arousal” variable, which is measured on a discrete scale. Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state <span class="citation">(for details, see Probst et al. <a href="#ref-probst" role="doc-biblioref">2016</a>)</span>. The data is stored in the file <code>data/tinnitus.Rdata</code> and can be loaded by a simple call.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="using-tmb.html#cb4-1"></a><span class="kw">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="using-tmb.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the `C++` file containing the TMB code</span></span>
+<span id="cb57-2"><a href="using-tmb.html#cb57-2" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span>
+<span id="cb57-3"><a href="using-tmb.html#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load it</span></span>
+<span id="cb57-4"><a href="using-tmb.html#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span></code></pre></div>
+<p>The data are part of a large data set collected with the “Track Your Tinnitus” (TYT) mobile application, a detailed description of which is presented in <span class="citation">(<a href="#ref-pryss" role="doc-biblioref">Pryss, Reichert, Herrmann, et al. 2015</a>; <a href="#ref-pryssa" role="doc-biblioref">Pryss, Reichert, Langguth, et al. 2015</a>)</span>.
+We analyze 87 successive days of the “arousal” variable, which is measured on a discrete scale. Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state <span class="citation">(for details, see <a href="#ref-probst" role="doc-biblioref">Probst et al. 2016</a>)</span>. The data is stored in the file <code>data/tinnitus.Rdata</code> and can be loaded by a simple call.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="using-tmb.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span></code></pre></div>
 <p>@ref(table:tinnitus_data) presents the raw data, which are also available for download at INSERT GITHUB LINK.</p>
-<!-- html table generated in R 4.0.3 by xtable 1.8-4 package -->
-<!-- Sun Jul 11 11:17:23 2021 -->
+<!-- html table generated in R 4.0.5 by xtable 1.8-4 package -->
+<!-- Wed Jul 14 19:29:57 2021 -->
 <table border="1">
 <caption align="bottom">
 TYT data. Observations collected by the TYT app on 87 successive days (from left to right).
@@ -460,49 +504,49 @@ Figure 4.1: Plot of observations from TYT app data for 87 succesive days.
 </p>
 </div>
 </div>
-<div id="modeling" class="section level2">
+<div id="modeling" class="section level2" number="4.3">
 <h2><span class="header-section-number">4.3</span> Modeling</h2>
 <ol style="list-style-type: decimal">
 <li>Initialization of the number of states and starting (or initial) values for the optimization</li>
 </ol>
 <p>First, the number of states needs to be determined.
-As explained by <span class="citation">(Pohle, Langrock, van Beest, et al. <a href="#ref-pohlea" role="doc-biblioref">2017</a><a href="#ref-pohlea" role="doc-biblioref">b</a>)</span>, <span class="citation">(Pohle, Langrock, van Beest, et al. <a href="#ref-pohle" role="doc-biblioref">2017</a><a href="#ref-pohle" role="doc-biblioref">a</a>)</span>, and <span class="citation">(Zucchini, MacDonald, and Langrock <a href="#ref-zucchini" role="doc-biblioref">2016</a> Section 6)</span> (to name only a few), usually one would first fit models with a different number of states.
-Then, these models are evaluated e.g. by means of model selection criteria <span class="citation">(as carried out by Leroux and Puterman <a href="#ref-leroux" role="doc-biblioref">1992</a>)</span> or prediction performance <span class="citation">(Celeux and Durand <a href="#ref-celeux" role="doc-biblioref">2008</a>)</span>.
-Since the results reported by <span class="citation">(Leroux and Puterman <a href="#ref-leroux" role="doc-biblioref">1992</a>)</span> show that a two-state model is preferred by the BIC, we focus on this model only here - although other choices would be possible, e.g. the AIC selects a three-state model.
+As explained by <span class="citation">(<a href="#ref-pohlea" role="doc-biblioref">Pohle et al. 2017b</a>)</span>, <span class="citation">(<a href="#ref-pohle" role="doc-biblioref">Pohle et al. 2017a</a>)</span>, and <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016</a> Section 6)</span> (to name only a few), usually one would first fit models with a different number of states.
+Then, these models are evaluated e.g. by means of model selection criteria <span class="citation">(as carried out by <a href="#ref-leroux" role="doc-biblioref">Leroux and Puterman 1992</a>)</span> or prediction performance <span class="citation">(<a href="#ref-celeux" role="doc-biblioref">Celeux and Durand 2008</a>)</span>.
+Since the results reported by <span class="citation">(<a href="#ref-leroux" role="doc-biblioref">Leroux and Puterman 1992</a>)</span> show that a two-state model is preferred by the BIC, we focus on this model only here - although other choices would be possible, e.g. the AIC selects a three-state model.
 The list object <code>TMB_data</code> contains the data and the number of states.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="using-tmb.html#cb5-1"></a><span class="co"># Model with 2 states</span></span>
-<span id="cb5-2"><a href="using-tmb.html#cb5-2"></a>m &lt;-<span class="st"> </span><span class="dv">2</span></span>
-<span id="cb5-3"><a href="using-tmb.html#cb5-3"></a>TMB_data &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">x =</span> tinn_data, <span class="dt">m =</span> m)</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="using-tmb.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model with 2 states</span></span>
+<span id="cb59-2"><a href="using-tmb.html#cb59-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb59-3"><a href="using-tmb.html#cb59-3" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span></code></pre></div>
 <p>Secondly, initial values for the optimization procedure need to be defined.
 Although we will apply unconstrained optimization, we initialize the natural parameters, because this is much more intuitive and practical than handling the working parameters.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="using-tmb.html#cb6-1"></a><span class="co"># Generate initial set of parameters for optimization</span></span>
-<span id="cb6-2"><a href="using-tmb.html#cb6-2"></a>lambda &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
-<span id="cb6-3"><a href="using-tmb.html#cb6-3"></a>gamma &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
-<span id="cb6-4"><a href="using-tmb.html#cb6-4"></a>                  <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="dt">byrow =</span> <span class="ot">TRUE</span>, <span class="dt">nrow =</span> m)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="using-tmb.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate initial set of parameters for optimization</span></span>
+<span id="cb60-2"><a href="using-tmb.html#cb60-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb60-3"><a href="using-tmb.html#cb60-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
+<span id="cb60-4"><a href="using-tmb.html#cb60-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> m)</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Transformation from natural to working parameters</li>
 </ol>
 <p>The previously created initial values are transformed and stored in the list <code>parameters</code> for the optimization procedure.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="using-tmb.html#cb7-1"></a><span class="co"># Turn them into working parameters</span></span>
-<span id="cb7-2"><a href="using-tmb.html#cb7-2"></a>parameters &lt;-<span class="st"> </span><span class="kw">pois.HMM.pn2pw</span>(m, lambda, gamma)</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="using-tmb.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn them into working parameters</span></span>
+<span id="cb61-2"><a href="using-tmb.html#cb61-2" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois_HMM_pn2pw</span>(m, lambda, gamma)</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Creation of the <code>TMB</code> negative log-likelihood function with its derivatives</li>
 </ol>
 <p>This object, stored as <code>obj_tmb</code> requires the data, the initial values, and the previously created DLL as input.
 Setting argument <code>silent = TRUE</code> disables tracing information and is only used here to avoid excessive output.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="using-tmb.html#cb8-1"></a>obj_tmb &lt;-<span class="st"> </span><span class="kw">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb8-2"><a href="using-tmb.html#cb8-2"></a>                     <span class="dt">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="dt">silent =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="using-tmb.html#cb62-1" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb62-2"><a href="using-tmb.html#cb62-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>This object also contains the previously defined initial values as a vector (<code>par</code>) rather than a list.
 The negative log-likelihood (<code>fn</code>), its gradient (<code>gr</code>), and Hessian (<code>he</code>) are functions of the parameters (in vector form) while the data are considered fixed:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="using-tmb.html#cb9-1"></a>obj_tmb<span class="op">$</span>par</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="using-tmb.html#cb63-1" aria-hidden="true" tabindex="-1"></a>obj_tmb<span class="sc">$</span>par</span></code></pre></div>
 <pre><code>##   tlambda   tlambda    tgamma    tgamma 
 ##  0.000000  1.098612 -1.386294 -1.386294</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="using-tmb.html#cb11-1"></a>obj_tmb<span class="op">$</span><span class="kw">fn</span>(obj_tmb<span class="op">$</span>par)</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="using-tmb.html#cb65-1" aria-hidden="true" tabindex="-1"></a>obj_tmb<span class="sc">$</span><span class="fu">fn</span>(obj_tmb<span class="sc">$</span>par)</span></code></pre></div>
 <pre><code>## [1] 228.3552</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="using-tmb.html#cb13-1"></a>obj_tmb<span class="op">$</span><span class="kw">gr</span>(obj_tmb<span class="op">$</span>par)</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="using-tmb.html#cb67-1" aria-hidden="true" tabindex="-1"></a>obj_tmb<span class="sc">$</span><span class="fu">gr</span>(obj_tmb<span class="sc">$</span>par)</span></code></pre></div>
 <pre><code>##          [,1]      [,2]     [,3]      [,4]
 ## [1,] -3.60306 -146.0336 10.52832 -1.031706</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="using-tmb.html#cb15-1"></a>obj_tmb<span class="op">$</span><span class="kw">he</span>(obj_tmb<span class="op">$</span>par)</span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="using-tmb.html#cb69-1" aria-hidden="true" tabindex="-1"></a>obj_tmb<span class="sc">$</span><span class="fu">he</span>(obj_tmb<span class="sc">$</span>par)</span></code></pre></div>
 <pre><code>##           [,1]       [,2]       [,3]       [,4]
 ## [1,]  1.902009  -5.877900 -1.3799682  2.4054017
 ## [2,] -5.877900 188.088247 -4.8501589  2.3434284
@@ -513,9 +557,9 @@ The negative log-likelihood (<code>fn</code>), its gradient (<code>gr</code>), a
 </ol>
 <p>For this step we rely again on the optimizer implemented in the <code>nlminb</code> function.
 The arguments, i.e.~ initial values for the parameters and the function to be optimized, are extracted from the previously created TMB object.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="using-tmb.html#cb17-1"></a>mod_tmb &lt;-<span class="st"> </span><span class="kw">nlminb</span>(<span class="dt">start =</span> obj_tmb<span class="op">$</span>par, <span class="dt">objective =</span> obj_tmb<span class="op">$</span>fn)</span>
-<span id="cb17-2"><a href="using-tmb.html#cb17-2"></a><span class="co"># Check that it converged successfully</span></span>
-<span id="cb17-3"><a href="using-tmb.html#cb17-3"></a>mod_tmb<span class="op">$</span>convergence <span class="op">==</span><span class="st"> </span><span class="dv">0</span></span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="using-tmb.html#cb71-1" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn)</span>
+<span id="cb71-2"><a href="using-tmb.html#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Check that it converged successfully</span></span>
+<span id="cb71-3"><a href="using-tmb.html#cb71-3" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>It is noteworthy that various alternatives to <code>nlminb</code> exist.
 Nevertheless, we focus on this established optimization routine because of its high speed of convergence.</p>
@@ -524,7 +568,7 @@ Nevertheless, we focus on this established optimization routine because of its h
 </ol>
 <p>Obtaining the ML estimates of the natural parameters together with their standard errors is possible by using the previously introduced command <code>sdreport</code>.</p>
 <p>Recall that this requires the parameters of interest to be treated by the <code>ADREPORT</code> statement in the <code>C++</code> part. It should be noted that the presentation of the set of parameters <code>gamma</code> below results from a column-wise representation of the TPM.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="using-tmb.html#cb19-1"></a><span class="kw">summary</span>(<span class="kw">sdreport</span>(obj_tmb, <span class="dt">par.fixed =</span> mod_tmb<span class="op">$</span>par), <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="using-tmb.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb, <span class="at">par.fixed =</span> mod_tmb<span class="sc">$</span>par), <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
 <pre><code>##          Estimate Std. Error
 ## lambda 1.63641070 0.27758294
 ## lambda 5.53309626 0.31876141
@@ -537,7 +581,7 @@ Nevertheless, we focus on this established optimization routine because of its h
 <p>Note that the table above also contains estimation results for <span class="math inline">\({\boldsymbol\delta}\)</span> and accompanying standard errors, although <span class="math inline">\({\boldsymbol\delta}\)</span> is not estimated, but derived from <span class="math inline">\({\boldsymbol\Gamma}\)</span>.
 We provide further details on this aspect in <a href="confidence-intervals.html#confidence-intervals">Confidence intervals</a>.<br />
 The value of the nll function in the minimum found by the optimizer can also be extracted directly from the object <code>mod_tmb</code> by accessing the list element <code>objective</code>:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="using-tmb.html#cb21-1"></a>mod_tmb<span class="op">$</span>objective</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="using-tmb.html#cb75-1" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>objective</span></code></pre></div>
 <pre><code>## [1] 168.5361</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>Use exact gradient and Hessian</li>
@@ -546,46 +590,46 @@ The value of the nll function in the minimum found by the optimizer can also be 
 However, the use of <code>TMB</code> also permits to introduce the gradient and/or the Hessian computed by <code>TMB</code> into the optimization procedure.
 This is in general advisable, because <code>TMB</code> provides an exact value of both gradient and Hessian up to machine precision, which is superior to approximations used by optimizing procedure.
 Similar to the nll, both quantities can be extracted directly from the <code>TMB</code> object <code>obj_tmb</code>:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="using-tmb.html#cb23-1"></a><span class="co"># The negative log-likelihood is accessed by the objective</span></span>
-<span id="cb23-2"><a href="using-tmb.html#cb23-2"></a><span class="co"># attribute of the optimized object</span></span>
-<span id="cb23-3"><a href="using-tmb.html#cb23-3"></a>mod_tmb &lt;-<span class="st"> </span><span class="kw">nlminb</span>(<span class="dt">start =</span> obj_tmb<span class="op">$</span>par, <span class="dt">objective =</span> obj_tmb<span class="op">$</span>fn,</span>
-<span id="cb23-4"><a href="using-tmb.html#cb23-4"></a>                  <span class="dt">gradient =</span> obj_tmb<span class="op">$</span>gr, <span class="dt">hessian =</span> obj_tmb<span class="op">$</span>he)</span>
-<span id="cb23-5"><a href="using-tmb.html#cb23-5"></a>mod_tmb<span class="op">$</span>objective</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="using-tmb.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The negative log-likelihood is accessed by the objective</span></span>
+<span id="cb77-2"><a href="using-tmb.html#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="co"># attribute of the optimized object</span></span>
+<span id="cb77-3"><a href="using-tmb.html#cb77-3" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb77-4"><a href="using-tmb.html#cb77-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr, <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb77-5"><a href="using-tmb.html#cb77-5" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>objective</span></code></pre></div>
 <pre><code>## [1] 168.5361</code></pre>
 <p>Note that passing the exact gradient and Hessian as provided by <code>TMB</code> to <code>nlminb</code> leads to the same minimum, i.e. value of the nll function, here.</p>
-<p>On a minor note, when comparing our estimation results to those reported by <span class="citation">(Leroux and Puterman <a href="#ref-leroux" role="doc-biblioref">1992</a>)</span>, some non-negligible differences can be noted.
+<p>On a minor note, when comparing our estimation results to those reported by <span class="citation">(<a href="#ref-leroux" role="doc-biblioref">Leroux and Puterman 1992</a>)</span>, some non-negligible differences can be noted.
 The reasons for this are difficult to determine, but some likely explanations are given in the following.
 First, differences in the parameter estimates may result e.g. from the optimizing algorithms used and related setting (e.g. convergence criterion, number of steps, optimization routines used in 1992,…).
-Moreover, <span class="citation">(Leroux and Puterman <a href="#ref-leroux" role="doc-biblioref">1992</a>)</span> seem to base their calculations on an altered likelihood, which is reduced by removing the constant term <span class="math inline">\(\sum_{i=1}^{T} \log(x_{i}!)\)</span> from the log-likelihood.
+Moreover, <span class="citation">(<a href="#ref-leroux" role="doc-biblioref">Leroux and Puterman 1992</a>)</span> seem to base their calculations on an altered likelihood, which is reduced by removing the constant term <span class="math inline">\(\sum_{i=1}^{T} \log(x_{i}!)\)</span> from the log-likelihood.
 This modification may also possess an impact on the behavior of the optimization algorithm, as e.g.~relative convergence criteria and step size could be affected.</p>
 </div>
-<div id="nested-models" class="section level2">
+<div id="nested-models" class="section level2" number="4.4">
 <h2><span class="header-section-number">4.4</span> Nested models</h2>
-<div id="principle" class="section level3">
+<div id="principle" class="section level3" number="4.4.1">
 <h3><span class="header-section-number">4.4.1</span> Principle</h3>
 <p>In order to build a nested model, we decide to fix <span class="math inline">\(\lambda_1\)</span> to the value 1.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="using-tmb.html#cb25-1"></a><span class="co"># Get the previous values, and fix some</span></span>
-<span id="cb25-2"><a href="using-tmb.html#cb25-2"></a>fixed_par_lambda &lt;-<span class="st"> </span>lambda</span>
-<span id="cb25-3"><a href="using-tmb.html#cb25-3"></a>fixed_par_lambda[<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb25-4"><a href="using-tmb.html#cb25-4"></a><span class="co"># Transform them into working parameters</span></span>
-<span id="cb25-5"><a href="using-tmb.html#cb25-5"></a>new_parameters &lt;-<span class="st"> </span><span class="kw">pois.HMM.pn2pw</span>(<span class="dt">m =</span> m,</span>
-<span id="cb25-6"><a href="using-tmb.html#cb25-6"></a>                                 <span class="dt">lambda =</span> fixed_par_lambda,</span>
-<span id="cb25-7"><a href="using-tmb.html#cb25-7"></a>                                 <span class="dt">gamma =</span> gamma)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="using-tmb.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the previous values, and fix some</span></span>
+<span id="cb79-2"><a href="using-tmb.html#cb79-2" aria-hidden="true" tabindex="-1"></a>fixed_par_lambda <span class="ot">&lt;-</span> lambda</span>
+<span id="cb79-3"><a href="using-tmb.html#cb79-3" aria-hidden="true" tabindex="-1"></a>fixed_par_lambda[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb79-4"><a href="using-tmb.html#cb79-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform them into working parameters</span></span>
+<span id="cb79-5"><a href="using-tmb.html#cb79-5" aria-hidden="true" tabindex="-1"></a>new_parameters <span class="ot">&lt;-</span> <span class="fu">pois_HMM_pn2pw</span>(<span class="at">m =</span> m,</span>
+<span id="cb79-6"><a href="using-tmb.html#cb79-6" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">lambda =</span> fixed_par_lambda,</span>
+<span id="cb79-7"><a href="using-tmb.html#cb79-7" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">gamma =</span> gamma)</span></code></pre></div>
 <p>Then, we instruct <code>TMB</code> to read these custom parameters.
 We indicate fixed values by mapping them to NA values, whereas the variable values need to be mapped to different factor variables.
 Lastly, we specify this mapping with the <code>map</code> argument when making the <code>TMB</code> object.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="using-tmb.html#cb26-1"></a>map &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">tlambda =</span> <span class="kw">as.factor</span>(<span class="kw">c</span>(<span class="ot">NA</span>, <span class="dv">1</span>)),</span>
-<span id="cb26-2"><a href="using-tmb.html#cb26-2"></a>            <span class="dt">tgamma =</span> <span class="kw">as.factor</span>(<span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>)))</span>
-<span id="cb26-3"><a href="using-tmb.html#cb26-3"></a>fixed_par_obj_tmb &lt;-<span class="st"> </span><span class="kw">MakeADFun</span>(TMB_data, new_parameters,</span>
-<span id="cb26-4"><a href="using-tmb.html#cb26-4"></a>                               <span class="dt">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>,</span>
-<span id="cb26-5"><a href="using-tmb.html#cb26-5"></a>                               <span class="dt">silent =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb26-6"><a href="using-tmb.html#cb26-6"></a>                               <span class="dt">map =</span> map)</span></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="using-tmb.html#cb80-1" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">tlambda =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="cn">NA</span>, <span class="dv">1</span>)),</span>
+<span id="cb80-2"><a href="using-tmb.html#cb80-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">tgamma =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>)))</span>
+<span id="cb80-3"><a href="using-tmb.html#cb80-3" aria-hidden="true" tabindex="-1"></a>fixed_par_obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, new_parameters,</span>
+<span id="cb80-4"><a href="using-tmb.html#cb80-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>,</span>
+<span id="cb80-5"><a href="using-tmb.html#cb80-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">silent =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb80-6"><a href="using-tmb.html#cb80-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">map =</span> map)</span></code></pre></div>
 <p>Estimating of the model and displaying the results is performed as usual</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="using-tmb.html#cb27-1"></a>fixed_par_mod_tmb &lt;-<span class="st"> </span><span class="kw">nlminb</span>(<span class="dt">start =</span> fixed_par_obj_tmb<span class="op">$</span>par,</span>
-<span id="cb27-2"><a href="using-tmb.html#cb27-2"></a>                            <span class="dt">objective =</span> fixed_par_obj_tmb<span class="op">$</span>fn,</span>
-<span id="cb27-3"><a href="using-tmb.html#cb27-3"></a>                            <span class="dt">gradient =</span> fixed_par_obj_tmb<span class="op">$</span>gr,</span>
-<span id="cb27-4"><a href="using-tmb.html#cb27-4"></a>                            <span class="dt">hessian =</span> fixed_par_obj_tmb<span class="op">$</span>he)</span>
-<span id="cb27-5"><a href="using-tmb.html#cb27-5"></a><span class="kw">summary</span>(<span class="kw">sdreport</span>(fixed_par_obj_tmb), <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="using-tmb.html#cb81-1" aria-hidden="true" tabindex="-1"></a>fixed_par_mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> fixed_par_obj_tmb<span class="sc">$</span>par,</span>
+<span id="cb81-2"><a href="using-tmb.html#cb81-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">objective =</span> fixed_par_obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb81-3"><a href="using-tmb.html#cb81-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">gradient =</span> fixed_par_obj_tmb<span class="sc">$</span>gr,</span>
+<span id="cb81-4"><a href="using-tmb.html#cb81-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">hessian =</span> fixed_par_obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb81-5"><a href="using-tmb.html#cb81-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(fixed_par_obj_tmb), <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
 <pre><code>##          Estimate Std. Error
 ## lambda 1.00000000 0.00000000
 ## lambda 5.50164872 0.30963641
@@ -597,7 +641,7 @@ Lastly, we specify this mapping with the <code>map</code> argument when making t
 ## delta  0.67189864 0.22314460</code></pre>
 <p>Note that the standard error of <span class="math inline">\(\lambda_1\)</span> is zero, because it is no longer considered a variable parameter and does not enter the optimization procedure.</p>
 </div>
-<div id="limit" class="section level3">
+<div id="limit" class="section level3" number="4.4.2">
 <h3><span class="header-section-number">4.4.2</span> Limit</h3>
 <p>This method cannot work in general for working parameters which are not linked to a single natural parameter.
 This is because only working parameters can be fixed with this method, but the working parameters of the TPM are not each linked to a single natural parameter. As an example, fixing the natural parameter <span class="math inline">\(gamma_{11}\)</span> is not equivalent to fixing any working parameter <span class="math inline">\(\tau{ij}\)</span>.
@@ -606,7 +650,7 @@ Hence, the TPM cannot in general be fixed.</p>
 <p>We will show in the next section that a type of general constraints on the TPM can be carried out.</p>
 <p>In addition, overcoming this restriction should be possible via constrained optimization.</p>
 </div>
-<div id="parameter-equality-constraints" class="section level3">
+<div id="parameter-equality-constraints" class="section level3" number="4.4.3">
 <h3><span class="header-section-number">4.4.3</span> Parameter equality constraints</h3>
 <p>It is noteworthy that more complex constraints are possible as well
 For example, to impose equality constraints (such as <span class="math inline">\(\gamma_{11} = \gamma_{22}\)</span>), the corresponding factor level has to be identical for the concerned entries.</p>
@@ -617,61 +661,61 @@ For example, to impose equality constraints (such as <span class="math inline">\
 <p>With a 2 state HMM, the constraint <span class="math inline">\(\gamma_{11} = \gamma_{22}\)</span> is equivalent to <span class="math inline">\(\gamma_{12} = \gamma_{21}\)</span>.
 Thus, the constraint can be transformed into <span class="math inline">\(\tau_{12} = \log(\gamma_{12}/\gamma_{11}) = \log(\gamma_{21}/\gamma_{22}) = \tau_{21}\)</span>.</p>
 <p>The mapping parameters must be set to a common factor to be forced equal.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="using-tmb.html#cb29-1"></a>map &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">tlambda =</span> <span class="kw">as.factor</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)),</span>
-<span id="cb29-2"><a href="using-tmb.html#cb29-2"></a>            <span class="dt">tgamma =</span> <span class="kw">as.factor</span>(<span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">3</span>)))</span>
-<span id="cb29-3"><a href="using-tmb.html#cb29-3"></a>fixed_par_obj_tmb &lt;-<span class="st"> </span><span class="kw">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb29-4"><a href="using-tmb.html#cb29-4"></a>                               <span class="dt">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>,</span>
-<span id="cb29-5"><a href="using-tmb.html#cb29-5"></a>                               <span class="dt">silent =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb29-6"><a href="using-tmb.html#cb29-6"></a>                               <span class="dt">map =</span> map)</span>
-<span id="cb29-7"><a href="using-tmb.html#cb29-7"></a>fixed_par_mod_tmb &lt;-<span class="st"> </span><span class="kw">nlminb</span>(<span class="dt">start =</span> fixed_par_obj_tmb<span class="op">$</span>par,</span>
-<span id="cb29-8"><a href="using-tmb.html#cb29-8"></a>                            <span class="dt">objective =</span> fixed_par_obj_tmb<span class="op">$</span>fn,</span>
-<span id="cb29-9"><a href="using-tmb.html#cb29-9"></a>                            <span class="dt">gradient =</span> fixed_par_obj_tmb<span class="op">$</span>gr,</span>
-<span id="cb29-10"><a href="using-tmb.html#cb29-10"></a>                            <span class="dt">hessian =</span> fixed_par_obj_tmb<span class="op">$</span>he)</span>
-<span id="cb29-11"><a href="using-tmb.html#cb29-11"></a><span class="co"># Results + check that the constraint is respected</span></span>
-<span id="cb29-12"><a href="using-tmb.html#cb29-12"></a>results &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">sdreport</span>(fixed_par_obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
-<span id="cb29-13"><a href="using-tmb.html#cb29-13"></a>tpm &lt;-<span class="st"> </span><span class="kw">matrix</span>(results[<span class="kw">rownames</span>(results) <span class="op">==</span><span class="st"> &quot;gamma&quot;</span>, <span class="st">&quot;Estimate&quot;</span>],</span>
-<span id="cb29-14"><a href="using-tmb.html#cb29-14"></a>              <span class="dt">nrow =</span> m,</span>
-<span id="cb29-15"><a href="using-tmb.html#cb29-15"></a>              <span class="dt">ncol =</span> m,</span>
-<span id="cb29-16"><a href="using-tmb.html#cb29-16"></a>              <span class="dt">byrow =</span> <span class="ot">FALSE</span>) <span class="co"># Transformations are column-wise by default, be careful!</span></span>
-<span id="cb29-17"><a href="using-tmb.html#cb29-17"></a>tpm</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="using-tmb.html#cb83-1" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">tlambda =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)),</span>
+<span id="cb83-2"><a href="using-tmb.html#cb83-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">tgamma =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>)))</span>
+<span id="cb83-3"><a href="using-tmb.html#cb83-3" aria-hidden="true" tabindex="-1"></a>fixed_par_obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb83-4"><a href="using-tmb.html#cb83-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>,</span>
+<span id="cb83-5"><a href="using-tmb.html#cb83-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">silent =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb83-6"><a href="using-tmb.html#cb83-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">map =</span> map)</span>
+<span id="cb83-7"><a href="using-tmb.html#cb83-7" aria-hidden="true" tabindex="-1"></a>fixed_par_mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> fixed_par_obj_tmb<span class="sc">$</span>par,</span>
+<span id="cb83-8"><a href="using-tmb.html#cb83-8" aria-hidden="true" tabindex="-1"></a>                            <span class="at">objective =</span> fixed_par_obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb83-9"><a href="using-tmb.html#cb83-9" aria-hidden="true" tabindex="-1"></a>                            <span class="at">gradient =</span> fixed_par_obj_tmb<span class="sc">$</span>gr,</span>
+<span id="cb83-10"><a href="using-tmb.html#cb83-10" aria-hidden="true" tabindex="-1"></a>                            <span class="at">hessian =</span> fixed_par_obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb83-11"><a href="using-tmb.html#cb83-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Results + check that the constraint is respected</span></span>
+<span id="cb83-12"><a href="using-tmb.html#cb83-12" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">sdreport</span>(fixed_par_obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
+<span id="cb83-13"><a href="using-tmb.html#cb83-13" aria-hidden="true" tabindex="-1"></a>tpm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(results[<span class="fu">rownames</span>(results) <span class="sc">==</span> <span class="st">&quot;gamma&quot;</span>, <span class="st">&quot;Estimate&quot;</span>],</span>
+<span id="cb83-14"><a href="using-tmb.html#cb83-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">nrow =</span> m,</span>
+<span id="cb83-15"><a href="using-tmb.html#cb83-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">ncol =</span> m,</span>
+<span id="cb83-16"><a href="using-tmb.html#cb83-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">byrow =</span> <span class="cn">FALSE</span>) <span class="co"># Transformations are column-wise by default, be careful!</span></span>
+<span id="cb83-17"><a href="using-tmb.html#cb83-17" aria-hidden="true" tabindex="-1"></a>tpm</span></code></pre></div>
 <pre><code>##            [,1]       [,2]
 ## [1,] 0.96759216 0.03240784
 ## [2,] 0.03240784 0.96759216</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="using-tmb.html#cb31-1"></a>tpm[<span class="dv">1</span>, <span class="dv">1</span>] <span class="op">==</span><span class="st"> </span>tpm[<span class="dv">2</span>, <span class="dv">2</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="using-tmb.html#cb85-1" aria-hidden="true" tabindex="-1"></a>tpm[<span class="dv">1</span>, <span class="dv">1</span>] <span class="sc">==</span> tpm[<span class="dv">2</span>, <span class="dv">2</span>]</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>Similar complex constraints on the TPM can also be setup for HMMs with over two states.
 However, it appears that it can only be done in general when the constraint involves natural parameters of the same row with the exception of a 2 state model.
 We have not found a way to easily implement equality constraints between natural TPM parameters of different rows.
 Possible solutions are constrained optimization and different parametrization.</p>
 <p>As an example, we will look at a three-state HMM with the constraint <span class="math inline">\(\gamma_{12} = \gamma_{13}\)</span>.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="using-tmb.html#cb33-1"></a><span class="co"># Model with 2 states</span></span>
-<span id="cb33-2"><a href="using-tmb.html#cb33-2"></a>m &lt;-<span class="st"> </span><span class="dv">3</span></span>
-<span id="cb33-3"><a href="using-tmb.html#cb33-3"></a>TMB_data &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">x =</span> tinn_data, <span class="dt">m =</span> m)</span>
-<span id="cb33-4"><a href="using-tmb.html#cb33-4"></a></span>
-<span id="cb33-5"><a href="using-tmb.html#cb33-5"></a><span class="co"># Initial set of parameters</span></span>
-<span id="cb33-6"><a href="using-tmb.html#cb33-6"></a>lambda &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>)</span>
-<span id="cb33-7"><a href="using-tmb.html#cb33-7"></a>gamma &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>,</span>
-<span id="cb33-8"><a href="using-tmb.html#cb33-8"></a>                  <span class="fl">0.1</span>, <span class="fl">0.8</span>, <span class="fl">0.1</span>,</span>
-<span id="cb33-9"><a href="using-tmb.html#cb33-9"></a>                  <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.8</span>), <span class="dt">byrow =</span> <span class="ot">TRUE</span>, <span class="dt">nrow =</span> m)</span>
-<span id="cb33-10"><a href="using-tmb.html#cb33-10"></a></span>
-<span id="cb33-11"><a href="using-tmb.html#cb33-11"></a><span class="co"># Turn them into working parameters</span></span>
-<span id="cb33-12"><a href="using-tmb.html#cb33-12"></a>parameters &lt;-<span class="st"> </span><span class="kw">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
-<span id="cb33-13"><a href="using-tmb.html#cb33-13"></a></span>
-<span id="cb33-14"><a href="using-tmb.html#cb33-14"></a><span class="co"># Build the TMB object</span></span>
-<span id="cb33-15"><a href="using-tmb.html#cb33-15"></a>obj_tmb &lt;-<span class="st"> </span><span class="kw">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb33-16"><a href="using-tmb.html#cb33-16"></a>                     <span class="dt">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="dt">silent =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb33-17"><a href="using-tmb.html#cb33-17"></a></span>
-<span id="cb33-18"><a href="using-tmb.html#cb33-18"></a><span class="co"># Optimize</span></span>
-<span id="cb33-19"><a href="using-tmb.html#cb33-19"></a>mod_tmb &lt;-<span class="st"> </span><span class="kw">nlminb</span>(<span class="dt">start =</span> obj_tmb<span class="op">$</span>par,</span>
-<span id="cb33-20"><a href="using-tmb.html#cb33-20"></a>                  <span class="dt">objective =</span> obj_tmb<span class="op">$</span>fn,</span>
-<span id="cb33-21"><a href="using-tmb.html#cb33-21"></a>                  <span class="dt">gradient =</span> obj_tmb<span class="op">$</span>gr,</span>
-<span id="cb33-22"><a href="using-tmb.html#cb33-22"></a>                  <span class="dt">hessian =</span> obj_tmb<span class="op">$</span>he)</span>
-<span id="cb33-23"><a href="using-tmb.html#cb33-23"></a></span>
-<span id="cb33-24"><a href="using-tmb.html#cb33-24"></a><span class="co"># Check convergence</span></span>
-<span id="cb33-25"><a href="using-tmb.html#cb33-25"></a>mod_tmb<span class="op">$</span>convergence <span class="op">==</span><span class="st"> </span><span class="dv">0</span></span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="using-tmb.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model with 2 states</span></span>
+<span id="cb87-2"><a href="using-tmb.html#cb87-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb87-3"><a href="using-tmb.html#cb87-3" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
+<span id="cb87-4"><a href="using-tmb.html#cb87-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-5"><a href="using-tmb.html#cb87-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial set of parameters</span></span>
+<span id="cb87-6"><a href="using-tmb.html#cb87-6" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>)</span>
+<span id="cb87-7"><a href="using-tmb.html#cb87-7" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>,</span>
+<span id="cb87-8"><a href="using-tmb.html#cb87-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.1</span>, <span class="fl">0.8</span>, <span class="fl">0.1</span>,</span>
+<span id="cb87-9"><a href="using-tmb.html#cb87-9" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.8</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> m)</span>
+<span id="cb87-10"><a href="using-tmb.html#cb87-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-11"><a href="using-tmb.html#cb87-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn them into working parameters</span></span>
+<span id="cb87-12"><a href="using-tmb.html#cb87-12" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois_HMM_pn2pw</span>(m, lambda, gamma)</span>
+<span id="cb87-13"><a href="using-tmb.html#cb87-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-14"><a href="using-tmb.html#cb87-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the TMB object</span></span>
+<span id="cb87-15"><a href="using-tmb.html#cb87-15" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb87-16"><a href="using-tmb.html#cb87-16" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb87-17"><a href="using-tmb.html#cb87-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-18"><a href="using-tmb.html#cb87-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize</span></span>
+<span id="cb87-19"><a href="using-tmb.html#cb87-19" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
+<span id="cb87-20"><a href="using-tmb.html#cb87-20" aria-hidden="true" tabindex="-1"></a>                  <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb87-21"><a href="using-tmb.html#cb87-21" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
+<span id="cb87-22"><a href="using-tmb.html#cb87-22" aria-hidden="true" tabindex="-1"></a>                  <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb87-23"><a href="using-tmb.html#cb87-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-24"><a href="using-tmb.html#cb87-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Check convergence</span></span>
+<span id="cb87-25"><a href="using-tmb.html#cb87-25" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="using-tmb.html#cb35-1"></a><span class="co"># Results</span></span>
-<span id="cb35-2"><a href="using-tmb.html#cb35-2"></a><span class="kw">summary</span>(<span class="kw">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="using-tmb.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
+<span id="cb89-2"><a href="using-tmb.html#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
 <pre><code>##            Estimate   Std. Error
 ## lambda 8.281290e-01 5.418824e-01
 ## lambda 1.705082e+00 2.949769e-01
@@ -699,59 +743,65 @@ Possible solutions are constrained optimization and different parametrization.</
 <p>As a vector in <code>R</code>, it becomes
 <span class="math inline">\(\left(\tau_{21}, \tau_{31}, \tau_{12}, \tau_{32}, \tau_{13}, \tau_{23}\right)\)</span>.
 Therefore, the constraint needs to be placed on the <span class="math inline">\(3^{rd}\)</span> and <span class="math inline">\(6^{th}\)</span> vector parameter.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="using-tmb.html#cb37-1"></a>map &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">tlambda =</span> <span class="kw">as.factor</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)),</span>
-<span id="cb37-2"><a href="using-tmb.html#cb37-2"></a>            <span class="dt">tgamma =</span> <span class="kw">as.factor</span>(<span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">8</span>)))</span>
-<span id="cb37-3"><a href="using-tmb.html#cb37-3"></a>fixed_par_obj_tmb &lt;-<span class="st"> </span><span class="kw">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb37-4"><a href="using-tmb.html#cb37-4"></a>                               <span class="dt">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>,</span>
-<span id="cb37-5"><a href="using-tmb.html#cb37-5"></a>                               <span class="dt">silent =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb37-6"><a href="using-tmb.html#cb37-6"></a>                               <span class="dt">map =</span> map)</span>
-<span id="cb37-7"><a href="using-tmb.html#cb37-7"></a>fixed_par_mod_tmb &lt;-<span class="st"> </span><span class="kw">nlminb</span>(<span class="dt">start =</span> fixed_par_obj_tmb<span class="op">$</span>par,</span>
-<span id="cb37-8"><a href="using-tmb.html#cb37-8"></a>                            <span class="dt">objective =</span> fixed_par_obj_tmb<span class="op">$</span>fn,</span>
-<span id="cb37-9"><a href="using-tmb.html#cb37-9"></a>                            <span class="dt">gradient =</span> fixed_par_obj_tmb<span class="op">$</span>gr,</span>
-<span id="cb37-10"><a href="using-tmb.html#cb37-10"></a>                            <span class="dt">hessian =</span> fixed_par_obj_tmb<span class="op">$</span>he)</span>
-<span id="cb37-11"><a href="using-tmb.html#cb37-11"></a><span class="co"># Results + check that the constraint is respected</span></span>
-<span id="cb37-12"><a href="using-tmb.html#cb37-12"></a>results &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">sdreport</span>(fixed_par_obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
-<span id="cb37-13"><a href="using-tmb.html#cb37-13"></a>tpm &lt;-<span class="st"> </span><span class="kw">matrix</span>(results[<span class="kw">rownames</span>(results) <span class="op">==</span><span class="st"> &quot;gamma&quot;</span>, <span class="st">&quot;Estimate&quot;</span>],</span>
-<span id="cb37-14"><a href="using-tmb.html#cb37-14"></a>              <span class="dt">nrow =</span> m,</span>
-<span id="cb37-15"><a href="using-tmb.html#cb37-15"></a>              <span class="dt">ncol =</span> m,</span>
-<span id="cb37-16"><a href="using-tmb.html#cb37-16"></a>              <span class="dt">byrow =</span> <span class="ot">FALSE</span>) <span class="co"># Transformations are column-wise by default, be careful!</span></span>
-<span id="cb37-17"><a href="using-tmb.html#cb37-17"></a>tpm</span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="using-tmb.html#cb91-1" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">tlambda =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)),</span>
+<span id="cb91-2"><a href="using-tmb.html#cb91-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">tgamma =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">8</span>)))</span>
+<span id="cb91-3"><a href="using-tmb.html#cb91-3" aria-hidden="true" tabindex="-1"></a>fixed_par_obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb91-4"><a href="using-tmb.html#cb91-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>,</span>
+<span id="cb91-5"><a href="using-tmb.html#cb91-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">silent =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb91-6"><a href="using-tmb.html#cb91-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">map =</span> map)</span>
+<span id="cb91-7"><a href="using-tmb.html#cb91-7" aria-hidden="true" tabindex="-1"></a>fixed_par_mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> fixed_par_obj_tmb<span class="sc">$</span>par,</span>
+<span id="cb91-8"><a href="using-tmb.html#cb91-8" aria-hidden="true" tabindex="-1"></a>                            <span class="at">objective =</span> fixed_par_obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb91-9"><a href="using-tmb.html#cb91-9" aria-hidden="true" tabindex="-1"></a>                            <span class="at">gradient =</span> fixed_par_obj_tmb<span class="sc">$</span>gr,</span>
+<span id="cb91-10"><a href="using-tmb.html#cb91-10" aria-hidden="true" tabindex="-1"></a>                            <span class="at">hessian =</span> fixed_par_obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb91-11"><a href="using-tmb.html#cb91-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Results + check that the constraint is respected</span></span>
+<span id="cb91-12"><a href="using-tmb.html#cb91-12" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">sdreport</span>(fixed_par_obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
+<span id="cb91-13"><a href="using-tmb.html#cb91-13" aria-hidden="true" tabindex="-1"></a>tpm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(results[<span class="fu">rownames</span>(results) <span class="sc">==</span> <span class="st">&quot;gamma&quot;</span>, <span class="st">&quot;Estimate&quot;</span>],</span>
+<span id="cb91-14"><a href="using-tmb.html#cb91-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">nrow =</span> m,</span>
+<span id="cb91-15"><a href="using-tmb.html#cb91-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">ncol =</span> m,</span>
+<span id="cb91-16"><a href="using-tmb.html#cb91-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">byrow =</span> <span class="cn">FALSE</span>) <span class="co"># Transformations are column-wise by default, be careful!</span></span>
+<span id="cb91-17"><a href="using-tmb.html#cb91-17" aria-hidden="true" tabindex="-1"></a>tpm</span></code></pre></div>
 <pre><code>##              [,1]         [,2]       [,3]
 ## [1,] 5.447127e-01 2.276437e-01 0.22764365
 ## [2,] 2.718007e-09 9.753263e-01 0.02467374
 ## [3,] 2.710078e-02 2.005408e-10 0.97289922</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="using-tmb.html#cb39-1"></a>tpm[<span class="dv">1</span>, <span class="dv">2</span>] <span class="op">==</span><span class="st"> </span>tpm[<span class="dv">1</span>, <span class="dv">3</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="using-tmb.html#cb93-1" aria-hidden="true" tabindex="-1"></a>tpm[<span class="dv">1</span>, <span class="dv">2</span>] <span class="sc">==</span> tpm[<span class="dv">1</span>, <span class="dv">3</span>]</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>Equality constraints involving a diagonal member of the TPM are simpler to specify: the constraint <span class="math inline">\(\gamma_{i,j} = \gamma_{i,i}\)</span> becomes transformed to <span class="math inline">\(\tau_{i,j} = 1\)</span> and this can be specified in the same way the Poisson mean <span class="math inline">\(\lambda_1\)</span> was fixed.</p>
 
+<!-- ```{r 5import-files, echo = FALSE, cache = FALSE} -->
+<!-- library(knitr) -->
+<!-- setwd(dir = "../") -->
+<!-- # suppressMessages(source("code/main.R")) -->
+<!-- knitr::read_chunk('functions/utils.R') -->
+<!-- ``` -->
 </div>
 </div>
 </div>
 <h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-celeux">
-<p>Celeux, Gilles, and Jean-Baptiste Durand. 2008. “Selecting Hidden Markov Model State Number with Cross-Validated Likelihood.” <em>Computational Statistics</em> 23 (4): 541–64. <a href="https://doi.org/10.1007/s00180-007-0097-1">https://doi.org/10.1007/s00180-007-0097-1</a>.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-celeux" class="csl-entry">
+Celeux, Gilles, and Jean-Baptiste Durand. 2008. <span>“Selecting Hidden Markov Model State Number with Cross-Validated Likelihood.”</span> <em>Computational Statistics</em> 23 (4): 541–64. <a href="https://doi.org/10.1007/s00180-007-0097-1">https://doi.org/10.1007/s00180-007-0097-1</a>.
 </div>
-<div id="ref-leroux">
-<p>Leroux, Brian G., and Martin L. Puterman. 1992. “Maximum-Penalized-Likelihood Estimation for Independent and Markov- Dependent Mixture Models.” <em>Biometrics</em> 48 (2): 545–58. <a href="https://doi.org/10.2307/2532308">https://doi.org/10.2307/2532308</a>.</p>
+<div id="ref-leroux" class="csl-entry">
+Leroux, Brian G., and Martin L. Puterman. 1992. <span>“Maximum-Penalized-Likelihood Estimation for Independent and Markov- Dependent Mixture Models.”</span> <em>Biometrics</em> 48 (2): 545–58. <a href="https://doi.org/10.2307/2532308">https://doi.org/10.2307/2532308</a>.
 </div>
-<div id="ref-pohle">
-<p>Pohle, Jennifer, Roland Langrock, Floris M. van Beest, and Niels Martin Schmidt. 2017a. “Selecting the Number of States in Hidden Markov Models: Pragmatic Solutions Illustrated Using Animal Movement.” <em>Journal of Agricultural, Biological and Environmental Statistics</em> 22 (3): 270–93. <a href="https://doi.org/10.1007/s13253-017-0283-8">https://doi.org/10.1007/s13253-017-0283-8</a>.</p>
+<div id="ref-pohle" class="csl-entry">
+Pohle, Jennifer, Roland Langrock, Floris M. van Beest, and Niels Martin Schmidt. 2017a. <span>“Selecting the Number of States in Hidden Markov Models: Pragmatic Solutions Illustrated Using Animal Movement.”</span> <em>Journal of Agricultural, Biological and Environmental Statistics</em> 22 (3): 270–93. <a href="https://doi.org/10.1007/s13253-017-0283-8">https://doi.org/10.1007/s13253-017-0283-8</a>.
 </div>
-<div id="ref-pohlea">
-<p>Pohle, Jennifer, Roland Langrock, Floris van Beest, and Niels Martin Schmidt. 2017b. “Selecting the Number of States in Hidden Markov Models - Pitfalls, Practical Challenges and Pragmatic Solutions.” <em>arXiv:1701.08673 [Q-Bio, Stat]</em>, April. <a href="http://arxiv.org/abs/1701.08673">http://arxiv.org/abs/1701.08673</a>.</p>
+<div id="ref-pohlea" class="csl-entry">
+Pohle, Jennifer, Roland Langrock, Floris van Beest, and Niels Martin Schmidt. 2017b. <span>“Selecting the Number of States in Hidden Markov Models - Pitfalls, Practical Challenges and Pragmatic Solutions.”</span> <em>arXiv:1701.08673 [q-Bio, Stat]</em>, April. <a href="http://arxiv.org/abs/1701.08673">http://arxiv.org/abs/1701.08673</a>.
 </div>
-<div id="ref-probst">
-<p>Probst, Thomas, Rüdiger Pryss, Berthold Langguth, and Winfried Schlee. 2016. “Emotion Dynamics and Tinnitus: Daily Life Data from the ‘TrackYourTinnitus’ Application.” <em>Scientific Reports</em> 6 (1): 31166. <a href="https://doi.org/10.1038/srep31166">https://doi.org/10.1038/srep31166</a>.</p>
+<div id="ref-probst" class="csl-entry">
+Probst, Thomas, Rüdiger Pryss, Berthold Langguth, and Winfried Schlee. 2016. <span>“Emotion Dynamics and Tinnitus: Daily Life Data from the <span>‘TrackYourTinnitus’</span> Application.”</span> <em>Scientific Reports</em> 6 (1): 31166. <a href="https://doi.org/10.1038/srep31166">https://doi.org/10.1038/srep31166</a>.
 </div>
-<div id="ref-pryss">
-<p>Pryss, R., M. Reichert, J. Herrmann, B. Langguth, and W. Schlee. 2015. “Mobile Crowd Sensing in Clinical and Psychological Trials – A Case Study.” In <em>2015 IEEE 28th International Symposium on Computer-Based Medical Systems</em>, 23–24. <a href="https://doi.org/10.1109/CBMS.2015.26">https://doi.org/10.1109/CBMS.2015.26</a>.</p>
+<div id="ref-pryss" class="csl-entry">
+Pryss, R., M. Reichert, J. Herrmann, B. Langguth, and W. Schlee. 2015. <span>“Mobile Crowd Sensing in Clinical and Psychological Trials – A Case Study.”</span> In <em>2015 IEEE 28th International Symposium on Computer-Based Medical Systems</em>, 23–24. <a href="https://doi.org/10.1109/CBMS.2015.26">https://doi.org/10.1109/CBMS.2015.26</a>.
 </div>
-<div id="ref-pryssa">
-<p>Pryss, R., M. Reichert, B. Langguth, and W. Schlee. 2015. “Mobile Crowd Sensing Services for Tinnitus Assessment, Therapy, and Research.” In <em>2015 IEEE International Conference on Mobile Services</em>, 352–59. <a href="https://doi.org/10.1109/MobServ.2015.55">https://doi.org/10.1109/MobServ.2015.55</a>.</p>
+<div id="ref-pryssa" class="csl-entry">
+Pryss, R., M. Reichert, B. Langguth, and W. Schlee. 2015. <span>“Mobile Crowd Sensing Services for Tinnitus Assessment, Therapy, and Research.”</span> In <em>2015 IEEE International Conference on Mobile Services</em>, 352–59. <a href="https://doi.org/10.1109/MobServ.2015.55">https://doi.org/10.1109/MobServ.2015.55</a>.
 </div>
-<div id="ref-zucchini">
-<p>Zucchini, W., I. L. MacDonald, and R. Langrock. 2016. <em>Hidden Markov Models for Time Series: An Introduction Using R, Second Edition</em>. Chapman &amp; Hall/CRC Monographs on Statistics &amp; Applied Probability. CRC Press. <a href="https://books.google.no/books?id=KlWzDAAAQBAJ">https://books.google.no/books?id=KlWzDAAAQBAJ</a>.</p>
+<div id="ref-zucchini" class="csl-entry">
+Zucchini, W., I.L. MacDonald, and R. Langrock. 2016. <em>Hidden Markov Models for Time Series: An Introduction Using r, Second Edition</em>. Chapman &amp; Hall/CRC Monographs on Statistics &amp; Applied Probability. CRC Press. <a href="https://books.google.no/books?id=KlWzDAAAQBAJ">https://books.google.no/books?id=KlWzDAAAQBAJ</a>.
 </div>
 </div>
             </section>
@@ -783,6 +833,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {

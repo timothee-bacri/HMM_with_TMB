@@ -106,7 +106,7 @@ The previously created initial values are transformed and stored in the list `pa
 
 ```{r 4pn2pw-example}
 # Turn them into working parameters
-parameters <- pois_HMM_pn2pw(m, lambda, gamma)
+parameters <- pois.HMM.pn2pw(m, lambda, gamma)
 ```
 
 3. Creation of the `TMB` negative log-likelihood function with its derivatives
@@ -193,7 +193,7 @@ In order to build a nested model, we decide to fix $\lambda_1$ to the value 1.
 fixed_par_lambda <- lambda
 fixed_par_lambda[1] <- 1
 # Transform them into working parameters
-new_parameters <- pois_HMM_pn2pw(m = m,
+new_parameters <- pois.HMM.pn2pw(m = m,
                                  lambda = fixed_par_lambda,
                                  gamma = gamma)
 ```
@@ -286,7 +286,7 @@ gamma <- matrix(c(0.8, 0.1, 0.1,
                   0.1, 0.1, 0.8), byrow = TRUE, nrow = m)
 
 # Turn them into working parameters
-parameters <- pois_HMM_pn2pw(m, lambda, gamma)
+parameters <- pois.HMM.pn2pw(m, lambda, gamma)
 
 # Build the TMB object
 obj_tmb <- MakeADFun(TMB_data, parameters,

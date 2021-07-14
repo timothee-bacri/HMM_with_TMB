@@ -12,9 +12,9 @@
 ### In `TMB`
 
 Defining the negative log-likelihood function requires transforming the working parameters into their natural form.
-We define the function `gamma_w2n` to perform this transformation.
+We define the function `gamma.w2n` to perform this transformation.
 
-`stat_dist` handles computing the stationary distribution, although `delta_w2n` can be used if a non-stationary distribution is provided.
+`stat.dist` handles computing the stationary distribution, although `delta.w2n` can be used if a non-stationary distribution is provided.
 
 They are defined
 
@@ -29,19 +29,19 @@ While `TMB` requires functions to transform working parameters to their natural 
 
 Functions to achieve this are available in [@zucchini, p. ~51] and are displayed here for convenience.
 
-```{r pois_HMM_pn2pw}
+```{r pois.HMM.pn2pw}
 ```
 
-This can be broken down into sub-functions if necessary. For the $\gamma$ part, we introduce `gamma_n2w` below.
-```{r gamma_n2w}
+This can be broken down into sub-functions if necessary. For the $\gamma$ part, we introduce `gamma.n2w` below.
+```{r gamma.n2w}
 ```
 
-In the case where a non-stationary distribution is specified, transforming $\b{\delta}$ is necessary. For this we use the `delta_n2w` function.
-```{r delta_n2w}
+In the case where a non-stationary distribution is specified, transforming $\b{\delta}$ is necessary. For this we use the `delta.n2w` function.
+```{r delta.n2w}
 ```
 
-When assuming a stationary distribution, computing it can be done via the following `stat_dist` function.
-```{r stat_dist}
+When assuming a stationary distribution, computing it can be done via the following `stat.dist` function.
+```{r stat.dist}
 ```
 
 #### Label switching
@@ -51,8 +51,8 @@ The issue can be relevant when comparing results of different optimizers, initia
 To address the problem, we reorder the states by ascending Poisson means.
 Sorting the means is direct, however re-ordering the TPM is not as straightforward.
 To do so, we take the permutations of the states given by the sorted Poisson means, and permute each row index and column index to its new value.
-A function to achieve this is named `pois_HMM_label_order` and presented below. 
-```{r pois_HMM_label_order}
+A function to achieve this is named `pois.HMM.label.order` and presented below. 
+```{r pois.HMM.label.order}
 ```
 
 We will go through an example to better understand the process.
@@ -62,7 +62,7 @@ lambda <- c(3, 1, 2)
 gamma <- matrix(c(11, 12, 13,
                   21, 22, 23,
                   31, 32, 33), byrow = TRUE, ncol = 3)
-pois_HMM_label_order(m = 3, lambda, gamma)
+pois.HMM.label.order(m = 3, lambda, gamma)
 ```
 
 State 1 has been relabeled state 3, state 3 became state 2, and state 2 became state 1.
@@ -70,7 +70,7 @@ State 1 has been relabeled state 3, state 3 became state 2, and state 2 became s
 Another way to address this issue is by parametrizing in terms of non-negative increments $\lambda_j - \lambda_{j-1}$ with $\lambda_0 \equiv 0$, as explained by [@zucchini Section 7.1.1 p. 112].
 However, [@bulla, Section 3.2 p. 7] shows this can impose optimization issues. They write "We find that, over all series, the simplest parameterization, i.e., the use of log-transformed state-dependent parameters, leads to the best results as regards the number of failures and the convergence to the global maximum".
 
-## Negative log-likelihood in `TMB`
+## Nll in `TMB`
 
 The Poisson HMM negative log-likelihood function in R can be written the following way.
 ```{Rcpp 3poi_hmm.cpp, code=readLines("code/poi_hmm.cpp"), eval=FALSE}

@@ -33,7 +33,7 @@ M_LIST_SIMU1 <- 2
 M_LIST_SIMU2 <- 3
 M_LIST_TINN <- 2
 
-# Parameters returned by TMB_estimate
+# Parameters returned by TMB.estimate
 PARAMS_NAMES <- c("lambda", "gamma", "delta")
 
 PROCEDURES <- c("DM", "TMB", "TMB_G", "TMB_H", "TMB_GH")

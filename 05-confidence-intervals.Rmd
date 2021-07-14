@@ -29,7 +29,7 @@ gamma_init <- matrix(c(0.8, 0.2,
                        0.2, 0.8), byrow = TRUE, nrow = m)
 
 # Turn them into working parameters
-parameters <- pois_HMM_pn2pw(m, lambda_init, gamma_init)
+parameters <- pois.HMM.pn2pw(m, lambda_init, gamma_init)
 
 # Build the TMB object
 obj_tmb <- MakeADFun(TMB_data, parameters,
@@ -101,7 +101,7 @@ For readability and code maintenance, it is conventional to store procedures tha
 
 The data-generating function is defined in \citet[A.1.5 ~p.333]{zucchini}.
 ```{r 5generate_sample-original, eval=FALSE}
-pois_HMM_generate_sample <- function(ns,mod) {
+pois.HMM.generate.sample <- function(ns,mod) {
   mvect <- 1:mod$m
   state <- numeric(ns)
   state[1] <- sample(mvect, 1, prob = mod$delta)
@@ -113,7 +113,7 @@ pois_HMM_generate_sample <- function(ns,mod) {
 }
 ```
 Further, one can retrieve the state sequence used to generate the data by performing an adjustment:
-```{r pois_HMM_generate_sample}
+```{r pois.HMM.generate.sample}
 ```
 The results are returned in a list to simplify usage, as the intuitive way (`c(x, state)`) would append the state sequence to the data.
 
@@ -122,8 +122,8 @@ To deal with this, we can generate a new sample as long as HMMs cannot be estima
 Natural parameter estimates are returned for convenience.
 The argument `test_marqLevAlg` decides if convergence of `marqLevAlg` is required.
 The argument `std_error` decides if standard errors are returned along with TMB's estimates.
-This function relies on the custom function `TMB_estimate` which is a wrapper of `nlminb` made for Poisson HMM estimation via TMB.
-```{r pois_HMM_generate_estimable_sample}
+This function relies on the custom function `TMB.estimate` which is a wrapper of `nlminb` made for Poisson HMM estimation via TMB.
+```{r pois.HMM.generate.estimable.sample}
 ```
 
 ### Bootstrap
@@ -143,7 +143,7 @@ gamma_init <- matrix(c(0.8, 0.2,
                        0.2, 0.8), byrow = TRUE, nrow = m)
 
 # Turn them into working parameters
-parameters <- pois_HMM_pn2pw(m, lambda_init, gamma_init)
+parameters <- pois.HMM.pn2pw(m, lambda_init, gamma_init)
 
 # Build the TMB object
 obj_tmb <- MakeADFun(TMB_data, parameters,
@@ -172,7 +172,7 @@ PARAMS_NAMES <- c("lambda", "gamma", "delta")
 for (idx_sample in 1:BOOTSTRAP_SAMPLES) {
   # Generate a sample based on mod, and ensure a HMM can be estimated on it
   # with testing_params as initial parameters
-  temp <- pois_HMM_generate_estimable_sample(ns = DATA_SIZE,
+  temp <- pois.HMM.generate.estimable.sample(ns = DATA_SIZE,
                                              mod = list(m = m,
                                                         lambda = lambda,
                                                         gamma = gamma),
@@ -216,7 +216,7 @@ It should be noted that some bootstrap estimates can be very large or very small
 One possible reason is that the randomly generated bootstrap sample might contain long chains of the same values, thus causing some probabilities in the TPM to be near the boundary 0 or 1.
 However, a large number of bootstrap samples lowers that risk since we automatically discard 5\% of the most extreme values during the data generating process.
 
-## Profiling the negative log-likelihood
+## Profiling the nll
 
 Our nll function is parametrized in terms of and optimized with respect to the working parameters.
 In practice, this aspect is easy to deal with.
@@ -265,8 +265,8 @@ lower <- c(tgamma_3_confint[1], tgamma_4_confint[1])
 upper <- c(tgamma_3_confint[2], tgamma_4_confint[2])
 
 # Infer bounds on natural parameters
-gamma_1 <- gamma_w2n(m, lower)
-gamma_2 <- gamma_w2n(m, upper)
+gamma_1 <- gamma.w2n(m, lower)
+gamma_2 <- gamma.w2n(m, upper)
 
 # Display unsorted lower and upper bounds
 gamma_1

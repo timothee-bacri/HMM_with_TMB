@@ -52,7 +52,6 @@ For a description of the files and the directory structure, please read [GitHub 
 
 ```{r 0import-files, echo = FALSE, cache = FALSE, message = FALSE}
 library(knitr)
-# setwd(dir = "../")
 suppressMessages(source("code/packages.R"))
 knitr::read_chunk('functions/utils.R')
 ```

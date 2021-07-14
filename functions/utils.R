@@ -1,14 +1,14 @@
 # Utility functions
 
-## ---- delta_n2w
+## ---- delta.n2w
 # Function to transform natural parameters to working
-delta_n2w <- function(m, delta){
+delta.n2w <- function(m, delta){
   tdelta <- log(delta[- 1] / delta[1])
   return(tdelta) 
 }
 
-## ---- delta_w2n
-delta_w2n <- function(m, tdelta){
+## ---- delta.w2n
+delta.w2n <- function(m, tdelta){
   if (m == 1) return(1)
   
   # set first element to one and fill in the last m - 1 elements with working parameters and take exp
@@ -20,15 +20,15 @@ delta_w2n <- function(m, tdelta){
   return(delta)
 }
 
-## ---- gamma_n2w
-gamma_n2w <- function(m, gamma){
+## ---- gamma.n2w
+gamma.n2w <- function(m, gamma){
   foo <- log(gamma / diag(gamma))
   tgamma <- as.vector(foo[!diag(m)])
   return(tgamma)
 }
 
-## ---- gamma_w2n
-gamma_w2n <- function(m, tgamma){
+## ---- gamma.w2n
+gamma.w2n <- function(m, tgamma){
   gamma <- diag(m)
   if (m == 1) return(gamma)
   gamma[!gamma] <- exp(tgamma)
@@ -36,9 +36,9 @@ gamma_w2n <- function(m, tgamma){
   return(gamma)
 }
 
-## ---- TMB_estimate
+## ---- TMB.estimate
 # Estimation using TMB
-TMB_estimate <- function(TMB_data,
+TMB.estimate <- function(TMB_data,
                          parameters,
                          MakeADFun_obj = NULL,
                          map = list(),
@@ -119,17 +119,17 @@ TMB_estimate <- function(TMB_data,
   tlambda <- as.numeric(mod$par[names(mod$par) == "tlambda"])
   tgamma <- as.numeric(mod$par[names(mod$par) == "tgamma"])
   
-  estim <- pois_HMM_pw2pn(m, c(tlambda, tgamma))
+  estim <- pois.HMM.pw2pn(m, c(tlambda, tgamma))
   
   return(list(m = m, lambda = estim$lambda, gamma = estim$gamma,
               delta = estim$delta, convergence = convergence, mllk = mllk,
               AIC = AIC, BIC = BIC, mod = mod, obj = obj))
 }
 
-## ---- HMM_decode
+## ---- HMM.decode
 # Computes log-forward, log-backward and conditional probabilities
 # and decoding based on (optimized) MakeADFun object,
-HMM_decode <- function(obj) {
+HMM.decode <- function(obj) {
   
   # Setup
   # Retrieve the objects at ML value
@@ -187,23 +187,23 @@ HMM_decode <- function(obj) {
        stateprobs = stateprobs, ldecode = ldecode)
 }
 
-## ---- quantile_colwise
+## ---- quantile.colwise
 # 2.5% and 97.5% quantiles
-quantile_colwise <- function(data) {
+quantile.colwise <- function(data) {
   return(quantile(data, probs = c(0.05 / 2, 1 - 0.05 / 2)))
 }
 
 # Transform tpm with column wise idx to row and column indexes
-matrix_col_idx_to_rowcol <- function(idx, m) {
+matrix.col.idx.to.rowcol <- function(idx, m) {
   # The indexes are 1:m in the 1st column, then (m+1):(2*m) in the 2nd, etc...
   row <- (idx - 1) %% m + 1
   col <- (idx - 1) %/% m + 1
   return(c(row, col))
 }
 
-## ---- get_emission_probs
+## ---- get.emission.probs
 # Calculate emission probabilities
-get_emission_probs <- function(data, lambda) {
+get.emission.probs <- function(data, lambda) {
   n <- length(data)
   m <- length(lambda)
   emission_probs <- matrix(0, nrow = n, ncol = m)
@@ -217,17 +217,17 @@ get_emission_probs <- function(data, lambda) {
   return(emission_probs)
 }
 
-## ---- stat_dist
+## ---- stat.dist
 # Compute the stationary distribution of a Markov chain
 # with transition probability gamma
-stat_dist <- function(gamma) {
+stat.dist <- function(gamma) {
   m <- nrow(gamma)
   return(solve(t(diag(m) - gamma + 1), rep(1, m)))
 }
 
-## ---- pois_HMM_pn2pw
+## ---- pois.HMM.pn2pw
 # Transform Poisson natural parameters to working parameters
-pois_HMM_pn2pw <- function(m, lambda, gamma, delta = NULL,
+pois.HMM.pn2pw <- function(m, lambda, gamma, delta = NULL,
                            stationary = TRUE) {
   tlambda <- log(lambda)
   foo <- log(gamma / diag(gamma))
@@ -243,9 +243,9 @@ pois_HMM_pn2pw <- function(m, lambda, gamma, delta = NULL,
   }
 }
 
-## ---- pois_HMM_pw2pn
+## ---- pois.HMM.pw2pn
 # Transform Poisson working parameters to natural parameters
-pois_HMM_pw2pn <- function(m, parvect, stationary = TRUE) {
+pois.HMM.pw2pn <- function(m, parvect, stationary = TRUE) {
   parvect <- unlist(parvect)
   lambda <- exp(parvect[1:m])
   gamma <- diag(m)
@@ -261,9 +261,9 @@ pois_HMM_pw2pn <- function(m, parvect, stationary = TRUE) {
   return(list(lambda = lambda, gamma = gamma, delta = delta))
 }
 
-## ---- pois_HMM_generate_sample
+## ---- pois.HMM.generate.sample
 # Generate a random sample from a HMM
-pois_HMM_generate_sample  <- function(ns, mod) {
+pois.HMM.generate.sample  <- function(ns, mod) {
   mvect <- 1:mod$m
   state <- numeric(ns)
   state[1] <- sample(mvect, 1, prob = mod$delta)
@@ -274,11 +274,11 @@ pois_HMM_generate_sample  <- function(ns, mod) {
   return(list(data = x, state = state))
 }
 
-## ---- pois_HMM_generate_estimable_sample
+## ---- pois.HMM.generate.estimable.sample
 # Generate a random sample from a HMM
-pois_HMM_generate_estimable_sample <- function(ns, mod, testing_params, params_names = PARAMS_NAMES, test_marqLevAlg = FALSE, std_error = FALSE, label_switch = FALSE) {
+pois.HMM.generate.estimable.sample <- function(ns, mod, testing_params, params_names = PARAMS_NAMES, test_marqLevAlg = FALSE, std_error = FALSE, label_switch = FALSE) {
   if(anyNA(c(ns, mod, testing_params))) {
-    stop("Some parameters are missing in pois_HMM_generate_estimable_sample")
+    stop("Some parameters are missing in pois.HMM.generate.estimable.sample")
   }
   # Count occurrences for each error
   failure <- c("state_number" = 0,
@@ -298,7 +298,7 @@ pois_HMM_generate_estimable_sample <- function(ns, mod, testing_params, params_n
   repeat {
     mod_temp <- NULL
     #simulate the data
-    new_data <- pois_HMM_generate_sample(ns = ns,
+    new_data <- pois.HMM.generate.sample(ns = ns,
                                          mod = mod)
     
     # If the number of states generated is different from m, discard the data
@@ -309,10 +309,10 @@ pois_HMM_generate_estimable_sample <- function(ns, mod, testing_params, params_n
     
     TMB_benchmark_data <- list(x = new_data$data, m = m)
     
-    testing_w_params <- pois_HMM_pn2pw(m = m, lambda = testing_params$lambda, gamma = testing_params$gamma, delta = testing_params$delta)
+    testing_w_params <- pois.HMM.pn2pw(m = m, lambda = testing_params$lambda, gamma = testing_params$gamma, delta = testing_params$delta)
     
     # Test TMB
-    suppressWarnings(mod_temp <- TMB_estimate(TMB_data = TMB_benchmark_data,
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
                                               parameters = testing_w_params,
                                               std_error = std_error))
     # If nlminb doesn't reach any result, discard the data
@@ -327,7 +327,7 @@ pois_HMM_generate_estimable_sample <- function(ns, mod, testing_params, params_n
     }
     
     # Test TMB_G
-    suppressWarnings(mod_temp <- TMB_estimate(TMB_data = TMB_benchmark_data,
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
                                               parameters = testing_w_params,
                                               gradient = TRUE,
                                               std_error = std_error))
@@ -343,7 +343,7 @@ pois_HMM_generate_estimable_sample <- function(ns, mod, testing_params, params_n
     }
     
     # Test TMB_H
-    suppressWarnings(mod_temp <- TMB_estimate(TMB_data = TMB_benchmark_data,
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
                                               parameters = testing_w_params,
                                               hessian = TRUE,
                                               std_error = std_error))
@@ -359,7 +359,7 @@ pois_HMM_generate_estimable_sample <- function(ns, mod, testing_params, params_n
     }
     
     # Test TMB_GH
-    suppressWarnings(mod_temp <- TMB_estimate(TMB_data = TMB_benchmark_data,
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
                                               parameters = testing_w_params,
                                               gradient = TRUE,
                                               hessian = TRUE,
@@ -407,7 +407,7 @@ pois_HMM_generate_estimable_sample <- function(ns, mod, testing_params, params_n
       # Sorting them could lead to bugs and errors, and although it is better in principle,
       # there is little benefit in practice. The benefit would be to infer profile likelihood CIs
       # more easily when calculating coverage probabilities.
-      natural_parameters <- pois_HMM_label_order(m = m,
+      natural_parameters <- pois.HMM.label.order(m = m,
                                                  lambda = mod_temp$lambda,
                                                  gamma = mod_temp$gamma,
                                                  delta = mod_temp$delta,
@@ -436,9 +436,9 @@ pois_HMM_generate_estimable_sample <- function(ns, mod, testing_params, params_n
   return(c(data = list(new_data$data), natural_parameters = list(natural_parameters), mod = list(mod_temp), failure = list(failure)))
 }
 
-## ---- pois_HMM_label_order
+## ---- pois.HMM.label.order
 # Relabel states by increasing Poisson means
-pois_HMM_label_order <- function(m, lambda, gamma, delta = NULL, lambda_std_error = NULL, gamma_std_error = NULL, delta_std_error = NULL) {
+pois.HMM.label.order <- function(m, lambda, gamma, delta = NULL, lambda_std_error = NULL, gamma_std_error = NULL, delta_std_error = NULL) {
   # gamma_vector_indices is used to calculate the indices of the reordered TPM gamma as a vector
   # for reordering the rows of the complete CI data.frame used for the article.
   gamma_vector_indices <- 1:(m ^ 2)
@@ -479,7 +479,7 @@ pois_HMM_label_order <- function(m, lambda, gamma, delta = NULL, lambda_std_erro
   # Reorder the stationary distribution if it is provided
   # Generate it otherwise
   if (is.null(delta)) {
-    ordered_delta <- stat_dist(ordered_gamma)
+    ordered_delta <- stat.dist(ordered_gamma)
   } else {
     ordered_delta <- delta[ordered_lambda_indices]
   }
@@ -509,16 +509,16 @@ pois_HMM_label_order <- function(m, lambda, gamma, delta = NULL, lambda_std_erro
   return(result)
 }
 
-## ---- pois_HMM_mllk
+## ---- pois.HMM.mllk
 # Calculate the negative log-likelihood, based on the book
-pois_HMM_mllk <- function(parvect, x_alias, m_alias, stationary = TRUE) {
+pois.HMM.mllk <- function(parvect, x_alias, m_alias, stationary = TRUE) {
   # The variable names m and x are already used as parameters for the hessian
   # m_alias and x_alias are only replacement names
   m <- m_alias
   x <- x_alias
   n <- length(x)
-  pn <- pois_HMM_pw2pn(m, parvect)
-  emission_probs <- get_emission_probs(x, pn$lambda)
+  pn <- pois.HMM.pw2pn(m, parvect)
+  emission_probs <- get.emission.probs(x, pn$lambda)
   
   if (m == 1) return(- sum(log(emission_probs[, 1])))
   
@@ -542,17 +542,17 @@ pois_HMM_mllk <- function(parvect, x_alias, m_alias, stationary = TRUE) {
   return(mllk)
 }
 
-## ---- DM_estimate
+## ---- DM.estimate
 # Compute the ML estimates without using TMB
-DM_estimate = function(x, m, lambda0, gamma0, delta0 = NULL, stationary = TRUE) {
-  parvect0 <- pois_HMM_pn2pw(m = m, lambda = lambda0, gamma = gamma0,
+DM.estimate <- function(x, m, lambda0, gamma0, delta0 = NULL, stationary = TRUE) {
+  parvect0 <- pois.HMM.pn2pw(m = m, lambda = lambda0, gamma = gamma0,
                              delta = delta0, stationary = stationary)
   # nlminb needs a vector, not a list
   parvect0 <- unlist(parvect0)
   
-  mod <- nlminb(start = parvect0, objective = pois_HMM_mllk, x_alias = x, m_alias = m, stationary = stationary)
+  mod <- nlminb(start = parvect0, objective = pois.HMM.mllk, x_alias = x, m_alias = m, stationary = stationary)
   pw <- mod$par
-  pn <- pois_HMM_pw2pn(m, as.numeric(pw))
+  pn <- pois.HMM.pw2pn(m, as.numeric(pw))
   mllk <- mod$objective
   np <- unlist(parvect0)
   np <- length(np)

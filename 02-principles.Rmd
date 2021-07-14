@@ -1,4 +1,4 @@
-# Principles of using `TMB` for Maximum Likelihood Estimation
+# Principles of using `TMB` for MLE
 
 ## Setting up `TMB`
 In order to run the scripts and example code, you first need to set up TMB by going through the following steps:
@@ -6,16 +6,16 @@ In order to run the scripts and example code, you first need to set up TMB by go
 - Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/)
 - Install the R-package `TMB` [@R-TMB] by executing the following code in R:
 
-  ```{r, eval =FALSE}
-  install.packages("TMB")
-  ```
+```{r, eval =FALSE}
+install.packages("TMB")
+```
 
 - (Optional) Setup error debugging in `RStudio` by running the command  `TMB:::setupRstudio()`
 
 
 Advanced use is detailed in https://kaskr.github.io/adcomp/_book/Tutorial.html
 
-## Getting started with a linear regression
+## Getting started
 
 Let $\b{x}$ and $\b{y}$ denote the predictor and response vector, respectively, both of length $n$.
 For a simple linear regression model with intercept $a$ and slope $b$, the negative log-likelihood equals
@@ -80,15 +80,51 @@ rbind(
 ```
 As we can see, the parameter estimates are exactly the same.
 
-## Extending the `C++` negative log-likelihood
-
+## Extending the `C++` nll
+### Minimal example
 Sometimes it is useful to write subroutines as a separate function that can be used within your TMB likelihood function. This can increase readability of your code and reduce the number of lines of code in your main cpp file. Writing extra files to define functions compatible with `TMB` requires some care, as these must follow `TMB`'s template.
 <!-- It is noteworthy that `linreg.cpp` doesn't have to contain many lines of code, as they can be distributed in other files and loaded. -->
 
-To illustrate how this works, we add a separate function to the [*linreg.cpp*](code/linreg.cpp) example. The following function does not do anything meaningful, but is just meant to show you how you can add write an additional function and load it into your C++. We start by writing the subroutine function as a separate file called [*functions/utils_linreg.cpp*](functions/utils_linreg.cpp).
-```{Rcpp 2utils_linreg.cpp, code=readLines("functions/utils_linreg.cpp"), eval=FALSE}
+To illustrate how this works, we add a separate function to the [*linreg.cpp*](code/linreg.cpp) example. The following function does not do anything meaningful, but is just meant to show you how you can add write an additional function and load it into your C++. We start by writing the subroutine function as a separate file called `utils_linreg.cpp` [*functions/utils_linreg.cpp*](functions/utils_linreg.cpp).
+```{Rcpp 2utils_linreg_extended.cpp, code=readLines("functions/utils_linreg_extended.cpp"), eval=FALSE}
 ```
- We then import it into `linreg.cpp` ([*code/linreg_utils.cpp*](code/linreg_utils.cpp)). 
-```{Rcpp 2linreg_utils.cpp, code=readLines("code/linreg_utils.cpp"), eval=FALSE}
+We then import it into `linreg.cpp` ([*code/linreg_minimal.cpp*](code/linreg_minimal.cpp)). 
+```{Rcpp 2utils_linreg_extended.cpp, code=readLines("code/linreg_extended.cpp"), eval=FALSE}
 ```
+And eventually we can use it in R, as shown in this minimal example.
+```{r 2linreg_extended}
+# Loading TMB package
+library(TMB)
+# Compilation. The compiler returns 0 if the compilation of
+# the cpp file was successful
+TMB::compile("code/linreg_extended.cpp")
+# Dynamic loading of the compiled cpp file
+dyn.load(dynlib("code/linreg_extended"))
+# Generate the data for our test sample
+set.seed(123)
+sigma <- 0.6
+data <- list(y = rnorm(20, sd = sigma) + 1:20, x = 1:20)
+tsigma <- log(sigma / (1 - sigma)) # Logit transform
+parameters <- list(a = 0, b = 0, tsigma = 0.1)
+# Instruct TMB to create the likelihood function
+obj_linreg <- MakeADFun(data, parameters, DLL = "linreg_extended",
+                        silent = TRUE)
+# Optimization of the objective function with nlminb
+mod_linreg <- nlminb(obj_linreg$par, obj_linreg$fn,
+                     obj_linreg$gr,
+                     obj_linreg$he)
+# Objects returned by ADREPORT() in C++
+summary(sdreport(obj_linreg), select = "report")
+# Object
+obj_linreg$report()
+```
+
+
+Note that when you are writing the `C++` nll file, compiling the file again may lead to an error.
+This is because the dynamic library (the `.dll` file) is already loaded, and cannot be overwritten.
+To prevent this, it is useful to either to manually unload the file manually via the code
+```{r}
+dyn.unload(dynlib("code/linreg_extended"))
+```
+Restarting the `R` session via the menu `Session->Restart R` (shortcut `Ctrl+Shift+F10`) will also unload the file, but you will need to load again the `TMB` package.
 

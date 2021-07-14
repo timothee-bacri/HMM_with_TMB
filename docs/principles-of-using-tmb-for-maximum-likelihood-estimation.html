@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Principles of using TMB for Maximum Likelihood Estimation | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Principles of using TMB for Maximum Likelihood Estimation | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-07-11" />
+<meta name="date" content="2021-07-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -36,6 +36,7 @@
   
 <link rel="prev" href="state-inf.html"/>
 <link rel="next" href="parameter-estimation-techniques.html"/>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -53,22 +54,23 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -88,7 +90,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -121,6 +123,29 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -138,9 +163,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="1" data-path="state-inf.html"><a href="state-inf.html"><i class="fa fa-check"></i><b>1</b> State inference</a><ul>
+<li class="chapter" data-level="1" data-path="state-inf.html"><a href="state-inf.html"><i class="fa fa-check"></i><b>1</b> State inference</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="state-inf.html"><a href="state-inf.html#prepare-the-model"><i class="fa fa-check"></i><b>1.1</b> Prepare the model</a></li>
-<li class="chapter" data-level="1.2" data-path="state-inf.html"><a href="state-inf.html#setup"><i class="fa fa-check"></i><b>1.2</b> Setup</a><ul>
+<li class="chapter" data-level="1.2" data-path="state-inf.html"><a href="state-inf.html#setup"><i class="fa fa-check"></i><b>1.2</b> Setup</a>
+<ul>
 <li class="chapter" data-level="1.2.1" data-path="state-inf.html"><a href="state-inf.html#define-variables"><i class="fa fa-check"></i><b>1.2.1</b> Define variables</a></li>
 <li class="chapter" data-level="1.2.2" data-path="state-inf.html"><a href="state-inf.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>1.2.2</b> Emission/output probabilities</a></li>
 </ul></li>
@@ -150,45 +177,62 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.6" data-path="state-inf.html"><a href="state-inf.html#forecast"><i class="fa fa-check"></i><b>1.6</b> Forecast, h-step-ahead-probabilities</a></li>
 <li class="chapter" data-level="1.7" data-path="state-inf.html"><a href="state-inf.html#global-decoding"><i class="fa fa-check"></i><b>1.7</b> Global decoding using the Viterbi algorithm</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for Maximum Likelihood Estimation</a><ul>
+<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for Maximum Likelihood Estimation</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#setting-up-tmb"><i class="fa fa-check"></i><b>2.1</b> Setting up <code>TMB</code></a></li>
 <li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#getting-started-with-a-linear-regression"><i class="fa fa-check"></i><b>2.2</b> Getting started with a linear regression</a></li>
-<li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#extending-the-c-negative-log-likelihood"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> negative log-likelihood</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques</a><ul>
-<li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#negative-log-likelihood-in-tmb"><i class="fa fa-check"></i><b>3.1</b> Negative log-likelihood in <code>TMB</code></a></li>
-<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#utility-functions"><i class="fa fa-check"></i><b>3.2</b> Utility functions</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-tmb"><i class="fa fa-check"></i><b>3.2.1</b> In <code>TMB</code></a></li>
-<li class="chapter" data-level="3.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-r"><i class="fa fa-check"></i><b>3.2.2</b> In <code>R</code></a><ul>
-<li class="chapter" data-level="3.2.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#parameters"><i class="fa fa-check"></i><b>3.2.2.1</b> Parameters</a></li>
-<li class="chapter" data-level="3.2.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#label-switching"><i class="fa fa-check"></i><b>3.2.2.2</b> Label switching</a></li>
+<li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#extending-the-c-nll"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> nll</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#minimal-example"><i class="fa fa-check"></i><b>2.3.1</b> Minimal example</a></li>
+<li class="chapter" data-level="2.3.2" data-path="principles-of-using-tmb-for-maximum-likelihood-estimation.html"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#advanced-example"><i class="fa fa-check"></i><b>2.3.2</b> Advanced example</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="3" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#utility-functions"><i class="fa fa-check"></i><b>3.1</b> Utility functions</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-tmb"><i class="fa fa-check"></i><b>3.1.1</b> In <code>TMB</code></a></li>
+<li class="chapter" data-level="3.1.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-r"><i class="fa fa-check"></i><b>3.1.2</b> In <code>R</code></a>
+<ul>
+<li class="chapter" data-level="3.1.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#parameters"><i class="fa fa-check"></i><b>3.1.2.1</b> Parameters</a></li>
+<li class="chapter" data-level="3.1.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#label-switching"><i class="fa fa-check"></i><b>3.1.2.2</b> Label switching</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using TMB</a><ul>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#negative-log-likelihood-in-tmb"><i class="fa fa-check"></i><b>3.2</b> Negative log-likelihood in <code>TMB</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using TMB</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
 <li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions"><i class="fa fa-check"></i><b>4.2</b> Preparing data and functions</a></li>
 <li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#modeling"><i class="fa fa-check"></i><b>4.3</b> Modeling</a></li>
-<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>4.4</b> Nested models</a><ul>
+<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>4.4</b> Nested models</a>
+<ul>
 <li class="chapter" data-level="4.4.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>4.4.1</b> Principle</a></li>
 <li class="chapter" data-level="4.4.2" data-path="using-tmb.html"><a href="using-tmb.html#limit"><i class="fa fa-check"></i><b>4.4.2</b> Limit</a></li>
 <li class="chapter" data-level="4.4.3" data-path="using-tmb.html"><a href="using-tmb.html#parameter-equality-constraints"><i class="fa fa-check"></i><b>4.4.3</b> Parameter equality constraints</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a><ul>
+<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#wald-type"><i class="fa fa-check"></i><b>5.1</b> Wald-type</a></li>
-<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#parametric-bootstrap"><i class="fa fa-check"></i><b>5.2</b> Parametric bootstrap</a><ul>
+<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#parametric-bootstrap"><i class="fa fa-check"></i><b>5.2</b> Parametric bootstrap</a>
+<ul>
 <li class="chapter" data-level="5.2.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>5.2.1</b> Generating data</a></li>
 <li class="chapter" data-level="5.2.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>5.2.2</b> Bootstrap</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#profiling-the-negative-log-likelihood"><i class="fa fa-check"></i><b>5.3</b> Profiling the negative log-likelihood</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a><ul>
+<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-dataset"><i class="fa fa-check"></i><b>6.1</b> TYT dataset</a></li>
 <li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-dataset"><i class="fa fa-check"></i><b>6.2</b> Simulated dataset</a></li>
 <li class="chapter" data-level="6.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>6.3</b> Lamb data</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="github-directory-structure.html"><a href="github-directory-structure.html"><i class="fa fa-check"></i><b>7</b> GitHub directory structure</a></li>
+<li class="chapter" data-level="7" data-path="github-directory-structure.html"><a href="github-directory-structure.html"><i class="fa fa-check"></i><b>7</b> GitHub directory structure</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="github-directory-structure.html"><a href="github-directory-structure.html#folder-code"><i class="fa fa-check"></i><b>7.1</b> Folder <code>code</code></a></li>
+<li class="chapter" data-level="7.2" data-path="github-directory-structure.html"><a href="github-directory-structure.html#folder-data"><i class="fa fa-check"></i><b>7.2</b> Folder <code>data</code></a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -210,20 +254,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="principles-of-using-tmb-for-maximum-likelihood-estimation" class="section level1">
+<div id="principles-of-using-tmb-for-maximum-likelihood-estimation" class="section level1" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Principles of using <code>TMB</code> for Maximum Likelihood Estimation</h1>
-<div id="setting-up-tmb" class="section level2">
+<div id="setting-up-tmb" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Setting up <code>TMB</code></h2>
 <p>In order to run the scripts and example code, you first need to set up TMB by going through the following steps:</p>
 <ul>
-<li><p>Install <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a></p></li>
-<li><p>Install the R-package <code>TMB</code> <span class="citation">(Kristensen <a href="#ref-R-TMB" role="doc-biblioref">2021</a>)</span> by executing the following code in R:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb16-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;TMB&quot;</span>)</span></code></pre></div></li>
-<li><p>(Optional) Setup error debugging in <code>RStudio</code> by running the command <code>TMB::setupRstudio()</code></p></li>
+<li>Install <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a></li>
+<li>Install the R-package <code>TMB</code> <span class="citation">(<a href="#ref-R-TMB" role="doc-biblioref">Kristensen 2021</a>)</span> by executing the following code in R:</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;TMB&quot;</span>)</span></code></pre></div>
+<ul>
+<li>(Optional) Setup error debugging in <code>RStudio</code> by running the command <code>TMB:::setupRstudio()</code></li>
 </ul>
 <p>Advanced use is detailed in <a href="https://kaskr.github.io/adcomp/_book/Tutorial.html" class="uri">https://kaskr.github.io/adcomp/_book/Tutorial.html</a></p>
 </div>
-<div id="getting-started-with-a-linear-regression" class="section level2">
+<div id="getting-started-with-a-linear-regression" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Getting started with a linear regression</h2>
 <p>Let <span class="math inline">\({\boldsymbol x}\)</span> and <span class="math inline">\({\boldsymbol y}\)</span> denote the predictor and response vector, respectively, both of length <span class="math inline">\(n\)</span>.
 For a simple linear regression model with intercept <span class="math inline">\(a\)</span> and slope <span class="math inline">\(b\)</span>, the negative log-likelihood equals
@@ -235,60 +281,59 @@ where <span class="math inline">\(\phi(\cdot; \mu, \sigma^2)\)</span> correspond
 The minimization of this function and other post-processing procedures are all carried out in <code>R</code>.
 Therefore, we require two files.<br />
 The first file, named <a href="code/linreg.cpp"><em>linreg.cpp</em></a>, is written in C++ and defines the objective function, i.e. the negative log-likelihood (nll) function of the linear model.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb17-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span><span class="pp"> </span><span class="co">//import the TMB template</span></span>
-<span id="cb17-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-2"></a></span>
-<span id="cb17-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-3"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb17-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-4"></a>Type objective_function&lt;Type&gt;::<span class="kw">operator</span>() ()</span>
-<span id="cb17-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-5"></a>{</span>
-<span id="cb17-6"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-6"></a>  DATA_VECTOR(y); <span class="co">// Data vector y passed from R</span></span>
-<span id="cb17-7"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-7"></a>  DATA_VECTOR(x); <span class="co">// Data vector x passed from R</span></span>
-<span id="cb17-8"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-8"></a>  </span>
-<span id="cb17-9"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-9"></a>  PARAMETER(a);         <span class="co">// Parameter a passed from R </span></span>
-<span id="cb17-10"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-10"></a>  PARAMETER(b);         <span class="co">// Parameter b passed from R </span></span>
-<span id="cb17-11"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-11"></a>  PARAMETER(tsigma);    <span class="co">// Parameter sigma (transformed, on log-scale) </span></span>
-<span id="cb17-12"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-12"></a>                        <span class="co">// passed from R</span></span>
-<span id="cb17-13"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-13"></a>  </span>
-<span id="cb17-14"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-14"></a>  <span class="co">// Transform tsigma back to natural scale</span></span>
-<span id="cb17-15"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-15"></a>  Type sigma = exp(tsigma);</span>
-<span id="cb17-16"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-16"></a>  </span>
-<span id="cb17-17"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-17"></a>  <span class="co">// Declare negative log-likelihood</span></span>
-<span id="cb17-18"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-18"></a>  Type nll = - sum(dnorm(y,</span>
-<span id="cb17-19"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-19"></a>                         a + b * x,</span>
-<span id="cb17-20"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-20"></a>                         sigma,</span>
-<span id="cb17-21"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-21"></a>                         <span class="kw">true</span>));</span>
-<span id="cb17-22"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-22"></a>  </span>
-<span id="cb17-23"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-23"></a>  <span class="co">// Necessary for inference on sigma, not only tsigma</span></span>
-<span id="cb17-24"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-24"></a>  ADREPORT(sigma);</span>
-<span id="cb17-25"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-25"></a>  </span>
-<span id="cb17-26"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-26"></a>  <span class="cf">return</span> nll;</span>
-<span id="cb17-27"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-27"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb17-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span><span class="pp"> </span><span class="co">//import the TMB template</span></span>
+<span id="cb17-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb17-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-4" aria-hidden="true" tabindex="-1"></a>Type objective_function&lt;Type&gt;::<span class="kw">operator</span>() ()</span>
+<span id="cb17-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-5" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb17-6"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-6" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR(y); <span class="co">// Data vector y passed from R</span></span>
+<span id="cb17-7"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-7" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR(x); <span class="co">// Data vector x passed from R</span></span>
+<span id="cb17-8"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-9"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-9" aria-hidden="true" tabindex="-1"></a>  PARAMETER(a);         <span class="co">// Parameter a passed from R </span></span>
+<span id="cb17-10"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-10" aria-hidden="true" tabindex="-1"></a>  PARAMETER(b);         <span class="co">// Parameter b passed from R </span></span>
+<span id="cb17-11"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-11" aria-hidden="true" tabindex="-1"></a>  PARAMETER(tsigma);    <span class="co">// Parameter sigma (transformed, on log-scale) </span></span>
+<span id="cb17-12"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-12" aria-hidden="true" tabindex="-1"></a>                        <span class="co">// passed from R</span></span>
+<span id="cb17-13"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-14"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform tsigma back to natural scale</span></span>
+<span id="cb17-15"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-15" aria-hidden="true" tabindex="-1"></a>  Type sigma = exp(tsigma);</span>
+<span id="cb17-16"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-17"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Declare negative log-likelihood</span></span>
+<span id="cb17-18"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-18" aria-hidden="true" tabindex="-1"></a>  Type nll = - sum(dnorm(y,</span>
+<span id="cb17-19"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-19" aria-hidden="true" tabindex="-1"></a>                         a + b * x,</span>
+<span id="cb17-20"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-20" aria-hidden="true" tabindex="-1"></a>                         sigma,</span>
+<span id="cb17-21"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-21" aria-hidden="true" tabindex="-1"></a>                         <span class="kw">true</span>));</span>
+<span id="cb17-22"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-23"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Necessary for inference on sigma, not only tsigma</span></span>
+<span id="cb17-24"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-24" aria-hidden="true" tabindex="-1"></a>  ADREPORT(sigma);</span>
+<span id="cb17-25"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-26"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> nll;</span>
+<span id="cb17-27"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb17-27" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>The second file needed is written in <code>R</code> and serves for compiling the nll function defined above and carrying out the estimation procedure by numerical optimization of the nll function.
 The .R file (shown below) carries out the compilation of the C++ file and minimization of the nll function:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb18-1"></a><span class="co"># Loading TMB package</span></span>
-<span id="cb18-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb18-2"></a><span class="kw">library</span>(TMB)</span>
-<span id="cb18-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb18-3"></a><span class="co"># Compilation. The compiler returns 0 if the compilation of</span></span>
-<span id="cb18-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb18-4"></a><span class="co"># the cpp file was successful</span></span>
-<span id="cb18-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb18-5"></a>TMB<span class="op">::</span><span class="kw">compile</span>(<span class="st">&quot;code/linreg.cpp&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading TMB package</span></span>
+<span id="cb18-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
+<span id="cb18-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Compilation. The compiler returns 0 if the compilation of</span></span>
+<span id="cb18-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># the cpp file was successful</span></span>
+<span id="cb18-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb18-5" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/linreg.cpp&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-1"></a><span class="co"># Dynamic loading of the compiled cpp file</span></span>
-<span id="cb20-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-2"></a><span class="kw">dyn.load</span>(<span class="kw">dynlib</span>(<span class="st">&quot;code/linreg&quot;</span>))</span></code></pre></div>
-<pre><code>## Warning: 2 external pointers will be removed</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb22-1"></a><span class="co"># Generate the data for our test sample</span></span>
-<span id="cb22-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb22-2"></a><span class="kw">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb22-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb22-3"></a>data &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">20</span>) <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>)</span>
-<span id="cb22-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb22-4"></a>parameters &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">0</span>, <span class="dt">tsigma =</span> <span class="dv">0</span>)</span>
-<span id="cb22-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb22-5"></a><span class="co"># Instruct TMB to create the likelihood function</span></span>
-<span id="cb22-6"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb22-6"></a>obj_linreg &lt;-<span class="st"> </span><span class="kw">MakeADFun</span>(data, parameters, <span class="dt">DLL =</span> <span class="st">&quot;linreg&quot;</span>,</span>
-<span id="cb22-7"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb22-7"></a>                        <span class="dt">silent =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb22-8"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb22-8"></a><span class="co"># Optimization of the objective function with nlminb</span></span>
-<span id="cb22-9"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb22-9"></a>mod_linreg &lt;-<span class="st"> </span><span class="kw">nlminb</span>(obj_linreg<span class="op">$</span>par, obj_linreg<span class="op">$</span>fn,</span>
-<span id="cb22-10"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb22-10"></a>                     obj_linreg<span class="op">$</span>gr,</span>
-<span id="cb22-11"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb22-11"></a>                     obj_linreg<span class="op">$</span>he)</span>
-<span id="cb22-12"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb22-12"></a>mod_linreg<span class="op">$</span>par</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dynamic loading of the compiled cpp file</span></span>
+<span id="cb20-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/linreg&quot;</span>))</span>
+<span id="cb20-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the data for our test sample</span></span>
+<span id="cb20-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb20-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">20</span>) <span class="sc">+</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span>
+<span id="cb20-6"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-6" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">tsigma =</span> <span class="dv">0</span>)</span>
+<span id="cb20-7"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Instruct TMB to create the likelihood function</span></span>
+<span id="cb20-8"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-8" aria-hidden="true" tabindex="-1"></a>obj_linreg <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(data, parameters, <span class="at">DLL =</span> <span class="st">&quot;linreg&quot;</span>,</span>
+<span id="cb20-9"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-10"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimization of the objective function with nlminb</span></span>
+<span id="cb20-11"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-11" aria-hidden="true" tabindex="-1"></a>mod_linreg <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(obj_linreg<span class="sc">$</span>par, obj_linreg<span class="sc">$</span>fn,</span>
+<span id="cb20-12"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-12" aria-hidden="true" tabindex="-1"></a>                     obj_linreg<span class="sc">$</span>gr,</span>
+<span id="cb20-13"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-13" aria-hidden="true" tabindex="-1"></a>                     obj_linreg<span class="sc">$</span>he)</span>
+<span id="cb20-14"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb20-14" aria-hidden="true" tabindex="-1"></a>mod_linreg<span class="sc">$</span>par</span></code></pre></div>
 <pre><code>##           a           b      tsigma 
 ##  0.31009251  0.98395536 -0.05814649</code></pre>
 <p>Now that the optimization is taken care of, we can display the estimates with standard errors using the <code>sdreport</code> function.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb24-1"></a><span class="kw">sdreport</span>(obj_linreg)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sdreport</span>(obj_linreg)</span></code></pre></div>
 <pre><code>## sdreport(.) result
 ##           Estimate Std. Error
 ## a       0.31009251 0.43829087
@@ -296,7 +341,7 @@ The .R file (shown below) carries out the compilation of the C++ file and minimi
 ## tsigma -0.05814649 0.15811383
 ## Maximum gradient component: 1.300261e-10</code></pre>
 <p>If we use <code>summary</code> on this object, we also get the variables we have passed to <code>ADREPORT</code> in the <a href="code/linreg.cpp"><em>linreg.cpp</em></a> file. In this example, this is only the residual standard deviation; <code>sigma</code>.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb26-1"></a><span class="kw">summary</span>(<span class="kw">sdreport</span>(obj_linreg))</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_linreg))</span></code></pre></div>
 <pre><code>##           Estimate Std. Error
 ## a       0.31009251 0.43829087
 ## b       0.98395536 0.03658782
@@ -305,78 +350,179 @@ The .R file (shown below) carries out the compilation of the C++ file and minimi
 <p>The <code>select</code> argument restricts the output to variables passed
 by <code>ADREPORT(variable_name);</code> in the cpp file.
 As we will see in <a href="confidence-intervals.html#wald-type">Wald-type</a>, this lets us derive confidence intervals for these natural parameters easily.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb28-1"></a><span class="kw">summary</span>(<span class="kw">sdreport</span>(obj_linreg), <span class="dt">select =</span> <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_linreg), <span class="at">select =</span> <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
 <pre><code>##        Estimate Std. Error
 ## sigma 0.9435117  0.1491823</code></pre>
 <p>Certainly, you would not build a TMB model to fit a linear regression. We can use standard R functions for that. Therefore, we use <code>stats::lm</code> on the same data and compare the estimates to those obtained by <code>TMB</code>.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-1"></a><span class="kw">rbind</span>(</span>
-<span id="cb30-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-2"></a>  <span class="st">&quot;lm&quot;</span>  =<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data =</span> data)<span class="op">$</span>coef, <span class="co"># linear regression using R</span></span>
-<span id="cb30-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-3"></a>  <span class="st">&quot;TMB&quot;</span> =<span class="st"> </span>mod_linreg<span class="op">$</span>par[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>] <span class="co"># intercept and slope from TMB fit</span></span>
-<span id="cb30-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-4"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(</span>
+<span id="cb28-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;lm&quot;</span>  <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> data)<span class="sc">$</span>coef, <span class="co"># linear regression using R</span></span>
+<span id="cb28-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;TMB&quot;</span> <span class="ot">=</span> mod_linreg<span class="sc">$</span>par[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="co"># intercept and slope from TMB fit</span></span>
+<span id="cb28-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb28-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>##     (Intercept)         x
 ## lm    0.3100925 0.9839554
 ## TMB   0.3100925 0.9839554</code></pre>
 <p>As we can see, the parameter estimates are exactly the same.</p>
 </div>
-<div id="extending-the-c-negative-log-likelihood" class="section level2">
-<h2><span class="header-section-number">2.3</span> Extending the <code>C++</code> negative log-likelihood</h2>
+<div id="extending-the-c-nll" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Extending the <code>C++</code> nll</h2>
+<div id="minimal-example" class="section level3" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Minimal example</h3>
 <p>Sometimes it is useful to write subroutines as a separate function that can be used within your TMB likelihood function. This can increase readability of your code and reduce the number of lines of code in your main cpp file. Writing extra files to define functions compatible with <code>TMB</code> requires some care, as these must follow <code>TMB</code>’s template.
 <!-- It is noteworthy that `linreg.cpp` doesn't have to contain many lines of code, as they can be distributed in other files and loaded. --></p>
-<p>To illustrate how this works, we add a separate function to the <a href="code/linreg.cpp"><em>linreg.cpp</em></a> example. The following function does not do anything meaningful, but is just meant to show you how you can add write an additional function and load it into your C++. We start by writing the subroutine function as a separate file called <a href="functions/utils_linreg.cpp"><em>functions/utils_linreg.cpp</em></a>.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb32-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb32-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-2"></a>matrix&lt;Type&gt; function_example(matrix&lt;Type&gt; mat_example) {</span>
-<span id="cb32-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-3"></a>  </span>
-<span id="cb32-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-4"></a>  <span class="co">// This function doesn&#39;t do anything meaningful</span></span>
-<span id="cb32-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-5"></a>  matrix&lt;Type&gt; mat(<span class="dv">2</span>, <span class="dv">3</span>);</span>
-<span id="cb32-6"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-6"></a>  mat.setOnes();</span>
-<span id="cb32-7"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-7"></a>  mat.row(<span class="dv">1</span>) &lt;&lt; <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>;</span>
-<span id="cb32-8"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-8"></a>  mat(<span class="dv">0</span>, <span class="dv">2</span>) = mat.row(<span class="dv">1</span>).sum();</span>
-<span id="cb32-9"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-9"></a>  </span>
-<span id="cb32-10"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-10"></a>  <span class="cf">return</span> mat;</span>
-<span id="cb32-11"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-11"></a>}</span></code></pre></div>
-<p>We then import it into <code>linreg.cpp</code> (<a href="code/linreg_utils.cpp"><em>code/linreg_utils.cpp</em></a>).</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb33-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span><span class="pp"> </span><span class="co">//import the TMB template</span></span>
-<span id="cb33-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-2"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils_linreg.cpp&quot;</span></span>
-<span id="cb33-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-3"></a></span>
-<span id="cb33-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-4"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb33-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-5"></a>Type objective_function&lt;Type&gt;::<span class="kw">operator</span>() ()</span>
-<span id="cb33-6"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-6"></a>{</span>
-<span id="cb33-7"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-7"></a>  DATA_VECTOR(y); <span class="co">// Data vector y passed from R</span></span>
-<span id="cb33-8"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-8"></a>  DATA_VECTOR(x); <span class="co">// Data vector x passed from R</span></span>
-<span id="cb33-9"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-9"></a>  </span>
-<span id="cb33-10"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-10"></a>  PARAMETER(a);         <span class="co">// Parameter a passed from R </span></span>
-<span id="cb33-11"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-11"></a>  PARAMETER(b);         <span class="co">// Parameter b passed from R </span></span>
-<span id="cb33-12"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-12"></a>  PARAMETER(tsigma);    <span class="co">// Parameter sigma (transformed, on log-scale) </span></span>
-<span id="cb33-13"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-13"></a>                        <span class="co">// passed from R</span></span>
-<span id="cb33-14"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-14"></a>  </span>
-<span id="cb33-15"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-15"></a>  <span class="co">// Transform tsigma back to natural scale</span></span>
-<span id="cb33-16"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-16"></a>  Type sigma = exp(tsigma);</span>
-<span id="cb33-17"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-17"></a>  </span>
-<span id="cb33-18"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-18"></a>  <span class="co">// Declare negative log-likelihood</span></span>
-<span id="cb33-19"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-19"></a>  Type nll = - sum(dnorm(y,</span>
-<span id="cb33-20"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-20"></a>                         a + b * x,</span>
-<span id="cb33-21"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-21"></a>                         sigma,</span>
-<span id="cb33-22"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-22"></a>                         <span class="kw">true</span>));</span>
-<span id="cb33-23"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-23"></a>  </span>
-<span id="cb33-24"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-24"></a>  <span class="co">// Necessary for inference on sigma, not only tsigma</span></span>
-<span id="cb33-25"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-25"></a>  ADREPORT(sigma);</span>
-<span id="cb33-26"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-26"></a>  </span>
-<span id="cb33-27"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-27"></a>  <span class="co">/* This is a useless example to show how to manipulate matrices</span></span>
-<span id="cb33-28"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-28"></a><span class="co">   * in C++</span></span>
-<span id="cb33-29"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-29"></a><span class="co">   * This creates a matrix of 2 rows and 3 columns.</span></span>
-<span id="cb33-30"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-30"></a><span class="co">   * The Eigen library is used to manipulate vectors, arrays, matrices...</span></span>
-<span id="cb33-31"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-31"></a><span class="co">   */</span></span>
-<span id="cb33-32"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-32"></a>  matrix&lt;Type&gt; mat_example(<span class="dv">2</span>, <span class="dv">3</span>);</span>
-<span id="cb33-33"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-33"></a>  mat_example &lt;&lt; <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>,</span>
-<span id="cb33-34"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-34"></a>                 <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>;</span>
-<span id="cb33-35"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-35"></a>  matrix&lt;Type&gt; mat_example2 = function_example(mat_example);</span>
-<span id="cb33-36"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-36"></a>  </span>
-<span id="cb33-37"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-37"></a>  <span class="co">// This lets us retrieve any variables in a nice format</span></span>
-<span id="cb33-38"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-38"></a>  REPORT(mat_example);</span>
-<span id="cb33-39"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-39"></a>  REPORT(mat_example2);</span>
-<span id="cb33-40"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-40"></a>  </span>
-<span id="cb33-41"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-41"></a>  <span class="cf">return</span> nll;</span>
-<span id="cb33-42"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb33-42"></a>}</span></code></pre></div>
+<p>To illustrate how this works, we add a separate function to the <a href="code/linreg.cpp"><em>linreg.cpp</em></a> example. The following function does not do anything meaningful, but is just meant to show you how you can add write an additional function and load it into your C++. We start by writing the subroutine function as a separate file called <code>utils_linreg.cpp</code> <a href="functions/utils_linreg.cpp"><em>functions/utils_linreg.cpp</em></a>.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb30-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb30-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-2" aria-hidden="true" tabindex="-1"></a>matrix&lt;Type&gt; function_example(matrix&lt;Type&gt; mat_example) {</span>
+<span id="cb30-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb30-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// This function doesn&#39;t do anything meaningful</span></span>
+<span id="cb30-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-5" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; mat(<span class="dv">2</span>, <span class="dv">3</span>);</span>
+<span id="cb30-6"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-6" aria-hidden="true" tabindex="-1"></a>  mat.setOnes();</span>
+<span id="cb30-7"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-7" aria-hidden="true" tabindex="-1"></a>  mat.row(<span class="dv">1</span>) &lt;&lt; <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>;</span>
+<span id="cb30-8"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-8" aria-hidden="true" tabindex="-1"></a>  mat(<span class="dv">0</span>, <span class="dv">2</span>) = mat.row(<span class="dv">1</span>).sum();</span>
+<span id="cb30-9"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb30-10"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mat;</span>
+<span id="cb30-11"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb30-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>We then import it into <code>linreg.cpp</code> (<a href="code/linreg_minimal.cpp"><em>code/linreg_minimal.cpp</em></a>).</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb31-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span><span class="pp"> </span><span class="co">//import the TMB template</span></span>
+<span id="cb31-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils_linreg.cpp&quot;</span></span>
+<span id="cb31-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb31-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-5" aria-hidden="true" tabindex="-1"></a>Type objective_function&lt;Type&gt;::<span class="kw">operator</span>() ()</span>
+<span id="cb31-6"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-6" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb31-7"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-7" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR(y); <span class="co">// Data vector y passed from R</span></span>
+<span id="cb31-8"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-8" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR(x); <span class="co">// Data vector x passed from R</span></span>
+<span id="cb31-9"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-10"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-10" aria-hidden="true" tabindex="-1"></a>  PARAMETER(a);         <span class="co">// Parameter a passed from R </span></span>
+<span id="cb31-11"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-11" aria-hidden="true" tabindex="-1"></a>  PARAMETER(b);         <span class="co">// Parameter b passed from R </span></span>
+<span id="cb31-12"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-12" aria-hidden="true" tabindex="-1"></a>  PARAMETER(tsigma);    <span class="co">// Parameter sigma (transformed, on log-scale) </span></span>
+<span id="cb31-13"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-13" aria-hidden="true" tabindex="-1"></a>                        <span class="co">// passed from R</span></span>
+<span id="cb31-14"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-15"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform tsigma back to natural scale</span></span>
+<span id="cb31-16"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-16" aria-hidden="true" tabindex="-1"></a>  Type sigma = exp(tsigma);</span>
+<span id="cb31-17"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-18"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Declare negative log-likelihood</span></span>
+<span id="cb31-19"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-19" aria-hidden="true" tabindex="-1"></a>  Type nll = - sum(dnorm(y,</span>
+<span id="cb31-20"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-20" aria-hidden="true" tabindex="-1"></a>                         a + b * x,</span>
+<span id="cb31-21"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-21" aria-hidden="true" tabindex="-1"></a>                         sigma,</span>
+<span id="cb31-22"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-22" aria-hidden="true" tabindex="-1"></a>                         <span class="kw">true</span>));</span>
+<span id="cb31-23"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-24"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Necessary for inference on sigma, not only tsigma</span></span>
+<span id="cb31-25"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-25" aria-hidden="true" tabindex="-1"></a>  ADREPORT(sigma);</span>
+<span id="cb31-26"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-27"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">/* This is a useless example to show how to manipulate matrices</span></span>
+<span id="cb31-28"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-28" aria-hidden="true" tabindex="-1"></a><span class="co">   * in C++</span></span>
+<span id="cb31-29"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-29" aria-hidden="true" tabindex="-1"></a><span class="co">   * This creates a matrix of 2 rows and 3 columns.</span></span>
+<span id="cb31-30"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-30" aria-hidden="true" tabindex="-1"></a><span class="co">   * The Eigen library is used to manipulate vectors, arrays, matrices...</span></span>
+<span id="cb31-31"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-31" aria-hidden="true" tabindex="-1"></a><span class="co">   */</span></span>
+<span id="cb31-32"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-32" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; mat_example(<span class="dv">2</span>, <span class="dv">3</span>);</span>
+<span id="cb31-33"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-33" aria-hidden="true" tabindex="-1"></a>  mat_example &lt;&lt; <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>,</span>
+<span id="cb31-34"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-34" aria-hidden="true" tabindex="-1"></a>                 <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>;</span>
+<span id="cb31-35"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-35" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; mat_example2 = function_example(mat_example);</span>
+<span id="cb31-36"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-37"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-37" aria-hidden="true" tabindex="-1"></a>  <span class="co">// This lets us retrieve any variables in a nice format</span></span>
+<span id="cb31-38"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-38" aria-hidden="true" tabindex="-1"></a>  REPORT(mat_example);</span>
+<span id="cb31-39"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-39" aria-hidden="true" tabindex="-1"></a>  REPORT(mat_example2);</span>
+<span id="cb31-40"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-40" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-41"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> nll;</span>
+<span id="cb31-42"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb31-42" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>And eventually we can use it in R, as shown in this minimal example.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading TMB package</span></span>
+<span id="cb32-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
+<span id="cb32-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Compilation. The compiler returns 0 if the compilation of</span></span>
+<span id="cb32-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># the cpp file was successful</span></span>
+<span id="cb32-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb32-5" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/linreg_minimal.cpp&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dynamic loading of the compiled cpp file</span></span>
+<span id="cb34-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/linreg_minimal&quot;</span>))</span>
+<span id="cb34-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the data for our test sample</span></span>
+<span id="cb34-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb34-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">20</span>) <span class="sc">+</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span>
+<span id="cb34-6"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-6" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">tsigma =</span> <span class="dv">0</span>)</span>
+<span id="cb34-7"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Instruct TMB to create the likelihood function</span></span>
+<span id="cb34-8"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-8" aria-hidden="true" tabindex="-1"></a>obj_linreg <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(data, parameters, <span class="at">DLL =</span> <span class="st">&quot;linreg_minimal&quot;</span>,</span>
+<span id="cb34-9"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb34-10"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimization of the objective function with nlminb</span></span>
+<span id="cb34-11"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-11" aria-hidden="true" tabindex="-1"></a>mod_linreg <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(obj_linreg<span class="sc">$</span>par, obj_linreg<span class="sc">$</span>fn,</span>
+<span id="cb34-12"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-12" aria-hidden="true" tabindex="-1"></a>                     obj_linreg<span class="sc">$</span>gr,</span>
+<span id="cb34-13"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-13" aria-hidden="true" tabindex="-1"></a>                     obj_linreg<span class="sc">$</span>he)</span>
+<span id="cb34-14"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Objects returned by ADREPORT() in C++</span></span>
+<span id="cb34-15"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_linreg), <span class="at">select =</span> <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
+<pre><code>##        Estimate Std. Error
+## sigma 0.9435117  0.1491823</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Objects returned by REPORT() in C++</span></span>
+<span id="cb36-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb36-2" aria-hidden="true" tabindex="-1"></a>obj_linreg<span class="sc">$</span><span class="fu">report</span>()</span></code></pre></div>
+<pre><code>## $mat_example
+##      [,1] [,2] [,3]
+## [1,]    1    2    3
+## [2,]    4    5    6
+## 
+## $mat_example2
+##      [,1] [,2] [,3]
+## [1,]    1    1   15
+## [2,]    5    5    5</code></pre>
+</div>
+<div id="advanced-example" class="section level3" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Advanced example</h3>
+<p>We now demonstrate a slightly more complex optimization example where <span class="math inline">\(\sigma \in [0, 1]\)</span>.
+The logit transform of <span class="math inline">\(\sigma\)</span> lets us optimize without constraints on <span class="math inline">\({\rm I\!R}\)</span>.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb38-1" aria-hidden="true" tabindex="-1"></a>tsigma <span class="ot">&lt;-</span> <span class="fu">log</span>(sigma <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> sigma))</span></code></pre></div>
+<p>Then we implement its inverse in <code>R</code> (logistic function).</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb39-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span><span class="pp"> </span><span class="co">//import the TMB template</span></span>
+<span id="cb39-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils_linreg_extended.cpp&quot;</span></span>
+<span id="cb39-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb39-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-5" aria-hidden="true" tabindex="-1"></a>Type objective_function&lt;Type&gt;::<span class="kw">operator</span>() ()</span>
+<span id="cb39-6"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-6" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb39-7"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-7" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR(y); <span class="co">// Data vector y passed from R</span></span>
+<span id="cb39-8"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-8" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR(x); <span class="co">// Data vector x passed from R</span></span>
+<span id="cb39-9"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb39-10"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-10" aria-hidden="true" tabindex="-1"></a>  PARAMETER(a);         <span class="co">// Parameter a passed from R </span></span>
+<span id="cb39-11"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-11" aria-hidden="true" tabindex="-1"></a>  PARAMETER(b);         <span class="co">// Parameter b passed from R </span></span>
+<span id="cb39-12"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-12" aria-hidden="true" tabindex="-1"></a>  PARAMETER(tsigma);    <span class="co">// Parameter sigma (transformed by logistic function)</span></span>
+<span id="cb39-13"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-13" aria-hidden="true" tabindex="-1"></a>                        <span class="co">// constrained on [0, 1]</span></span>
+<span id="cb39-14"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-14" aria-hidden="true" tabindex="-1"></a>                        <span class="co">// passed from R</span></span>
+<span id="cb39-15"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb39-16"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform tsigma back to natural scale with our external function</span></span>
+<span id="cb39-17"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-17" aria-hidden="true" tabindex="-1"></a>  Type sigma = logistic(tsigma);</span>
+<span id="cb39-18"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Type sigma = 1 / (1 + exp (-tsigma));</span></span>
+<span id="cb39-19"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb39-20"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Declare negative log-likelihood</span></span>
+<span id="cb39-21"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-21" aria-hidden="true" tabindex="-1"></a>  Type nll = - sum(dnorm(y,</span>
+<span id="cb39-22"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-22" aria-hidden="true" tabindex="-1"></a>                         a + b * x,</span>
+<span id="cb39-23"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-23" aria-hidden="true" tabindex="-1"></a>                         sigma,</span>
+<span id="cb39-24"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-24" aria-hidden="true" tabindex="-1"></a>                         <span class="kw">true</span>));</span>
+<span id="cb39-25"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb39-26"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Necessary for inference on sigma, not only tsigma</span></span>
+<span id="cb39-27"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-27" aria-hidden="true" tabindex="-1"></a>  ADREPORT(sigma);</span>
+<span id="cb39-28"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb39-29"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> nll;</span>
+<span id="cb39-30"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb39-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>We then illustrate a full example in <code>R</code>, similar to the one above with <span class="math inline">\(\sigma = 0.6\)</span>.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading TMB package</span></span>
+<span id="cb40-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
+<span id="cb40-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Compilation. The compiler returns 0 if the compilation of</span></span>
+<span id="cb40-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># the cpp file was successful</span></span>
+<span id="cb40-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb40-5" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/linreg_extended.cpp&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dynamic loading of the compiled cpp file</span></span>
+<span id="cb42-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/linreg_extended&quot;</span>))</span></code></pre></div>
+<pre><code>## Warning: 2 external pointers will be removed</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the data for our test sample</span></span>
+<span id="cb44-2"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb44-3"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-3" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
+<span id="cb44-4"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-4" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">20</span>, <span class="at">sd =</span> sigma) <span class="sc">+</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span>
+<span id="cb44-5"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-5" aria-hidden="true" tabindex="-1"></a>tsigma <span class="ot">&lt;-</span> <span class="fu">log</span>(sigma <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> sigma)) <span class="co"># Logit transform</span></span>
+<span id="cb44-6"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-6" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">tsigma =</span> <span class="fl">0.1</span>)</span>
+<span id="cb44-7"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Instruct TMB to create the likelihood function</span></span>
+<span id="cb44-8"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-8" aria-hidden="true" tabindex="-1"></a>obj_linreg <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(data, parameters, <span class="at">DLL =</span> <span class="st">&quot;linreg_extended&quot;</span>,</span>
+<span id="cb44-9"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb44-10"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimization of the objective function with nlminb</span></span>
+<span id="cb44-11"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-11" aria-hidden="true" tabindex="-1"></a>mod_linreg <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(obj_linreg<span class="sc">$</span>par, obj_linreg<span class="sc">$</span>fn,</span>
+<span id="cb44-12"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-12" aria-hidden="true" tabindex="-1"></a>                     obj_linreg<span class="sc">$</span>gr,</span>
+<span id="cb44-13"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-13" aria-hidden="true" tabindex="-1"></a>                     obj_linreg<span class="sc">$</span>he)</span>
+<span id="cb44-14"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Objects returned by ADREPORT() in C++</span></span>
+<span id="cb44-15"><a href="principles-of-using-tmb-for-maximum-likelihood-estimation.html#cb44-15" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_linreg), <span class="at">select =</span> <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
+<pre><code>##       Estimate Std. Error
+## sigma 0.566107 0.08950934</code></pre>
 
 <!-- ```{r 3import-files, echo = FALSE, cache = FALSE} -->
 <!-- library(knitr) -->
@@ -386,10 +532,11 @@ As we will see in <a href="confidence-intervals.html#wald-type">Wald-type</a>, t
 <!-- ``` -->
 </div>
 </div>
+</div>
 <h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-R-TMB">
-<p>Kristensen, Kasper. 2021. <em>TMB: Template Model Builder: A General Random Effect Tool Inspired by Admb</em>. <a href="https://github.com/kaskr/adcomp/wiki">https://github.com/kaskr/adcomp/wiki</a>.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-R-TMB" class="csl-entry">
+Kristensen, Kasper. 2021. <em>TMB: Template Model Builder: A General Random Effect Tool Inspired by ADMB</em>. <a href="https://github.com/kaskr/adcomp/wiki">https://github.com/kaskr/adcomp/wiki</a>.
 </div>
 </div>
             </section>
@@ -421,6 +568,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
