@@ -1,7 +1,4 @@
-# sink("log.txt") # Redirect all messages from the console to log.txt
 source("code/setup_parameters.R")
-
-# knitr::knit2pdf("paper.rnw")
 
 # Which dataset are tests run on
 RUN_LAMB <- FALSE

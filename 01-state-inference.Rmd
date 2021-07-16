@@ -206,10 +206,3 @@ for (i in (n - 1):1){
 iv
 ```
 
-```{r 1packages_in_bib, include=FALSE}
-# automatically create a bib database for R packages
-knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown'
-), 'packages.bib')
-```
-

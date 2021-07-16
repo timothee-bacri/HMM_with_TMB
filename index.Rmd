@@ -50,10 +50,16 @@ The files used in this repository are available in https://github.com/timothee-b
 
 For a description of the files and the directory structure, please read [GitHub directory structure].
 
-```{r 0import-files, echo = FALSE, cache = FALSE, message = FALSE}
+```{r 0import-files, echo = FALSE, cache = FALSE, message = FALSE, results = FALSE}
 library(knitr)
 suppressMessages(source("code/packages.R"))
 knitr::read_chunk('functions/utils.R')
 source('code/setup_parameters.R')
 ```
 
+```{r 0packages_in_bib, include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```

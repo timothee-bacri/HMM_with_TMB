@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-07-16" />
+<meta name="date" content="2021-07-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -231,8 +231,23 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="7.1" data-path="github.html"><a href="github.html#directory-structure"><i class="fa fa-check"></i><b>7.1</b> Directory structure</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="github.html"><a href="github.html#folder-code"><i class="fa fa-check"></i><b>7.1.1</b> Folder <code>code</code></a></li>
-<li class="chapter" data-level="7.1.2" data-path="github.html"><a href="github.html#folder-data"><i class="fa fa-check"></i><b>7.1.2</b> Folder <code>data</code></a></li>
+<li class="chapter" data-level="7.1.1" data-path="github.html"><a href="github.html#code"><i class="fa fa-check"></i><b>7.1.1</b> code/</a></li>
+<li class="chapter" data-level="7.1.2" data-path="github.html"><a href="github.html#codelinreg.cpp"><i class="fa fa-check"></i><b>7.1.2</b> code/linreg.cpp</a></li>
+<li class="chapter" data-level="7.1.3" data-path="github.html"><a href="github.html#codelinreg.dll"><i class="fa fa-check"></i><b>7.1.3</b> code/linreg.dll</a></li>
+<li class="chapter" data-level="7.1.4" data-path="github.html"><a href="github.html#codelinreg.o"><i class="fa fa-check"></i><b>7.1.4</b> code/linreg.o</a></li>
+<li class="chapter" data-level="7.1.5" data-path="github.html"><a href="github.html#codelinreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.5</b> code/linreg_extended.cpp</a></li>
+<li class="chapter" data-level="7.1.6" data-path="github.html"><a href="github.html#codelinreg_extended.dll"><i class="fa fa-check"></i><b>7.1.6</b> code/linreg_extended.dll</a></li>
+<li class="chapter" data-level="7.1.7" data-path="github.html"><a href="github.html#codelinreg_extended.o"><i class="fa fa-check"></i><b>7.1.7</b> code/linreg_extended.o</a></li>
+<li class="chapter" data-level="7.1.8" data-path="github.html"><a href="github.html#codemain.r"><i class="fa fa-check"></i><b>7.1.8</b> code/main.R</a></li>
+<li class="chapter" data-level="7.1.9" data-path="github.html"><a href="github.html#codepoi_hmm.cpp"><i class="fa fa-check"></i><b>7.1.9</b> code/poi_hmm.cpp</a></li>
+<li class="chapter" data-level="7.1.10" data-path="github.html"><a href="github.html#codepoi_hmm.dll"><i class="fa fa-check"></i><b>7.1.10</b> code/poi_hmm.dll</a></li>
+<li class="chapter" data-level="7.1.11" data-path="github.html"><a href="github.html#codepoi_hmm.o"><i class="fa fa-check"></i><b>7.1.11</b> code/poi_hmm.o</a></li>
+<li class="chapter" data-level="7.1.12" data-path="github.html"><a href="github.html#codepoi_hmm_lamb.r"><i class="fa fa-check"></i><b>7.1.12</b> code/poi_hmm_lamb.R</a></li>
+<li class="chapter" data-level="7.1.13" data-path="github.html"><a href="github.html#codepoi_hmm_simu1.r"><i class="fa fa-check"></i><b>7.1.13</b> code/poi_hmm_simu1.R</a></li>
+<li class="chapter" data-level="7.1.14" data-path="github.html"><a href="github.html#codepoi_hmm_simu2.r"><i class="fa fa-check"></i><b>7.1.14</b> code/poi_hmm_simu2.R</a></li>
+<li class="chapter" data-level="7.1.15" data-path="github.html"><a href="github.html#codepoi_hmm_tinn.r"><i class="fa fa-check"></i><b>7.1.15</b> code/poi_hmm_tinn.R</a></li>
+<li class="chapter" data-level="7.1.16" data-path="github.html"><a href="github.html#codesetup_parameters.r"><i class="fa fa-check"></i><b>7.1.16</b> code/setup_parameters.R</a></li>
+<li class="chapter" data-level="7.1.17" data-path="github.html"><a href="github.html#folder-data"><i class="fa fa-check"></i><b>7.1.17</b> Folder <code>data</code></a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -260,36 +275,36 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 1</span> State inference</h1>
 <div id="prepare-the-model" class="section level2" number="1.1">
 <h2><span class="header-section-number">1.1</span> Prepare the model</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="state-inf.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
-<span id="cb2-2"><a href="state-inf.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
-<span id="cb2-3"><a href="state-inf.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/fetal-lamb.RData&quot;</span>)</span>
-<span id="cb2-4"><a href="state-inf.html#cb2-4" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span>
-<span id="cb2-5"><a href="state-inf.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span>
-<span id="cb2-6"><a href="state-inf.html#cb2-6" aria-hidden="true" tabindex="-1"></a>lamb_data <span class="ot">&lt;-</span> lamb</span>
-<span id="cb2-7"><a href="state-inf.html#cb2-7" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb2-8"><a href="state-inf.html#cb2-8" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> lamb_data, <span class="at">m =</span> m)</span>
-<span id="cb2-9"><a href="state-inf.html#cb2-9" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
-<span id="cb2-10"><a href="state-inf.html#cb2-10" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
-<span id="cb2-11"><a href="state-inf.html#cb2-11" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> m)</span>
-<span id="cb2-12"><a href="state-inf.html#cb2-12" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
-<span id="cb2-13"><a href="state-inf.html#cb2-13" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb2-14"><a href="state-inf.html#cb2-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-15"><a href="state-inf.html#cb2-15" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
-<span id="cb2-16"><a href="state-inf.html#cb2-16" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr, <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="state-inf.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
+<span id="cb1-2"><a href="state-inf.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
+<span id="cb1-3"><a href="state-inf.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/fetal-lamb.RData&quot;</span>)</span>
+<span id="cb1-4"><a href="state-inf.html#cb1-4" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span>
+<span id="cb1-5"><a href="state-inf.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span>
+<span id="cb1-6"><a href="state-inf.html#cb1-6" aria-hidden="true" tabindex="-1"></a>lamb_data <span class="ot">&lt;-</span> lamb</span>
+<span id="cb1-7"><a href="state-inf.html#cb1-7" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb1-8"><a href="state-inf.html#cb1-8" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> lamb_data, <span class="at">m =</span> m)</span>
+<span id="cb1-9"><a href="state-inf.html#cb1-9" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb1-10"><a href="state-inf.html#cb1-10" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
+<span id="cb1-11"><a href="state-inf.html#cb1-11" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> m)</span>
+<span id="cb1-12"><a href="state-inf.html#cb1-12" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
+<span id="cb1-13"><a href="state-inf.html#cb1-13" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb1-14"><a href="state-inf.html#cb1-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-15"><a href="state-inf.html#cb1-15" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb1-16"><a href="state-inf.html#cb1-16" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr, <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span></code></pre></div>
 </div>
 <div id="setup" class="section level2" number="1.2">
 <h2><span class="header-section-number">1.2</span> Setup</h2>
 <div id="define-variables" class="section level3" number="1.2.1">
 <h3><span class="header-section-number">1.2.1</span> Define variables</h3>
 <p>Given an optimized <code>MakeADFun</code> object <code>obj</code>, we need to setup some variables to compute the probabilities detailed below.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="state-inf.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve the objects at ML value</span></span>
-<span id="cb3-2"><a href="state-inf.html#cb3-2" aria-hidden="true" tabindex="-1"></a>adrep <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(obj_tmb<span class="sc">$</span>env<span class="sc">$</span>last.par.best)</span>
-<span id="cb3-3"><a href="state-inf.html#cb3-3" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> adrep<span class="sc">$</span>delta</span>
-<span id="cb3-4"><a href="state-inf.html#cb3-4" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> adrep<span class="sc">$</span>gamma</span>
-<span id="cb3-5"><a href="state-inf.html#cb3-5" aria-hidden="true" tabindex="-1"></a>emission_probs <span class="ot">&lt;-</span> adrep<span class="sc">$</span>emission_probs</span>
-<span id="cb3-6"><a href="state-inf.html#cb3-6" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> adrep<span class="sc">$</span>n</span>
-<span id="cb3-7"><a href="state-inf.html#cb3-7" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(delta)</span>
-<span id="cb3-8"><a href="state-inf.html#cb3-8" aria-hidden="true" tabindex="-1"></a>mllk <span class="ot">&lt;-</span> adrep<span class="sc">$</span>mllk</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="state-inf.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve the objects at ML value</span></span>
+<span id="cb2-2"><a href="state-inf.html#cb2-2" aria-hidden="true" tabindex="-1"></a>adrep <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(obj_tmb<span class="sc">$</span>env<span class="sc">$</span>last.par.best)</span>
+<span id="cb2-3"><a href="state-inf.html#cb2-3" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> adrep<span class="sc">$</span>delta</span>
+<span id="cb2-4"><a href="state-inf.html#cb2-4" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> adrep<span class="sc">$</span>gamma</span>
+<span id="cb2-5"><a href="state-inf.html#cb2-5" aria-hidden="true" tabindex="-1"></a>emission_probs <span class="ot">&lt;-</span> adrep<span class="sc">$</span>emission_probs</span>
+<span id="cb2-6"><a href="state-inf.html#cb2-6" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> adrep<span class="sc">$</span>n</span>
+<span id="cb2-7"><a href="state-inf.html#cb2-7" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(delta)</span>
+<span id="cb2-8"><a href="state-inf.html#cb2-8" aria-hidden="true" tabindex="-1"></a>mllk <span class="ot">&lt;-</span> adrep<span class="sc">$</span>mllk</span></code></pre></div>
 <p>Note that <span class="math inline">\({\boldsymbol\lambda}\)</span> is not needed as we already have access to the emission probabilities.</p>
 </div>
 <div id="emissionoutput-probabilities" class="section level3" number="1.2.2">
@@ -298,36 +313,36 @@ div.csl-indent {
 <p>Using the notation in the article Section 3.1, emission probabilities are the conditional distributions <span class="math inline">\(p_i(x) = \text{P}(X_t = x \vert C_t = i) = \frac{e^{-\lambda_i} \lambda_i^x}{x!}\)</span>.
 We store all these in a data frame where each row and column represent a data and a state respectively.</p>
 <p>We compute these probabilities in <code>C++</code> rather than in <code>R</code> because it is faster and not more complicated to write</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="state-inf.html#cb4-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
-<span id="cb4-2"><a href="state-inf.html#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
-<span id="cb4-3"><a href="state-inf.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
-<span id="cb4-4"><a href="state-inf.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; emission_probs(n, m);</span>
-<span id="cb4-5"><a href="state-inf.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
-<span id="cb4-6"><a href="state-inf.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
-<span id="cb4-7"><a href="state-inf.html#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
-<span id="cb4-8"><a href="state-inf.html#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (x[i] != x[i]) { <span class="co">// f != f returns true if and only if f is NaN. </span></span>
-<span id="cb4-9"><a href="state-inf.html#cb4-9" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
-<span id="cb4-10"><a href="state-inf.html#cb4-10" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = row1vec;</span>
-<span id="cb4-11"><a href="state-inf.html#cb4-11" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb4-12"><a href="state-inf.html#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
-<span id="cb4-13"><a href="state-inf.html#cb4-13" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = dpois(x[i], lambda, <span class="kw">false</span>);</span>
-<span id="cb4-14"><a href="state-inf.html#cb4-14" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb4-15"><a href="state-inf.html#cb4-15" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="state-inf.html#cb3-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
+<span id="cb3-2"><a href="state-inf.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
+<span id="cb3-3"><a href="state-inf.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
+<span id="cb3-4"><a href="state-inf.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; emission_probs(n, m);</span>
+<span id="cb3-5"><a href="state-inf.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
+<span id="cb3-6"><a href="state-inf.html#cb3-6" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
+<span id="cb3-7"><a href="state-inf.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
+<span id="cb3-8"><a href="state-inf.html#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (x[i] != x[i]) { <span class="co">// f != f returns true if and only if f is NaN. </span></span>
+<span id="cb3-9"><a href="state-inf.html#cb3-9" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
+<span id="cb3-10"><a href="state-inf.html#cb3-10" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = row1vec;</span>
+<span id="cb3-11"><a href="state-inf.html#cb3-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-12"><a href="state-inf.html#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
+<span id="cb3-13"><a href="state-inf.html#cb3-13" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = dpois(x[i], lambda, <span class="kw">false</span>);</span>
+<span id="cb3-14"><a href="state-inf.html#cb3-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-15"><a href="state-inf.html#cb3-15" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
 <p>Nevertheless, we also need to compute them in <code>R</code> for [#forecast]</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="state-inf.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate emission probabilities</span></span>
-<span id="cb5-2"><a href="state-inf.html#cb5-2" aria-hidden="true" tabindex="-1"></a>get.emission.probs <span class="ot">&lt;-</span> <span class="cf">function</span>(data, lambda) {</span>
-<span id="cb5-3"><a href="state-inf.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(data)</span>
-<span id="cb5-4"><a href="state-inf.html#cb5-4" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">length</span>(lambda)</span>
-<span id="cb5-5"><a href="state-inf.html#cb5-5" aria-hidden="true" tabindex="-1"></a>  emission_probs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> n, <span class="at">ncol =</span> m)</span>
-<span id="cb5-6"><a href="state-inf.html#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb5-7"><a href="state-inf.html#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(data[i])) {</span>
-<span id="cb5-8"><a href="state-inf.html#cb5-8" aria-hidden="true" tabindex="-1"></a>      emission_probs[i, ] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, m)</span>
-<span id="cb5-9"><a href="state-inf.html#cb5-9" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb5-10"><a href="state-inf.html#cb5-10" aria-hidden="true" tabindex="-1"></a>      emission_probs[i, ] <span class="ot">&lt;-</span> <span class="fu">dpois</span>(data[i], lambda)</span>
-<span id="cb5-11"><a href="state-inf.html#cb5-11" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-12"><a href="state-inf.html#cb5-12" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-13"><a href="state-inf.html#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(emission_probs)</span>
-<span id="cb5-14"><a href="state-inf.html#cb5-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="state-inf.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate emission probabilities</span></span>
+<span id="cb4-2"><a href="state-inf.html#cb4-2" aria-hidden="true" tabindex="-1"></a>get.emission.probs <span class="ot">&lt;-</span> <span class="cf">function</span>(data, lambda) {</span>
+<span id="cb4-3"><a href="state-inf.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(data)</span>
+<span id="cb4-4"><a href="state-inf.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">length</span>(lambda)</span>
+<span id="cb4-5"><a href="state-inf.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  emission_probs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> n, <span class="at">ncol =</span> m)</span>
+<span id="cb4-6"><a href="state-inf.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb4-7"><a href="state-inf.html#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(data[i])) {</span>
+<span id="cb4-8"><a href="state-inf.html#cb4-8" aria-hidden="true" tabindex="-1"></a>      emission_probs[i, ] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, m)</span>
+<span id="cb4-9"><a href="state-inf.html#cb4-9" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb4-10"><a href="state-inf.html#cb4-10" aria-hidden="true" tabindex="-1"></a>      emission_probs[i, ] <span class="ot">&lt;-</span> <span class="fu">dpois</span>(data[i], lambda)</span>
+<span id="cb4-11"><a href="state-inf.html#cb4-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-12"><a href="state-inf.html#cb4-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-13"><a href="state-inf.html#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(emission_probs)</span>
+<span id="cb4-14"><a href="state-inf.html#cb4-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>
 <div id="log-forward" class="section level2" number="1.3">
@@ -336,22 +351,22 @@ We store all these in a data frame where each row and column represent a data an
 TO FIX LINK_TO_hmm_likelihood!!!!!!!!!!!!!!!!!.</p>
 <p>We show here a way to compute the log of the forward probabilities,
 using a scaling scheme defined by <span class="citation">(see <a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 66</a> and p.334)</span>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="state-inf.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-forward probabilities (scaling used)</span></span>
-<span id="cb6-2"><a href="state-inf.html#cb6-2" aria-hidden="true" tabindex="-1"></a>lalpha <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
-<span id="cb6-3"><a href="state-inf.html#cb6-3" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
-<span id="cb6-4"><a href="state-inf.html#cb6-4" aria-hidden="true" tabindex="-1"></a>sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb6-5"><a href="state-inf.html#cb6-5" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(sumfoo)</span>
-<span id="cb6-6"><a href="state-inf.html#cb6-6" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
-<span id="cb6-7"><a href="state-inf.html#cb6-7" aria-hidden="true" tabindex="-1"></a>lalpha[, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
-<span id="cb6-8"><a href="state-inf.html#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
-<span id="cb6-9"><a href="state-inf.html#cb6-9" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma <span class="sc">*</span> emission_probs[i, ]</span>
-<span id="cb6-10"><a href="state-inf.html#cb6-10" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb6-11"><a href="state-inf.html#cb6-11" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
-<span id="cb6-12"><a href="state-inf.html#cb6-12" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
-<span id="cb6-13"><a href="state-inf.html#cb6-13" aria-hidden="true" tabindex="-1"></a>  lalpha[, i] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
-<span id="cb6-14"><a href="state-inf.html#cb6-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-15"><a href="state-inf.html#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># lalpha contains n=240 columns, so we only display 5 for readability</span></span>
-<span id="cb6-16"><a href="state-inf.html#cb6-16" aria-hidden="true" tabindex="-1"></a>lalpha[, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="state-inf.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-forward probabilities (scaling used)</span></span>
+<span id="cb5-2"><a href="state-inf.html#cb5-2" aria-hidden="true" tabindex="-1"></a>lalpha <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
+<span id="cb5-3"><a href="state-inf.html#cb5-3" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
+<span id="cb5-4"><a href="state-inf.html#cb5-4" aria-hidden="true" tabindex="-1"></a>sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb5-5"><a href="state-inf.html#cb5-5" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb5-6"><a href="state-inf.html#cb5-6" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb5-7"><a href="state-inf.html#cb5-7" aria-hidden="true" tabindex="-1"></a>lalpha[, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
+<span id="cb5-8"><a href="state-inf.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
+<span id="cb5-9"><a href="state-inf.html#cb5-9" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma <span class="sc">*</span> emission_probs[i, ]</span>
+<span id="cb5-10"><a href="state-inf.html#cb5-10" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb5-11"><a href="state-inf.html#cb5-11" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb5-12"><a href="state-inf.html#cb5-12" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb5-13"><a href="state-inf.html#cb5-13" aria-hidden="true" tabindex="-1"></a>  lalpha[, i] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
+<span id="cb5-14"><a href="state-inf.html#cb5-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-15"><a href="state-inf.html#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># lalpha contains n=240 columns, so we only display 5 for readability</span></span>
+<span id="cb5-16"><a href="state-inf.html#cb5-16" aria-hidden="true" tabindex="-1"></a>lalpha[, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
 <pre><code>##            [,1]       [,2]       [,3]      [,4]      [,5]
 ## [1,] -0.2920639 -0.5591179 -0.8265948 -1.094088 -1.361583
 ## [2,] -6.4651986 -7.7716769 -8.1146145 -8.385232 -8.652850</code></pre>
@@ -360,20 +375,20 @@ using a scaling scheme defined by <span class="citation">(see <a href="#ref-zucc
 <h2><span class="header-section-number">1.4</span> Log-backward probabilities</h2>
 <p>The backward probabilities have been defined in the same section
 <span class="citation"><a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="#ref-zucchini" role="doc-biblioref">2016, p~.67</a> and p~.334)</span>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="state-inf.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-backwards probabilities (scaling used)</span></span>
-<span id="cb8-2"><a href="state-inf.html#cb8-2" aria-hidden="true" tabindex="-1"></a>lbeta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
-<span id="cb8-3"><a href="state-inf.html#cb8-3" aria-hidden="true" tabindex="-1"></a>lbeta[, n] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, m)</span>
-<span id="cb8-4"><a href="state-inf.html#cb8-4" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="fu">rep</span> (<span class="dv">1</span> <span class="sc">/</span> m, m)</span>
-<span id="cb8-5"><a href="state-inf.html#cb8-5" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(m)</span>
-<span id="cb8-6"><a href="state-inf.html#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span><span class="dv">1</span>) {</span>
-<span id="cb8-7"><a href="state-inf.html#cb8-7" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> gamma <span class="sc">%*%</span> (emission_probs[i <span class="sc">+</span> <span class="dv">1</span>, ] <span class="sc">*</span> foo)</span>
-<span id="cb8-8"><a href="state-inf.html#cb8-8" aria-hidden="true" tabindex="-1"></a>  lbeta[, i] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
-<span id="cb8-9"><a href="state-inf.html#cb8-9" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb8-10"><a href="state-inf.html#cb8-10" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
-<span id="cb8-11"><a href="state-inf.html#cb8-11" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
-<span id="cb8-12"><a href="state-inf.html#cb8-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-13"><a href="state-inf.html#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># lbeta contains n=240 columns, so we only display 4 for readability</span></span>
-<span id="cb8-14"><a href="state-inf.html#cb8-14" aria-hidden="true" tabindex="-1"></a>lbeta[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="state-inf.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-backwards probabilities (scaling used)</span></span>
+<span id="cb7-2"><a href="state-inf.html#cb7-2" aria-hidden="true" tabindex="-1"></a>lbeta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
+<span id="cb7-3"><a href="state-inf.html#cb7-3" aria-hidden="true" tabindex="-1"></a>lbeta[, n] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, m)</span>
+<span id="cb7-4"><a href="state-inf.html#cb7-4" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="fu">rep</span> (<span class="dv">1</span> <span class="sc">/</span> m, m)</span>
+<span id="cb7-5"><a href="state-inf.html#cb7-5" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(m)</span>
+<span id="cb7-6"><a href="state-inf.html#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span><span class="dv">1</span>) {</span>
+<span id="cb7-7"><a href="state-inf.html#cb7-7" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> gamma <span class="sc">%*%</span> (emission_probs[i <span class="sc">+</span> <span class="dv">1</span>, ] <span class="sc">*</span> foo)</span>
+<span id="cb7-8"><a href="state-inf.html#cb7-8" aria-hidden="true" tabindex="-1"></a>  lbeta[, i] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
+<span id="cb7-9"><a href="state-inf.html#cb7-9" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb7-10"><a href="state-inf.html#cb7-10" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb7-11"><a href="state-inf.html#cb7-11" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb7-12"><a href="state-inf.html#cb7-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-13"><a href="state-inf.html#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># lbeta contains n=240 columns, so we only display 4 for readability</span></span>
+<span id="cb7-14"><a href="state-inf.html#cb7-14" aria-hidden="true" tabindex="-1"></a>lbeta[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
 <pre><code>##           [,1]      [,2]      [,3]      [,4]
 ## [1,] -177.2275 -176.9600 -176.6925 -176.4250
 ## [2,] -178.3456 -178.0781 -177.8099 -177.5253</code></pre>
@@ -385,24 +400,23 @@ using a scaling scheme defined by <span class="citation">(see <a href="#ref-zucc
 <span class="math display">\[
 \text{P}(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
 \]</span></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="state-inf.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute conditional state probabilities, smoothing probabilities</span></span>
-<span id="cb10-2"><a href="state-inf.html#cb10-2" aria-hidden="true" tabindex="-1"></a>stateprobs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> n, <span class="at">nrow =</span> m)</span>
-<span id="cb10-3"><a href="state-inf.html#cb10-3" aria-hidden="true" tabindex="-1"></a>llk <span class="ot">&lt;-</span> <span class="sc">-</span> mllk</span>
-<span id="cb10-4"><a href="state-inf.html#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb10-5"><a href="state-inf.html#cb10-5" aria-hidden="true" tabindex="-1"></a>  stateprobs[, i] <span class="ot">&lt;-</span> <span class="fu">exp</span>(lalpha[, i] <span class="sc">+</span> lbeta[, i] <span class="sc">-</span> llk)</span>
-<span id="cb10-6"><a href="state-inf.html#cb10-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="state-inf.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute conditional state probabilities, smoothing probabilities</span></span>
+<span id="cb9-2"><a href="state-inf.html#cb9-2" aria-hidden="true" tabindex="-1"></a>stateprobs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> n, <span class="at">nrow =</span> m)</span>
+<span id="cb9-3"><a href="state-inf.html#cb9-3" aria-hidden="true" tabindex="-1"></a>llk <span class="ot">&lt;-</span> <span class="sc">-</span> mllk</span>
+<span id="cb9-4"><a href="state-inf.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb9-5"><a href="state-inf.html#cb9-5" aria-hidden="true" tabindex="-1"></a>  stateprobs[, i] <span class="ot">&lt;-</span> <span class="fu">exp</span>(lalpha[, i] <span class="sc">+</span> lbeta[, i] <span class="sc">-</span> llk)</span>
+<span id="cb9-6"><a href="state-inf.html#cb9-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Local decoding is a straightforward maximum of the smoothing probabilities.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="state-inf.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Most probable states (local decoding)</span></span>
-<span id="cb11-2"><a href="state-inf.html#cb11-2" aria-hidden="true" tabindex="-1"></a>ldecode <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n)</span>
-<span id="cb11-3"><a href="state-inf.html#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb11-4"><a href="state-inf.html#cb11-4" aria-hidden="true" tabindex="-1"></a>  ldecode[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(stateprobs[, i])</span>
-<span id="cb11-5"><a href="state-inf.html#cb11-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-6"><a href="state-inf.html#cb11-6" aria-hidden="true" tabindex="-1"></a>ldecode</span></code></pre></div>
-<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-##  [51] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1
-## [101] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [151] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1
-## [201] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="state-inf.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Most probable states (local decoding)</span></span>
+<span id="cb10-2"><a href="state-inf.html#cb10-2" aria-hidden="true" tabindex="-1"></a>ldecode <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n)</span>
+<span id="cb10-3"><a href="state-inf.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb10-4"><a href="state-inf.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  ldecode[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(stateprobs[, i])</span>
+<span id="cb10-5"><a href="state-inf.html#cb10-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-6"><a href="state-inf.html#cb10-6" aria-hidden="true" tabindex="-1"></a>ldecode</span></code></pre></div>
+<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [78] 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [155] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [232] 1 1 1 1 1 1 1 1 1</code></pre>
 </div>
 <div id="forecast" class="section level2" number="1.6">
 <h2><span class="header-section-number">1.6</span> Forecast</h2>
@@ -415,32 +429,32 @@ implementation in R is detailed in <span class="citation">(<a href="#ref-zucchin
 \text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{{\boldsymbol\alpha}_T {\boldsymbol\gamma}^h {\boldsymbol P}(x) {\boldsymbol 1}&#39;}{{\boldsymbol\alpha}_T {\boldsymbol 1}&#39;} = {\boldsymbol\Phi}_T {\boldsymbol\gamma}^h {\boldsymbol P}(x) {\boldsymbol 1}&#39;
 \]</span>
 An implementation of this, using a scaling scheme is</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="state-inf.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of steps</span></span>
-<span id="cb13-2"><a href="state-inf.html#cb13-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb13-3"><a href="state-inf.html#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Values for which we want the forecast probabilities</span></span>
-<span id="cb13-4"><a href="state-inf.html#cb13-4" aria-hidden="true" tabindex="-1"></a>xf <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">50</span></span>
-<span id="cb13-5"><a href="state-inf.html#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="state-inf.html#cb13-6" aria-hidden="true" tabindex="-1"></a>nxf <span class="ot">&lt;-</span> <span class="fu">length</span>(xf)</span>
-<span id="cb13-7"><a href="state-inf.html#cb13-7" aria-hidden="true" tabindex="-1"></a>dxf <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> h, <span class="at">ncol =</span> nxf)</span>
-<span id="cb13-8"><a href="state-inf.html#cb13-8" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
-<span id="cb13-9"><a href="state-inf.html#cb13-9" aria-hidden="true" tabindex="-1"></a>sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb13-10"><a href="state-inf.html#cb13-10" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(sumfoo)</span>
-<span id="cb13-11"><a href="state-inf.html#cb13-11" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
-<span id="cb13-12"><a href="state-inf.html#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
-<span id="cb13-13"><a href="state-inf.html#cb13-13" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma <span class="sc">*</span> emission_probs[i, ]</span>
-<span id="cb13-14"><a href="state-inf.html#cb13-14" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>( foo)</span>
-<span id="cb13-15"><a href="state-inf.html#cb13-15" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
-<span id="cb13-16"><a href="state-inf.html#cb13-16" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
-<span id="cb13-17"><a href="state-inf.html#cb13-17" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-18"><a href="state-inf.html#cb13-18" aria-hidden="true" tabindex="-1"></a>emission_probs_xf <span class="ot">&lt;-</span> <span class="fu">get.emission.probs</span>(xf, lambda)</span>
-<span id="cb13-19"><a href="state-inf.html#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>h) {</span>
-<span id="cb13-20"><a href="state-inf.html#cb13-20" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma</span>
-<span id="cb13-21"><a href="state-inf.html#cb13-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
-<span id="cb13-22"><a href="state-inf.html#cb13-22" aria-hidden="true" tabindex="-1"></a>    dxf[i, ] <span class="ot">&lt;-</span> dxf[i, ] <span class="sc">+</span> foo[j] <span class="sc">*</span> emission_probs_xf[, j]</span>
-<span id="cb13-23"><a href="state-inf.html#cb13-23" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb13-24"><a href="state-inf.html#cb13-24" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-25"><a href="state-inf.html#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="co"># dxf contains n=240 columns, so we only display 4 for readability</span></span>
-<span id="cb13-26"><a href="state-inf.html#cb13-26" aria-hidden="true" tabindex="-1"></a>dxf[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="state-inf.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of steps</span></span>
+<span id="cb12-2"><a href="state-inf.html#cb12-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb12-3"><a href="state-inf.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Values for which we want the forecast probabilities</span></span>
+<span id="cb12-4"><a href="state-inf.html#cb12-4" aria-hidden="true" tabindex="-1"></a>xf <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">50</span></span>
+<span id="cb12-5"><a href="state-inf.html#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="state-inf.html#cb12-6" aria-hidden="true" tabindex="-1"></a>nxf <span class="ot">&lt;-</span> <span class="fu">length</span>(xf)</span>
+<span id="cb12-7"><a href="state-inf.html#cb12-7" aria-hidden="true" tabindex="-1"></a>dxf <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> h, <span class="at">ncol =</span> nxf)</span>
+<span id="cb12-8"><a href="state-inf.html#cb12-8" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
+<span id="cb12-9"><a href="state-inf.html#cb12-9" aria-hidden="true" tabindex="-1"></a>sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb12-10"><a href="state-inf.html#cb12-10" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb12-11"><a href="state-inf.html#cb12-11" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb12-12"><a href="state-inf.html#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
+<span id="cb12-13"><a href="state-inf.html#cb12-13" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma <span class="sc">*</span> emission_probs[i, ]</span>
+<span id="cb12-14"><a href="state-inf.html#cb12-14" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>( foo)</span>
+<span id="cb12-15"><a href="state-inf.html#cb12-15" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb12-16"><a href="state-inf.html#cb12-16" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb12-17"><a href="state-inf.html#cb12-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-18"><a href="state-inf.html#cb12-18" aria-hidden="true" tabindex="-1"></a>emission_probs_xf <span class="ot">&lt;-</span> <span class="fu">get.emission.probs</span>(xf, lambda)</span>
+<span id="cb12-19"><a href="state-inf.html#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>h) {</span>
+<span id="cb12-20"><a href="state-inf.html#cb12-20" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma</span>
+<span id="cb12-21"><a href="state-inf.html#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb12-22"><a href="state-inf.html#cb12-22" aria-hidden="true" tabindex="-1"></a>    dxf[i, ] <span class="ot">&lt;-</span> dxf[i, ] <span class="sc">+</span> foo[j] <span class="sc">*</span> emission_probs_xf[, j]</span>
+<span id="cb12-23"><a href="state-inf.html#cb12-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-24"><a href="state-inf.html#cb12-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-25"><a href="state-inf.html#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co"># dxf contains n=240 columns, so we only display 4 for readability</span></span>
+<span id="cb12-26"><a href="state-inf.html#cb12-26" aria-hidden="true" tabindex="-1"></a>dxf[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
 <pre><code>## [1] 0.36414482 0.36531388 0.18441055 0.06322379</code></pre>
 </div>
 <div id="global-decoding" class="section level2" number="1.7">
@@ -452,24 +466,23 @@ maximizes the conditional probability of all states simultaneously, i.e.
 (i_1^*, \ldots, i_n^*) = \mathop{\mathrm{argmax}}_{i_1, \ldots, i_n \in \{1, \ldots, m \}} \text{P}(C_1 = i_1, \ldots, C_n = i_n \vert X^{(n)} = x^{(n)}).
 \]</span>
 An implementation of it is</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="state-inf.html#cb15-1" aria-hidden="true" tabindex="-1"></a>xi <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, m)</span>
-<span id="cb15-2"><a href="state-inf.html#cb15-2" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
-<span id="cb15-3"><a href="state-inf.html#cb15-3" aria-hidden="true" tabindex="-1"></a>xi[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> foo <span class="sc">/</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb15-4"><a href="state-inf.html#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
-<span id="cb15-5"><a href="state-inf.html#cb15-5" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">apply</span>(xi[i <span class="sc">-</span> <span class="dv">1</span>, ] <span class="sc">*</span> gamma, <span class="dv">2</span>, max) <span class="sc">*</span> emission_probs[i, ]</span>
-<span id="cb15-6"><a href="state-inf.html#cb15-6" aria-hidden="true" tabindex="-1"></a>  xi[i, ] <span class="ot">&lt;-</span> foo <span class="sc">/</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb15-7"><a href="state-inf.html#cb15-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb15-8"><a href="state-inf.html#cb15-8" aria-hidden="true" tabindex="-1"></a>iv <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n)</span>
-<span id="cb15-9"><a href="state-inf.html#cb15-9" aria-hidden="true" tabindex="-1"></a>iv[n] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(xi[n, ])</span>
-<span id="cb15-10"><a href="state-inf.html#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span><span class="dv">1</span>){</span>
-<span id="cb15-11"><a href="state-inf.html#cb15-11" aria-hidden="true" tabindex="-1"></a>  iv[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(gamma[, iv[i <span class="sc">+</span> <span class="dv">1</span>]] <span class="sc">*</span> xi[i, ])</span>
-<span id="cb15-12"><a href="state-inf.html#cb15-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb15-13"><a href="state-inf.html#cb15-13" aria-hidden="true" tabindex="-1"></a>iv</span></code></pre></div>
-<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-##  [51] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1
-## [101] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [151] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1
-## [201] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="state-inf.html#cb14-1" aria-hidden="true" tabindex="-1"></a>xi <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, m)</span>
+<span id="cb14-2"><a href="state-inf.html#cb14-2" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
+<span id="cb14-3"><a href="state-inf.html#cb14-3" aria-hidden="true" tabindex="-1"></a>xi[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> foo <span class="sc">/</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb14-4"><a href="state-inf.html#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
+<span id="cb14-5"><a href="state-inf.html#cb14-5" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">apply</span>(xi[i <span class="sc">-</span> <span class="dv">1</span>, ] <span class="sc">*</span> gamma, <span class="dv">2</span>, max) <span class="sc">*</span> emission_probs[i, ]</span>
+<span id="cb14-6"><a href="state-inf.html#cb14-6" aria-hidden="true" tabindex="-1"></a>  xi[i, ] <span class="ot">&lt;-</span> foo <span class="sc">/</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb14-7"><a href="state-inf.html#cb14-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-8"><a href="state-inf.html#cb14-8" aria-hidden="true" tabindex="-1"></a>iv <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n)</span>
+<span id="cb14-9"><a href="state-inf.html#cb14-9" aria-hidden="true" tabindex="-1"></a>iv[n] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(xi[n, ])</span>
+<span id="cb14-10"><a href="state-inf.html#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span><span class="dv">1</span>){</span>
+<span id="cb14-11"><a href="state-inf.html#cb14-11" aria-hidden="true" tabindex="-1"></a>  iv[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(gamma[, iv[i <span class="sc">+</span> <span class="dv">1</span>]] <span class="sc">*</span> xi[i, ])</span>
+<span id="cb14-12"><a href="state-inf.html#cb14-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-13"><a href="state-inf.html#cb14-13" aria-hidden="true" tabindex="-1"></a>iv</span></code></pre></div>
+<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [78] 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [155] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [232] 1 1 1 1 1 1 1 1 1</code></pre>
 
 </div>
 </div>

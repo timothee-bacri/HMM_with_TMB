@@ -99,7 +99,7 @@ In order to perform a parametric bootstrap, we need to be able to generate data 
 
 For readability and code maintenance, it is conventional to store procedures that will be used more than once into functions.
 
-The data-generating function is defined in \citet[A.1.5 ~p.333]{zucchini}.
+The data-generating function is defined in [@zucchini, Section A.1.5 p.333].
 ```{r 5generate_sample-original, eval=FALSE}
 pois.HMM.generate.sample <- function(ns,mod) {
   mvect <- 1:mod$m
