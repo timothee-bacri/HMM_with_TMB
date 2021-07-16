@@ -114,7 +114,7 @@ parameters <- pois.HMM.pn2pw(m, lambda, gamma)
 This object, stored as `obj_tmb` requires the data, the initial values, and the previously created DLL as input.
 Setting argument `silent = TRUE` disables tracing information and is only used here to avoid excessive output.
 
-```{r 4madeadfun-example}
+```{r 4makeadfun-example}
 obj_tmb <- MakeADFun(TMB_data, parameters,
                      DLL = "poi_hmm", silent = TRUE)
 ```
@@ -123,7 +123,7 @@ obj_tmb <- MakeADFun(TMB_data, parameters,
 This object also contains the previously defined initial values as a vector (`par`) rather than a list.
 The negative log-likelihood (`fn`), its gradient (`gr`), and Hessian (`he`) are functions of the parameters (in vector form) while the data are considered fixed: 
 
-```{r 4madeadfun-example2}
+```{r 4makeadfun-example2}
 obj_tmb$par
 obj_tmb$fn(obj_tmb$par)
 obj_tmb$gr(obj_tmb$par)
@@ -274,7 +274,7 @@ Possible solutions are constrained optimization and different parametrization.
 
 As an example, we will look at a three-state HMM with the constraint $\gamma_{12} = \gamma_{13}$.
 
-```{r nested_multiple_param_example}
+```{r 4nested_multiple_param_example}
 # Model with 2 states
 m <- 3
 TMB_data <- list(x = tinn_data, m = m)
@@ -316,11 +316,10 @@ $$\begin{pmatrix}
 \tau_{31}&\tau_{32}&
 \end{pmatrix}$$
 
-As a vector in `R`, it becomes
-$\left(\tau_{21}, \tau_{31}, \tau_{12}, \tau_{32}, \tau_{13}, \tau_{23}\right)$.
-Therefore, the constraint needs to be placed on the $3^{rd}$ and $6^{th}$ vector parameter.
+As a vector in `R`, it becomes $\left(\tau_{21}, \tau_{31}, \tau_{12}, \tau_{32}, \tau_{13}, \tau_{23}\right)$.
+Therefore, the constraint needs to be placed on the $3^{rd}$ and $5^{th}$ vector parameter.
 
-```{r nested_multiple_param_example_nlminb}
+```{r 4nested_multiple_param_example_nlminb}
 map <- list(tlambda = as.factor(c(1, 2, 3)),
             tgamma = as.factor(c(4, 5, 6, 7, 6, 8)))
 fixed_par_obj_tmb <- MakeADFun(TMB_data, parameters,

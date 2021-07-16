@@ -162,7 +162,7 @@ DATA_SIZE <- length(tinn_data)
 BOOTSTRAP_SAMPLES <- 10
 
 # MLE
-ML_working_estimates <- obj_tmb$env$last.par.best
+ML_working_estimates <- obj_tmb$par
 ML_natural_estimates <- obj_tmb$report(ML_working_estimates)
 lambda <- ML_natural_estimates$lambda
 gamma <- ML_natural_estimates$gamma
@@ -214,7 +214,14 @@ print(bootstrap_CI, row.names = FALSE)
 
 It should be noted that some bootstrap estimates can be very large or very small.
 One possible reason is that the randomly generated bootstrap sample might contain long chains of the same values, thus causing some probabilities in the TPM to be near the boundary 0 or 1.
-However, a large number of bootstrap samples lowers that risk since we automatically discard 5\% of the most extreme values during the data generating process.
+However, a large number of bootstrap samples lowers that risk since we retrieve a 95\% CI.
+
+It is important for the bootstrap procedure to take into account the fact that estimates may not necessarily all be in the same order.
+For example, the first bootstrap may evaluate $(\lambda_1, \lambda_2) = (1.1, 3.1)$ while the second may evaluate to $(\lambda_1, \lambda_2) = (3.11, 1.11)$.
+Since we are looking to aggregate these estimates in order to derive CI through their 95\% quantiles, it is necessary to impose an order on these estimates, to avoid grouping some $\lambda_1$ with some $\lambda_2$.
+
+The first that comes to mind is the ascending order.
+To ensure that $\b{\hat{\lambda}}$ are kept in ascending order, we refer to our Section [Label Switching](#label-switching) for a solution to this issue.
 
 ## Profiling the nll
 

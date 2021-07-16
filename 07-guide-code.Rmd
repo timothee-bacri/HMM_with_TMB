@@ -1,24 +1,58 @@
-# GitHub directory structure
-For an easier reading, we recommend opening the file `hmm-tmb.Rproj` with R-Studio.
+# GitHub
+For an easier reading, we recommend opening the file `Data supplements.Rproj` with R-Studio, which lets the user have the correct working path set up automatically.
+Other files can be opened directly by double-clicking on them, or by the `Files` tab in R-Studio.
 Most of the code can be folded/collapsed into sections easily by clicking in the menu `Edit`->`Collapse All Output`.
 Unfolding can be done by clicking on the arrows to the left of the folded sections, or in the menu `Edit`->`Expand All Output`.
 
-## Folder `code`
-The file `main.R` is used to run the procedures related to timing and comparisons presented in the article.
+## Directory structure
+### Folder `code`
 
+In this project, each variable storing important results ends with the abbreviated name of the dataset it refers to.
+For example, `conf_int_tinn` refers to the confidence intervals about the tinnitus dataset, and similarly with `conf_int_lamb` `conf_int_simu1` and `conf_int_simu2`.
+In this section, `conf_int_*` will refer to any of these four variables, and similarly for other variables storing results.
+
+The file `main.R` is used to run the procedures related to timing and comparisons presented in the article.\
 The first chunk of code it runs can be found in the file `setup_parameters.R` in the same folder.
 Its role is to set up multiple variables, either to define some global constants or to store useful results for easier maintenance.
 
-The following chunks of code are `poi_hmm_tinn.R`, `poi_hmm_lamb.R`, `poi_hmm_simu1.R`, and `poi_hmm_simu2.R`.
-Most of their code is common.\
+The next chunks of code are `poi_hmm_tinn.R`, `poi_hmm_lamb.R`, `poi_hmm_simu1.R`, and `poi_hmm_simu2.R`.
+Most of their code is common:
 
-`Parameters and covariates` defines parameters and covariates in natural form. The simulation files generate data there.\
-`Parameters & covariates for TMB` transforms parameters and covariates to their working form.\
-`Estimation` computes estimates with and without TMB for further comparison.\
-`Store negative log-likelihoods`
+* `Parameters and covariates` defines parameters and covariates in natural form. The simulation files generate data there.
+* `Parameters & covariates for TMB` transforms parameters and covariates to their working form.
+* `Estimation` computes estimates with and without TMB for further comparison. The estimates are stored in the data-frames `conf_int_*`.
+* `Store negative log-likelihoods` stores negative log-likelihoods to check differences in accuracy. Values are stored in the `mllk_values_*` variables.
+* `Creating variables for the CIs` creates necessary variables for to compute confidence intervals (CIs).\
+* `Benchmarks` uses the `microbenchmark` package to accurately time:
 
-**Randomness**: A unique randomness seed is set in each of these four files before all time-consuming tasks which involve some randomness.
+    * the $TMB_0$ $TMB_G$ $TMB_h$ and $TMB_{GH}$ procedures. Their times are stored in the data-frames `estim_benchmarks_df_*`
+    * the negative log-likelihood computation with and without `TMB`. Their times are stored in the data-frames `mllk_times_df_*`.
+    * multiple estimation procedures: `r PROCEDURES_METHOD` and `TMB`. Their times are stored in the data-frames `method_comparison_df_*`.
+
+* `Profiling the likelihood` uses the `TMB` package's `tmbprofile` function to determine a profile of the likelihood, then determines a CI based on it for the corresponding working parameter. Eventually, CIs are derived when possible for the natural parameters $\hat{\b{\lambda}}$ and $\hat{\b{\Gamma}}$. The CIs are stored in the data-frames `conf_int_*`.
+* `Bootstrap` derives a parametric bootstrap CI from the dataset, while checking that the generated data can be estimated without errors, after which we apply our label switching function to ensure that estimates of a parameter are only aggregated with estimates of the same parameter. The CIs are stored in the data-frames `conf_int_*`.
+* `TMB confidence intervals` computes CIs based on `TMB`-derived standard errors.  The CIs are stored in the data-frames `conf_int_*`.
+* `Coverage probabilities of the 3 CI methods` simulates coverage samples based on true values when available or on estimates otherwise, then derives CIs using the three CI generation methods described above. The coverage probabilities are stored in the data-frames `conf_int_*`.
+* `Fixes` uses the label-switching algorithm on the estimates in the `conf_int_*` variable to ensure they are correctly ordered, and then reorders $\b{\hat{\Gamma}}$ in the `conf_int_*` variable to a row-wise order instead of the default column-wise order. In short this applies two fixes on the `conf_int_*` variable to make it easier to read.\
+At the end, we reorder the profile likelihood based CIs in case they are not in ascending order.
+
+A unique randomness seed is set in each of these four files before all time-consuming tasks involving some randomness.
 `setup_parameters.R` defines the random number generator's version.
 
-## Folder `data`
-`main.R` stores important results in this folder
+In `poi_hmm_tinn.R`, there is an extra section `Benchmark the same dataset many times to check the benchmark durations has low variance`.
+As written in its title, its role is to time estimation with and without `TMB`.
+However, the estimation is done on the same dataset everytime.
+If everything goes well, the times should have a low variance.
+This is to verify that small background activity on the computer (the computer clock passing time, the user opening a window or moving the mouse) does not affect estimation in any noticeable way.
+If it did affect estimation noticeably, then we would have to apply much stricter control on background processes in order to reliably compare estimation speeds with different optimizers.
+Luckily, a low variance was observed, making the acceleration evidenced in this project significant.
+
+### Folder `data`
+`main.R` stores important results in this folder, and only loads them by default.
+This folder also contains the lamb dataset provided and described by @leroux.
+It also gives access to the tinnitus data collected with the "Track Your Tinnitus" (TYT) mobile application, provided by the University of Regensburg and European School for Interdisciplinary Tinnitus Research (ESIT), of which a detailed description is presented in @pryss and @pryssa.
+Generating the results is detailed in the next section.
+
+The main results are stored in the `conf_int_*` variables, which describe the estimates, their CIs, and their coverage probabilities.
+
+Speed results are available after some post-processing that we leave to the reader, and based on data-frames stored in 

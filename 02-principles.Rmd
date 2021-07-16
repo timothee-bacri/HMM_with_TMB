@@ -6,7 +6,7 @@ In order to run the scripts and example code, you first need to set up TMB by go
 - Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/)
 - Install the R-package `TMB` [@R-TMB] by executing the following code in R:
 
-```{r, eval =FALSE}
+```{r 2install_TMB, eval=FALSE}
 install.packages("TMB")
 ```
 
@@ -61,7 +61,7 @@ Now that the optimization is taken care of, we can display the estimates with st
 sdreport(obj_linreg)
 ```
 If we use `summary` on this object, we also get the variables we have passed to `ADREPORT` in the [*linreg.cpp*](code/linreg.cpp) file. In this example, this is only the residual standard deviation;  `sigma`.
-```{r summary_sdreport}
+```{r 2summary_sdreport}
 summary(sdreport(obj_linreg))
 ```
 The `select` argument restricts the output to variables passed
@@ -123,7 +123,7 @@ obj_linreg$report()
 Note that when you are writing the `C++` nll file, compiling the file again may lead to an error.
 This is because the dynamic library (the `.dll` file) is already loaded, and cannot be overwritten.
 To prevent this, it is useful to either to manually unload the file manually via the code
-```{r}
+```{r dyn_unload, eval=FALSE}
 dyn.unload(dynlib("code/linreg_extended"))
 ```
 Restarting the `R` session via the menu `Session->Restart R` (shortcut `Ctrl+Shift+F10`) will also unload the file, but you will need to load again the `TMB` package.

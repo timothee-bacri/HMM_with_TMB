@@ -54,5 +54,6 @@ For a description of the files and the directory structure, please read [GitHub 
 library(knitr)
 suppressMessages(source("code/packages.R"))
 knitr::read_chunk('functions/utils.R')
+source('code/setup_parameters.R')
 ```
 

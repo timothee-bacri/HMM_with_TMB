@@ -15,7 +15,6 @@ setting-up-tmb
 getting-started
 extending-the-c-nll
 minimal-example
-advanced-example
 parameter-estimation-techniques
 utility-functions
 in-tmb
@@ -41,6 +40,7 @@ application-to-different-data-sets
 tyt-dataset
 simulated-dataset
 lamb-data
-github-directory-structure
+github
+directory-structure
 folder-code
 folder-data

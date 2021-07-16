@@ -44,8 +44,9 @@ When assuming a stationary distribution, computing it can be done via the follow
 ```{r stat.dist}
 ```
 
-#### Label switching
-As the model gets estimated each time, we do not impose by default an order for the states. This can lead to the label switching problem, where states aren't ordered the same way in each model.
+#### Label switching {#label-switching}
+As the model gets estimated each time, we do not impose by default an order for the states.
+This can lead to the label switching problem, where states aren't ordered the same way in each model and are grouped incorrectly.
 The issue can be relevant when comparing results of different optimizers, initial parameters, or classes of models. 
 
 To address the problem, we reorder the states by ascending Poisson means.
@@ -57,7 +58,7 @@ A function to achieve this is named `pois.HMM.label.order` and presented below.
 
 We will go through an example to better understand the process.
 For readability, the TPM is filled with standard row and column indexes instead of probabilities.
-```{r 3relabel}
+```{r 3label-switch}
 lambda <- c(3, 1, 2)
 gamma <- matrix(c(11, 12, 13,
                   21, 22, 23,
