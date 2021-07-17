@@ -202,7 +202,7 @@ div.csl-indent {
 <li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using TMB</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
-<li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions"><i class="fa fa-check"></i><b>4.2</b> Preparing data and functions</a></li>
+<li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions-sondre"><i class="fa fa-check"></i><b>4.2</b> Preparing data and functions <br/><span style="font-size:200%;color:red">SONDRE</span></a></li>
 <li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#modeling"><i class="fa fa-check"></i><b>4.3</b> Modeling</a></li>
 <li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>4.4</b> Nested models</a>
 <ul>
@@ -247,7 +247,17 @@ div.csl-indent {
 <li class="chapter" data-level="7.1.14" data-path="github.html"><a href="github.html#codepoi_hmm_simu2.r"><i class="fa fa-check"></i><b>7.1.14</b> code/poi_hmm_simu2.R</a></li>
 <li class="chapter" data-level="7.1.15" data-path="github.html"><a href="github.html#codepoi_hmm_tinn.r"><i class="fa fa-check"></i><b>7.1.15</b> code/poi_hmm_tinn.R</a></li>
 <li class="chapter" data-level="7.1.16" data-path="github.html"><a href="github.html#codesetup_parameters.r"><i class="fa fa-check"></i><b>7.1.16</b> code/setup_parameters.R</a></li>
-<li class="chapter" data-level="7.1.17" data-path="github.html"><a href="github.html#folder-data"><i class="fa fa-check"></i><b>7.1.17</b> Folder <code>data</code></a></li>
+<li class="chapter" data-level="7.1.17" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>7.1.17</b> data/</a></li>
+<li class="chapter" data-level="7.1.18" data-path="github.html"><a href="github.html#datafetal-lamb.rdata"><i class="fa fa-check"></i><b>7.1.18</b> data/fetal-lamb.RData</a></li>
+<li class="chapter" data-level="7.1.19" data-path="github.html"><a href="github.html#dataresults_lamb.rdata"><i class="fa fa-check"></i><b>7.1.19</b> data/results_lamb.RData</a></li>
+<li class="chapter" data-level="7.1.20" data-path="github.html"><a href="github.html#dataresults_simu1.rdata"><i class="fa fa-check"></i><b>7.1.20</b> data/results_simu1.RData</a></li>
+<li class="chapter" data-level="7.1.21" data-path="github.html"><a href="github.html#dataresults_simu2.rdata"><i class="fa fa-check"></i><b>7.1.21</b> data/results_simu2.RData</a></li>
+<li class="chapter" data-level="7.1.22" data-path="github.html"><a href="github.html#dataresults_tinn.rdata"><i class="fa fa-check"></i><b>7.1.22</b> data/results_tinn.RData</a></li>
+<li class="chapter" data-level="7.1.23" data-path="github.html"><a href="github.html#datatinnitus.rdata"><i class="fa fa-check"></i><b>7.1.23</b> data/tinnitus.RData</a></li>
+<li class="chapter" data-level="7.1.24" data-path="github.html"><a href="github.html#functions"><i class="fa fa-check"></i><b>7.1.24</b> functions/</a></li>
+<li class="chapter" data-level="7.1.25" data-path="github.html"><a href="github.html#functionsutils.cpp"><i class="fa fa-check"></i><b>7.1.25</b> functions/utils.cpp</a></li>
+<li class="chapter" data-level="7.1.26" data-path="github.html"><a href="github.html#functionsutils.r"><i class="fa fa-check"></i><b>7.1.26</b> functions/utils.R</a></li>
+<li class="chapter" data-level="7.1.27" data-path="github.html"><a href="github.html#functionsutils_linreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.27</b> functions/utils_linreg_extended.cpp</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -275,7 +285,7 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 6</span> Application to different data sets</h1>
 <div id="tyt-dataset" class="section level2" number="6.1">
 <h2><span class="header-section-number">6.1</span> TYT dataset</h2>
-<p>We detail here the code used to estimate a 2-state Poisson HMM based on the tinnitus dataset available in INSERT GITHUB LINK</p>
+<p>We detail here the code used to estimate a 2-state Poisson HMM based on the tinnitus dataset available in <em><a href="data/tinnitus.RData">data/tinnitus.RData</a></em>.</p>
 <ul>
 <li>Set a seed for randomness, and load files</li>
 </ul>
@@ -328,6 +338,7 @@ div.csl-indent {
 ## gamma  0.97407796 0.02088688
 ## delta  0.34054200 0.23056437
 ## delta  0.65945800 0.23056437</code></pre>
+<p>For the code used to generate coverage probabilities and acceleration results, please take a look at <em><a href="code/poi_hmm_tinn.R">code/poi_hmm_tinn.R</a></em>.</p>
 </div>
 <div id="simulated-dataset" class="section level2" number="6.2">
 <h2><span class="header-section-number">6.2</span> Simulated dataset</h2>
@@ -346,7 +357,7 @@ Then, using the same procedure as above, we estimate a model using different ini
 <span id="cb139-8"><a href="application-to-different-data-sets.html#cb139-8" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(gamma)</span></code></pre></div>
 <p>The <code>stat.dist</code> function computes the stationary distribution.</p>
 <ul>
-<li>Generate data with one of the functions defined in <a href="confidence-intervals.html#generating-data">5.2.1</a></li>
+<li>Generate data with one of the functions defined in <a href="confidence-intervals.html#generating-data">Generating data</a></li>
 </ul>
 <div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="application-to-different-data-sets.html#cb140-1" aria-hidden="true" tabindex="-1"></a>simu_data <span class="ot">&lt;-</span> <span class="fu">pois.HMM.generate.sample</span>(<span class="at">ns =</span> DATA_SIZE_SIMU,</span>
 <span id="cb140-2"><a href="application-to-different-data-sets.html#cb140-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">mod =</span> <span class="fu">list</span>(<span class="at">m =</span> m,</span>
@@ -397,6 +408,7 @@ Then, using the same procedure as above, we estimate a model using different ini
 ## gamma   0.8435125 0.02671332
 ## delta   0.4476315 0.05201103
 ## delta   0.5523685 0.05201103</code></pre>
+<p>For the code used to generate coverage probabilities and acceleration results, please take a look at <em><a href="code/poi_hmm_simu1.R">code/poi_hmm_simu1.R</a></em> and <em><a href="code/poi_hmm_simu2.R">code/poi_hmm_simu2.R</a></em>.</p>
 </div>
 <div id="lamb-data" class="section level2" number="6.3">
 <h2><span class="header-section-number">6.3</span> Lamb data</h2>

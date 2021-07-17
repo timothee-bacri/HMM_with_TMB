@@ -202,7 +202,7 @@ div.csl-indent {
 <li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using TMB</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
-<li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions"><i class="fa fa-check"></i><b>4.2</b> Preparing data and functions</a></li>
+<li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions-sondre"><i class="fa fa-check"></i><b>4.2</b> Preparing data and functions <br/><span style="font-size:200%;color:red">SONDRE</span></a></li>
 <li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#modeling"><i class="fa fa-check"></i><b>4.3</b> Modeling</a></li>
 <li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>4.4</b> Nested models</a>
 <ul>
@@ -247,7 +247,17 @@ div.csl-indent {
 <li class="chapter" data-level="7.1.14" data-path="github.html"><a href="github.html#codepoi_hmm_simu2.r"><i class="fa fa-check"></i><b>7.1.14</b> code/poi_hmm_simu2.R</a></li>
 <li class="chapter" data-level="7.1.15" data-path="github.html"><a href="github.html#codepoi_hmm_tinn.r"><i class="fa fa-check"></i><b>7.1.15</b> code/poi_hmm_tinn.R</a></li>
 <li class="chapter" data-level="7.1.16" data-path="github.html"><a href="github.html#codesetup_parameters.r"><i class="fa fa-check"></i><b>7.1.16</b> code/setup_parameters.R</a></li>
-<li class="chapter" data-level="7.1.17" data-path="github.html"><a href="github.html#folder-data"><i class="fa fa-check"></i><b>7.1.17</b> Folder <code>data</code></a></li>
+<li class="chapter" data-level="7.1.17" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>7.1.17</b> data/</a></li>
+<li class="chapter" data-level="7.1.18" data-path="github.html"><a href="github.html#datafetal-lamb.rdata"><i class="fa fa-check"></i><b>7.1.18</b> data/fetal-lamb.RData</a></li>
+<li class="chapter" data-level="7.1.19" data-path="github.html"><a href="github.html#dataresults_lamb.rdata"><i class="fa fa-check"></i><b>7.1.19</b> data/results_lamb.RData</a></li>
+<li class="chapter" data-level="7.1.20" data-path="github.html"><a href="github.html#dataresults_simu1.rdata"><i class="fa fa-check"></i><b>7.1.20</b> data/results_simu1.RData</a></li>
+<li class="chapter" data-level="7.1.21" data-path="github.html"><a href="github.html#dataresults_simu2.rdata"><i class="fa fa-check"></i><b>7.1.21</b> data/results_simu2.RData</a></li>
+<li class="chapter" data-level="7.1.22" data-path="github.html"><a href="github.html#dataresults_tinn.rdata"><i class="fa fa-check"></i><b>7.1.22</b> data/results_tinn.RData</a></li>
+<li class="chapter" data-level="7.1.23" data-path="github.html"><a href="github.html#datatinnitus.rdata"><i class="fa fa-check"></i><b>7.1.23</b> data/tinnitus.RData</a></li>
+<li class="chapter" data-level="7.1.24" data-path="github.html"><a href="github.html#functions"><i class="fa fa-check"></i><b>7.1.24</b> functions/</a></li>
+<li class="chapter" data-level="7.1.25" data-path="github.html"><a href="github.html#functionsutils.cpp"><i class="fa fa-check"></i><b>7.1.25</b> functions/utils.cpp</a></li>
+<li class="chapter" data-level="7.1.26" data-path="github.html"><a href="github.html#functionsutils.r"><i class="fa fa-check"></i><b>7.1.26</b> functions/utils.R</a></li>
+<li class="chapter" data-level="7.1.27" data-path="github.html"><a href="github.html#functionsutils_linreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.27</b> functions/utils_linreg_extended.cpp</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -275,7 +285,7 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 4</span> Using TMB</h1>
 <div id="likelihood-function" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Likelihood function</h2>
-<p>The function is defined in <a href="code/poi_hmm.cpp">poi_hmm.cpp</a></p>
+<p>The function is defined in <em><a href="code/poi_hmm.cpp">code/poi_hmm.cpp</a></em></p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb50-1"><a href="using-tmb.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
 <span id="cb50-2"><a href="using-tmb.html#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
 <span id="cb50-3"><a href="using-tmb.html#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -372,8 +382,8 @@ div.csl-indent {
 <span id="cb50-94"><a href="using-tmb.html#cb50-94" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk;</span>
 <span id="cb50-95"><a href="using-tmb.html#cb50-95" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
-<div id="preparing-data-and-functions" class="section level2" number="4.2">
-<h2><span class="header-section-number">4.2</span> Preparing data and functions</h2>
+<div id="preparing-data-and-functions-sondre" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Preparing data and functions <br/><span style="font-size:200%;color:red">SONDRE</span></h2>
 <p>Before we can fit the model, we need to load some necessary packages and data files. We also need to compile the <code>C++</code> code and load the functions into our working environment in <code>R</code>.
 <!-- Loading of the necessary packages, compilation of the nll function with TMB and subsequent loading, and loading of the auxiliary functions for parameter transformation --></p>
 <!-- With the nll function available in `C++`, we can carry out the parameter estimation and all pre-/post-processing in `R`. In the following we describe the steps to be carried out. -->
@@ -390,11 +400,16 @@ div.csl-indent {
 <span id="cb52-3"><a href="using-tmb.html#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load it</span></span>
 <span id="cb52-4"><a href="using-tmb.html#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span></code></pre></div>
 <p>The data are part of a large data set collected with the “Track Your Tinnitus” (TYT) mobile application, a detailed description of which is presented in <span class="citation">(<a href="#ref-pryss" role="doc-biblioref">Pryss, Reichert, Herrmann, et al. 2015</a>; <a href="#ref-pryssa" role="doc-biblioref">Pryss, Reichert, Langguth, et al. 2015</a>)</span>.
-We analyze 87 successive days of the “arousal” variable, which is measured on a discrete scale. Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state <span class="citation">(for details, see <a href="#ref-probst" role="doc-biblioref">Probst et al. 2016</a>)</span>. The data is stored in the file <code>data/tinnitus.Rdata</code> and can be loaded by a simple call.</p>
+We analyze 87 successive days of the “arousal” variable, which is measured on a discrete scale.
+Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state <span class="citation">(for details, see <a href="#ref-probst" role="doc-biblioref">Probst et al. 2016</a>)</span>.
+The data can be loaded by a simple call.</p>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="using-tmb.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span></code></pre></div>
-<p>@ref(table:tinnitus_data) presents the raw data, which are also available for download at INSERT GITHUB LINK.</p>
+<p>Figure <a href="using-tmb.html#fig:4tinnitus-fig">4.1</a> present the raw <a href="#table:tinnitus_data">data</a>, which are also available for download at <em><a href="data/tinnitus.Rdata">data/tinnitus.RData</a></em>.</p>
+<p><span style="font-size:400%;color:red">SONDRE</span>
+I don’t think we can keep the 2 tables. I prefer the first one. What do you think?<br />
+Also, do you think it is better to link files to their entry in <a href="github.html#directory-structure">Directory structure</a> or to keep it like this and always link to the download links?</p>
 <!-- html table generated in R 4.0.5 by xtable 1.8-4 package -->
-<!-- Sat Jul 17 00:57:52 2021 -->
+<!-- Sat Jul 17 21:06:08 2021 -->
 <table border="1">
 <caption align="bottom">
 TYT data. Observations collected by the TYT app on 87 successive days (from left to right).
@@ -406,7 +421,7 @@ TYT data. Observations collected by the TYT app on 87 successive days (from left
 </tr>
 <a name=table:tinnitus_data></a>
 </table>
-<p>Table <a href="using-tmb.html#tab:4tinnitus-table2">4.1</a> and Figure <a href="using-tmb.html#fig:4tinnitus-fig">4.1</a> presents the raw data, which are also available for download in the data folder on <a href="https://github.com/timothee-bacri/HMM_with_TMB">github.com/timothee-bacri/HMM_with_TMB/</a>.</p>
+<p>Table <a href="using-tmb.html#tab:4tinnitus-table2">4.1</a> and Figure <a href="using-tmb.html#fig:4tinnitus-fig">4.1</a> presents the raw data, which are also available for download in the data folder on <em><a href="data/tinnitus.Rdata">data/tinnitus.RData</a></em>.</p>
 <table>
 <caption><span id="tab:4tinnitus-table2">Table 4.1: </span>TYT data. Observations collected by the TYT app on 87 successive days (from left to right).</caption>
 <tbody>
@@ -796,28 +811,28 @@ Therefore, the constraint needs to be placed on the <span class="math inline">\(
 <h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-celeux" class="csl-entry">
-Celeux, Gilles, and Jean-Baptiste Durand. 2008. <span>“Selecting Hidden Markov Model State Number with Cross-Validated Likelihood.”</span> <em>Computational Statistics</em> 23 (4): 541–64. <a href="https://doi.org/10.1007/s00180-007-0097-1">https://doi.org/10.1007/s00180-007-0097-1</a>.
+Celeux, Gilles, and Jean-Baptiste Durand. 2008. <span>“Selecting Hidden <span>Markov</span> Model State Number with Cross-Validated Likelihood.”</span> <em>Computational Statistics</em> 23 (4): 541–64. <a href="https://doi.org/10.1007/s00180-007-0097-1">https://doi.org/10.1007/s00180-007-0097-1</a>.
 </div>
 <div id="ref-leroux" class="csl-entry">
-Leroux, Brian G., and Martin L. Puterman. 1992. <span>“Maximum-Penalized-Likelihood Estimation for Independent and Markov- Dependent Mixture Models.”</span> <em>Biometrics</em> 48 (2): 545–58. <a href="https://doi.org/10.2307/2532308">https://doi.org/10.2307/2532308</a>.
+Leroux, Brian G., and Martin L. Puterman. 1992. <span>“Maximum-<span>Penalized</span>-<span>Likelihood Estimation</span> for <span>Independent</span> and <span>Markov</span>- <span>Dependent Mixture Models</span>.”</span> <em>Biometrics</em> 48 (2): 545–58. <a href="https://doi.org/10.2307/2532308">https://doi.org/10.2307/2532308</a>.
 </div>
 <div id="ref-pohle" class="csl-entry">
-Pohle, Jennifer, Roland Langrock, Floris M. van Beest, and Niels Martin Schmidt. 2017a. <span>“Selecting the Number of States in Hidden Markov Models: Pragmatic Solutions Illustrated Using Animal Movement.”</span> <em>Journal of Agricultural, Biological and Environmental Statistics</em> 22 (3): 270–93. <a href="https://doi.org/10.1007/s13253-017-0283-8">https://doi.org/10.1007/s13253-017-0283-8</a>.
+Pohle, Jennifer, Roland Langrock, Floris M. van Beest, and Niels Martin Schmidt. 2017a. <span>“Selecting the <span>Number</span> of <span>States</span> in <span>Hidden Markov Models</span>: <span>Pragmatic Solutions Illustrated Using Animal Movement</span>.”</span> <em>Journal of Agricultural, Biological and Environmental Statistics</em> 22 (3): 270–93. <a href="https://doi.org/10.1007/s13253-017-0283-8">https://doi.org/10.1007/s13253-017-0283-8</a>.
 </div>
 <div id="ref-pohlea" class="csl-entry">
-Pohle, Jennifer, Roland Langrock, Floris van Beest, and Niels Martin Schmidt. 2017b. <span>“Selecting the Number of States in Hidden Markov Models - Pitfalls, Practical Challenges and Pragmatic Solutions.”</span> <em>arXiv:1701.08673 [q-Bio, Stat]</em>, April. <a href="http://arxiv.org/abs/1701.08673">http://arxiv.org/abs/1701.08673</a>.
+Pohle, Jennifer, Roland Langrock, Floris van Beest, and Niels Martin Schmidt. 2017b. <span>“Selecting the <span>Number</span> of <span>States</span> in <span>Hidden Markov Models</span> - <span>Pitfalls</span>, <span>Practical Challenges</span> and <span>Pragmatic Solutions</span>.”</span> <em>arXiv:1701.08673 [q-Bio, Stat]</em>, April. <a href="http://arxiv.org/abs/1701.08673">http://arxiv.org/abs/1701.08673</a>.
 </div>
 <div id="ref-probst" class="csl-entry">
-Probst, Thomas, Rüdiger Pryss, Berthold Langguth, and Winfried Schlee. 2016. <span>“Emotion Dynamics and Tinnitus: Daily Life Data from the <span>‘TrackYourTinnitus’</span> Application.”</span> <em>Scientific Reports</em> 6 (1): 31166. <a href="https://doi.org/10.1038/srep31166">https://doi.org/10.1038/srep31166</a>.
+Probst, Thomas, Rüdiger Pryss, Berthold Langguth, and Winfried Schlee. 2016. <span>“Emotion Dynamics and Tinnitus: <span>Daily</span> Life Data from the <span>‘<span>TrackYourTinnitus</span>’</span> Application.”</span> <em>Scientific Reports</em> 6 (1): 31166. <a href="https://doi.org/10.1038/srep31166">https://doi.org/10.1038/srep31166</a>.
 </div>
 <div id="ref-pryss" class="csl-entry">
-Pryss, R., M. Reichert, J. Herrmann, B. Langguth, and W. Schlee. 2015. <span>“Mobile Crowd Sensing in Clinical and Psychological Trials – A Case Study.”</span> In <em>2015 IEEE 28th International Symposium on Computer-Based Medical Systems</em>, 23–24. <a href="https://doi.org/10.1109/CBMS.2015.26">https://doi.org/10.1109/CBMS.2015.26</a>.
+Pryss, R., M. Reichert, J. Herrmann, B. Langguth, and W. Schlee. 2015. <span>“Mobile <span>Crowd Sensing</span> in <span>Clinical</span> and <span>Psychological Trials</span> <span></span> <span>A Case Study</span>.”</span> In <em>2015 <span>IEEE</span> 28th <span>International Symposium</span> on <span>Computer</span>-<span>Based Medical Systems</span></em>, 23–24. <a href="https://doi.org/10.1109/CBMS.2015.26">https://doi.org/10.1109/CBMS.2015.26</a>.
 </div>
 <div id="ref-pryssa" class="csl-entry">
-Pryss, R., M. Reichert, B. Langguth, and W. Schlee. 2015. <span>“Mobile Crowd Sensing Services for Tinnitus Assessment, Therapy, and Research.”</span> In <em>2015 IEEE International Conference on Mobile Services</em>, 352–59. <a href="https://doi.org/10.1109/MobServ.2015.55">https://doi.org/10.1109/MobServ.2015.55</a>.
+Pryss, R., M. Reichert, B. Langguth, and W. Schlee. 2015. <span>“Mobile <span>Crowd Sensing Services</span> for <span>Tinnitus Assessment</span>, <span>Therapy</span>, and <span>Research</span>.”</span> In <em>2015 <span>IEEE International Conference</span> on <span>Mobile Services</span></em>, 352–59. <a href="https://doi.org/10.1109/MobServ.2015.55">https://doi.org/10.1109/MobServ.2015.55</a>.
 </div>
 <div id="ref-zucchini" class="csl-entry">
-Zucchini, W., I.L. MacDonald, and R. Langrock. 2016. <em>Hidden Markov Models for Time Series: An Introduction Using r, Second Edition</em>. Chapman &amp; Hall/CRC Monographs on Statistics &amp; Applied Probability. CRC Press. <a href="https://books.google.no/books?id=KlWzDAAAQBAJ">https://books.google.no/books?id=KlWzDAAAQBAJ</a>.
+Zucchini, W., I. L. MacDonald, and R. Langrock. 2016. <em>Hidden Markov Models for Time Series: An Introduction Using r, Second Edition</em>. Chapman &amp; <span>Hall</span>/<span>CRC</span> Monographs on Statistics &amp; Applied Probability. <span>CRC Press</span>.
 </div>
 </div>
             </section>

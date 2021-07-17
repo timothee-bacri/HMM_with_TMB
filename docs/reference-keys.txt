@@ -24,7 +24,7 @@ label-switching
 nll-in-tmb
 using-tmb
 likelihood-function
-preparing-data-and-functions
+preparing-data-and-functions-sondre
 modeling
 nested-models
 principle
@@ -58,4 +58,14 @@ codepoi_hmm_simu1.r
 codepoi_hmm_simu2.r
 codepoi_hmm_tinn.r
 codesetup_parameters.r
-folder-data
+data
+datafetal-lamb.rdata
+dataresults_lamb.rdata
+dataresults_simu1.rdata
+dataresults_simu2.rdata
+dataresults_tinn.rdata
+datatinnitus.rdata
+functions
+functionsutils.cpp
+functionsutils.r
+functionsutils_linreg_extended.cpp

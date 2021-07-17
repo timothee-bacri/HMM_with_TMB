@@ -16,7 +16,7 @@ We define the function `gamma.w2n` to perform this transformation.
 
 `stat.dist` handles computing the stationary distribution, although `delta.w2n` can be used if a non-stationary distribution is provided.
 
-They are defined
+They are defined in *[functions/utils.cpp](functions/utils.cpp)*
 
 ```{Rcpp 3utils.cpp, code=readLines("functions/utils.cpp"), eval=FALSE}
 ```

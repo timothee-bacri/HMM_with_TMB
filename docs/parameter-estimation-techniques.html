@@ -202,7 +202,7 @@ div.csl-indent {
 <li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using TMB</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
-<li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions"><i class="fa fa-check"></i><b>4.2</b> Preparing data and functions</a></li>
+<li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions-sondre"><i class="fa fa-check"></i><b>4.2</b> Preparing data and functions <br/><span style="font-size:200%;color:red">SONDRE</span></a></li>
 <li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#modeling"><i class="fa fa-check"></i><b>4.3</b> Modeling</a></li>
 <li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>4.4</b> Nested models</a>
 <ul>
@@ -247,7 +247,17 @@ div.csl-indent {
 <li class="chapter" data-level="7.1.14" data-path="github.html"><a href="github.html#codepoi_hmm_simu2.r"><i class="fa fa-check"></i><b>7.1.14</b> code/poi_hmm_simu2.R</a></li>
 <li class="chapter" data-level="7.1.15" data-path="github.html"><a href="github.html#codepoi_hmm_tinn.r"><i class="fa fa-check"></i><b>7.1.15</b> code/poi_hmm_tinn.R</a></li>
 <li class="chapter" data-level="7.1.16" data-path="github.html"><a href="github.html#codesetup_parameters.r"><i class="fa fa-check"></i><b>7.1.16</b> code/setup_parameters.R</a></li>
-<li class="chapter" data-level="7.1.17" data-path="github.html"><a href="github.html#folder-data"><i class="fa fa-check"></i><b>7.1.17</b> Folder <code>data</code></a></li>
+<li class="chapter" data-level="7.1.17" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>7.1.17</b> data/</a></li>
+<li class="chapter" data-level="7.1.18" data-path="github.html"><a href="github.html#datafetal-lamb.rdata"><i class="fa fa-check"></i><b>7.1.18</b> data/fetal-lamb.RData</a></li>
+<li class="chapter" data-level="7.1.19" data-path="github.html"><a href="github.html#dataresults_lamb.rdata"><i class="fa fa-check"></i><b>7.1.19</b> data/results_lamb.RData</a></li>
+<li class="chapter" data-level="7.1.20" data-path="github.html"><a href="github.html#dataresults_simu1.rdata"><i class="fa fa-check"></i><b>7.1.20</b> data/results_simu1.RData</a></li>
+<li class="chapter" data-level="7.1.21" data-path="github.html"><a href="github.html#dataresults_simu2.rdata"><i class="fa fa-check"></i><b>7.1.21</b> data/results_simu2.RData</a></li>
+<li class="chapter" data-level="7.1.22" data-path="github.html"><a href="github.html#dataresults_tinn.rdata"><i class="fa fa-check"></i><b>7.1.22</b> data/results_tinn.RData</a></li>
+<li class="chapter" data-level="7.1.23" data-path="github.html"><a href="github.html#datatinnitus.rdata"><i class="fa fa-check"></i><b>7.1.23</b> data/tinnitus.RData</a></li>
+<li class="chapter" data-level="7.1.24" data-path="github.html"><a href="github.html#functions"><i class="fa fa-check"></i><b>7.1.24</b> functions/</a></li>
+<li class="chapter" data-level="7.1.25" data-path="github.html"><a href="github.html#functionsutils.cpp"><i class="fa fa-check"></i><b>7.1.25</b> functions/utils.cpp</a></li>
+<li class="chapter" data-level="7.1.26" data-path="github.html"><a href="github.html#functionsutils.r"><i class="fa fa-check"></i><b>7.1.26</b> functions/utils.R</a></li>
+<li class="chapter" data-level="7.1.27" data-path="github.html"><a href="github.html#functionsutils_linreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.27</b> functions/utils_linreg_extended.cpp</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -280,7 +290,7 @@ div.csl-indent {
 <p>Defining the negative log-likelihood function requires transforming the working parameters into their natural form.
 We define the function <code>gamma.w2n</code> to perform this transformation.</p>
 <p><code>stat.dist</code> handles computing the stationary distribution, although <code>delta.w2n</code> can be used if a non-stationary distribution is provided.</p>
-<p>They are defined</p>
+<p>They are defined in <em><a href="functions/utils.cpp">functions/utils.cpp</a></em></p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb41-1"><a href="parameter-estimation-techniques.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming working parameters in initial distribution</span></span>
 <span id="cb41-2"><a href="parameter-estimation-techniques.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co">// to natural parameters</span></span>
 <span id="cb41-3"><a href="parameter-estimation-techniques.html#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
@@ -620,10 +630,10 @@ Nonetheless, <code>TMB</code> also accelerates its estimation and may be useful 
 <h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-bulla" class="csl-entry">
-Bulla, Jan, and Andreas Berzel. 2008. <span>“Computational Issues in Parameter Estimation for Stationary Hidden Markov Models.”</span> <em>Computational Statistics</em> 23 (1): 1–18. <a href="https://doi.org/10.1007/s00180-007-0063-y">https://doi.org/10.1007/s00180-007-0063-y</a>.
+Bulla, Jan, and Andreas Berzel. 2008. <span>“Computational Issues in Parameter Estimation for Stationary Hidden <span>Markov</span> Models.”</span> <em>Computational Statistics</em> 23 (1): 1–18. <a href="https://doi.org/10.1007/s00180-007-0063-y">https://doi.org/10.1007/s00180-007-0063-y</a>.
 </div>
 <div id="ref-zucchini" class="csl-entry">
-Zucchini, W., I.L. MacDonald, and R. Langrock. 2016. <em>Hidden Markov Models for Time Series: An Introduction Using r, Second Edition</em>. Chapman &amp; Hall/CRC Monographs on Statistics &amp; Applied Probability. CRC Press. <a href="https://books.google.no/books?id=KlWzDAAAQBAJ">https://books.google.no/books?id=KlWzDAAAQBAJ</a>.
+Zucchini, W., I. L. MacDonald, and R. Langrock. 2016. <em>Hidden Markov Models for Time Series: An Introduction Using r, Second Edition</em>. Chapman &amp; <span>Hall</span>/<span>CRC</span> Monographs on Statistics &amp; Applied Probability. <span>CRC Press</span>.
 </div>
 </div>
             </section>

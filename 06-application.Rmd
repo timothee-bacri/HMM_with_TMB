@@ -8,7 +8,7 @@
 # Application to different data sets
 
 ## TYT dataset
-We detail here the code used to estimate a 2-state Poisson HMM based on the tinnitus dataset available in INSERT GITHUB LINK
+We detail here the code used to estimate a 2-state Poisson HMM based on the tinnitus dataset available in *[data/tinnitus.RData](data/tinnitus.RData)*.
 
 - Set a seed for randomness, and load files
 ```{r 6tyt-init}
@@ -55,6 +55,8 @@ mod_tmb$convergence == 0
 summary(sdreport(obj_tmb), "report")
 ```
 
+For the code used to generate coverage probabilities and acceleration results, please take a look at *[code/poi_hmm_tinn.R](code/poi_hmm_tinn.R)*.
+
 ## Simulated dataset
 
 We detail here the code used to simulate two datasets from 2-states Poisson HMMs, one of size \Sexpr{DATA_SIZE_SIMU1} and one of size \Sexpr{DATA_SIZE_SIMU2}.
@@ -73,7 +75,7 @@ delta <- stat.dist(gamma)
 ```
 The `stat.dist` function computes the stationary distribution.
 
-- Generate data with one of the functions defined in \@ref(generating-data)
+- Generate data with one of the functions defined in [Generating data](#generating-data)
 ```{r 6simu-gen-data}
 simu_data <- pois.HMM.generate.sample(ns = DATA_SIZE_SIMU,
                                       mod = list(m = m,
@@ -119,6 +121,7 @@ mod_tmb$convergence == 0
 summary(sdreport(obj_tmb), "report")
 ```
 
+For the code used to generate coverage probabilities and acceleration results, please take a look at *[code/poi_hmm_simu1.R](code/poi_hmm_simu1.R)* and *[code/poi_hmm_simu2.R](code/poi_hmm_simu2.R)*.
 
 ## Lamb data
 We detail here the code used to estimate a 2-state Poisson HMM based on the lamb dataset available in INSERT GITHUB LINK

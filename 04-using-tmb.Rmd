@@ -9,11 +9,11 @@
 
 ## Likelihood function
 
-The function is defined in [poi_hmm.cpp](code/poi_hmm.cpp)
+The function is defined in *[code/poi_hmm.cpp](code/poi_hmm.cpp)*
 ```{Rcpp 4poi_hmm.cpp, code=readLines("code/poi_hmm.cpp"), eval=FALSE}
 ```
 
-## Preparing data and functions
+## Preparing data and functions <br/><span style="font-size:200%;color:red">SONDRE</span>
 Before we can fit the model, we need to load some necessary packages and data files. We also need to compile the `C++` code and load the functions into our working environment in `R`.
 <!-- Loading of the necessary packages, compilation of the nll function with TMB and subsequent loading, and loading of the auxiliary functions for parameter transformation -->
 
@@ -39,14 +39,18 @@ dyn.load(dynlib("code/poi_hmm"))
 ```
 
 The data are part of a large data set collected with the "Track Your Tinnitus" (TYT) mobile application, a detailed description of which is presented in [@pryss; @pryssa].
-We analyze 87 successive days of the "arousal" variable, which is measured on a discrete scale. Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state [for details, see @probst]. The data is stored in the file `data/tinnitus.Rdata` and can be loaded by a simple call. 
+We analyze 87 successive days of the "arousal" variable, which is measured on a discrete scale.
+Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state [for details, see @probst].
+The data can be loaded by a simple call. 
 ```{r 4load-example}
 load("data/tinnitus.RData")
 ```
 
-\@ref(table:tinnitus_data) presents the raw data, which are also available for download at INSERT GITHUB LINK.
+Figure \@ref(fig:4tinnitus-fig) present the raw [data](#table:tinnitus_data), which are also available for download at *[data/tinnitus.RData](data/tinnitus.Rdata)*.
 
-
+<span style="font-size:400%;color:red">SONDRE</span>
+I don't think we can keep the 2 tables. I prefer the first one. What do you think?\
+Also, do you think it is better to link files to their entry in [Directory structure] or to keep it like this and always link to the download links?
 
 ```{r 4tinnitus-table, results = 'asis', echo = FALSE}
 library(xtable)
@@ -55,16 +59,16 @@ temp <- as.data.frame(temp)
 temp <- xtable(temp,
                align = "lp{15cm}",
                caption = "TYT data. Observations collected by the TYT app on 87 successive days (from left to right).",
-               label = "table:tinnitus_data")
+               label = "table:tinnitus_data") # reference via [some_text](#table:tinnitus_data)
 print(temp, include.rownames = FALSE, include.colnames = FALSE,
       hline.after = c(0, nrow(temp)),
       type = "html")
 ```
 
-Table \@ref(tab:4tinnitus-table2)  and Figure \@ref(fig:4tinnitus-fig) presents the raw data, which are also available for download in the data folder on [github.com/timothee-bacri/HMM_with_TMB/](https://github.com/timothee-bacri/HMM_with_TMB).
+Table \@ref(tab:4tinnitus-table2) and Figure \@ref(fig:4tinnitus-fig) presents the raw data, which are also available for download in the data folder on *[data/tinnitus.RData](data/tinnitus.Rdata)*.
 
 ```{r 4tinnitus-table2, echo = FALSE, warning = FALSE}
-temp <- matrix(c(tinn_data,rep("",3)), nrow = 6, byrow =T)
+temp <- matrix(c(tinn_data,rep("", 3)), nrow = 6, byrow = TRUE)
 knitr::kable(temp, booktabs = TRUE,
   caption = "TYT data. Observations collected by the TYT app on 87 successive days (from left to right).")
 ```

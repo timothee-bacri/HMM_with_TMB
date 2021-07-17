@@ -27,7 +27,7 @@ where $\phi(\cdot; \mu, \sigma^2)$ corresponds to the density function of the un
 The use of `TMB` requires the (negative) log-likelihood function to be coded in C++ under a specific template, which is then loaded into R.
 The minimization of this function and other post-processing procedures are all carried out in `R`.
 Therefore, we require two files.\
-The first file, named [*linreg.cpp*](code/linreg.cpp), is written in C++ and defines the objective function, i.e. the negative log-likelihood (nll) function of the linear model.
+The first file, named *[code/linreg.cpp](code/linreg.cpp)*, is written in C++ and defines the objective function, i.e. the negative log-likelihood (nll) function of the linear model.
 
 ```{Rcpp 2linreg.cpp, code=readLines("code/linreg.cpp"), eval=FALSE}
 ```
@@ -60,7 +60,8 @@ Now that the optimization is taken care of, we can display the estimates with st
 ```{r sdreport}
 sdreport(obj_linreg)
 ```
-If we use `summary` on this object, we also get the variables we have passed to `ADREPORT` in the [*linreg.cpp*](code/linreg.cpp) file. In this example, this is only the residual standard deviation;  `sigma`.
+If we use `summary` on this object, we also get the variables we have passed to `ADREPORT` in the *[code/linreg.cpp](code/linreg.cpp)* file.
+In this example, this is only the residual standard deviation;  `sigma`.
 ```{r 2summary_sdreport}
 summary(sdreport(obj_linreg))
 ```
@@ -82,13 +83,17 @@ As we can see, the parameter estimates are exactly the same.
 
 ## Extending the `C++` nll
 ### Minimal example
-Sometimes it is useful to write subroutines as a separate function that can be used within your TMB likelihood function. This can increase readability of your code and reduce the number of lines of code in your main cpp file. Writing extra files to define functions compatible with `TMB` requires some care, as these must follow `TMB`'s template.
+Sometimes it is useful to write subroutines as a separate function that can be used within your TMB likelihood function.
+This can increase readability of your code and reduce the number of lines of code in your main cpp file.
+Writing extra files to define functions compatible with `TMB` requires some care, as these must follow `TMB`'s template.
 <!-- It is noteworthy that `linreg.cpp` doesn't have to contain many lines of code, as they can be distributed in other files and loaded. -->
 
-To illustrate how this works, we add a separate function to the [*linreg.cpp*](code/linreg.cpp) example. The following function does not do anything meaningful, but is just meant to show you how you can add write an additional function and load it into your C++. We start by writing the subroutine function as a separate file called `utils_linreg.cpp` [*functions/utils_linreg.cpp*](functions/utils_linreg.cpp).
+To illustrate how this works, we add a separate function to the *[linreg.cpp](code/linreg.cpp)* example.
+The following function does not do anything meaningful, but is just meant to show you how you can add write an additional function and load it into your C++.
+We start by writing the subroutine function as a separate file called *[functions/utils_linreg.cpp](functions/utils_linreg.cpp)*.
 ```{Rcpp 2utils_linreg_extended.cpp, code=readLines("functions/utils_linreg_extended.cpp"), eval=FALSE}
 ```
-We then import it into `linreg.cpp` ([*code/linreg_minimal.cpp*](code/linreg_minimal.cpp)). 
+We then import it into [*code/linreg_extended.cpp*](code/linreg_extended.cpp). 
 ```{Rcpp 2utils_linreg_extended.cpp, code=readLines("code/linreg_extended.cpp"), eval=FALSE}
 ```
 And eventually we can use it in R, as shown in this minimal example.
@@ -119,12 +124,12 @@ summary(sdreport(obj_linreg), select = "report")
 obj_linreg$report()
 ```
 
-
 Note that when you are writing the `C++` nll file, compiling the file again may lead to an error.
 This is because the dynamic library (the `.dll` file) is already loaded, and cannot be overwritten.
 To prevent this, it is useful to either to manually unload the file manually via the code
 ```{r dyn_unload, eval=FALSE}
 dyn.unload(dynlib("code/linreg_extended"))
 ```
-Restarting the `R` session via the menu `Session->Restart R` (shortcut `Ctrl+Shift+F10`) will also unload the file, but you will need to load again the `TMB` package.
+or to restart the `R` session via the menu `Session->Restart R` (shortcut `Ctrl+Shift+F10` on Windows).
+Note that restarting the session unload all packages from the session, and will require you to load the `TMB` package again.
 
