@@ -1,4 +1,3 @@
-tab:4tinnitus-table2
 fig:4tinnitus-fig
 license
 state-inf
@@ -41,7 +40,7 @@ tyt-dataset
 simulated-dataset
 lamb-data
 github
-code-directory-structure
+directory-structure
 code
 codelinreg.cpp
 codelinreg.dll

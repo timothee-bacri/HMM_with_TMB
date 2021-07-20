@@ -46,11 +46,7 @@ The data can be loaded by a simple call.
 load("data/tinnitus.RData")
 ```
 
-Figure \@ref(fig:4tinnitus-fig) present the raw [data](#table:tinnitus_data), which are also available for download at *[data/tinnitus.RData](data/tinnitus.Rdata)*.
-
-<span style="font-size:400%;color:red">SONDRE</span>
-I don't think we can keep the 2 tables. I prefer the first one. What do you think?\
-Also, do you think it is better to link files to their entry in [Directory structure] or to keep it like this and always link to the download links?
+Figure \@ref(fig:4tinnitus-fig) present the raw data in Table [5.1](#table:tinnitus_data), which are also available for download at *[data/tinnitus.RData](data/tinnitus.Rdata)*.
 
 ```{r 4tinnitus-table, results = 'asis', echo = FALSE}
 library(xtable)
@@ -63,14 +59,6 @@ temp <- xtable(temp,
 print(temp, include.rownames = FALSE, include.colnames = FALSE,
       hline.after = c(0, nrow(temp)),
       type = "html")
-```
-
-Table \@ref(tab:4tinnitus-table2) and Figure \@ref(fig:4tinnitus-fig) presents the raw data, which are also available for download in the data folder on *[data/tinnitus.RData](data/tinnitus.Rdata)*.
-
-```{r 4tinnitus-table2, echo = FALSE, warning = FALSE}
-temp <- matrix(c(tinn_data,rep("", 3)), nrow = 6, byrow = TRUE)
-knitr::kable(temp, booktabs = TRUE,
-  caption = "TYT data. Observations collected by the TYT app on 87 successive days (from left to right).")
 ```
 
 ```{r 4tinnitus-fig, echo = FALSE, warning = FALSE, fig.cap = "Plot of observations from TYT app data for 87 succesive days."}

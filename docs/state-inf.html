@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-07-19" />
+<meta name="date" content="2021-07-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -227,7 +227,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="8" data-path="github.html"><a href="github.html"><i class="fa fa-check"></i><b>8</b> GitHub</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="github.html"><a href="github.html#code-directory-structure"><i class="fa fa-check"></i><b>8.1</b> Code directory structure</a>
+<li class="chapter" data-level="8.1" data-path="github.html"><a href="github.html#directory-structure"><i class="fa fa-check"></i><b>8.1</b> Directory structure</a>
 <ul>
 <li class="chapter" data-level="8.1.1" data-path="github.html"><a href="github.html#code"><i class="fa fa-check"></i><b>8.1.1</b> code/</a></li>
 <li class="chapter" data-level="8.1.2" data-path="github.html"><a href="github.html#codelinreg.cpp"><i class="fa fa-check"></i><b>8.1.2</b> code/linreg.cpp</a></li>
@@ -422,11 +422,11 @@ using a scaling scheme defined by <span class="citation">(see <a href="#ref-zucc
 <span id="cb10-4"><a href="state-inf.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  ldecode[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(stateprobs[, i])</span>
 <span id="cb10-5"><a href="state-inf.html#cb10-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb10-6"><a href="state-inf.html#cb10-6" aria-hidden="true" tabindex="-1"></a>ldecode</span></code></pre></div>
-<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-##  [52] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1
-## [103] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [154] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1
-## [205] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</code></pre>
+<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [60] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [119] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [178] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [237] 1 1 1 1</code></pre>
 </div>
 <div id="forecast" class="section level2" number="2.6">
 <h2><span class="header-section-number">2.6</span> Forecast</h2>
@@ -489,11 +489,11 @@ An implementation of it is</p>
 <span id="cb14-11"><a href="state-inf.html#cb14-11" aria-hidden="true" tabindex="-1"></a>  iv[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(gamma[, iv[i <span class="sc">+</span> <span class="dv">1</span>]] <span class="sc">*</span> xi[i, ])</span>
 <span id="cb14-12"><a href="state-inf.html#cb14-12" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb14-13"><a href="state-inf.html#cb14-13" aria-hidden="true" tabindex="-1"></a>iv</span></code></pre></div>
-<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-##  [52] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1
-## [103] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [154] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1
-## [205] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</code></pre>
+<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [60] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [119] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [178] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [237] 1 1 1 1</code></pre>
 
 </div>
 </div>
