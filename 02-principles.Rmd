@@ -82,7 +82,6 @@ rbind(
 As we can see, the parameter estimates are exactly the same.
 
 ## Extending the `C++` nll
-### Minimal example
 Sometimes it is useful to write subroutines as a separate function that can be used within your TMB likelihood function.
 This can increase readability of your code and reduce the number of lines of code in your main cpp file.
 Writing extra files to define functions compatible with `TMB` requires some care, as these must follow `TMB`'s template.

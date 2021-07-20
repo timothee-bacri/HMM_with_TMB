@@ -51,6 +51,9 @@ The computations are written in [code/poi_hmm_tinn.R], [code/poi_hmm_lamb.R], [c
 version 1809, the entire computation took 6 days and 7 hours.
 More details at individual files.
 
+### code/packages.R
+Automatically install/load necessary packages for running [code/main.R].
+
 ### code/poi_hmm.cpp
 Specifies the function computing the negative log-likelihood of a m-state Poisson Hidden Markov Model in `C++`.
 
@@ -129,7 +132,7 @@ Tinnitus data collected with the "Track Your Tinnitus" (TYT) mobile application 
 A plot is available in Figure \@ref(fig:4tinnitus-fig).
 
 ### functions/
-Utility functions used both in `C++` files and in `R` files
+Utility functions used both in `C++` files and in `R` files.
 
 ### functions/utils.cpp
 Utility functions used in [code/poi_hmm.cpp] to transform working parameters to their natural form, and to compute the hidden Markov chain's stationary distribution when needed.

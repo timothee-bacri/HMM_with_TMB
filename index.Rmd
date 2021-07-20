@@ -27,7 +27,7 @@ output:
     fig_caption: yes
     number_sections: yes
 header-includes:
-  - \usepackage{amsthm,amsmath,amssymb,amsfonts,amssymb,hyperref}
+  - \usepackage{amsthm,amsmath,amssymb,amsfonts,amssymb}
   - \usepackage{listings}
   - \newcommand{\b}[1]{{\boldsymbol#1}}
   # - \newcommand{\balpha}{{\boldsymbol \alpha}}
@@ -48,7 +48,9 @@ This website aims to accompany the reader of [Link to official article]
 
 The files used in this repository are available in *https://github.com/timothee-bacri/HMM_with_TMB*.
 
-For a description of the files and the directory structure, please read [directory-structure].
+For a description of the files and the directory structure, please read [Directory Structure].\
+Note that only the folders [code](#code/), [functions](#functions), and [data](#data) contain files used in the article.
+The other folders and files relate to this Gitbook and are not described in [Directory Structure].
 
 ```{r 0import-files, echo = FALSE, cache = FALSE, message = FALSE, results = FALSE}
 library(knitr)
@@ -63,3 +65,6 @@ knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'
 ), 'packages.bib')
 ```
+
+# License
+This project is licensed under the xxxx License - see [LICENSE.md](LICENSE.md) for details.

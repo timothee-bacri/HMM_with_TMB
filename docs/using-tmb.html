@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Using TMB | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <title>Chapter 5 Using TMB | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Using TMB | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:title" content="Chapter 5 Using TMB | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Using TMB | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta name="twitter:title" content="Chapter 5 Using TMB | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   
   <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
   
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-07-17" />
+<meta name="date" content="2021-07-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -163,101 +163,100 @@ div.csl-indent {
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="1" data-path="state-inf.html"><a href="state-inf.html"><i class="fa fa-check"></i><b>1</b> State inference</a>
+<li class="chapter" data-level="1" data-path="license.html"><a href="license.html"><i class="fa fa-check"></i><b>1</b> License</a></li>
+<li class="chapter" data-level="2" data-path="state-inf.html"><a href="state-inf.html"><i class="fa fa-check"></i><b>2</b> State inference</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="state-inf.html"><a href="state-inf.html#prepare-the-model"><i class="fa fa-check"></i><b>1.1</b> Prepare the model</a></li>
-<li class="chapter" data-level="1.2" data-path="state-inf.html"><a href="state-inf.html#setup"><i class="fa fa-check"></i><b>1.2</b> Setup</a>
+<li class="chapter" data-level="2.1" data-path="state-inf.html"><a href="state-inf.html#prepare-the-model"><i class="fa fa-check"></i><b>2.1</b> Prepare the model</a></li>
+<li class="chapter" data-level="2.2" data-path="state-inf.html"><a href="state-inf.html#setup"><i class="fa fa-check"></i><b>2.2</b> Setup</a>
 <ul>
-<li class="chapter" data-level="1.2.1" data-path="state-inf.html"><a href="state-inf.html#define-variables"><i class="fa fa-check"></i><b>1.2.1</b> Define variables</a></li>
-<li class="chapter" data-level="1.2.2" data-path="state-inf.html"><a href="state-inf.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>1.2.2</b> Emission/output probabilities</a></li>
+<li class="chapter" data-level="2.2.1" data-path="state-inf.html"><a href="state-inf.html#define-variables"><i class="fa fa-check"></i><b>2.2.1</b> Define variables</a></li>
+<li class="chapter" data-level="2.2.2" data-path="state-inf.html"><a href="state-inf.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>2.2.2</b> Emission/output probabilities</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="state-inf.html"><a href="state-inf.html#log-forward"><i class="fa fa-check"></i><b>1.3</b> Log-forward probabilities</a></li>
-<li class="chapter" data-level="1.4" data-path="state-inf.html"><a href="state-inf.html#log-backward"><i class="fa fa-check"></i><b>1.4</b> Log-backward probabilities</a></li>
-<li class="chapter" data-level="1.5" data-path="state-inf.html"><a href="state-inf.html#local-decoding"><i class="fa fa-check"></i><b>1.5</b> Local decoding</a></li>
-<li class="chapter" data-level="1.6" data-path="state-inf.html"><a href="state-inf.html#forecast"><i class="fa fa-check"></i><b>1.6</b> Forecast</a></li>
-<li class="chapter" data-level="1.7" data-path="state-inf.html"><a href="state-inf.html#global-decoding"><i class="fa fa-check"></i><b>1.7</b> Global decoding</a></li>
+<li class="chapter" data-level="2.3" data-path="state-inf.html"><a href="state-inf.html#log-forward"><i class="fa fa-check"></i><b>2.3</b> Log-forward probabilities</a></li>
+<li class="chapter" data-level="2.4" data-path="state-inf.html"><a href="state-inf.html#log-backward"><i class="fa fa-check"></i><b>2.4</b> Log-backward probabilities</a></li>
+<li class="chapter" data-level="2.5" data-path="state-inf.html"><a href="state-inf.html#local-decoding"><i class="fa fa-check"></i><b>2.5</b> Local decoding</a></li>
+<li class="chapter" data-level="2.6" data-path="state-inf.html"><a href="state-inf.html#forecast"><i class="fa fa-check"></i><b>2.6</b> Forecast</a></li>
+<li class="chapter" data-level="2.7" data-path="state-inf.html"><a href="state-inf.html#global-decoding"><i class="fa fa-check"></i><b>2.7</b> Global decoding</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for MLE</a>
+<li class="chapter" data-level="3" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>3</b> Principles of using <code>TMB</code> for MLE</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#setting-up-tmb"><i class="fa fa-check"></i><b>2.1</b> Setting up <code>TMB</code></a></li>
-<li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#getting-started"><i class="fa fa-check"></i><b>2.2</b> Getting started</a></li>
-<li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#extending-the-c-nll"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> nll</a>
-<ul>
-<li class="chapter" data-level="2.3.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#minimal-example"><i class="fa fa-check"></i><b>2.3.1</b> Minimal example</a></li>
+<li class="chapter" data-level="3.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#setting-up-tmb"><i class="fa fa-check"></i><b>3.1</b> Setting up <code>TMB</code></a></li>
+<li class="chapter" data-level="3.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#getting-started"><i class="fa fa-check"></i><b>3.2</b> Getting started</a></li>
+<li class="chapter" data-level="3.3" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#extending-the-c-nll"><i class="fa fa-check"></i><b>3.3</b> Extending the <code>C++</code> nll</a></li>
 </ul></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques</a>
+<li class="chapter" data-level="4" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html"><i class="fa fa-check"></i><b>4</b> Parameter estimation techniques</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#utility-functions"><i class="fa fa-check"></i><b>3.1</b> Utility functions</a>
+<li class="chapter" data-level="4.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#utility-functions"><i class="fa fa-check"></i><b>4.1</b> Utility functions</a>
 <ul>
-<li class="chapter" data-level="3.1.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-tmb"><i class="fa fa-check"></i><b>3.1.1</b> In <code>TMB</code></a></li>
-<li class="chapter" data-level="3.1.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-r"><i class="fa fa-check"></i><b>3.1.2</b> In <code>R</code></a>
+<li class="chapter" data-level="4.1.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-tmb"><i class="fa fa-check"></i><b>4.1.1</b> In <code>TMB</code></a></li>
+<li class="chapter" data-level="4.1.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#in-r"><i class="fa fa-check"></i><b>4.1.2</b> In <code>R</code></a>
 <ul>
-<li class="chapter" data-level="3.1.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#parameters"><i class="fa fa-check"></i><b>3.1.2.1</b> Parameters</a></li>
-<li class="chapter" data-level="3.1.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#label-switching"><i class="fa fa-check"></i><b>3.1.2.2</b> Label switching</a></li>
+<li class="chapter" data-level="4.1.2.1" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#parameter-transformation"><i class="fa fa-check"></i><b>4.1.2.1</b> Parameter transformation</a></li>
+<li class="chapter" data-level="4.1.2.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#label-switching"><i class="fa fa-check"></i><b>4.1.2.2</b> Label switching</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#nll-in-tmb"><i class="fa fa-check"></i><b>3.2</b> Nll in <code>TMB</code></a></li>
+<li class="chapter" data-level="4.2" data-path="parameter-estimation-techniques.html"><a href="parameter-estimation-techniques.html#negative-log-likelihood-in-tmb"><i class="fa fa-check"></i><b>4.2</b> Negative log-likelihood<br> in <code>TMB</code></a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using TMB</a>
+<li class="chapter" data-level="5" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>5</b> Using TMB</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
-<li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions-sondre"><i class="fa fa-check"></i><b>4.2</b> Preparing data and functions <br/><span style="font-size:200%;color:red">SONDRE</span></a></li>
-<li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#modeling"><i class="fa fa-check"></i><b>4.3</b> Modeling</a></li>
-<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>4.4</b> Nested models</a>
+<li class="chapter" data-level="5.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>5.1</b> Likelihood function</a></li>
+<li class="chapter" data-level="5.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions-sondre"><i class="fa fa-check"></i><b>5.2</b> Preparing data and functions <br/><span style="font-size:200%;color:red">SONDRE</span></a></li>
+<li class="chapter" data-level="5.3" data-path="using-tmb.html"><a href="using-tmb.html#modeling"><i class="fa fa-check"></i><b>5.3</b> Modeling</a></li>
+<li class="chapter" data-level="5.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>5.4</b> Nested models</a>
 <ul>
-<li class="chapter" data-level="4.4.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>4.4.1</b> Principle</a></li>
-<li class="chapter" data-level="4.4.2" data-path="using-tmb.html"><a href="using-tmb.html#limit"><i class="fa fa-check"></i><b>4.4.2</b> Limit</a></li>
-<li class="chapter" data-level="4.4.3" data-path="using-tmb.html"><a href="using-tmb.html#parameter-equality-constraints"><i class="fa fa-check"></i><b>4.4.3</b> Parameter equality constraints</a></li>
+<li class="chapter" data-level="5.4.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>5.4.1</b> Principle</a></li>
+<li class="chapter" data-level="5.4.2" data-path="using-tmb.html"><a href="using-tmb.html#limits"><i class="fa fa-check"></i><b>5.4.2</b> Limits</a></li>
+<li class="chapter" data-level="5.4.3" data-path="using-tmb.html"><a href="using-tmb.html#parameter-equality-constraints"><i class="fa fa-check"></i><b>5.4.3</b> Parameter equality constraints</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a>
+<li class="chapter" data-level="6" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>6</b> Confidence intervals</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#wald-type"><i class="fa fa-check"></i><b>5.1</b> Wald-type</a></li>
-<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#parametric-bootstrap"><i class="fa fa-check"></i><b>5.2</b> Parametric bootstrap</a>
+<li class="chapter" data-level="6.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#wald-type"><i class="fa fa-check"></i><b>6.1</b> Wald-type</a></li>
+<li class="chapter" data-level="6.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#parametric-bootstrap"><i class="fa fa-check"></i><b>6.2</b> Parametric bootstrap</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>5.2.1</b> Generating data</a></li>
-<li class="chapter" data-level="5.2.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>5.2.2</b> Bootstrap</a></li>
+<li class="chapter" data-level="6.2.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>6.2.1</b> Generating data</a></li>
+<li class="chapter" data-level="6.2.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>6.2.2</b> Bootstrap</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#profiling-the-nll"><i class="fa fa-check"></i><b>5.3</b> Profiling the nll</a></li>
+<li class="chapter" data-level="6.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#negative-log-likelihood-profile"><i class="fa fa-check"></i><b>6.3</b> Negative log-likelihood<br> profile</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a>
+<li class="chapter" data-level="7" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>7</b> Application to different data sets</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-dataset"><i class="fa fa-check"></i><b>6.1</b> TYT dataset</a></li>
-<li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-dataset"><i class="fa fa-check"></i><b>6.2</b> Simulated dataset</a></li>
-<li class="chapter" data-level="6.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>6.3</b> Lamb data</a></li>
+<li class="chapter" data-level="7.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-dataset"><i class="fa fa-check"></i><b>7.1</b> TYT dataset</a></li>
+<li class="chapter" data-level="7.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-dataset"><i class="fa fa-check"></i><b>7.2</b> Simulated dataset</a></li>
+<li class="chapter" data-level="7.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>7.3</b> Lamb data</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="github.html"><a href="github.html"><i class="fa fa-check"></i><b>7</b> GitHub</a>
+<li class="chapter" data-level="8" data-path="github.html"><a href="github.html"><i class="fa fa-check"></i><b>8</b> GitHub</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="github.html"><a href="github.html#directory-structure"><i class="fa fa-check"></i><b>7.1</b> Directory structure</a>
+<li class="chapter" data-level="8.1" data-path="github.html"><a href="github.html#code-directory-structure"><i class="fa fa-check"></i><b>8.1</b> Code directory structure</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="github.html"><a href="github.html#code"><i class="fa fa-check"></i><b>7.1.1</b> code/</a></li>
-<li class="chapter" data-level="7.1.2" data-path="github.html"><a href="github.html#codelinreg.cpp"><i class="fa fa-check"></i><b>7.1.2</b> code/linreg.cpp</a></li>
-<li class="chapter" data-level="7.1.3" data-path="github.html"><a href="github.html#codelinreg.dll"><i class="fa fa-check"></i><b>7.1.3</b> code/linreg.dll</a></li>
-<li class="chapter" data-level="7.1.4" data-path="github.html"><a href="github.html#codelinreg.o"><i class="fa fa-check"></i><b>7.1.4</b> code/linreg.o</a></li>
-<li class="chapter" data-level="7.1.5" data-path="github.html"><a href="github.html#codelinreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.5</b> code/linreg_extended.cpp</a></li>
-<li class="chapter" data-level="7.1.6" data-path="github.html"><a href="github.html#codelinreg_extended.dll"><i class="fa fa-check"></i><b>7.1.6</b> code/linreg_extended.dll</a></li>
-<li class="chapter" data-level="7.1.7" data-path="github.html"><a href="github.html#codelinreg_extended.o"><i class="fa fa-check"></i><b>7.1.7</b> code/linreg_extended.o</a></li>
-<li class="chapter" data-level="7.1.8" data-path="github.html"><a href="github.html#codemain.r"><i class="fa fa-check"></i><b>7.1.8</b> code/main.R</a></li>
-<li class="chapter" data-level="7.1.9" data-path="github.html"><a href="github.html#codepoi_hmm.cpp"><i class="fa fa-check"></i><b>7.1.9</b> code/poi_hmm.cpp</a></li>
-<li class="chapter" data-level="7.1.10" data-path="github.html"><a href="github.html#codepoi_hmm.dll"><i class="fa fa-check"></i><b>7.1.10</b> code/poi_hmm.dll</a></li>
-<li class="chapter" data-level="7.1.11" data-path="github.html"><a href="github.html#codepoi_hmm.o"><i class="fa fa-check"></i><b>7.1.11</b> code/poi_hmm.o</a></li>
-<li class="chapter" data-level="7.1.12" data-path="github.html"><a href="github.html#codepoi_hmm_lamb.r"><i class="fa fa-check"></i><b>7.1.12</b> code/poi_hmm_lamb.R</a></li>
-<li class="chapter" data-level="7.1.13" data-path="github.html"><a href="github.html#codepoi_hmm_simu1.r"><i class="fa fa-check"></i><b>7.1.13</b> code/poi_hmm_simu1.R</a></li>
-<li class="chapter" data-level="7.1.14" data-path="github.html"><a href="github.html#codepoi_hmm_simu2.r"><i class="fa fa-check"></i><b>7.1.14</b> code/poi_hmm_simu2.R</a></li>
-<li class="chapter" data-level="7.1.15" data-path="github.html"><a href="github.html#codepoi_hmm_tinn.r"><i class="fa fa-check"></i><b>7.1.15</b> code/poi_hmm_tinn.R</a></li>
-<li class="chapter" data-level="7.1.16" data-path="github.html"><a href="github.html#codesetup_parameters.r"><i class="fa fa-check"></i><b>7.1.16</b> code/setup_parameters.R</a></li>
-<li class="chapter" data-level="7.1.17" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>7.1.17</b> data/</a></li>
-<li class="chapter" data-level="7.1.18" data-path="github.html"><a href="github.html#datafetal-lamb.rdata"><i class="fa fa-check"></i><b>7.1.18</b> data/fetal-lamb.RData</a></li>
-<li class="chapter" data-level="7.1.19" data-path="github.html"><a href="github.html#dataresults_lamb.rdata"><i class="fa fa-check"></i><b>7.1.19</b> data/results_lamb.RData</a></li>
-<li class="chapter" data-level="7.1.20" data-path="github.html"><a href="github.html#dataresults_simu1.rdata"><i class="fa fa-check"></i><b>7.1.20</b> data/results_simu1.RData</a></li>
-<li class="chapter" data-level="7.1.21" data-path="github.html"><a href="github.html#dataresults_simu2.rdata"><i class="fa fa-check"></i><b>7.1.21</b> data/results_simu2.RData</a></li>
-<li class="chapter" data-level="7.1.22" data-path="github.html"><a href="github.html#dataresults_tinn.rdata"><i class="fa fa-check"></i><b>7.1.22</b> data/results_tinn.RData</a></li>
-<li class="chapter" data-level="7.1.23" data-path="github.html"><a href="github.html#datatinnitus.rdata"><i class="fa fa-check"></i><b>7.1.23</b> data/tinnitus.RData</a></li>
-<li class="chapter" data-level="7.1.24" data-path="github.html"><a href="github.html#functions"><i class="fa fa-check"></i><b>7.1.24</b> functions/</a></li>
-<li class="chapter" data-level="7.1.25" data-path="github.html"><a href="github.html#functionsutils.cpp"><i class="fa fa-check"></i><b>7.1.25</b> functions/utils.cpp</a></li>
-<li class="chapter" data-level="7.1.26" data-path="github.html"><a href="github.html#functionsutils.r"><i class="fa fa-check"></i><b>7.1.26</b> functions/utils.R</a></li>
-<li class="chapter" data-level="7.1.27" data-path="github.html"><a href="github.html#functionsutils_linreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.27</b> functions/utils_linreg_extended.cpp</a></li>
+<li class="chapter" data-level="8.1.1" data-path="github.html"><a href="github.html#code"><i class="fa fa-check"></i><b>8.1.1</b> code/</a></li>
+<li class="chapter" data-level="8.1.2" data-path="github.html"><a href="github.html#codelinreg.cpp"><i class="fa fa-check"></i><b>8.1.2</b> code/linreg.cpp</a></li>
+<li class="chapter" data-level="8.1.3" data-path="github.html"><a href="github.html#codelinreg.dll"><i class="fa fa-check"></i><b>8.1.3</b> code/linreg.dll</a></li>
+<li class="chapter" data-level="8.1.4" data-path="github.html"><a href="github.html#codelinreg.o"><i class="fa fa-check"></i><b>8.1.4</b> code/linreg.o</a></li>
+<li class="chapter" data-level="8.1.5" data-path="github.html"><a href="github.html#codelinreg_extended.cpp"><i class="fa fa-check"></i><b>8.1.5</b> code/linreg_extended.cpp</a></li>
+<li class="chapter" data-level="8.1.6" data-path="github.html"><a href="github.html#codelinreg_extended.dll"><i class="fa fa-check"></i><b>8.1.6</b> code/linreg_extended.dll</a></li>
+<li class="chapter" data-level="8.1.7" data-path="github.html"><a href="github.html#codelinreg_extended.o"><i class="fa fa-check"></i><b>8.1.7</b> code/linreg_extended.o</a></li>
+<li class="chapter" data-level="8.1.8" data-path="github.html"><a href="github.html#codemain.r"><i class="fa fa-check"></i><b>8.1.8</b> code/main.R</a></li>
+<li class="chapter" data-level="8.1.9" data-path="github.html"><a href="github.html#codepackages.r"><i class="fa fa-check"></i><b>8.1.9</b> code/packages.R</a></li>
+<li class="chapter" data-level="8.1.10" data-path="github.html"><a href="github.html#codepoi_hmm.cpp"><i class="fa fa-check"></i><b>8.1.10</b> code/poi_hmm.cpp</a></li>
+<li class="chapter" data-level="8.1.11" data-path="github.html"><a href="github.html#codepoi_hmm.dll"><i class="fa fa-check"></i><b>8.1.11</b> code/poi_hmm.dll</a></li>
+<li class="chapter" data-level="8.1.12" data-path="github.html"><a href="github.html#codepoi_hmm.o"><i class="fa fa-check"></i><b>8.1.12</b> code/poi_hmm.o</a></li>
+<li class="chapter" data-level="8.1.13" data-path="github.html"><a href="github.html#codepoi_hmm_lamb.r"><i class="fa fa-check"></i><b>8.1.13</b> code/poi_hmm_lamb.R</a></li>
+<li class="chapter" data-level="8.1.14" data-path="github.html"><a href="github.html#codepoi_hmm_simu1.r"><i class="fa fa-check"></i><b>8.1.14</b> code/poi_hmm_simu1.R</a></li>
+<li class="chapter" data-level="8.1.15" data-path="github.html"><a href="github.html#codepoi_hmm_simu2.r"><i class="fa fa-check"></i><b>8.1.15</b> code/poi_hmm_simu2.R</a></li>
+<li class="chapter" data-level="8.1.16" data-path="github.html"><a href="github.html#codepoi_hmm_tinn.r"><i class="fa fa-check"></i><b>8.1.16</b> code/poi_hmm_tinn.R</a></li>
+<li class="chapter" data-level="8.1.17" data-path="github.html"><a href="github.html#codesetup_parameters.r"><i class="fa fa-check"></i><b>8.1.17</b> code/setup_parameters.R</a></li>
+<li class="chapter" data-level="8.1.18" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>8.1.18</b> data/</a></li>
+<li class="chapter" data-level="8.1.19" data-path="github.html"><a href="github.html#datafetal-lamb.rdata"><i class="fa fa-check"></i><b>8.1.19</b> data/fetal-lamb.RData</a></li>
+<li class="chapter" data-level="8.1.20" data-path="github.html"><a href="github.html#dataresults_lamb.rdata"><i class="fa fa-check"></i><b>8.1.20</b> data/results_lamb.RData</a></li>
+<li class="chapter" data-level="8.1.21" data-path="github.html"><a href="github.html#dataresults_simu1.rdata"><i class="fa fa-check"></i><b>8.1.21</b> data/results_simu1.RData</a></li>
+<li class="chapter" data-level="8.1.22" data-path="github.html"><a href="github.html#dataresults_simu2.rdata"><i class="fa fa-check"></i><b>8.1.22</b> data/results_simu2.RData</a></li>
+<li class="chapter" data-level="8.1.23" data-path="github.html"><a href="github.html#dataresults_tinn.rdata"><i class="fa fa-check"></i><b>8.1.23</b> data/results_tinn.RData</a></li>
+<li class="chapter" data-level="8.1.24" data-path="github.html"><a href="github.html#datatinnitus.rdata"><i class="fa fa-check"></i><b>8.1.24</b> data/tinnitus.RData</a></li>
+<li class="chapter" data-level="8.1.25" data-path="github.html"><a href="github.html#functions"><i class="fa fa-check"></i><b>8.1.25</b> functions/</a></li>
+<li class="chapter" data-level="8.1.26" data-path="github.html"><a href="github.html#functionsutils.cpp"><i class="fa fa-check"></i><b>8.1.26</b> functions/utils.cpp</a></li>
+<li class="chapter" data-level="8.1.27" data-path="github.html"><a href="github.html#functionsutils.r"><i class="fa fa-check"></i><b>8.1.27</b> functions/utils.R</a></li>
+<li class="chapter" data-level="8.1.28" data-path="github.html"><a href="github.html#functionsutils_linreg_extended.cpp"><i class="fa fa-check"></i><b>8.1.28</b> functions/utils_linreg_extended.cpp</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -281,10 +280,10 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="using-tmb" class="section level1" number="4">
-<h1><span class="header-section-number">Chapter 4</span> Using TMB</h1>
-<div id="likelihood-function" class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> Likelihood function</h2>
+<div id="using-tmb" class="section level1" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Using TMB</h1>
+<div id="likelihood-function" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Likelihood function</h2>
 <p>The function is defined in <em><a href="code/poi_hmm.cpp">code/poi_hmm.cpp</a></em></p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb50-1"><a href="using-tmb.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
 <span id="cb50-2"><a href="using-tmb.html#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
@@ -382,8 +381,8 @@ div.csl-indent {
 <span id="cb50-94"><a href="using-tmb.html#cb50-94" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk;</span>
 <span id="cb50-95"><a href="using-tmb.html#cb50-95" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
-<div id="preparing-data-and-functions-sondre" class="section level2" number="4.2">
-<h2><span class="header-section-number">4.2</span> Preparing data and functions <br/><span style="font-size:200%;color:red">SONDRE</span></h2>
+<div id="preparing-data-and-functions-sondre" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Preparing data and functions <br/><span style="font-size:200%;color:red">SONDRE</span></h2>
 <p>Before we can fit the model, we need to load some necessary packages and data files. We also need to compile the <code>C++</code> code and load the functions into our working environment in <code>R</code>.
 <!-- Loading of the necessary packages, compilation of the nll function with TMB and subsequent loading, and loading of the auxiliary functions for parameter transformation --></p>
 <!-- With the nll function available in `C++`, we can carry out the parameter estimation and all pre-/post-processing in `R`. In the following we describe the steps to be carried out. -->
@@ -404,12 +403,12 @@ We analyze 87 successive days of the “arousal” variable, which is measured o
 Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state <span class="citation">(for details, see <a href="#ref-probst" role="doc-biblioref">Probst et al. 2016</a>)</span>.
 The data can be loaded by a simple call.</p>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="using-tmb.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span></code></pre></div>
-<p>Figure <a href="using-tmb.html#fig:4tinnitus-fig">4.1</a> present the raw <a href="#table:tinnitus_data">data</a>, which are also available for download at <em><a href="data/tinnitus.Rdata">data/tinnitus.RData</a></em>.</p>
+<p>Figure <a href="using-tmb.html#fig:4tinnitus-fig">5.1</a> present the raw <a href="#table:tinnitus_data">data</a>, which are also available for download at <em><a href="data/tinnitus.Rdata">data/tinnitus.RData</a></em>.</p>
 <p><span style="font-size:400%;color:red">SONDRE</span>
 I don’t think we can keep the 2 tables. I prefer the first one. What do you think?<br />
-Also, do you think it is better to link files to their entry in <a href="github.html#directory-structure">Directory structure</a> or to keep it like this and always link to the download links?</p>
+Also, do you think it is better to link files to their entry in [Directory structure] or to keep it like this and always link to the download links?</p>
 <!-- html table generated in R 4.0.5 by xtable 1.8-4 package -->
-<!-- Sat Jul 17 21:06:08 2021 -->
+<!-- Mon Jul 19 20:59:36 2021 -->
 <table border="1">
 <caption align="bottom">
 TYT data. Observations collected by the TYT app on 87 successive days (from left to right).
@@ -421,9 +420,9 @@ TYT data. Observations collected by the TYT app on 87 successive days (from left
 </tr>
 <a name=table:tinnitus_data></a>
 </table>
-<p>Table <a href="using-tmb.html#tab:4tinnitus-table2">4.1</a> and Figure <a href="using-tmb.html#fig:4tinnitus-fig">4.1</a> presents the raw data, which are also available for download in the data folder on <em><a href="data/tinnitus.Rdata">data/tinnitus.RData</a></em>.</p>
+<p>Table <a href="using-tmb.html#tab:4tinnitus-table2">5.1</a> and Figure <a href="using-tmb.html#fig:4tinnitus-fig">5.1</a> presents the raw data, which are also available for download in the data folder on <em><a href="data/tinnitus.Rdata">data/tinnitus.RData</a></em>.</p>
 <table>
-<caption><span id="tab:4tinnitus-table2">Table 4.1: </span>TYT data. Observations collected by the TYT app on 87 successive days (from left to right).</caption>
+<caption><span id="tab:4tinnitus-table2">Table 5.1: </span>TYT data. Observations collected by the TYT app on 87 successive days (from left to right).</caption>
 <tbody>
 <tr class="odd">
 <td align="left">6</td>
@@ -532,12 +531,12 @@ TYT data. Observations collected by the TYT app on 87 successive days (from left
 <div class="figure"><span id="fig:4tinnitus-fig"></span>
 <img src="Data-supplements_files/figure-html/4tinnitus-fig-1.png" alt="Plot of observations from TYT app data for 87 succesive days." width="672" />
 <p class="caption">
-Figure 4.1: Plot of observations from TYT app data for 87 succesive days.
+Figure 5.1: Plot of observations from TYT app data for 87 succesive days.
 </p>
 </div>
 </div>
-<div id="modeling" class="section level2" number="4.3">
-<h2><span class="header-section-number">4.3</span> Modeling</h2>
+<div id="modeling" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Modeling</h2>
 <ol style="list-style-type: decimal">
 <li>Initialization of the number of states and starting (or initial) values for the optimization</li>
 </ol>
@@ -635,10 +634,10 @@ First, differences in the parameter estimates may result e.g. from the optimizi
 Moreover, <span class="citation">(<a href="#ref-leroux" role="doc-biblioref">Leroux and Puterman 1992</a>)</span> seem to base their calculations on an altered likelihood, which is reduced by removing the constant term <span class="math inline">\(\sum_{i=1}^{T} \log(x_{i}!)\)</span> from the log-likelihood.
 This modification may also possess an impact on the behavior of the optimization algorithm, as e.g.~relative convergence criteria and step size could be affected.</p>
 </div>
-<div id="nested-models" class="section level2" number="4.4">
-<h2><span class="header-section-number">4.4</span> Nested models</h2>
-<div id="principle" class="section level3" number="4.4.1">
-<h3><span class="header-section-number">4.4.1</span> Principle</h3>
+<div id="nested-models" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Nested models</h2>
+<div id="principle" class="section level3" number="5.4.1">
+<h3><span class="header-section-number">5.4.1</span> Principle</h3>
 <p>In order to build a nested model, we decide to fix <span class="math inline">\(\lambda_1\)</span> to the value 1.</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="using-tmb.html#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the previous values, and fix some</span></span>
 <span id="cb74-2"><a href="using-tmb.html#cb74-2" aria-hidden="true" tabindex="-1"></a>fixed_par_lambda <span class="ot">&lt;-</span> lambda</span>
@@ -673,8 +672,8 @@ Lastly, we specify this mapping with the <code>map</code> argument when making t
 ## delta  0.67189864 0.22314460</code></pre>
 <p>Note that the standard error of <span class="math inline">\(\lambda_1\)</span> is zero, because it is no longer considered a variable parameter and does not enter the optimization procedure.</p>
 </div>
-<div id="limit" class="section level3" number="4.4.2">
-<h3><span class="header-section-number">4.4.2</span> Limit</h3>
+<div id="limits" class="section level3" number="5.4.2">
+<h3><span class="header-section-number">5.4.2</span> Limits</h3>
 <p>This method cannot work in general for working parameters which are not linked to a single natural parameter.
 This is because only working parameters can be fixed with this method, but the working parameters of the TPM are not each linked to a single natural parameter. As an example, fixing the natural parameter <span class="math inline">\(gamma_{11}\)</span> is not equivalent to fixing any working parameter <span class="math inline">\(\tau{ij}\)</span>.
 Hence, the TPM cannot in general be fixed.</p>
@@ -682,8 +681,8 @@ Hence, the TPM cannot in general be fixed.</p>
 <p>We will show in the next section that a type of general constraints on the TPM can be carried out.</p>
 <p>In addition, overcoming this restriction should be possible via constrained optimization.</p>
 </div>
-<div id="parameter-equality-constraints" class="section level3" number="4.4.3">
-<h3><span class="header-section-number">4.4.3</span> Parameter equality constraints</h3>
+<div id="parameter-equality-constraints" class="section level3" number="5.4.3">
+<h3><span class="header-section-number">5.4.3</span> Parameter equality constraints</h3>
 <p>It is noteworthy that more complex constraints are possible as well
 For example, to impose equality constraints (such as <span class="math inline">\(\gamma_{11} = \gamma_{22}\)</span>), the corresponding factor level has to be identical for the concerned entries.</p>
 <p>As a reminder, we defined the working parameters via

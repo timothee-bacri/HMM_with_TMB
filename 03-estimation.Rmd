@@ -24,7 +24,7 @@ They are defined in *[functions/utils.cpp](functions/utils.cpp)*
 Transforming the Poisson means into their natural form can be done simply with the `exp` function and doesn't require a dedicated function.
 
 ### In `R`
-#### Parameters
+#### Parameter transformation
 While `TMB` requires functions to transform working parameters to their natural form, pre-processing in `R` requires the opposite.
 
 Functions to achieve this are available in [@zucchini, p. ~51] and are displayed here for convenience.
@@ -71,7 +71,7 @@ State 1 has been relabeled state 3, state 3 became state 2, and state 2 became s
 Another way to address this issue is by parametrizing in terms of non-negative increments $\lambda_j - \lambda_{j-1}$ with $\lambda_0 \equiv 0$, as explained by [@zucchini Section 7.1.1 p. 112].
 However, [@bulla, Section 3.2 p. 7] shows this can impose optimization issues. They write "We find that, over all series, the simplest parameterization, i.e., the use of log-transformed state-dependent parameters, leads to the best results as regards the number of failures and the convergence to the global maximum".
 
-## Nll in `TMB`
+## Negative log-likelihood<br> in `TMB`
 
 The Poisson HMM negative log-likelihood function in R can be written the following way.
 ```{Rcpp 3poi_hmm.cpp, code=readLines("code/poi_hmm.cpp"), eval=FALSE}

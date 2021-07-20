@@ -224,7 +224,7 @@ summary(sdreport(fixed_par_obj_tmb), "report")
 ```
 Note that the standard error of $\lambda_1$ is zero, because it is no longer considered a variable parameter and does not enter the optimization procedure.
 
-### Limit
+### Limits
 
 This method cannot work in general for working parameters which are not linked to a single natural parameter.
 This is because only working parameters can be fixed with this method, but the working parameters of the TPM are not each linked to a single natural parameter. As an example, fixing the natural parameter $gamma_{11}$ is not equivalent to fixing any working parameter $\tau{ij}$.

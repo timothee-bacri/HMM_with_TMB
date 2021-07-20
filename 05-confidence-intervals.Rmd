@@ -223,7 +223,7 @@ Since we are looking to aggregate these estimates in order to derive CI through 
 The first that comes to mind is the ascending order.
 To ensure that $\b{\hat{\lambda}}$ are kept in ascending order, we refer to our Section [Label Switching](#label-switching) for a solution to this issue.
 
-## Profiling the nll
+## Negative log-likelihood<br> profile
 
 Our nll function is parametrized in terms of and optimized with respect to the working parameters.
 In practice, this aspect is easy to deal with.
