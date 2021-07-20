@@ -200,7 +200,7 @@ div.csl-indent {
 <li class="chapter" data-level="5" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>5</b> Using TMB</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>5.1</b> Likelihood function</a></li>
-<li class="chapter" data-level="5.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions-sondre"><i class="fa fa-check"></i><b>5.2</b> Preparing data and functions <br/><span style="font-size:200%;color:red">SONDRE</span></a></li>
+<li class="chapter" data-level="5.2" data-path="using-tmb.html"><a href="using-tmb.html#preparing-data-and-functions"><i class="fa fa-check"></i><b>5.2</b> Preparing data and functions</a></li>
 <li class="chapter" data-level="5.3" data-path="using-tmb.html"><a href="using-tmb.html#modeling"><i class="fa fa-check"></i><b>5.3</b> Modeling</a></li>
 <li class="chapter" data-level="5.4" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>5.4</b> Nested models</a>
 <ul>
@@ -381,8 +381,8 @@ div.csl-indent {
 <span id="cb48-94"><a href="using-tmb.html#cb48-94" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk;</span>
 <span id="cb48-95"><a href="using-tmb.html#cb48-95" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
-<div id="preparing-data-and-functions-sondre" class="section level2" number="5.2">
-<h2><span class="header-section-number">5.2</span> Preparing data and functions <br/><span style="font-size:200%;color:red">SONDRE</span></h2>
+<div id="preparing-data-and-functions" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Preparing data and functions</h2>
 <p>Before we can fit the model, we need to load some necessary packages and data files. We also need to compile the <code>C++</code> code and load the functions into our working environment in <code>R</code>.
 <!-- Loading of the necessary packages, compilation of the nll function with TMB and subsequent loading, and loading of the auxiliary functions for parameter transformation --></p>
 <!-- With the nll function available in `C++`, we can carry out the parameter estimation and all pre-/post-processing in `R`. In the following we describe the steps to be carried out. -->
@@ -405,7 +405,7 @@ The data can be loaded by a simple call.</p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="using-tmb.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span></code></pre></div>
 <p>Figure <a href="using-tmb.html#fig:4tinnitus-fig">5.1</a> present the raw data in Table <a href="#table:tinnitus_data">5.1</a>, which are also available for download at <em><a href="data/tinnitus.Rdata">data/tinnitus.RData</a></em>.</p>
 <!-- html table generated in R 4.0.5 by xtable 1.8-4 package -->
-<!-- Tue Jul 20 20:07:25 2021 -->
+<!-- Tue Jul 20 21:23:38 2021 -->
 <table border="1">
 <caption align="bottom">
 TYT data. Observations collected by the TYT app on 87 successive days (from left to right).

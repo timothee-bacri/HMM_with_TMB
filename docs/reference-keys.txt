@@ -23,7 +23,7 @@ label-switching
 negative-log-likelihood-in-tmb
 using-tmb
 likelihood-function
-preparing-data-and-functions-sondre
+preparing-data-and-functions
 modeling
 nested-models
 principle
