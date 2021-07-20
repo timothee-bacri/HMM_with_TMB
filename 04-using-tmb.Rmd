@@ -13,7 +13,7 @@ The function is defined in *[code/poi_hmm.cpp](code/poi_hmm.cpp)*
 ```{Rcpp 4poi_hmm.cpp, code=readLines("code/poi_hmm.cpp"), eval=FALSE}
 ```
 
-## Preparing data and functions <br/><span style="font-size:200%;color:red">SONDRE</span>
+## Preparing data and functions
 Before we can fit the model, we need to load some necessary packages and data files. We also need to compile the `C++` code and load the functions into our working environment in `R`.
 <!-- Loading of the necessary packages, compilation of the nll function with TMB and subsequent loading, and loading of the auxiliary functions for parameter transformation -->
 
