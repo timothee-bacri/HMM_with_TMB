@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-07-20" />
+<meta name="date" content="2021-08-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -290,76 +290,76 @@ div.csl-indent {
 We define the function <code>gamma.w2n</code> to perform this transformation.</p>
 <p><code>stat.dist</code> handles computing the stationary distribution, although <code>delta.w2n</code> can be used if a non-stationary distribution is provided.</p>
 <p>They are defined in <em><a href="functions/utils.cpp">functions/utils.cpp</a></em></p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb39-1"><a href="parameter-estimation-techniques.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming working parameters in initial distribution</span></span>
-<span id="cb39-2"><a href="parameter-estimation-techniques.html#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co">// to natural parameters</span></span>
-<span id="cb39-3"><a href="parameter-estimation-techniques.html#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb39-4"><a href="parameter-estimation-techniques.html#cb39-4" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; Delta_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tdelta) {</span>
-<span id="cb39-5"><a href="parameter-estimation-techniques.html#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-6"><a href="parameter-estimation-techniques.html#cb39-6" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta(m);</span>
-<span id="cb39-7"><a href="parameter-estimation-techniques.html#cb39-7" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; foo(m);</span>
-<span id="cb39-8"><a href="parameter-estimation-techniques.html#cb39-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-9"><a href="parameter-estimation-techniques.html#cb39-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>)</span>
-<span id="cb39-10"><a href="parameter-estimation-techniques.html#cb39-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Type(<span class="dv">1</span>);</span>
-<span id="cb39-11"><a href="parameter-estimation-techniques.html#cb39-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-12"><a href="parameter-estimation-techniques.html#cb39-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// set first element to one.</span></span>
-<span id="cb39-13"><a href="parameter-estimation-techniques.html#cb39-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill in the last m - 1 elements with working parameters</span></span>
-<span id="cb39-14"><a href="parameter-estimation-techniques.html#cb39-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// and take exponential</span></span>
-<span id="cb39-15"><a href="parameter-estimation-techniques.html#cb39-15" aria-hidden="true" tabindex="-1"></a>  foo &lt;&lt; Type(<span class="dv">1</span>), tdelta.exp();</span>
-<span id="cb39-16"><a href="parameter-estimation-techniques.html#cb39-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-17"><a href="parameter-estimation-techniques.html#cb39-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// normalize</span></span>
-<span id="cb39-18"><a href="parameter-estimation-techniques.html#cb39-18" aria-hidden="true" tabindex="-1"></a>  delta = foo / foo.sum();</span>
-<span id="cb39-19"><a href="parameter-estimation-techniques.html#cb39-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-20"><a href="parameter-estimation-techniques.html#cb39-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta;</span>
-<span id="cb39-21"><a href="parameter-estimation-techniques.html#cb39-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb39-22"><a href="parameter-estimation-techniques.html#cb39-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-23"><a href="parameter-estimation-techniques.html#cb39-23" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming the working parameters in TPM to</span></span>
-<span id="cb39-24"><a href="parameter-estimation-techniques.html#cb39-24" aria-hidden="true" tabindex="-1"></a><span class="co">// natural parameters (w2n)</span></span>
-<span id="cb39-25"><a href="parameter-estimation-techniques.html#cb39-25" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb39-26"><a href="parameter-estimation-techniques.html#cb39-26" aria-hidden="true" tabindex="-1"></a>matrix&lt;Type&gt; Gamma_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tgamma) {</span>
-<span id="cb39-27"><a href="parameter-estimation-techniques.html#cb39-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-28"><a href="parameter-estimation-techniques.html#cb39-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct m x m identity matrix</span></span>
-<span id="cb39-29"><a href="parameter-estimation-techniques.html#cb39-29" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma(m, m);</span>
-<span id="cb39-30"><a href="parameter-estimation-techniques.html#cb39-30" aria-hidden="true" tabindex="-1"></a>  gamma.setIdentity();</span>
-<span id="cb39-31"><a href="parameter-estimation-techniques.html#cb39-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-32"><a href="parameter-estimation-techniques.html#cb39-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>)</span>
-<span id="cb39-33"><a href="parameter-estimation-techniques.html#cb39-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gamma;</span>
-<span id="cb39-34"><a href="parameter-estimation-techniques.html#cb39-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-35"><a href="parameter-estimation-techniques.html#cb39-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill offdiagonal elements with working parameters column-wise:</span></span>
-<span id="cb39-36"><a href="parameter-estimation-techniques.html#cb39-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> idx = <span class="dv">0</span>;</span>
-<span id="cb39-37"><a href="parameter-estimation-techniques.html#cb39-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; m; i++){</span>
-<span id="cb39-38"><a href="parameter-estimation-techniques.html#cb39-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; m; j++){</span>
-<span id="cb39-39"><a href="parameter-estimation-techniques.html#cb39-39" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (j != i){</span>
-<span id="cb39-40"><a href="parameter-estimation-techniques.html#cb39-40" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Fill gamma according to mapping and take exponential</span></span>
-<span id="cb39-41"><a href="parameter-estimation-techniques.html#cb39-41" aria-hidden="true" tabindex="-1"></a>        gamma(j, i) = tgamma.exp()(idx);</span>
-<span id="cb39-42"><a href="parameter-estimation-techniques.html#cb39-42" aria-hidden="true" tabindex="-1"></a>        idx++;</span>
-<span id="cb39-43"><a href="parameter-estimation-techniques.html#cb39-43" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb39-44"><a href="parameter-estimation-techniques.html#cb39-44" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb39-45"><a href="parameter-estimation-techniques.html#cb39-45" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb39-46"><a href="parameter-estimation-techniques.html#cb39-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Normalize each row:</span></span>
-<span id="cb39-47"><a href="parameter-estimation-techniques.html#cb39-47" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; cs = gamma.rowwise().sum();</span>
-<span id="cb39-48"><a href="parameter-estimation-techniques.html#cb39-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; m; i++) gamma.row(i) /= cs[i];</span>
-<span id="cb39-49"><a href="parameter-estimation-techniques.html#cb39-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-50"><a href="parameter-estimation-techniques.html#cb39-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> gamma;</span>
-<span id="cb39-51"><a href="parameter-estimation-techniques.html#cb39-51" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb39-52"><a href="parameter-estimation-techniques.html#cb39-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-53"><a href="parameter-estimation-techniques.html#cb39-53" aria-hidden="true" tabindex="-1"></a><span class="co">// Function computing the stationary distribution of a Markov chain</span></span>
-<span id="cb39-54"><a href="parameter-estimation-techniques.html#cb39-54" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb39-55"><a href="parameter-estimation-techniques.html#cb39-55" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; Stat_dist(<span class="dt">int</span> m, matrix&lt;Type&gt; gamma) {</span>
-<span id="cb39-56"><a href="parameter-estimation-techniques.html#cb39-56" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-57"><a href="parameter-estimation-techniques.html#cb39-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
-<span id="cb39-58"><a href="parameter-estimation-techniques.html#cb39-58" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; I(m, m);</span>
-<span id="cb39-59"><a href="parameter-estimation-techniques.html#cb39-59" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; U(m, m);</span>
-<span id="cb39-60"><a href="parameter-estimation-techniques.html#cb39-60" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
-<span id="cb39-61"><a href="parameter-estimation-techniques.html#cb39-61" aria-hidden="true" tabindex="-1"></a>  U = U.setOnes();</span>
-<span id="cb39-62"><a href="parameter-estimation-techniques.html#cb39-62" aria-hidden="true" tabindex="-1"></a>  I = I.setIdentity();</span>
-<span id="cb39-63"><a href="parameter-estimation-techniques.html#cb39-63" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
-<span id="cb39-64"><a href="parameter-estimation-techniques.html#cb39-64" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; A =  I - gamma + U;</span>
-<span id="cb39-65"><a href="parameter-estimation-techniques.html#cb39-65" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; Ainv = A.inverse();</span>
-<span id="cb39-66"><a href="parameter-estimation-techniques.html#cb39-66" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; deltamat = row1vec * Ainv;</span>
-<span id="cb39-67"><a href="parameter-estimation-techniques.html#cb39-67" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = deltamat.row(<span class="dv">0</span>);</span>
-<span id="cb39-68"><a href="parameter-estimation-techniques.html#cb39-68" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-69"><a href="parameter-estimation-techniques.html#cb39-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta;</span>
-<span id="cb39-70"><a href="parameter-estimation-techniques.html#cb39-70" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb41-1"><a href="parameter-estimation-techniques.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming working parameters in initial distribution</span></span>
+<span id="cb41-2"><a href="parameter-estimation-techniques.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co">// to natural parameters</span></span>
+<span id="cb41-3"><a href="parameter-estimation-techniques.html#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb41-4"><a href="parameter-estimation-techniques.html#cb41-4" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; Delta_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tdelta) {</span>
+<span id="cb41-5"><a href="parameter-estimation-techniques.html#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="parameter-estimation-techniques.html#cb41-6" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta(m);</span>
+<span id="cb41-7"><a href="parameter-estimation-techniques.html#cb41-7" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; foo(m);</span>
+<span id="cb41-8"><a href="parameter-estimation-techniques.html#cb41-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-9"><a href="parameter-estimation-techniques.html#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>)</span>
+<span id="cb41-10"><a href="parameter-estimation-techniques.html#cb41-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Type(<span class="dv">1</span>);</span>
+<span id="cb41-11"><a href="parameter-estimation-techniques.html#cb41-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-12"><a href="parameter-estimation-techniques.html#cb41-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// set first element to one.</span></span>
+<span id="cb41-13"><a href="parameter-estimation-techniques.html#cb41-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill in the last m - 1 elements with working parameters</span></span>
+<span id="cb41-14"><a href="parameter-estimation-techniques.html#cb41-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// and take exponential</span></span>
+<span id="cb41-15"><a href="parameter-estimation-techniques.html#cb41-15" aria-hidden="true" tabindex="-1"></a>  foo &lt;&lt; Type(<span class="dv">1</span>), tdelta.exp();</span>
+<span id="cb41-16"><a href="parameter-estimation-techniques.html#cb41-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-17"><a href="parameter-estimation-techniques.html#cb41-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// normalize</span></span>
+<span id="cb41-18"><a href="parameter-estimation-techniques.html#cb41-18" aria-hidden="true" tabindex="-1"></a>  delta = foo / foo.sum();</span>
+<span id="cb41-19"><a href="parameter-estimation-techniques.html#cb41-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-20"><a href="parameter-estimation-techniques.html#cb41-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta;</span>
+<span id="cb41-21"><a href="parameter-estimation-techniques.html#cb41-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-22"><a href="parameter-estimation-techniques.html#cb41-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-23"><a href="parameter-estimation-techniques.html#cb41-23" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming the working parameters in TPM to</span></span>
+<span id="cb41-24"><a href="parameter-estimation-techniques.html#cb41-24" aria-hidden="true" tabindex="-1"></a><span class="co">// natural parameters (w2n)</span></span>
+<span id="cb41-25"><a href="parameter-estimation-techniques.html#cb41-25" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb41-26"><a href="parameter-estimation-techniques.html#cb41-26" aria-hidden="true" tabindex="-1"></a>matrix&lt;Type&gt; Gamma_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tgamma) {</span>
+<span id="cb41-27"><a href="parameter-estimation-techniques.html#cb41-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-28"><a href="parameter-estimation-techniques.html#cb41-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct m x m identity matrix</span></span>
+<span id="cb41-29"><a href="parameter-estimation-techniques.html#cb41-29" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma(m, m);</span>
+<span id="cb41-30"><a href="parameter-estimation-techniques.html#cb41-30" aria-hidden="true" tabindex="-1"></a>  gamma.setIdentity();</span>
+<span id="cb41-31"><a href="parameter-estimation-techniques.html#cb41-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-32"><a href="parameter-estimation-techniques.html#cb41-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>)</span>
+<span id="cb41-33"><a href="parameter-estimation-techniques.html#cb41-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gamma;</span>
+<span id="cb41-34"><a href="parameter-estimation-techniques.html#cb41-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-35"><a href="parameter-estimation-techniques.html#cb41-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill offdiagonal elements with working parameters column-wise:</span></span>
+<span id="cb41-36"><a href="parameter-estimation-techniques.html#cb41-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> idx = <span class="dv">0</span>;</span>
+<span id="cb41-37"><a href="parameter-estimation-techniques.html#cb41-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; m; i++){</span>
+<span id="cb41-38"><a href="parameter-estimation-techniques.html#cb41-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; m; j++){</span>
+<span id="cb41-39"><a href="parameter-estimation-techniques.html#cb41-39" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (j != i){</span>
+<span id="cb41-40"><a href="parameter-estimation-techniques.html#cb41-40" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Fill gamma according to mapping and take exponential</span></span>
+<span id="cb41-41"><a href="parameter-estimation-techniques.html#cb41-41" aria-hidden="true" tabindex="-1"></a>        gamma(j, i) = tgamma.exp()(idx);</span>
+<span id="cb41-42"><a href="parameter-estimation-techniques.html#cb41-42" aria-hidden="true" tabindex="-1"></a>        idx++;</span>
+<span id="cb41-43"><a href="parameter-estimation-techniques.html#cb41-43" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb41-44"><a href="parameter-estimation-techniques.html#cb41-44" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb41-45"><a href="parameter-estimation-techniques.html#cb41-45" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb41-46"><a href="parameter-estimation-techniques.html#cb41-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Normalize each row:</span></span>
+<span id="cb41-47"><a href="parameter-estimation-techniques.html#cb41-47" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; cs = gamma.rowwise().sum();</span>
+<span id="cb41-48"><a href="parameter-estimation-techniques.html#cb41-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; m; i++) gamma.row(i) /= cs[i];</span>
+<span id="cb41-49"><a href="parameter-estimation-techniques.html#cb41-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-50"><a href="parameter-estimation-techniques.html#cb41-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> gamma;</span>
+<span id="cb41-51"><a href="parameter-estimation-techniques.html#cb41-51" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-52"><a href="parameter-estimation-techniques.html#cb41-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-53"><a href="parameter-estimation-techniques.html#cb41-53" aria-hidden="true" tabindex="-1"></a><span class="co">// Function computing the stationary distribution of a Markov chain</span></span>
+<span id="cb41-54"><a href="parameter-estimation-techniques.html#cb41-54" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb41-55"><a href="parameter-estimation-techniques.html#cb41-55" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; Stat_dist(<span class="dt">int</span> m, matrix&lt;Type&gt; gamma) {</span>
+<span id="cb41-56"><a href="parameter-estimation-techniques.html#cb41-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-57"><a href="parameter-estimation-techniques.html#cb41-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
+<span id="cb41-58"><a href="parameter-estimation-techniques.html#cb41-58" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; I(m, m);</span>
+<span id="cb41-59"><a href="parameter-estimation-techniques.html#cb41-59" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; U(m, m);</span>
+<span id="cb41-60"><a href="parameter-estimation-techniques.html#cb41-60" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
+<span id="cb41-61"><a href="parameter-estimation-techniques.html#cb41-61" aria-hidden="true" tabindex="-1"></a>  U = U.setOnes();</span>
+<span id="cb41-62"><a href="parameter-estimation-techniques.html#cb41-62" aria-hidden="true" tabindex="-1"></a>  I = I.setIdentity();</span>
+<span id="cb41-63"><a href="parameter-estimation-techniques.html#cb41-63" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
+<span id="cb41-64"><a href="parameter-estimation-techniques.html#cb41-64" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; A =  I - gamma + U;</span>
+<span id="cb41-65"><a href="parameter-estimation-techniques.html#cb41-65" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; Ainv = A.inverse();</span>
+<span id="cb41-66"><a href="parameter-estimation-techniques.html#cb41-66" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; deltamat = row1vec * Ainv;</span>
+<span id="cb41-67"><a href="parameter-estimation-techniques.html#cb41-67" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = deltamat.row(<span class="dv">0</span>);</span>
+<span id="cb41-68"><a href="parameter-estimation-techniques.html#cb41-68" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-69"><a href="parameter-estimation-techniques.html#cb41-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta;</span>
+<span id="cb41-70"><a href="parameter-estimation-techniques.html#cb41-70" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Transforming the Poisson means into their natural form can be done simply with the <code>exp</code> function and doesn’t require a dedicated function.</p>
 </div>
 <div id="in-r" class="section level3" number="4.1.2">
@@ -368,41 +368,45 @@ We define the function <code>gamma.w2n</code> to perform this transformation.</p
 <h4><span class="header-section-number">4.1.2.1</span> Parameter transformation</h4>
 <p>While <code>TMB</code> requires functions to transform working parameters to their natural form, pre-processing in <code>R</code> requires the opposite.</p>
 <p>Functions to achieve this are available in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, ~51</a>)</span> and are displayed here for convenience.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="parameter-estimation-techniques.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform Poisson natural parameters to working parameters</span></span>
-<span id="cb40-2"><a href="parameter-estimation-techniques.html#cb40-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.pn2pw <span class="ot">&lt;-</span> <span class="cf">function</span>(m, lambda, gamma, <span class="at">delta =</span> <span class="cn">NULL</span>,</span>
-<span id="cb40-3"><a href="parameter-estimation-techniques.html#cb40-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">stationary =</span> <span class="cn">TRUE</span>) {</span>
-<span id="cb40-4"><a href="parameter-estimation-techniques.html#cb40-4" aria-hidden="true" tabindex="-1"></a>  tlambda <span class="ot">&lt;-</span> <span class="fu">log</span>(lambda)</span>
-<span id="cb40-5"><a href="parameter-estimation-techniques.html#cb40-5" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">log</span>(gamma <span class="sc">/</span> <span class="fu">diag</span>(gamma))</span>
-<span id="cb40-6"><a href="parameter-estimation-techniques.html#cb40-6" aria-hidden="true" tabindex="-1"></a>  tgamma <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(foo[<span class="sc">!</span><span class="fu">diag</span>(m)])</span>
-<span id="cb40-7"><a href="parameter-estimation-techniques.html#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (stationary) {</span>
-<span id="cb40-8"><a href="parameter-estimation-techniques.html#cb40-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If tdelta is set to NULL and returned in the list,</span></span>
-<span id="cb40-9"><a href="parameter-estimation-techniques.html#cb40-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># it will cause issues when optimizing with TMB</span></span>
-<span id="cb40-10"><a href="parameter-estimation-techniques.html#cb40-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">tlambda =</span> tlambda, <span class="at">tgamma =</span> tgamma))</span>
-<span id="cb40-11"><a href="parameter-estimation-techniques.html#cb40-11" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb40-12"><a href="parameter-estimation-techniques.html#cb40-12" aria-hidden="true" tabindex="-1"></a>    tdelta <span class="ot">&lt;-</span> <span class="fu">log</span>(delta[<span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> delta[<span class="dv">1</span>])</span>
-<span id="cb40-13"><a href="parameter-estimation-techniques.html#cb40-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># TMB requires a list</span></span>
-<span id="cb40-14"><a href="parameter-estimation-techniques.html#cb40-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">tlambda =</span> tlambda, <span class="at">tgamma =</span> tgamma, <span class="at">tdelta =</span> tdelta))</span>
-<span id="cb40-15"><a href="parameter-estimation-techniques.html#cb40-15" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb40-16"><a href="parameter-estimation-techniques.html#cb40-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="parameter-estimation-techniques.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform Poisson natural parameters to working parameters</span></span>
+<span id="cb42-2"><a href="parameter-estimation-techniques.html#cb42-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.pn2pw <span class="ot">&lt;-</span> <span class="cf">function</span>(m, lambda, gamma, <span class="at">delta =</span> <span class="cn">NULL</span>,</span>
+<span id="cb42-3"><a href="parameter-estimation-techniques.html#cb42-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">stationary =</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb42-4"><a href="parameter-estimation-techniques.html#cb42-4" aria-hidden="true" tabindex="-1"></a>  tlambda <span class="ot">&lt;-</span> <span class="fu">log</span>(lambda)</span>
+<span id="cb42-5"><a href="parameter-estimation-techniques.html#cb42-5" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">log</span>(gamma <span class="sc">/</span> <span class="fu">diag</span>(gamma))</span>
+<span id="cb42-6"><a href="parameter-estimation-techniques.html#cb42-6" aria-hidden="true" tabindex="-1"></a>  tgamma <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(foo[<span class="sc">!</span><span class="fu">diag</span>(m)])</span>
+<span id="cb42-7"><a href="parameter-estimation-techniques.html#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (stationary) {</span>
+<span id="cb42-8"><a href="parameter-estimation-techniques.html#cb42-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If tdelta is set to NULL and returned in the list,</span></span>
+<span id="cb42-9"><a href="parameter-estimation-techniques.html#cb42-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># it will cause issues when optimizing with TMB</span></span>
+<span id="cb42-10"><a href="parameter-estimation-techniques.html#cb42-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">tlambda =</span> tlambda, <span class="at">tgamma =</span> tgamma))</span>
+<span id="cb42-11"><a href="parameter-estimation-techniques.html#cb42-11" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb42-12"><a href="parameter-estimation-techniques.html#cb42-12" aria-hidden="true" tabindex="-1"></a>    tdelta <span class="ot">&lt;-</span> <span class="fu">log</span>(delta[<span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> delta[<span class="dv">1</span>])</span>
+<span id="cb42-13"><a href="parameter-estimation-techniques.html#cb42-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># TMB requires a list</span></span>
+<span id="cb42-14"><a href="parameter-estimation-techniques.html#cb42-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">tlambda =</span> tlambda, <span class="at">tgamma =</span> tgamma, <span class="at">tdelta =</span> tdelta))</span>
+<span id="cb42-15"><a href="parameter-estimation-techniques.html#cb42-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb42-16"><a href="parameter-estimation-techniques.html#cb42-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>This can be broken down into sub-functions if necessary. For the <span class="math inline">\(\gamma\)</span> part, we introduce <code>gamma.n2w</code> below.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="parameter-estimation-techniques.html#cb41-1" aria-hidden="true" tabindex="-1"></a>gamma.n2w <span class="ot">&lt;-</span> <span class="cf">function</span>(m, gamma){</span>
-<span id="cb41-2"><a href="parameter-estimation-techniques.html#cb41-2" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">log</span>(gamma <span class="sc">/</span> <span class="fu">diag</span>(gamma))</span>
-<span id="cb41-3"><a href="parameter-estimation-techniques.html#cb41-3" aria-hidden="true" tabindex="-1"></a>  tgamma <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(foo[<span class="sc">!</span><span class="fu">diag</span>(m)])</span>
-<span id="cb41-4"><a href="parameter-estimation-techniques.html#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(tgamma)</span>
-<span id="cb41-5"><a href="parameter-estimation-techniques.html#cb41-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="parameter-estimation-techniques.html#cb43-1" aria-hidden="true" tabindex="-1"></a>gamma.n2w <span class="ot">&lt;-</span> <span class="cf">function</span>(m, gamma){</span>
+<span id="cb43-2"><a href="parameter-estimation-techniques.html#cb43-2" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">log</span>(gamma <span class="sc">/</span> <span class="fu">diag</span>(gamma))</span>
+<span id="cb43-3"><a href="parameter-estimation-techniques.html#cb43-3" aria-hidden="true" tabindex="-1"></a>  tgamma <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(foo[<span class="sc">!</span><span class="fu">diag</span>(m)])</span>
+<span id="cb43-4"><a href="parameter-estimation-techniques.html#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(tgamma)</span>
+<span id="cb43-5"><a href="parameter-estimation-techniques.html#cb43-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>In the case where a non-stationary distribution is specified, transforming <span class="math inline">\({\boldsymbol\delta}\)</span> is necessary. For this we use the <code>delta.n2w</code> function.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="parameter-estimation-techniques.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to transform natural parameters to working</span></span>
-<span id="cb42-2"><a href="parameter-estimation-techniques.html#cb42-2" aria-hidden="true" tabindex="-1"></a>delta.n2w <span class="ot">&lt;-</span> <span class="cf">function</span>(m, delta){</span>
-<span id="cb42-3"><a href="parameter-estimation-techniques.html#cb42-3" aria-hidden="true" tabindex="-1"></a>  tdelta <span class="ot">&lt;-</span> <span class="fu">log</span>(delta[<span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> delta[<span class="dv">1</span>])</span>
-<span id="cb42-4"><a href="parameter-estimation-techniques.html#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(tdelta) </span>
-<span id="cb42-5"><a href="parameter-estimation-techniques.html#cb42-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="parameter-estimation-techniques.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to transform natural parameters to working</span></span>
+<span id="cb44-2"><a href="parameter-estimation-techniques.html#cb44-2" aria-hidden="true" tabindex="-1"></a>delta.n2w <span class="ot">&lt;-</span> <span class="cf">function</span>(m, delta){</span>
+<span id="cb44-3"><a href="parameter-estimation-techniques.html#cb44-3" aria-hidden="true" tabindex="-1"></a>  tdelta <span class="ot">&lt;-</span> <span class="fu">log</span>(delta[<span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> delta[<span class="dv">1</span>])</span>
+<span id="cb44-4"><a href="parameter-estimation-techniques.html#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(tdelta) </span>
+<span id="cb44-5"><a href="parameter-estimation-techniques.html#cb44-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>When assuming a stationary distribution, computing it can be done via the following <code>stat.dist</code> function.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="parameter-estimation-techniques.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the stationary distribution of a Markov chain</span></span>
-<span id="cb43-2"><a href="parameter-estimation-techniques.html#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co"># with transition probability gamma</span></span>
-<span id="cb43-3"><a href="parameter-estimation-techniques.html#cb43-3" aria-hidden="true" tabindex="-1"></a>stat.dist <span class="ot">&lt;-</span> <span class="cf">function</span>(gamma) {</span>
-<span id="cb43-4"><a href="parameter-estimation-techniques.html#cb43-4" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">nrow</span>(gamma)</span>
-<span id="cb43-5"><a href="parameter-estimation-techniques.html#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">solve</span>(<span class="fu">t</span>(<span class="fu">diag</span>(m) <span class="sc">-</span> gamma <span class="sc">+</span> <span class="dv">1</span>), <span class="fu">rep</span>(<span class="dv">1</span>, m)))</span>
-<span id="cb43-6"><a href="parameter-estimation-techniques.html#cb43-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="parameter-estimation-techniques.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the stationary distribution of a Markov chain</span></span>
+<span id="cb45-2"><a href="parameter-estimation-techniques.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co"># with transition probability gamma</span></span>
+<span id="cb45-3"><a href="parameter-estimation-techniques.html#cb45-3" aria-hidden="true" tabindex="-1"></a>stat.dist <span class="ot">&lt;-</span> <span class="cf">function</span>(gamma) {</span>
+<span id="cb45-4"><a href="parameter-estimation-techniques.html#cb45-4" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">nrow</span>(gamma)</span>
+<span id="cb45-5"><a href="parameter-estimation-techniques.html#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">solve</span>(<span class="fu">t</span>(<span class="fu">diag</span>(m) <span class="sc">-</span> gamma <span class="sc">+</span> <span class="dv">1</span>), <span class="fu">rep</span>(<span class="dv">1</span>, m)))</span>
+<span id="cb45-6"><a href="parameter-estimation-techniques.html#cb45-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p> shows that calculating the stationary distribution can be achieved by solving  for <span class="math inline">\({\boldsymbol\delta}\)</span>, where <span class="math inline">\({\boldsymbol I}_m\)</span> is the <span class="math inline">\(m*m\)</span> identity matrix, <span class="math inline">\({\boldsymbol U}\)</span> is a <span class="math inline">\(m*m\)</span> matrix of ones, and <span class="math inline">\({\boldsymbol 1}\)</span> is a row vector of ones.
+<span class="math display">\[
+{\boldsymbol\delta}({\boldsymbol I}_m - {\boldsymbol\Gamma} + {\boldsymbol U}) = {\boldsymbol 1}
+\]</span></p>
 </div>
 <div id="label-switching" class="section level4" number="4.1.2.2">
 <h4><span class="header-section-number">4.1.2.2</span> Label switching</h4>
@@ -413,84 +417,84 @@ The issue can be relevant when comparing results of different optimizers, initia
 Sorting the means is direct, however re-ordering the TPM is not as straightforward.
 To do so, we take the permutations of the states given by the sorted Poisson means, and permute each row index and column index to its new value.
 A function to achieve this is named <code>pois.HMM.label.order</code> and presented below.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="parameter-estimation-techniques.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Relabel states by increasing Poisson means</span></span>
-<span id="cb44-2"><a href="parameter-estimation-techniques.html#cb44-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.label.order <span class="ot">&lt;-</span> <span class="cf">function</span>(m, lambda, gamma, <span class="at">delta =</span> <span class="cn">NULL</span>, <span class="at">lambda_std_error =</span> <span class="cn">NULL</span>, <span class="at">gamma_std_error =</span> <span class="cn">NULL</span>, <span class="at">delta_std_error =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb44-3"><a href="parameter-estimation-techniques.html#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># gamma_vector_indices is used to calculate the indices of the reordered TPM gamma as a vector</span></span>
-<span id="cb44-4"><a href="parameter-estimation-techniques.html#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># for reordering the rows of the complete CI data.frame used for the article.</span></span>
-<span id="cb44-5"><a href="parameter-estimation-techniques.html#cb44-5" aria-hidden="true" tabindex="-1"></a>  gamma_vector_indices <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(m <span class="sc">^</span> <span class="dv">2</span>)</span>
-<span id="cb44-6"><a href="parameter-estimation-techniques.html#cb44-6" aria-hidden="true" tabindex="-1"></a>  gamma_vector_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(gamma_vector_indices, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
-<span id="cb44-7"><a href="parameter-estimation-techniques.html#cb44-7" aria-hidden="true" tabindex="-1"></a>  ordered_gamma_vector_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
-<span id="cb44-8"><a href="parameter-estimation-techniques.html#cb44-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb44-9"><a href="parameter-estimation-techniques.html#cb44-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Get the indexes of the sorted states</span></span>
-<span id="cb44-10"><a href="parameter-estimation-techniques.html#cb44-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># according to ascending lambda</span></span>
-<span id="cb44-11"><a href="parameter-estimation-techniques.html#cb44-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sorted_lambda contains the permutations needed</span></span>
-<span id="cb44-12"><a href="parameter-estimation-techniques.html#cb44-12" aria-hidden="true" tabindex="-1"></a>  ordered_lambda_indices <span class="ot">&lt;-</span> <span class="fu">sort</span>(lambda, <span class="at">index.return =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>ix</span>
-<span id="cb44-13"><a href="parameter-estimation-techniques.html#cb44-13" aria-hidden="true" tabindex="-1"></a>  ordered_lambda <span class="ot">&lt;-</span> lambda[ordered_lambda_indices]</span>
-<span id="cb44-14"><a href="parameter-estimation-techniques.html#cb44-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reorder the TPM according to the switched states</span></span>
-<span id="cb44-15"><a href="parameter-estimation-techniques.html#cb44-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># in the sorted lambda</span></span>
-<span id="cb44-16"><a href="parameter-estimation-techniques.html#cb44-16" aria-hidden="true" tabindex="-1"></a>  ordered_gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
-<span id="cb44-17"><a href="parameter-estimation-techniques.html#cb44-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (col <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
-<span id="cb44-18"><a href="parameter-estimation-techniques.html#cb44-18" aria-hidden="true" tabindex="-1"></a>    new_col <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> col)</span>
-<span id="cb44-19"><a href="parameter-estimation-techniques.html#cb44-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (row <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
-<span id="cb44-20"><a href="parameter-estimation-techniques.html#cb44-20" aria-hidden="true" tabindex="-1"></a>      new_row <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> row)</span>
-<span id="cb44-21"><a href="parameter-estimation-techniques.html#cb44-21" aria-hidden="true" tabindex="-1"></a>      ordered_gamma[row, col] <span class="ot">&lt;-</span> gamma[new_row, new_col]</span>
-<span id="cb44-22"><a href="parameter-estimation-techniques.html#cb44-22" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb44-23"><a href="parameter-estimation-techniques.html#cb44-23" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Reorder the vector TPM</span></span>
-<span id="cb44-24"><a href="parameter-estimation-techniques.html#cb44-24" aria-hidden="true" tabindex="-1"></a>      ordered_gamma_vector_matrix[row, col] <span class="ot">&lt;-</span> gamma_vector_matrix[new_row, new_col]</span>
-<span id="cb44-25"><a href="parameter-estimation-techniques.html#cb44-25" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb44-26"><a href="parameter-estimation-techniques.html#cb44-26" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb44-27"><a href="parameter-estimation-techniques.html#cb44-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Same for the TPM&#39;s standard errors</span></span>
-<span id="cb44-28"><a href="parameter-estimation-techniques.html#cb44-28" aria-hidden="true" tabindex="-1"></a>  ordered_gamma_std_error <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb44-29"><a href="parameter-estimation-techniques.html#cb44-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(gamma_std_error)) {</span>
-<span id="cb44-30"><a href="parameter-estimation-techniques.html#cb44-30" aria-hidden="true" tabindex="-1"></a>    ordered_gamma_std_error <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
-<span id="cb44-31"><a href="parameter-estimation-techniques.html#cb44-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (col <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
-<span id="cb44-32"><a href="parameter-estimation-techniques.html#cb44-32" aria-hidden="true" tabindex="-1"></a>      new_col <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> col)</span>
-<span id="cb44-33"><a href="parameter-estimation-techniques.html#cb44-33" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (row <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
-<span id="cb44-34"><a href="parameter-estimation-techniques.html#cb44-34" aria-hidden="true" tabindex="-1"></a>        new_row <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> row)</span>
-<span id="cb44-35"><a href="parameter-estimation-techniques.html#cb44-35" aria-hidden="true" tabindex="-1"></a>        ordered_gamma_std_error[row, col] <span class="ot">&lt;-</span> gamma_std_error[new_row, new_col]</span>
-<span id="cb44-36"><a href="parameter-estimation-techniques.html#cb44-36" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb44-37"><a href="parameter-estimation-techniques.html#cb44-37" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb44-38"><a href="parameter-estimation-techniques.html#cb44-38" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb44-39"><a href="parameter-estimation-techniques.html#cb44-39" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb44-40"><a href="parameter-estimation-techniques.html#cb44-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reorder the stationary distribution if it is provided</span></span>
-<span id="cb44-41"><a href="parameter-estimation-techniques.html#cb44-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate it otherwise</span></span>
-<span id="cb44-42"><a href="parameter-estimation-techniques.html#cb44-42" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(delta)) {</span>
-<span id="cb44-43"><a href="parameter-estimation-techniques.html#cb44-43" aria-hidden="true" tabindex="-1"></a>    ordered_delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(ordered_gamma)</span>
-<span id="cb44-44"><a href="parameter-estimation-techniques.html#cb44-44" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb44-45"><a href="parameter-estimation-techniques.html#cb44-45" aria-hidden="true" tabindex="-1"></a>    ordered_delta <span class="ot">&lt;-</span> delta[ordered_lambda_indices]</span>
-<span id="cb44-46"><a href="parameter-estimation-techniques.html#cb44-46" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb44-47"><a href="parameter-estimation-techniques.html#cb44-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reorder the standard errors</span></span>
-<span id="cb44-48"><a href="parameter-estimation-techniques.html#cb44-48" aria-hidden="true" tabindex="-1"></a>  ordered_lambda_std_error <span class="ot">&lt;-</span> lambda_std_error[ordered_lambda_indices]</span>
-<span id="cb44-49"><a href="parameter-estimation-techniques.html#cb44-49" aria-hidden="true" tabindex="-1"></a>  ordered_delta_std_error <span class="ot">&lt;-</span> delta_std_error[ordered_lambda_indices]</span>
-<span id="cb44-50"><a href="parameter-estimation-techniques.html#cb44-50" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb44-51"><a href="parameter-estimation-techniques.html#cb44-51" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The vector is assumed filled column-wise instead of row-wise, because column-wise is the default way R handles matrix to vector conversion.</span></span>
-<span id="cb44-52"><a href="parameter-estimation-techniques.html#cb44-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Change to row-wise if needed by replacing ordered_gamma_vector_matrix with t(ordered_gamma_vector_matrix), or add byrow=TRUE to &quot;ordered_gamma_vector_matrix &lt;- matrix(0, nrow = m, ncol = m)&quot;</span></span>
-<span id="cb44-53"><a href="parameter-estimation-techniques.html#cb44-53" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We don&#39;t use it in case there is a bug, but it makes logical sense that it should work</span></span>
-<span id="cb44-54"><a href="parameter-estimation-techniques.html#cb44-54" aria-hidden="true" tabindex="-1"></a>  ordered_gamma_vector_matrix <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(ordered_gamma_vector_matrix)</span>
-<span id="cb44-55"><a href="parameter-estimation-techniques.html#cb44-55" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb44-56"><a href="parameter-estimation-techniques.html#cb44-56" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">lambda =</span> ordered_lambda,</span>
-<span id="cb44-57"><a href="parameter-estimation-techniques.html#cb44-57" aria-hidden="true" tabindex="-1"></a>                 <span class="at">gamma =</span> ordered_gamma,</span>
-<span id="cb44-58"><a href="parameter-estimation-techniques.html#cb44-58" aria-hidden="true" tabindex="-1"></a>                 <span class="at">delta =</span> ordered_delta,</span>
-<span id="cb44-59"><a href="parameter-estimation-techniques.html#cb44-59" aria-hidden="true" tabindex="-1"></a>                 <span class="at">lambda_std_error =</span> ordered_lambda_std_error,</span>
-<span id="cb44-60"><a href="parameter-estimation-techniques.html#cb44-60" aria-hidden="true" tabindex="-1"></a>                 <span class="at">gamma_std_error =</span> ordered_gamma_std_error,</span>
-<span id="cb44-61"><a href="parameter-estimation-techniques.html#cb44-61" aria-hidden="true" tabindex="-1"></a>                 <span class="at">delta_std_error =</span> ordered_delta_std_error,</span>
-<span id="cb44-62"><a href="parameter-estimation-techniques.html#cb44-62" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ordered_lambda_indices =</span> ordered_lambda_indices,</span>
-<span id="cb44-63"><a href="parameter-estimation-techniques.html#cb44-63" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ordered_gamma_vector_indices =</span> ordered_gamma_vector_matrix,</span>
-<span id="cb44-64"><a href="parameter-estimation-techniques.html#cb44-64" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># delta and lambda are the same size, so they are ordered the same way</span></span>
-<span id="cb44-65"><a href="parameter-estimation-techniques.html#cb44-65" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ordered_delta_indices =</span> ordered_lambda_indices)</span>
-<span id="cb44-66"><a href="parameter-estimation-techniques.html#cb44-66" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb44-67"><a href="parameter-estimation-techniques.html#cb44-67" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove the NULL elements</span></span>
-<span id="cb44-68"><a href="parameter-estimation-techniques.html#cb44-68" aria-hidden="true" tabindex="-1"></a>  result[<span class="fu">sapply</span>(result, is.null)] <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb44-69"><a href="parameter-estimation-techniques.html#cb44-69" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb44-70"><a href="parameter-estimation-techniques.html#cb44-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
-<span id="cb44-71"><a href="parameter-estimation-techniques.html#cb44-71" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="parameter-estimation-techniques.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Relabel states by increasing Poisson means</span></span>
+<span id="cb46-2"><a href="parameter-estimation-techniques.html#cb46-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.label.order <span class="ot">&lt;-</span> <span class="cf">function</span>(m, lambda, gamma, <span class="at">delta =</span> <span class="cn">NULL</span>, <span class="at">lambda_std_error =</span> <span class="cn">NULL</span>, <span class="at">gamma_std_error =</span> <span class="cn">NULL</span>, <span class="at">delta_std_error =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb46-3"><a href="parameter-estimation-techniques.html#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># gamma_vector_indices is used to calculate the indices of the reordered TPM gamma as a vector</span></span>
+<span id="cb46-4"><a href="parameter-estimation-techniques.html#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># for reordering the rows of the complete CI data.frame used for the article.</span></span>
+<span id="cb46-5"><a href="parameter-estimation-techniques.html#cb46-5" aria-hidden="true" tabindex="-1"></a>  gamma_vector_indices <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(m <span class="sc">^</span> <span class="dv">2</span>)</span>
+<span id="cb46-6"><a href="parameter-estimation-techniques.html#cb46-6" aria-hidden="true" tabindex="-1"></a>  gamma_vector_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(gamma_vector_indices, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
+<span id="cb46-7"><a href="parameter-estimation-techniques.html#cb46-7" aria-hidden="true" tabindex="-1"></a>  ordered_gamma_vector_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
+<span id="cb46-8"><a href="parameter-estimation-techniques.html#cb46-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb46-9"><a href="parameter-estimation-techniques.html#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Get the indexes of the sorted states</span></span>
+<span id="cb46-10"><a href="parameter-estimation-techniques.html#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># according to ascending lambda</span></span>
+<span id="cb46-11"><a href="parameter-estimation-techniques.html#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sorted_lambda contains the permutations needed</span></span>
+<span id="cb46-12"><a href="parameter-estimation-techniques.html#cb46-12" aria-hidden="true" tabindex="-1"></a>  ordered_lambda_indices <span class="ot">&lt;-</span> <span class="fu">sort</span>(lambda, <span class="at">index.return =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>ix</span>
+<span id="cb46-13"><a href="parameter-estimation-techniques.html#cb46-13" aria-hidden="true" tabindex="-1"></a>  ordered_lambda <span class="ot">&lt;-</span> lambda[ordered_lambda_indices]</span>
+<span id="cb46-14"><a href="parameter-estimation-techniques.html#cb46-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reorder the TPM according to the switched states</span></span>
+<span id="cb46-15"><a href="parameter-estimation-techniques.html#cb46-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># in the sorted lambda</span></span>
+<span id="cb46-16"><a href="parameter-estimation-techniques.html#cb46-16" aria-hidden="true" tabindex="-1"></a>  ordered_gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
+<span id="cb46-17"><a href="parameter-estimation-techniques.html#cb46-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (col <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb46-18"><a href="parameter-estimation-techniques.html#cb46-18" aria-hidden="true" tabindex="-1"></a>    new_col <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> col)</span>
+<span id="cb46-19"><a href="parameter-estimation-techniques.html#cb46-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (row <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb46-20"><a href="parameter-estimation-techniques.html#cb46-20" aria-hidden="true" tabindex="-1"></a>      new_row <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> row)</span>
+<span id="cb46-21"><a href="parameter-estimation-techniques.html#cb46-21" aria-hidden="true" tabindex="-1"></a>      ordered_gamma[row, col] <span class="ot">&lt;-</span> gamma[new_row, new_col]</span>
+<span id="cb46-22"><a href="parameter-estimation-techniques.html#cb46-22" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb46-23"><a href="parameter-estimation-techniques.html#cb46-23" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Reorder the vector TPM</span></span>
+<span id="cb46-24"><a href="parameter-estimation-techniques.html#cb46-24" aria-hidden="true" tabindex="-1"></a>      ordered_gamma_vector_matrix[row, col] <span class="ot">&lt;-</span> gamma_vector_matrix[new_row, new_col]</span>
+<span id="cb46-25"><a href="parameter-estimation-techniques.html#cb46-25" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb46-26"><a href="parameter-estimation-techniques.html#cb46-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb46-27"><a href="parameter-estimation-techniques.html#cb46-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Same for the TPM&#39;s standard errors</span></span>
+<span id="cb46-28"><a href="parameter-estimation-techniques.html#cb46-28" aria-hidden="true" tabindex="-1"></a>  ordered_gamma_std_error <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb46-29"><a href="parameter-estimation-techniques.html#cb46-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(gamma_std_error)) {</span>
+<span id="cb46-30"><a href="parameter-estimation-techniques.html#cb46-30" aria-hidden="true" tabindex="-1"></a>    ordered_gamma_std_error <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
+<span id="cb46-31"><a href="parameter-estimation-techniques.html#cb46-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (col <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb46-32"><a href="parameter-estimation-techniques.html#cb46-32" aria-hidden="true" tabindex="-1"></a>      new_col <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> col)</span>
+<span id="cb46-33"><a href="parameter-estimation-techniques.html#cb46-33" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (row <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb46-34"><a href="parameter-estimation-techniques.html#cb46-34" aria-hidden="true" tabindex="-1"></a>        new_row <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> row)</span>
+<span id="cb46-35"><a href="parameter-estimation-techniques.html#cb46-35" aria-hidden="true" tabindex="-1"></a>        ordered_gamma_std_error[row, col] <span class="ot">&lt;-</span> gamma_std_error[new_row, new_col]</span>
+<span id="cb46-36"><a href="parameter-estimation-techniques.html#cb46-36" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb46-37"><a href="parameter-estimation-techniques.html#cb46-37" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb46-38"><a href="parameter-estimation-techniques.html#cb46-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb46-39"><a href="parameter-estimation-techniques.html#cb46-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb46-40"><a href="parameter-estimation-techniques.html#cb46-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reorder the stationary distribution if it is provided</span></span>
+<span id="cb46-41"><a href="parameter-estimation-techniques.html#cb46-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate it otherwise</span></span>
+<span id="cb46-42"><a href="parameter-estimation-techniques.html#cb46-42" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(delta)) {</span>
+<span id="cb46-43"><a href="parameter-estimation-techniques.html#cb46-43" aria-hidden="true" tabindex="-1"></a>    ordered_delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(ordered_gamma)</span>
+<span id="cb46-44"><a href="parameter-estimation-techniques.html#cb46-44" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb46-45"><a href="parameter-estimation-techniques.html#cb46-45" aria-hidden="true" tabindex="-1"></a>    ordered_delta <span class="ot">&lt;-</span> delta[ordered_lambda_indices]</span>
+<span id="cb46-46"><a href="parameter-estimation-techniques.html#cb46-46" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb46-47"><a href="parameter-estimation-techniques.html#cb46-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reorder the standard errors</span></span>
+<span id="cb46-48"><a href="parameter-estimation-techniques.html#cb46-48" aria-hidden="true" tabindex="-1"></a>  ordered_lambda_std_error <span class="ot">&lt;-</span> lambda_std_error[ordered_lambda_indices]</span>
+<span id="cb46-49"><a href="parameter-estimation-techniques.html#cb46-49" aria-hidden="true" tabindex="-1"></a>  ordered_delta_std_error <span class="ot">&lt;-</span> delta_std_error[ordered_lambda_indices]</span>
+<span id="cb46-50"><a href="parameter-estimation-techniques.html#cb46-50" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb46-51"><a href="parameter-estimation-techniques.html#cb46-51" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The vector is assumed filled column-wise instead of row-wise, because column-wise is the default way R handles matrix to vector conversion.</span></span>
+<span id="cb46-52"><a href="parameter-estimation-techniques.html#cb46-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Change to row-wise if needed by replacing ordered_gamma_vector_matrix with t(ordered_gamma_vector_matrix), or add byrow=TRUE to &quot;ordered_gamma_vector_matrix &lt;- matrix(0, nrow = m, ncol = m)&quot;</span></span>
+<span id="cb46-53"><a href="parameter-estimation-techniques.html#cb46-53" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We don&#39;t use it in case there is a bug, but it makes logical sense that it should work</span></span>
+<span id="cb46-54"><a href="parameter-estimation-techniques.html#cb46-54" aria-hidden="true" tabindex="-1"></a>  ordered_gamma_vector_matrix <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(ordered_gamma_vector_matrix)</span>
+<span id="cb46-55"><a href="parameter-estimation-techniques.html#cb46-55" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb46-56"><a href="parameter-estimation-techniques.html#cb46-56" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">lambda =</span> ordered_lambda,</span>
+<span id="cb46-57"><a href="parameter-estimation-techniques.html#cb46-57" aria-hidden="true" tabindex="-1"></a>                 <span class="at">gamma =</span> ordered_gamma,</span>
+<span id="cb46-58"><a href="parameter-estimation-techniques.html#cb46-58" aria-hidden="true" tabindex="-1"></a>                 <span class="at">delta =</span> ordered_delta,</span>
+<span id="cb46-59"><a href="parameter-estimation-techniques.html#cb46-59" aria-hidden="true" tabindex="-1"></a>                 <span class="at">lambda_std_error =</span> ordered_lambda_std_error,</span>
+<span id="cb46-60"><a href="parameter-estimation-techniques.html#cb46-60" aria-hidden="true" tabindex="-1"></a>                 <span class="at">gamma_std_error =</span> ordered_gamma_std_error,</span>
+<span id="cb46-61"><a href="parameter-estimation-techniques.html#cb46-61" aria-hidden="true" tabindex="-1"></a>                 <span class="at">delta_std_error =</span> ordered_delta_std_error,</span>
+<span id="cb46-62"><a href="parameter-estimation-techniques.html#cb46-62" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ordered_lambda_indices =</span> ordered_lambda_indices,</span>
+<span id="cb46-63"><a href="parameter-estimation-techniques.html#cb46-63" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ordered_gamma_vector_indices =</span> ordered_gamma_vector_matrix,</span>
+<span id="cb46-64"><a href="parameter-estimation-techniques.html#cb46-64" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># delta and lambda are the same size, so they are ordered the same way</span></span>
+<span id="cb46-65"><a href="parameter-estimation-techniques.html#cb46-65" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ordered_delta_indices =</span> ordered_lambda_indices)</span>
+<span id="cb46-66"><a href="parameter-estimation-techniques.html#cb46-66" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb46-67"><a href="parameter-estimation-techniques.html#cb46-67" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove the NULL elements</span></span>
+<span id="cb46-68"><a href="parameter-estimation-techniques.html#cb46-68" aria-hidden="true" tabindex="-1"></a>  result[<span class="fu">sapply</span>(result, is.null)] <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb46-69"><a href="parameter-estimation-techniques.html#cb46-69" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb46-70"><a href="parameter-estimation-techniques.html#cb46-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
+<span id="cb46-71"><a href="parameter-estimation-techniques.html#cb46-71" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>We will go through an example to better understand the process.
 For readability, the TPM is filled with standard row and column indexes instead of probabilities.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="parameter-estimation-techniques.html#cb45-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb45-2"><a href="parameter-estimation-techniques.html#cb45-2" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>,</span>
-<span id="cb45-3"><a href="parameter-estimation-techniques.html#cb45-3" aria-hidden="true" tabindex="-1"></a>                  <span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>,</span>
-<span id="cb45-4"><a href="parameter-estimation-techniques.html#cb45-4" aria-hidden="true" tabindex="-1"></a>                  <span class="dv">31</span>, <span class="dv">32</span>, <span class="dv">33</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb45-5"><a href="parameter-estimation-techniques.html#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pois.HMM.label.order</span>(<span class="at">m =</span> <span class="dv">3</span>, lambda, gamma)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="parameter-estimation-techniques.html#cb47-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb47-2"><a href="parameter-estimation-techniques.html#cb47-2" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>,</span>
+<span id="cb47-3"><a href="parameter-estimation-techniques.html#cb47-3" aria-hidden="true" tabindex="-1"></a>                  <span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>,</span>
+<span id="cb47-4"><a href="parameter-estimation-techniques.html#cb47-4" aria-hidden="true" tabindex="-1"></a>                  <span class="dv">31</span>, <span class="dv">32</span>, <span class="dv">33</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb47-5"><a href="parameter-estimation-techniques.html#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pois.HMM.label.order</span>(<span class="at">m =</span> <span class="dv">3</span>, lambda, gamma)</span></code></pre></div>
 <pre><code>## $lambda
 ## [1] 1 2 3
 ## 
@@ -520,101 +524,101 @@ However, <span class="citation">(<a href="#ref-bulla" role="doc-biblioref">Bulla
 <div id="negative-log-likelihood-in-tmb" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> Negative log-likelihood<br> in <code>TMB</code></h2>
 <p>The Poisson HMM negative log-likelihood function in R can be written the following way.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb47-1"><a href="parameter-estimation-techniques.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
-<span id="cb47-2"><a href="parameter-estimation-techniques.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
-<span id="cb47-3"><a href="parameter-estimation-techniques.html#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-4"><a href="parameter-estimation-techniques.html#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood for a poisson hidden markov model. </span></span>
-<span id="cb47-5"><a href="parameter-estimation-techniques.html#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb47-6"><a href="parameter-estimation-techniques.html#cb47-6" aria-hidden="true" tabindex="-1"></a>Type objective_function&lt;Type&gt;::<span class="kw">operator</span>() ()</span>
-<span id="cb47-7"><a href="parameter-estimation-techniques.html#cb47-7" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb47-8"><a href="parameter-estimation-techniques.html#cb47-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-9"><a href="parameter-estimation-techniques.html#cb47-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Data</span></span>
-<span id="cb47-10"><a href="parameter-estimation-techniques.html#cb47-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR(x);          <span class="co">// timeseries vector</span></span>
-<span id="cb47-11"><a href="parameter-estimation-techniques.html#cb47-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER(m);         <span class="co">// Number of states m</span></span>
-<span id="cb47-12"><a href="parameter-estimation-techniques.html#cb47-12" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-13"><a href="parameter-estimation-techniques.html#cb47-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters</span></span>
-<span id="cb47-14"><a href="parameter-estimation-techniques.html#cb47-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tlambda);     <span class="co">// conditional log_lambdas&#39;s</span></span>
-<span id="cb47-15"><a href="parameter-estimation-techniques.html#cb47-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tgamma);      <span class="co">// m(m-1) working parameters of TPM</span></span>
-<span id="cb47-16"><a href="parameter-estimation-techniques.html#cb47-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-17"><a href="parameter-estimation-techniques.html#cb47-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Uncomment only when using a non-stationary distribution</span></span>
-<span id="cb47-18"><a href="parameter-estimation-techniques.html#cb47-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">//PARAMETER_VECTOR(tdelta);    // transformed stationary distribution,</span></span>
-<span id="cb47-19"><a href="parameter-estimation-techniques.html#cb47-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-20"><a href="parameter-estimation-techniques.html#cb47-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
-<span id="cb47-21"><a href="parameter-estimation-techniques.html#cb47-21" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; lambda = tlambda.exp();</span>
-<span id="cb47-22"><a href="parameter-estimation-techniques.html#cb47-22" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma = Gamma_w2n(m, tgamma);</span>
-<span id="cb47-23"><a href="parameter-estimation-techniques.html#cb47-23" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-24"><a href="parameter-estimation-techniques.html#cb47-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
-<span id="cb47-25"><a href="parameter-estimation-techniques.html#cb47-25" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = Stat_dist(m, gamma);</span>
-<span id="cb47-26"><a href="parameter-estimation-techniques.html#cb47-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If using a non-stationary distribution, use this instead</span></span>
-<span id="cb47-27"><a href="parameter-estimation-techniques.html#cb47-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">//vector&lt;Type&gt; delta = Delta_w2n(m, tdelta);</span></span>
-<span id="cb47-28"><a href="parameter-estimation-techniques.html#cb47-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-29"><a href="parameter-estimation-techniques.html#cb47-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
-<span id="cb47-30"><a href="parameter-estimation-techniques.html#cb47-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n = x.size();</span>
-<span id="cb47-31"><a href="parameter-estimation-techniques.html#cb47-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-32"><a href="parameter-estimation-techniques.html#cb47-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
-<span id="cb47-33"><a href="parameter-estimation-techniques.html#cb47-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
-<span id="cb47-34"><a href="parameter-estimation-techniques.html#cb47-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
-<span id="cb47-35"><a href="parameter-estimation-techniques.html#cb47-35" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; emission_probs(n, m);</span>
-<span id="cb47-36"><a href="parameter-estimation-techniques.html#cb47-36" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
-<span id="cb47-37"><a href="parameter-estimation-techniques.html#cb47-37" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
-<span id="cb47-38"><a href="parameter-estimation-techniques.html#cb47-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
-<span id="cb47-39"><a href="parameter-estimation-techniques.html#cb47-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (x[i] != x[i]) { <span class="co">// f != f returns true if and only if f is NaN. </span></span>
-<span id="cb47-40"><a href="parameter-estimation-techniques.html#cb47-40" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
-<span id="cb47-41"><a href="parameter-estimation-techniques.html#cb47-41" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = row1vec;</span>
-<span id="cb47-42"><a href="parameter-estimation-techniques.html#cb47-42" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb47-43"><a href="parameter-estimation-techniques.html#cb47-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
-<span id="cb47-44"><a href="parameter-estimation-techniques.html#cb47-44" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = dpois(x[i], lambda, <span class="kw">false</span>);</span>
-<span id="cb47-45"><a href="parameter-estimation-techniques.html#cb47-45" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb47-46"><a href="parameter-estimation-techniques.html#cb47-46" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb47-47"><a href="parameter-estimation-techniques.html#cb47-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-48"><a href="parameter-estimation-techniques.html#cb47-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to Zucchini&#39;s book page 333</span></span>
-<span id="cb47-49"><a href="parameter-estimation-techniques.html#cb47-49" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; foo, P;</span>
-<span id="cb47-50"><a href="parameter-estimation-techniques.html#cb47-50" aria-hidden="true" tabindex="-1"></a>  Type mllk, sumfoo, lscale;</span>
-<span id="cb47-51"><a href="parameter-estimation-techniques.html#cb47-51" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-52"><a href="parameter-estimation-techniques.html#cb47-52" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>) {</span>
-<span id="cb47-53"><a href="parameter-estimation-techniques.html#cb47-53" aria-hidden="true" tabindex="-1"></a>    mllk = - emission_probs.col(<span class="dv">0</span>).array().log().sum();</span>
-<span id="cb47-54"><a href="parameter-estimation-techniques.html#cb47-54" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-55"><a href="parameter-estimation-techniques.html#cb47-55" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Use adreport on variables we are interested in:</span></span>
-<span id="cb47-56"><a href="parameter-estimation-techniques.html#cb47-56" aria-hidden="true" tabindex="-1"></a>    ADREPORT(lambda);</span>
-<span id="cb47-57"><a href="parameter-estimation-techniques.html#cb47-57" aria-hidden="true" tabindex="-1"></a>    ADREPORT(gamma);</span>
-<span id="cb47-58"><a href="parameter-estimation-techniques.html#cb47-58" aria-hidden="true" tabindex="-1"></a>    ADREPORT(delta);</span>
-<span id="cb47-59"><a href="parameter-estimation-techniques.html#cb47-59" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-60"><a href="parameter-estimation-techniques.html#cb47-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Things we need for local decoding</span></span>
-<span id="cb47-61"><a href="parameter-estimation-techniques.html#cb47-61" aria-hidden="true" tabindex="-1"></a>    REPORT(lambda);</span>
-<span id="cb47-62"><a href="parameter-estimation-techniques.html#cb47-62" aria-hidden="true" tabindex="-1"></a>    REPORT(gamma);</span>
-<span id="cb47-63"><a href="parameter-estimation-techniques.html#cb47-63" aria-hidden="true" tabindex="-1"></a>    REPORT(delta);</span>
-<span id="cb47-64"><a href="parameter-estimation-techniques.html#cb47-64" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-65"><a href="parameter-estimation-techniques.html#cb47-65" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mllk;</span>
-<span id="cb47-66"><a href="parameter-estimation-techniques.html#cb47-66" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb47-67"><a href="parameter-estimation-techniques.html#cb47-67" aria-hidden="true" tabindex="-1"></a>  foo = (delta * vector&lt;Type&gt;(emission_probs.row(<span class="dv">0</span>))).matrix();</span>
-<span id="cb47-68"><a href="parameter-estimation-techniques.html#cb47-68" aria-hidden="true" tabindex="-1"></a>  sumfoo = foo.sum();</span>
-<span id="cb47-69"><a href="parameter-estimation-techniques.html#cb47-69" aria-hidden="true" tabindex="-1"></a>  lscale = log(sumfoo);</span>
-<span id="cb47-70"><a href="parameter-estimation-techniques.html#cb47-70" aria-hidden="true" tabindex="-1"></a>  foo.transposeInPlace();</span>
-<span id="cb47-71"><a href="parameter-estimation-techniques.html#cb47-71" aria-hidden="true" tabindex="-1"></a>  foo /= sumfoo;</span>
-<span id="cb47-72"><a href="parameter-estimation-techniques.html#cb47-72" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">2</span>; i &lt;= n; i++) {</span>
-<span id="cb47-73"><a href="parameter-estimation-techniques.html#cb47-73" aria-hidden="true" tabindex="-1"></a>    P = emission_probs.row(i - <span class="dv">1</span>);</span>
-<span id="cb47-74"><a href="parameter-estimation-techniques.html#cb47-74" aria-hidden="true" tabindex="-1"></a>    foo = ((foo * gamma).array() * P.array()).matrix();</span>
-<span id="cb47-75"><a href="parameter-estimation-techniques.html#cb47-75" aria-hidden="true" tabindex="-1"></a>    sumfoo = foo.sum();</span>
-<span id="cb47-76"><a href="parameter-estimation-techniques.html#cb47-76" aria-hidden="true" tabindex="-1"></a>    lscale += log(sumfoo);</span>
-<span id="cb47-77"><a href="parameter-estimation-techniques.html#cb47-77" aria-hidden="true" tabindex="-1"></a>    foo /= sumfoo;</span>
-<span id="cb47-78"><a href="parameter-estimation-techniques.html#cb47-78" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb47-79"><a href="parameter-estimation-techniques.html#cb47-79" aria-hidden="true" tabindex="-1"></a>  mllk = -lscale;</span>
-<span id="cb47-80"><a href="parameter-estimation-techniques.html#cb47-80" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-81"><a href="parameter-estimation-techniques.html#cb47-81" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
-<span id="cb47-82"><a href="parameter-estimation-techniques.html#cb47-82" aria-hidden="true" tabindex="-1"></a>  ADREPORT(lambda);</span>
-<span id="cb47-83"><a href="parameter-estimation-techniques.html#cb47-83" aria-hidden="true" tabindex="-1"></a>  ADREPORT(gamma);</span>
-<span id="cb47-84"><a href="parameter-estimation-techniques.html#cb47-84" aria-hidden="true" tabindex="-1"></a>  ADREPORT(delta);</span>
-<span id="cb47-85"><a href="parameter-estimation-techniques.html#cb47-85" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-86"><a href="parameter-estimation-techniques.html#cb47-86" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
-<span id="cb47-87"><a href="parameter-estimation-techniques.html#cb47-87" aria-hidden="true" tabindex="-1"></a>  REPORT(lambda);</span>
-<span id="cb47-88"><a href="parameter-estimation-techniques.html#cb47-88" aria-hidden="true" tabindex="-1"></a>  REPORT(gamma);</span>
-<span id="cb47-89"><a href="parameter-estimation-techniques.html#cb47-89" aria-hidden="true" tabindex="-1"></a>  REPORT(delta);</span>
-<span id="cb47-90"><a href="parameter-estimation-techniques.html#cb47-90" aria-hidden="true" tabindex="-1"></a>  REPORT(n);</span>
-<span id="cb47-91"><a href="parameter-estimation-techniques.html#cb47-91" aria-hidden="true" tabindex="-1"></a>  REPORT(emission_probs);</span>
-<span id="cb47-92"><a href="parameter-estimation-techniques.html#cb47-92" aria-hidden="true" tabindex="-1"></a>  REPORT(mllk);</span>
-<span id="cb47-93"><a href="parameter-estimation-techniques.html#cb47-93" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-94"><a href="parameter-estimation-techniques.html#cb47-94" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk;</span>
-<span id="cb47-95"><a href="parameter-estimation-techniques.html#cb47-95" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb49-1"><a href="parameter-estimation-techniques.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
+<span id="cb49-2"><a href="parameter-estimation-techniques.html#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
+<span id="cb49-3"><a href="parameter-estimation-techniques.html#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-4"><a href="parameter-estimation-techniques.html#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood for a poisson hidden markov model. </span></span>
+<span id="cb49-5"><a href="parameter-estimation-techniques.html#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb49-6"><a href="parameter-estimation-techniques.html#cb49-6" aria-hidden="true" tabindex="-1"></a>Type objective_function&lt;Type&gt;::<span class="kw">operator</span>() ()</span>
+<span id="cb49-7"><a href="parameter-estimation-techniques.html#cb49-7" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb49-8"><a href="parameter-estimation-techniques.html#cb49-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb49-9"><a href="parameter-estimation-techniques.html#cb49-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Data</span></span>
+<span id="cb49-10"><a href="parameter-estimation-techniques.html#cb49-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR(x);          <span class="co">// timeseries vector</span></span>
+<span id="cb49-11"><a href="parameter-estimation-techniques.html#cb49-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER(m);         <span class="co">// Number of states m</span></span>
+<span id="cb49-12"><a href="parameter-estimation-techniques.html#cb49-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb49-13"><a href="parameter-estimation-techniques.html#cb49-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters</span></span>
+<span id="cb49-14"><a href="parameter-estimation-techniques.html#cb49-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tlambda);     <span class="co">// conditional log_lambdas&#39;s</span></span>
+<span id="cb49-15"><a href="parameter-estimation-techniques.html#cb49-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tgamma);      <span class="co">// m(m-1) working parameters of TPM</span></span>
+<span id="cb49-16"><a href="parameter-estimation-techniques.html#cb49-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb49-17"><a href="parameter-estimation-techniques.html#cb49-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Uncomment only when using a non-stationary distribution</span></span>
+<span id="cb49-18"><a href="parameter-estimation-techniques.html#cb49-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">//PARAMETER_VECTOR(tdelta);    // transformed stationary distribution,</span></span>
+<span id="cb49-19"><a href="parameter-estimation-techniques.html#cb49-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-20"><a href="parameter-estimation-techniques.html#cb49-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
+<span id="cb49-21"><a href="parameter-estimation-techniques.html#cb49-21" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; lambda = tlambda.exp();</span>
+<span id="cb49-22"><a href="parameter-estimation-techniques.html#cb49-22" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma = Gamma_w2n(m, tgamma);</span>
+<span id="cb49-23"><a href="parameter-estimation-techniques.html#cb49-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb49-24"><a href="parameter-estimation-techniques.html#cb49-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
+<span id="cb49-25"><a href="parameter-estimation-techniques.html#cb49-25" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = Stat_dist(m, gamma);</span>
+<span id="cb49-26"><a href="parameter-estimation-techniques.html#cb49-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If using a non-stationary distribution, use this instead</span></span>
+<span id="cb49-27"><a href="parameter-estimation-techniques.html#cb49-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">//vector&lt;Type&gt; delta = Delta_w2n(m, tdelta);</span></span>
+<span id="cb49-28"><a href="parameter-estimation-techniques.html#cb49-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb49-29"><a href="parameter-estimation-techniques.html#cb49-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
+<span id="cb49-30"><a href="parameter-estimation-techniques.html#cb49-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n = x.size();</span>
+<span id="cb49-31"><a href="parameter-estimation-techniques.html#cb49-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb49-32"><a href="parameter-estimation-techniques.html#cb49-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
+<span id="cb49-33"><a href="parameter-estimation-techniques.html#cb49-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
+<span id="cb49-34"><a href="parameter-estimation-techniques.html#cb49-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
+<span id="cb49-35"><a href="parameter-estimation-techniques.html#cb49-35" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; emission_probs(n, m);</span>
+<span id="cb49-36"><a href="parameter-estimation-techniques.html#cb49-36" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
+<span id="cb49-37"><a href="parameter-estimation-techniques.html#cb49-37" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
+<span id="cb49-38"><a href="parameter-estimation-techniques.html#cb49-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
+<span id="cb49-39"><a href="parameter-estimation-techniques.html#cb49-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (x[i] != x[i]) { <span class="co">// f != f returns true if and only if f is NaN. </span></span>
+<span id="cb49-40"><a href="parameter-estimation-techniques.html#cb49-40" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
+<span id="cb49-41"><a href="parameter-estimation-techniques.html#cb49-41" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = row1vec;</span>
+<span id="cb49-42"><a href="parameter-estimation-techniques.html#cb49-42" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb49-43"><a href="parameter-estimation-techniques.html#cb49-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
+<span id="cb49-44"><a href="parameter-estimation-techniques.html#cb49-44" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = dpois(x[i], lambda, <span class="kw">false</span>);</span>
+<span id="cb49-45"><a href="parameter-estimation-techniques.html#cb49-45" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb49-46"><a href="parameter-estimation-techniques.html#cb49-46" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb49-47"><a href="parameter-estimation-techniques.html#cb49-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-48"><a href="parameter-estimation-techniques.html#cb49-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to Zucchini&#39;s book page 333</span></span>
+<span id="cb49-49"><a href="parameter-estimation-techniques.html#cb49-49" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; foo, P;</span>
+<span id="cb49-50"><a href="parameter-estimation-techniques.html#cb49-50" aria-hidden="true" tabindex="-1"></a>  Type mllk, sumfoo, lscale;</span>
+<span id="cb49-51"><a href="parameter-estimation-techniques.html#cb49-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb49-52"><a href="parameter-estimation-techniques.html#cb49-52" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>) {</span>
+<span id="cb49-53"><a href="parameter-estimation-techniques.html#cb49-53" aria-hidden="true" tabindex="-1"></a>    mllk = - emission_probs.col(<span class="dv">0</span>).array().log().sum();</span>
+<span id="cb49-54"><a href="parameter-estimation-techniques.html#cb49-54" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb49-55"><a href="parameter-estimation-techniques.html#cb49-55" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Use adreport on variables we are interested in:</span></span>
+<span id="cb49-56"><a href="parameter-estimation-techniques.html#cb49-56" aria-hidden="true" tabindex="-1"></a>    ADREPORT(lambda);</span>
+<span id="cb49-57"><a href="parameter-estimation-techniques.html#cb49-57" aria-hidden="true" tabindex="-1"></a>    ADREPORT(gamma);</span>
+<span id="cb49-58"><a href="parameter-estimation-techniques.html#cb49-58" aria-hidden="true" tabindex="-1"></a>    ADREPORT(delta);</span>
+<span id="cb49-59"><a href="parameter-estimation-techniques.html#cb49-59" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb49-60"><a href="parameter-estimation-techniques.html#cb49-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Things we need for local decoding</span></span>
+<span id="cb49-61"><a href="parameter-estimation-techniques.html#cb49-61" aria-hidden="true" tabindex="-1"></a>    REPORT(lambda);</span>
+<span id="cb49-62"><a href="parameter-estimation-techniques.html#cb49-62" aria-hidden="true" tabindex="-1"></a>    REPORT(gamma);</span>
+<span id="cb49-63"><a href="parameter-estimation-techniques.html#cb49-63" aria-hidden="true" tabindex="-1"></a>    REPORT(delta);</span>
+<span id="cb49-64"><a href="parameter-estimation-techniques.html#cb49-64" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb49-65"><a href="parameter-estimation-techniques.html#cb49-65" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mllk;</span>
+<span id="cb49-66"><a href="parameter-estimation-techniques.html#cb49-66" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb49-67"><a href="parameter-estimation-techniques.html#cb49-67" aria-hidden="true" tabindex="-1"></a>  foo = (delta * vector&lt;Type&gt;(emission_probs.row(<span class="dv">0</span>))).matrix();</span>
+<span id="cb49-68"><a href="parameter-estimation-techniques.html#cb49-68" aria-hidden="true" tabindex="-1"></a>  sumfoo = foo.sum();</span>
+<span id="cb49-69"><a href="parameter-estimation-techniques.html#cb49-69" aria-hidden="true" tabindex="-1"></a>  lscale = log(sumfoo);</span>
+<span id="cb49-70"><a href="parameter-estimation-techniques.html#cb49-70" aria-hidden="true" tabindex="-1"></a>  foo.transposeInPlace();</span>
+<span id="cb49-71"><a href="parameter-estimation-techniques.html#cb49-71" aria-hidden="true" tabindex="-1"></a>  foo /= sumfoo;</span>
+<span id="cb49-72"><a href="parameter-estimation-techniques.html#cb49-72" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">2</span>; i &lt;= n; i++) {</span>
+<span id="cb49-73"><a href="parameter-estimation-techniques.html#cb49-73" aria-hidden="true" tabindex="-1"></a>    P = emission_probs.row(i - <span class="dv">1</span>);</span>
+<span id="cb49-74"><a href="parameter-estimation-techniques.html#cb49-74" aria-hidden="true" tabindex="-1"></a>    foo = ((foo * gamma).array() * P.array()).matrix();</span>
+<span id="cb49-75"><a href="parameter-estimation-techniques.html#cb49-75" aria-hidden="true" tabindex="-1"></a>    sumfoo = foo.sum();</span>
+<span id="cb49-76"><a href="parameter-estimation-techniques.html#cb49-76" aria-hidden="true" tabindex="-1"></a>    lscale += log(sumfoo);</span>
+<span id="cb49-77"><a href="parameter-estimation-techniques.html#cb49-77" aria-hidden="true" tabindex="-1"></a>    foo /= sumfoo;</span>
+<span id="cb49-78"><a href="parameter-estimation-techniques.html#cb49-78" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb49-79"><a href="parameter-estimation-techniques.html#cb49-79" aria-hidden="true" tabindex="-1"></a>  mllk = -lscale;</span>
+<span id="cb49-80"><a href="parameter-estimation-techniques.html#cb49-80" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb49-81"><a href="parameter-estimation-techniques.html#cb49-81" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
+<span id="cb49-82"><a href="parameter-estimation-techniques.html#cb49-82" aria-hidden="true" tabindex="-1"></a>  ADREPORT(lambda);</span>
+<span id="cb49-83"><a href="parameter-estimation-techniques.html#cb49-83" aria-hidden="true" tabindex="-1"></a>  ADREPORT(gamma);</span>
+<span id="cb49-84"><a href="parameter-estimation-techniques.html#cb49-84" aria-hidden="true" tabindex="-1"></a>  ADREPORT(delta);</span>
+<span id="cb49-85"><a href="parameter-estimation-techniques.html#cb49-85" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb49-86"><a href="parameter-estimation-techniques.html#cb49-86" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
+<span id="cb49-87"><a href="parameter-estimation-techniques.html#cb49-87" aria-hidden="true" tabindex="-1"></a>  REPORT(lambda);</span>
+<span id="cb49-88"><a href="parameter-estimation-techniques.html#cb49-88" aria-hidden="true" tabindex="-1"></a>  REPORT(gamma);</span>
+<span id="cb49-89"><a href="parameter-estimation-techniques.html#cb49-89" aria-hidden="true" tabindex="-1"></a>  REPORT(delta);</span>
+<span id="cb49-90"><a href="parameter-estimation-techniques.html#cb49-90" aria-hidden="true" tabindex="-1"></a>  REPORT(n);</span>
+<span id="cb49-91"><a href="parameter-estimation-techniques.html#cb49-91" aria-hidden="true" tabindex="-1"></a>  REPORT(emission_probs);</span>
+<span id="cb49-92"><a href="parameter-estimation-techniques.html#cb49-92" aria-hidden="true" tabindex="-1"></a>  REPORT(mllk);</span>
+<span id="cb49-93"><a href="parameter-estimation-techniques.html#cb49-93" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb49-94"><a href="parameter-estimation-techniques.html#cb49-94" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk;</span>
+<span id="cb49-95"><a href="parameter-estimation-techniques.html#cb49-95" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>The case where <span class="math inline">\(m = 1\)</span> doesn’t involve a hidden state, and thus is a Poisson regression instead of a Poisson HMM.
 Nonetheless, <code>TMB</code> also accelerates its estimation and may be useful to the reader.</p>
 

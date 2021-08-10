@@ -112,7 +112,6 @@ lbeta[, 1:4]
 ## Local decoding {#local-decoding}
 
 The smoothing probabilities are defined in [@zucchini, p.87 and p.336] as
-<!-- P(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n} -->
 \[
 \text{P}(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
 \]
@@ -144,9 +143,6 @@ The forecast distribution or h-step-ahead-probabilities as well as its
 implementation in R is detailed in [@zucchini, p.85 and p.337]
 
 Then,
-
-<!-- Original -->
-<!-- P(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_T \b{\gamma}^h \bcp(x) \b{1}'}{\b{\alpha}_T \b{1}'} = \bfphi_T \b{\gamma}^h \bcp(x) \b{1}' -->
 \[
 \text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_T \b{\gamma}^h \b{P}(x) \b{1}'}{\b{\alpha}_T \b{1}'} = \b{\Phi}_T \b{\gamma}^h \b{P}(x) \b{1}'
 \]

@@ -44,6 +44,11 @@ When assuming a stationary distribution, computing it can be done via the follow
 ```{r stat.dist}
 ```
 
+\citet{zucchini} shows that calculating the stationary distribution can be achieved by solving \autoref{eq:stat-dist} for $\b{\delta}$, where $\b{I}_m$ is the $m*m$ identity matrix, $\b{U}$ is a $m*m$ matrix of ones, and $\b{1}$ is a row vector of ones.
+\[
+\b{\delta}(\b{I}_m - \b{\Gamma} + \b{U}) = \b{1}
+\]
+
 #### Label switching {#label-switching}
 As the model gets estimated each time, we do not impose by default an order for the states.
 This can lead to the label switching problem, where states aren't ordered the same way in each model and are grouped incorrectly.

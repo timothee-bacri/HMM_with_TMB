@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-07-20" />
+<meta name="date" content="2021-08-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -405,7 +405,6 @@ using a scaling scheme defined by <span class="citation">(see <a href="#ref-zucc
 <div id="local-decoding" class="section level2" number="2.5">
 <h2><span class="header-section-number">2.5</span> Local decoding</h2>
 <p>The smoothing probabilities are defined in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 87</a> and p.336)</span> as
-<!-- P(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n} -->
 <span class="math display">\[
 \text{P}(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
 \]</span></p>
@@ -433,10 +432,8 @@ using a scaling scheme defined by <span class="citation">(see <a href="#ref-zucc
 <h2><span class="header-section-number">2.6</span> Forecast</h2>
 <p>The forecast distribution or h-step-ahead-probabilities as well as its
 implementation in R is detailed in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 85</a> and p.337)</span></p>
-<p>Then,</p>
-<!-- Original -->
-<!-- P(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_T \b{\gamma}^h \bcp(x) \b{1}'}{\b{\alpha}_T \b{1}'} = \bfphi_T \b{\gamma}^h \bcp(x) \b{1}' -->
-<p><span class="math display">\[
+<p>Then,
+<span class="math display">\[
 \text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{{\boldsymbol\alpha}_T {\boldsymbol\gamma}^h {\boldsymbol P}(x) {\boldsymbol 1}&#39;}{{\boldsymbol\alpha}_T {\boldsymbol 1}&#39;} = {\boldsymbol\Phi}_T {\boldsymbol\gamma}^h {\boldsymbol P}(x) {\boldsymbol 1}&#39;
 \]</span>
 An implementation of this, using a scaling scheme is</p>
