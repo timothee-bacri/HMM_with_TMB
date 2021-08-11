@@ -5,7 +5,7 @@
 <!-- knitr::read_chunk('functions/utils.R') -->
 <!-- ``` -->
 
-# Using TMB
+# Using `TMB`
 
 ## Likelihood function
 
@@ -167,14 +167,30 @@ mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn,
                   gradient = obj_tmb$gr, hessian = obj_tmb$he)
 mod_tmb$objective
 ```
-
 Note that passing the exact gradient and Hessian as provided by `TMB` to `nlminb` leads to the same minimum, i.e. value of the nll function, here.
 
-On a minor note, when comparing our estimation results to those reported by [@leroux], some non-negligible differences can be noted.
-The reasons for this are difficult to determine, but some likely explanations are given in the following.
-First, differences in the parameter estimates may result e.g. from the optimizing algorithms used and related setting (e.g. convergence criterion, number of steps, optimization routines used in 1992,...).
-Moreover, [@leroux] seem to base their calculations on an altered likelihood, which is reduced by removing the constant term $\sum_{i=1}^{T} \log(x_{i}!)$ from the log-likelihood.
-This modification may also possess an impact on the behavior of the optimization algorithm, as e.g.~relative convergence criteria and step size could be affected.
+Is it noteworthy that inconsistencies can happen in the estimates due to computer approximations.
+
+The stationary distribution is a vector of probabilities and should sum to 1.
+However, it doesn't always behave as expected.
+```{r 4_1-diff-1}
+adrep <- summary(sdreport(obj_tmb), "report")
+estimate_delta <- adrep[rownames(adrep) == "delta", "Estimate"]
+sum(estimate_delta)
+sum(estimate_delta) == 1 # The sum is displayed as 1 but is not 1
+```
+
+As noted on [@zucchini, pp. 159-160], ``the row sums of $\b{\Gamma}$ will only approximately equal 1, and the components of the vector $\b{\delta}$ will only approximately total 1. This can be remedied by scaling the vector $\b{\delta}$ and each row of $\b{\Gamma}$ to total 1''.
+We do not remedy this issue because it provides no benefit to us, but this may lead to surprising results when checking equality.
+
+This is likely due to machine approximations when numbers far apart from each other interact together.
+In R, a small number is not 0 but is treated as 0 when added to a much larger number.
+
+This can result in incoherent findings when checking equality between 2 numbers.
+```{r 4_0-diff-0}
+1e-100 == 0 # Small numbers are 0
+(1 + 1e-100) == 1
+```
 
 ## Nested models
 ### Principle

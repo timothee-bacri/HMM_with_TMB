@@ -22,10 +22,12 @@ output:
   #     smooth_scroll: true
   # https://bookdown.org/yihui/bookdown/html.html#gitbook-style
   bookdown::gitbook:
-    collapse: none
     toc_depth: 4
-    fig_caption: yes
-    number_sections: yes
+    # config:
+      # toc:
+        # collapse: subsection
+    # fig_caption: yes
+    # number_sections: yes
 header-includes:
   - \usepackage{amsthm,amsmath,amssymb,amsfonts,amssymb}
   - \usepackage{listings}
@@ -66,5 +68,5 @@ knitr::write_bib(c(
 ), 'packages.bib')
 ```
 
-# License
+# License {-}
 This project is licensed under the xxxx License - see [LICENSE.md](LICENSE.md) for details.

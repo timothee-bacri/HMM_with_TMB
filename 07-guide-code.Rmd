@@ -1,6 +1,6 @@
 # GitHub
-For an easier reading, we recommend opening the file `Data supplements.Rproj` with R-Studio, which lets the user have the correct working path set up automatically.
-Other files can be opened directly by double-clicking on them, or by the `Files` tab in R-Studio.
+For reading more easily, we recommend opening the file `Data supplements.Rproj` with R-Studio, which lets the user have the correct working path set up automatically.
+Other files can be opened directly by double-clicking on them, or via the `Files` tab in R-Studio.
 Most of the code can be folded/collapsed into sections easily by clicking in the menu `Edit`->`Collapse All Output`.
 Unfolding can be done by clicking on the arrows to the left of the folded sections, or in the menu `Edit`->`Expand All Output`.
 

@@ -1,10 +1,9 @@
 bookdown::gitbook:
-  toc_depth: 4
   css: style.css
   config:
     toc:
       before: |
-        <li><a href="./">Accompaniment of A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a></li>
+        <li><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
     download: ["pdf", "epub"]

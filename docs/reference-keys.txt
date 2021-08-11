@@ -1,5 +1,4 @@
 fig:4tinnitus-fig
-license
 state-inf
 prepare-the-model
 setup
@@ -14,7 +13,7 @@ principles-of-using-tmb-for-mle
 setting-up-tmb
 getting-started
 extending-the-c-nll
-parameter-estimation-techniques
+parameter-estimation
 utility-functions
 in-tmb
 in-r

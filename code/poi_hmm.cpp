@@ -19,12 +19,12 @@ Type objective_function<Type>::operator() ()
 
   // Transform working parameters to natural parameters:
   vector<Type> lambda = tlambda.exp();
-  matrix<Type> gamma = Gamma_w2n(m, tgamma);
+  matrix<Type> gamma = gamma_w2n(m, tgamma);
   
   // Construct stationary distribution
-  vector<Type> delta = Stat_dist(m, gamma);
+  vector<Type> delta = stat_dist(m, gamma);
   // If using a non-stationary distribution, use this instead
-  //vector<Type> delta = Delta_w2n(m, tdelta);
+  //vector<Type> delta = delta_w2n(m, tdelta);
   
   // Get number of timesteps (n)
   int n = x.size();
