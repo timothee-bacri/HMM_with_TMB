@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-08-11" />
+<meta name="date" content="2021-08-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -325,6 +325,9 @@ div.csl-indent {
 <p>Emission probabilities (also called output probabilities) are the conditional probabilities of the data given a state.</p>
 <p>Using the notation in the article Section 3.1, emission probabilities are the conditional distributions <span class="math inline">\(p_i(x) = \text{P}(X_t = x \vert C_t = i) = \frac{e^{-\lambda_i} \lambda_i^x}{x!}\)</span>.
 We store all these in a data frame where each row and column represent a data and a state respectively.</p>
+<p>More formally, we call
+<span class="math inline">\(\begin{pmatrix} p_1(x_1) &amp; p_2(x_1) &amp; \ldots &amp; p_m(x_1)\\ p_1(x_2) &amp; p_2(x_2) &amp; \ldots &amp; p_m(x_2)\\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots\\ p_1(x_n) &amp; p_2(x_n) &amp; \ldots &amp; p_m(x_n)\\ \end{pmatrix}\)</span>
+the emission probability matrix.</p>
 <p>We compute these probabilities in <code>C++</code> rather than in <code>R</code> because it is faster and not more complicated to write</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="state-inference.html#cb3-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
 <span id="cb3-2"><a href="state-inference.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
@@ -387,7 +390,7 @@ using a scaling scheme defined by <span class="citation">(see <a href="#ref-zucc
 <div id="log-backward" class="section level2" number="1.4">
 <h2><span class="header-section-number">1.4</span> Log-backward probabilities</h2>
 <p>The backward probabilities have been defined in the same section
-<span class="citation"><a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="#ref-zucchini" role="doc-biblioref">2016, p~.67</a> and p~.334)</span>.</p>
+<span class="citation"><a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="#ref-zucchini" role="doc-biblioref">2016, 67</a> and p.334)</span>.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="state-inference.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-backwards probabilities (scaling used)</span></span>
 <span id="cb7-2"><a href="state-inference.html#cb7-2" aria-hidden="true" tabindex="-1"></a>lbeta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
 <span id="cb7-3"><a href="state-inference.html#cb7-3" aria-hidden="true" tabindex="-1"></a>lbeta[, n] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, m)</span>
@@ -425,23 +428,23 @@ using a scaling scheme defined by <span class="citation">(see <a href="#ref-zucc
 <span id="cb10-4"><a href="state-inference.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  ldecode[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(stateprobs[, i])</span>
 <span id="cb10-5"><a href="state-inference.html#cb10-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb10-6"><a href="state-inference.html#cb10-6" aria-hidden="true" tabindex="-1"></a>ldecode</span></code></pre></div>
-<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-##  [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-##  [75] 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [112] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [149] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [186] 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [223] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</code></pre>
+<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [39] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [77] 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [115] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [153] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [191] 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [229] 1 1 1 1 1 1 1 1 1 1 1 1</code></pre>
 </div>
 <div id="forecast" class="section level2" number="1.6">
 <h2><span class="header-section-number">1.6</span> Forecast</h2>
 <p>The forecast distribution or h-step-ahead-probabilities as well as its
-implementation in R is detailed in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 85</a> and p.337)</span></p>
+implementation in R is detailed in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 83</a> and p.337)</span></p>
 <p>Then,
 <span class="math display">\[
-\text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{{\boldsymbol\alpha}_T {\boldsymbol\gamma}^h {\boldsymbol P}(x) {\boldsymbol 1}&#39;}{{\boldsymbol\alpha}_T {\boldsymbol 1}&#39;} = {\boldsymbol\Phi}_T {\boldsymbol\gamma}^h {\boldsymbol P}(x) {\boldsymbol 1}&#39;
+\text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{{\boldsymbol\alpha}_n {\boldsymbol\Gamma}^h \textbf{P}(x) {\boldsymbol 1}&#39;}{{\boldsymbol\alpha}_n {\boldsymbol 1}&#39;} = {\boldsymbol\Phi}_n {\boldsymbol\Gamma}^h \textbf{P}(x) {\boldsymbol 1}&#39;
 \]</span>
-An implementation of this, using a scaling scheme is</p>
+An implementation of this using a scaling scheme is</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="state-inference.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of steps</span></span>
 <span id="cb12-2"><a href="state-inference.html#cb12-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb12-3"><a href="state-inference.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Values for which we want the forecast probabilities</span></span>
@@ -492,13 +495,13 @@ An implementation of it is</p>
 <span id="cb14-11"><a href="state-inference.html#cb14-11" aria-hidden="true" tabindex="-1"></a>  iv[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(gamma[, iv[i <span class="sc">+</span> <span class="dv">1</span>]] <span class="sc">*</span> xi[i, ])</span>
 <span id="cb14-12"><a href="state-inference.html#cb14-12" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb14-13"><a href="state-inference.html#cb14-13" aria-hidden="true" tabindex="-1"></a>iv</span></code></pre></div>
-<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-##  [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-##  [75] 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [112] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [149] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [186] 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [223] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</code></pre>
+<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [39] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [77] 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [115] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [153] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [191] 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [229] 1 1 1 1 1 1 1 1 1 1 1 1</code></pre>
 
 </div>
 </div>

@@ -51,6 +51,15 @@ Emission probabilities (also called output probabilities) are the conditional pr
 Using the notation in the article Section 3.1, emission probabilities are the conditional distributions $p_i(x) = \text{P}(X_t = x \vert C_t = i) = \frac{e^{-\lambda_i} \lambda_i^x}{x!}$.
 We store all these in a data frame where each row and column represent a data and a state respectively.
 
+More formally, we call
+$\begin{pmatrix}
+p_1(x_1)  & p_2(x_1) & \ldots & p_m(x_1)\\
+p_1(x_2)  & p_2(x_2) & \ldots & p_m(x_2)\\
+\vdots    &  \vdots  & \ddots & \vdots\\
+p_1(x_n)  & p_2(x_n) & \ldots & p_m(x_n)\\
+\end{pmatrix}$
+the emission probability matrix.
+
 We compute these probabilities in `C++` rather than in `R` because it is faster and not more complicated to write
 
 ```{Rcpp 1poi_hmm.cpp, code=readLines("code/poi_hmm.cpp")[32:46], eval=FALSE}
@@ -90,7 +99,7 @@ lalpha[, 1:5]
 ## Log-backward probabilities {#log-backward}
 
 The backward probabilities have been defined in the same section
-@zucchini [p~.67 and p~.334].
+@zucchini [p.67 and p.334].
 
 ```{r 1log-backward}
 # Compute log-backwards probabilities (scaling used)
@@ -140,13 +149,13 @@ ldecode
 ## Forecast {#forecast}
 
 The forecast distribution or h-step-ahead-probabilities as well as its
-implementation in R is detailed in [@zucchini, p.85 and p.337]
+implementation in R is detailed in [@zucchini, p.83 and p.337]
 
 Then,
 \[
-\text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_T \b{\gamma}^h \b{P}(x) \b{1}'}{\b{\alpha}_T \b{1}'} = \b{\Phi}_T \b{\gamma}^h \b{P}(x) \b{1}'
+\text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_n \b{\Gamma}^h \textbf{P}(x) \b{1}'}{\b{\alpha}_n \b{1}'} = \b{\Phi}_n \b{\Gamma}^h \textbf{P}(x) \b{1}'
 \]
-An implementation of this, using a scaling scheme is
+An implementation of this using a scaling scheme is
 
 ```{r 1forecast}
 # Number of steps
