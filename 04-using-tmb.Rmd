@@ -195,7 +195,7 @@ This can result in incoherent findings when checking equality between 2 numbers.
 ## Nested models
 ### Principle
 
-In order to build a nested model, we decide to fix $\lambda_1$ to the value 1.
+As a first step in building a nested model, we arbitrarily fix $\lambda_1$ to the value 1.
 ```{r 4nested_params}
 # Get the previous values, and fix some
 fixed_par_lambda <- lambda
@@ -231,7 +231,7 @@ Note that the standard error of $\lambda_1$ is zero, because it is no longer con
 ### Limits
 
 This method cannot work in general for working parameters which are not linked to a single natural parameter.
-This is because only working parameters can be fixed with this method, but the working parameters of the TPM are not each linked to a single natural parameter. As an example, fixing the natural parameter $gamma_{11}$ is not equivalent to fixing any working parameter $\tau{ij}$.
+This is because only working parameters can be fixed with this method, but the working parameters of the TPM are not each linked to a single natural parameter. As an example, fixing the natural parameter $\gamma_{11}$ is not equivalent to fixing any working parameter $\tau_{ij}$.
 Hence, the TPM cannot in general be fixed.
 
 However, if conditions on the natural parameters can be translated to conditions on the working parameters, then there should not be any issue.

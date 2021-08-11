@@ -36,7 +36,7 @@
   
 <link rel="prev" href="application-to-different-data-sets.html"/>
 <link rel="next" href="references.html"/>
-<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -377,7 +377,6 @@ Used to compute negative log-likelihoods in <code>R</code> with <code>TMB</code>
 <li><p><code>Parameters and covariates</code> defines parameters and covariates in natural form. The simulation files generate data there.</p></li>
 <li><p><code>Parameters &amp; covariates for TMB</code> transforms parameters and covariates to their working form.</p></li>
 <li><p><code>Estimation</code> computes estimates with and without TMB for further comparison. The estimates are stored in the data-frames <code>conf_int_*</code>.</p></li>
-<li><p><code>Store negative log-likelihoods</code> stores negative log-likelihoods to check differences in accuracy. Values are stored in the <code>mllk_values_*</code> variables.</p></li>
 <li><p><code>Creating variables for the CIs</code> creates necessary variables for to compute confidence intervals (CIs).</p></li>
 <li><p><code>Benchmarks</code> uses the <code>microbenchmark</code> package to accurately time:</p>
 <ul>

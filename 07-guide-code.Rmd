@@ -75,7 +75,6 @@ Most of their code is common:
 * `Parameters and covariates` defines parameters and covariates in natural form. The simulation files generate data there.
 * `Parameters & covariates for TMB` transforms parameters and covariates to their working form.
 * `Estimation` computes estimates with and without TMB for further comparison. The estimates are stored in the data-frames `conf_int_*`.
-* `Store negative log-likelihoods` stores negative log-likelihoods to check differences in accuracy. Values are stored in the `mllk_values_*` variables.
 * `Creating variables for the CIs` creates necessary variables for to compute confidence intervals (CIs).
 * `Benchmarks` uses the `microbenchmark` package to accurately time:
 
