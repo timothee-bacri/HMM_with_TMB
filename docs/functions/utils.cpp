@@ -1,7 +1,7 @@
 // Function transforming working parameters in initial distribution
 // to natural parameters
 template<class Type>
-vector<Type> Delta_w2n(int m, vector<Type> tdelta) {
+vector<Type> delta_w2n(int m, vector<Type> tdelta) {
 
   vector<Type> delta(m);
   vector<Type> foo(m);
@@ -23,7 +23,7 @@ vector<Type> Delta_w2n(int m, vector<Type> tdelta) {
 // Function transforming the working parameters in TPM to
 // natural parameters (w2n)
 template<class Type>
-matrix<Type> Gamma_w2n(int m, vector<Type> tgamma) {
+matrix<Type> gamma_w2n(int m, vector<Type> tgamma) {
 
   // Construct m x m identity matrix
   matrix<Type> gamma(m, m);
@@ -52,7 +52,7 @@ matrix<Type> Gamma_w2n(int m, vector<Type> tgamma) {
 
 // Function computing the stationary distribution of a Markov chain
 template<class Type>
-vector<Type> Stat_dist(int m, matrix<Type> gamma) {
+vector<Type> stat_dist(int m, matrix<Type> gamma) {
   
   // Construct stationary distribution
   matrix<Type> I(m, m);

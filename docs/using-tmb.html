@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Using TMB | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <title>Chapter 4 Using TMB | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Using TMB | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:title" content="Chapter 4 Using TMB | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Using TMB | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta name="twitter:title" content="Chapter 4 Using TMB | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   
   <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
   
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-08-10" />
+<meta name="date" content="2021-08-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -259,7 +259,11 @@ div.csl-indent {
 <li class="chapter" data-level="7.1.28" data-path="github.html"><a href="github.html#functionsutils_linreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.28</b> functions/utils_linreg_extended.cpp</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#authors-github-account"><i class="fa fa-check"></i>Author’s github account</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#license-1"><i class="fa fa-check"></i>License</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -272,7 +276,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
           </h1>
         </div>
 
@@ -306,12 +310,12 @@ div.csl-indent {
 <span id="cb50-19"><a href="using-tmb.html#cb50-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb50-20"><a href="using-tmb.html#cb50-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
 <span id="cb50-21"><a href="using-tmb.html#cb50-21" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; lambda = tlambda.exp();</span>
-<span id="cb50-22"><a href="using-tmb.html#cb50-22" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma = Gamma_w2n(m, tgamma);</span>
+<span id="cb50-22"><a href="using-tmb.html#cb50-22" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma = gamma_w2n(m, tgamma);</span>
 <span id="cb50-23"><a href="using-tmb.html#cb50-23" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb50-24"><a href="using-tmb.html#cb50-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
-<span id="cb50-25"><a href="using-tmb.html#cb50-25" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = Stat_dist(m, gamma);</span>
+<span id="cb50-25"><a href="using-tmb.html#cb50-25" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = stat_dist(m, gamma);</span>
 <span id="cb50-26"><a href="using-tmb.html#cb50-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If using a non-stationary distribution, use this instead</span></span>
-<span id="cb50-27"><a href="using-tmb.html#cb50-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">//vector&lt;Type&gt; delta = Delta_w2n(m, tdelta);</span></span>
+<span id="cb50-27"><a href="using-tmb.html#cb50-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">//vector&lt;Type&gt; delta = delta_w2n(m, tdelta);</span></span>
 <span id="cb50-28"><a href="using-tmb.html#cb50-28" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb50-29"><a href="using-tmb.html#cb50-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
 <span id="cb50-30"><a href="using-tmb.html#cb50-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n = x.size();</span>
@@ -405,7 +409,7 @@ The data can be loaded by a simple call.</p>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="using-tmb.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span></code></pre></div>
 <p>Figure <a href="using-tmb.html#fig:4tinnitus-fig">4.1</a> present the raw data in Table <a href="#table:tinnitus_data">5.1</a>, which are also available for download at <em><a href="data/tinnitus.Rdata">data/tinnitus.RData</a></em>.</p>
 <!-- html table generated in R 4.0.5 by xtable 1.8-4 package -->
-<!-- Tue Aug 10 19:08:57 2021 -->
+<!-- Wed Aug 11 17:16:20 2021 -->
 <table border="1">
 <caption align="bottom">
 TYT data. Observations collected by the TYT app on 87 successive days (from left to right).

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Parameter estimation | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <title>Chapter 3 Parameter estimation | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Parameter estimation | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:title" content="Chapter 3 Parameter estimation | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Parameter estimation | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta name="twitter:title" content="Chapter 3 Parameter estimation | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   
   <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
   
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-08-10" />
+<meta name="date" content="2021-08-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -259,7 +259,11 @@ div.csl-indent {
 <li class="chapter" data-level="7.1.28" data-path="github.html"><a href="github.html#functionsutils_linreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.28</b> functions/utils_linreg_extended.cpp</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#authors-github-account"><i class="fa fa-check"></i>Author’s github account</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#license-1"><i class="fa fa-check"></i>License</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -272,7 +276,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
           </h1>
         </div>
 
@@ -294,7 +298,7 @@ We define the function <code>gamma.w2n</code> to perform this transformation.</p
 <div class="sourceCode" id="cb41"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb41-1"><a href="parameter-estimation.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming working parameters in initial distribution</span></span>
 <span id="cb41-2"><a href="parameter-estimation.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co">// to natural parameters</span></span>
 <span id="cb41-3"><a href="parameter-estimation.html#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb41-4"><a href="parameter-estimation.html#cb41-4" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; Delta_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tdelta) {</span>
+<span id="cb41-4"><a href="parameter-estimation.html#cb41-4" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; delta_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tdelta) {</span>
 <span id="cb41-5"><a href="parameter-estimation.html#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-6"><a href="parameter-estimation.html#cb41-6" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta(m);</span>
 <span id="cb41-7"><a href="parameter-estimation.html#cb41-7" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; foo(m);</span>
@@ -316,7 +320,7 @@ We define the function <code>gamma.w2n</code> to perform this transformation.</p
 <span id="cb41-23"><a href="parameter-estimation.html#cb41-23" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming the working parameters in TPM to</span></span>
 <span id="cb41-24"><a href="parameter-estimation.html#cb41-24" aria-hidden="true" tabindex="-1"></a><span class="co">// natural parameters (w2n)</span></span>
 <span id="cb41-25"><a href="parameter-estimation.html#cb41-25" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb41-26"><a href="parameter-estimation.html#cb41-26" aria-hidden="true" tabindex="-1"></a>matrix&lt;Type&gt; Gamma_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tgamma) {</span>
+<span id="cb41-26"><a href="parameter-estimation.html#cb41-26" aria-hidden="true" tabindex="-1"></a>matrix&lt;Type&gt; gamma_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tgamma) {</span>
 <span id="cb41-27"><a href="parameter-estimation.html#cb41-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-28"><a href="parameter-estimation.html#cb41-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct m x m identity matrix</span></span>
 <span id="cb41-29"><a href="parameter-estimation.html#cb41-29" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma(m, m);</span>
@@ -345,7 +349,7 @@ We define the function <code>gamma.w2n</code> to perform this transformation.</p
 <span id="cb41-52"><a href="parameter-estimation.html#cb41-52" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-53"><a href="parameter-estimation.html#cb41-53" aria-hidden="true" tabindex="-1"></a><span class="co">// Function computing the stationary distribution of a Markov chain</span></span>
 <span id="cb41-54"><a href="parameter-estimation.html#cb41-54" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb41-55"><a href="parameter-estimation.html#cb41-55" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; Stat_dist(<span class="dt">int</span> m, matrix&lt;Type&gt; gamma) {</span>
+<span id="cb41-55"><a href="parameter-estimation.html#cb41-55" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; stat_dist(<span class="dt">int</span> m, matrix&lt;Type&gt; gamma) {</span>
 <span id="cb41-56"><a href="parameter-estimation.html#cb41-56" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb41-57"><a href="parameter-estimation.html#cb41-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
 <span id="cb41-58"><a href="parameter-estimation.html#cb41-58" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; I(m, m);</span>
@@ -368,7 +372,7 @@ We define the function <code>gamma.w2n</code> to perform this transformation.</p
 <div id="parameter-transformation" class="section level4" number="3.1.2.1">
 <h4><span class="header-section-number">3.1.2.1</span> Parameter transformation</h4>
 <p>While <code>TMB</code> requires functions to transform working parameters to their natural form, pre-processing in <code>R</code> requires the inverse transformation.</p>
-<p>Functions to achieve this are available in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 51</a>)</span> and are displayed here for convenience.</p>
+<p>Functions to achieve this are available in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 51</a>)</span> and are displayed here with explaining comments for convenience.</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="parameter-estimation.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform Poisson natural parameters to working parameters</span></span>
 <span id="cb42-2"><a href="parameter-estimation.html#cb42-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.pn2pw <span class="ot">&lt;-</span> <span class="cf">function</span>(m, lambda, gamma, <span class="at">delta =</span> <span class="cn">NULL</span>,</span>
 <span id="cb42-3"><a href="parameter-estimation.html#cb42-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">stationary =</span> <span class="cn">TRUE</span>) {</span>
@@ -548,12 +552,12 @@ Therefore, we put them in functions we can call from our main program.</p>
 <span id="cb49-19"><a href="parameter-estimation.html#cb49-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb49-20"><a href="parameter-estimation.html#cb49-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
 <span id="cb49-21"><a href="parameter-estimation.html#cb49-21" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; lambda = tlambda.exp();</span>
-<span id="cb49-22"><a href="parameter-estimation.html#cb49-22" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma = Gamma_w2n(m, tgamma);</span>
+<span id="cb49-22"><a href="parameter-estimation.html#cb49-22" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma = gamma_w2n(m, tgamma);</span>
 <span id="cb49-23"><a href="parameter-estimation.html#cb49-23" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb49-24"><a href="parameter-estimation.html#cb49-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
-<span id="cb49-25"><a href="parameter-estimation.html#cb49-25" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = Stat_dist(m, gamma);</span>
+<span id="cb49-25"><a href="parameter-estimation.html#cb49-25" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = stat_dist(m, gamma);</span>
 <span id="cb49-26"><a href="parameter-estimation.html#cb49-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If using a non-stationary distribution, use this instead</span></span>
-<span id="cb49-27"><a href="parameter-estimation.html#cb49-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">//vector&lt;Type&gt; delta = Delta_w2n(m, tdelta);</span></span>
+<span id="cb49-27"><a href="parameter-estimation.html#cb49-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">//vector&lt;Type&gt; delta = delta_w2n(m, tdelta);</span></span>
 <span id="cb49-28"><a href="parameter-estimation.html#cb49-28" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb49-29"><a href="parameter-estimation.html#cb49-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
 <span id="cb49-30"><a href="parameter-estimation.html#cb49-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n = x.size();</span>
