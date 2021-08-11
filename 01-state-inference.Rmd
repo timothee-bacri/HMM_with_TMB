@@ -5,7 +5,7 @@
 <!-- knitr::read_chunk('functions/utils.R') -->
 <!-- ``` -->
 
-# State inference {#state-inf}
+# State inference
 
 ## Prepare the model
 

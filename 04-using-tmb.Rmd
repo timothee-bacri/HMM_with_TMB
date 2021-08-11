@@ -231,26 +231,25 @@ Note that the standard error of $\lambda_1$ is zero, because it is no longer con
 ### Limits
 
 This method cannot work in general for working parameters which are not linked to a single natural parameter.
-This is because only working parameters can be fixed with this method, but the working parameters of the TPM are not each linked to a single natural parameter. As an example, fixing the natural parameter $\gamma_{11}$ is not equivalent to fixing any working parameter $\tau_{ij}$.
-Hence, the TPM cannot in general be fixed.
+This is because only working parameters can be fixed with this method, but the working parameters of the TPM are not each linked to a single natural parameter.
+As an example, fixing the natural parameter $\gamma_{11}$ is not equivalent to fixing any working parameter $\tau_{ij}$.
+Hence, the TPM cannot in general be fixed, except perhaps via constrained optimization.
 
-However, if conditions on the natural parameters can be translated to conditions on the working parameters, then there should not be any issue.
+However, if conditions on the natural parameters can be translated to conditions on the working parameters, then there should not be any issue. We refer to [the next section](#param-eq-constraints) for more details.
 
 We will show in the next section that a type of general constraints on the TPM can be carried out.
 
-In addition, overcoming this restriction should be possible via constrained optimization.
+### Parameter equality constraints {#param-eq-constraints}
 
-### Parameter equality constraints
-
-It is noteworthy that more complex constraints are possible as well
-For example, to impose equality constraints (such as $\gamma_{11} = \gamma_{22}$), the corresponding factor level has to be identical for the concerned entries.
+More complex constraints than above are possible.
+For example, imposing equality constraints (such as $\gamma_{11} = \gamma_{22}$) requires the corresponding factor level to be identical for the concerned entries.
 
 As a reminder, we defined the working parameters via
 \[
-\tau_{ij} = \log\left(\frac{\gamma_{ij}}{1 - \sum_{k \neq i} \gamma_{ik}}\right) = \log(\gamma_{ij}/\gamma_{ii}), \text{ for } i \neq j
+\tau_{ij} = \log(\frac{\gamma_{ij}}{1 - \sum_{k \neq i} \gamma_{ik}}) = \log(\gamma_{ij}/\gamma_{ii}), \text{ for } i \neq j
 \]
 
-With a 2 state HMM, the constraint $\gamma_{11} = \gamma_{22}$ is equivalent to $\gamma_{12} = \gamma_{21}$.
+With a two-state Poisson HMM, the constraint $\gamma_{11} = \gamma_{22}$ is equivalent to $\gamma_{12} = \gamma_{21}$.
 Thus, the constraint can be transformed into $\tau_{12} = \log(\gamma_{12}/\gamma_{11}) = \log(\gamma_{21}/\gamma_{22}) = \tau_{21}$.
 
 The mapping parameters must be set to a common factor to be forced equal.
@@ -275,8 +274,8 @@ tpm
 tpm[1, 1] == tpm[2, 2]
 ```
 
-Similar complex constraints on the TPM can also be setup for HMMs with over two states.
-However, it appears that it can only be done in general when the constraint involves natural parameters of the same row with the exception of a 2 state model.
+Similar complex constraints on the TPM can also be setup for HMMs with three or more states.
+However, it appears it can only be done in general when the constraint involves natural parameters of the same row with the exception of a 2 state model.
 We have not found a way to easily implement equality constraints between natural TPM parameters of different rows.
 Possible solutions are constrained optimization and different parametrization.
 

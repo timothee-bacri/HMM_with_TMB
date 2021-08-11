@@ -1,5 +1,5 @@
 fig:4tinnitus-fig
-state-inf
+state-inference
 prepare-the-model
 setup
 define-variables
@@ -27,7 +27,7 @@ modeling
 nested-models
 principle
 limits
-parameter-equality-constraints
+param-eq-constraints
 confidence-intervals
 wald-type
 parametric-bootstrap
