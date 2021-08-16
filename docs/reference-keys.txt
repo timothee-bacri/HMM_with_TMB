@@ -53,16 +53,10 @@ poi_hmm.cpp
 codepoi_hmm.dll
 codepoi_hmm.o
 poi_hmm_lamb.R
-poi_hmm_simu1.R
-poi_hmm_simu2.R
-poi_hmm_tinn.R
 setup_parameters.R
 data
 datafetal-lamb.rdata
 dataresults_lamb.rdata
-dataresults_simu1.rdata
-dataresults_simu2.rdata
-dataresults_tinn.rdata
 tinnitus.RData
 functions
 functionsutils.cpp
