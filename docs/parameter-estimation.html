@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Parameter estimation | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <title>Chapter 3 Parameter estimation | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Parameter estimation | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:title" content="Chapter 3 Parameter estimation | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Parameter estimation | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta name="twitter:title" content="Chapter 3 Parameter estimation | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   
   <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
   
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-08-12" />
+<meta name="date" content="2021-08-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -36,7 +36,7 @@
   
 <link rel="prev" href="principles-of-using-tmb-for-mle.html"/>
 <link rel="next" href="using-tmb.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -163,7 +163,6 @@ div.csl-indent {
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="" data-path="license.html"><a href="license.html"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="1" data-path="state-inference.html"><a href="state-inference.html"><i class="fa fa-check"></i><b>1</b> State inference</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="state-inference.html"><a href="state-inference.html#prepare-the-model"><i class="fa fa-check"></i><b>1.1</b> Prepare the model</a></li>
@@ -262,7 +261,7 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
 <ul>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html#authors-github-account"><i class="fa fa-check"></i>Author’s github account</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#license-1"><i class="fa fa-check"></i>License</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#license"><i class="fa fa-check"></i>License</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -276,7 +275,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
           </h1>
         </div>
 
@@ -286,7 +285,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="parameter-estimation" class="section level1" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Parameter estimation</h1>
-<p>In this section we recall basic concepts underlying parameter estimation for HMMs via direct numerical optimization of the likelihood. In terms of notation, we stay as close as possible to <span class="citation"><a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="#ref-zucchini" role="doc-biblioref">2016</a>)</span>, where a more detailed presentation is available.</p>
+<p>In this section we recall basic concepts underlying parameter estimation for HMMs via direct numerical optimization of the likelihood. In terms of notation, we stay as close as possible to <span class="citation"><a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, &amp; Langrock</a> (<a href="#ref-zucchini" role="doc-biblioref">2016</a>)</span>, where a more detailed presentation is available.</p>
 <div id="utility-functions" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Utility functions</h2>
 <div id="in-tmb" class="section level3" number="3.1.1">
@@ -295,76 +294,76 @@ div.csl-indent {
 We define the function <code>gamma.w2n</code> to perform this transformation.</p>
 <p>The function <code>stat.dist</code> handles computing the stationary distribution, while <code>delta.w2n</code> can be used if a non-stationary distribution is provided.</p>
 <p>They are defined in <em><a href="functions/utils.cpp">functions/utils.cpp</a></em></p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb39-1"><a href="parameter-estimation.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming working parameters in initial distribution</span></span>
-<span id="cb39-2"><a href="parameter-estimation.html#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co">// to natural parameters</span></span>
-<span id="cb39-3"><a href="parameter-estimation.html#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb39-4"><a href="parameter-estimation.html#cb39-4" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; delta_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tdelta) {</span>
-<span id="cb39-5"><a href="parameter-estimation.html#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-6"><a href="parameter-estimation.html#cb39-6" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta(m);</span>
-<span id="cb39-7"><a href="parameter-estimation.html#cb39-7" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; foo(m);</span>
-<span id="cb39-8"><a href="parameter-estimation.html#cb39-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-9"><a href="parameter-estimation.html#cb39-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>)</span>
-<span id="cb39-10"><a href="parameter-estimation.html#cb39-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Type(<span class="dv">1</span>);</span>
-<span id="cb39-11"><a href="parameter-estimation.html#cb39-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-12"><a href="parameter-estimation.html#cb39-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// set first element to one.</span></span>
-<span id="cb39-13"><a href="parameter-estimation.html#cb39-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill in the last m - 1 elements with working parameters</span></span>
-<span id="cb39-14"><a href="parameter-estimation.html#cb39-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// and take exponential</span></span>
-<span id="cb39-15"><a href="parameter-estimation.html#cb39-15" aria-hidden="true" tabindex="-1"></a>  foo &lt;&lt; Type(<span class="dv">1</span>), tdelta.exp();</span>
-<span id="cb39-16"><a href="parameter-estimation.html#cb39-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-17"><a href="parameter-estimation.html#cb39-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// normalize</span></span>
-<span id="cb39-18"><a href="parameter-estimation.html#cb39-18" aria-hidden="true" tabindex="-1"></a>  delta = foo / foo.sum();</span>
-<span id="cb39-19"><a href="parameter-estimation.html#cb39-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-20"><a href="parameter-estimation.html#cb39-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta;</span>
-<span id="cb39-21"><a href="parameter-estimation.html#cb39-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb39-22"><a href="parameter-estimation.html#cb39-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-23"><a href="parameter-estimation.html#cb39-23" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming the working parameters in TPM to</span></span>
-<span id="cb39-24"><a href="parameter-estimation.html#cb39-24" aria-hidden="true" tabindex="-1"></a><span class="co">// natural parameters (w2n)</span></span>
-<span id="cb39-25"><a href="parameter-estimation.html#cb39-25" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb39-26"><a href="parameter-estimation.html#cb39-26" aria-hidden="true" tabindex="-1"></a>matrix&lt;Type&gt; gamma_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tgamma) {</span>
-<span id="cb39-27"><a href="parameter-estimation.html#cb39-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-28"><a href="parameter-estimation.html#cb39-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct m x m identity matrix</span></span>
-<span id="cb39-29"><a href="parameter-estimation.html#cb39-29" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma(m, m);</span>
-<span id="cb39-30"><a href="parameter-estimation.html#cb39-30" aria-hidden="true" tabindex="-1"></a>  gamma.setIdentity();</span>
-<span id="cb39-31"><a href="parameter-estimation.html#cb39-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-32"><a href="parameter-estimation.html#cb39-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>)</span>
-<span id="cb39-33"><a href="parameter-estimation.html#cb39-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gamma;</span>
-<span id="cb39-34"><a href="parameter-estimation.html#cb39-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-35"><a href="parameter-estimation.html#cb39-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill offdiagonal elements with working parameters column-wise:</span></span>
-<span id="cb39-36"><a href="parameter-estimation.html#cb39-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> idx = <span class="dv">0</span>;</span>
-<span id="cb39-37"><a href="parameter-estimation.html#cb39-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; m; i++){</span>
-<span id="cb39-38"><a href="parameter-estimation.html#cb39-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; m; j++){</span>
-<span id="cb39-39"><a href="parameter-estimation.html#cb39-39" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (j != i){</span>
-<span id="cb39-40"><a href="parameter-estimation.html#cb39-40" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Fill gamma according to mapping and take exponential</span></span>
-<span id="cb39-41"><a href="parameter-estimation.html#cb39-41" aria-hidden="true" tabindex="-1"></a>        gamma(j, i) = tgamma.exp()(idx);</span>
-<span id="cb39-42"><a href="parameter-estimation.html#cb39-42" aria-hidden="true" tabindex="-1"></a>        idx++;</span>
-<span id="cb39-43"><a href="parameter-estimation.html#cb39-43" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb39-44"><a href="parameter-estimation.html#cb39-44" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb39-45"><a href="parameter-estimation.html#cb39-45" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb39-46"><a href="parameter-estimation.html#cb39-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Normalize each row:</span></span>
-<span id="cb39-47"><a href="parameter-estimation.html#cb39-47" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; cs = gamma.rowwise().sum();</span>
-<span id="cb39-48"><a href="parameter-estimation.html#cb39-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; m; i++) gamma.row(i) /= cs[i];</span>
-<span id="cb39-49"><a href="parameter-estimation.html#cb39-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-50"><a href="parameter-estimation.html#cb39-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> gamma;</span>
-<span id="cb39-51"><a href="parameter-estimation.html#cb39-51" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb39-52"><a href="parameter-estimation.html#cb39-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-53"><a href="parameter-estimation.html#cb39-53" aria-hidden="true" tabindex="-1"></a><span class="co">// Function computing the stationary distribution of a Markov chain</span></span>
-<span id="cb39-54"><a href="parameter-estimation.html#cb39-54" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb39-55"><a href="parameter-estimation.html#cb39-55" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; stat_dist(<span class="dt">int</span> m, matrix&lt;Type&gt; gamma) {</span>
-<span id="cb39-56"><a href="parameter-estimation.html#cb39-56" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-57"><a href="parameter-estimation.html#cb39-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
-<span id="cb39-58"><a href="parameter-estimation.html#cb39-58" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; I(m, m);</span>
-<span id="cb39-59"><a href="parameter-estimation.html#cb39-59" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; U(m, m);</span>
-<span id="cb39-60"><a href="parameter-estimation.html#cb39-60" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
-<span id="cb39-61"><a href="parameter-estimation.html#cb39-61" aria-hidden="true" tabindex="-1"></a>  U = U.setOnes();</span>
-<span id="cb39-62"><a href="parameter-estimation.html#cb39-62" aria-hidden="true" tabindex="-1"></a>  I = I.setIdentity();</span>
-<span id="cb39-63"><a href="parameter-estimation.html#cb39-63" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
-<span id="cb39-64"><a href="parameter-estimation.html#cb39-64" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; A =  I - gamma + U;</span>
-<span id="cb39-65"><a href="parameter-estimation.html#cb39-65" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; Ainv = A.inverse();</span>
-<span id="cb39-66"><a href="parameter-estimation.html#cb39-66" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; deltamat = row1vec * Ainv;</span>
-<span id="cb39-67"><a href="parameter-estimation.html#cb39-67" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = deltamat.row(<span class="dv">0</span>);</span>
-<span id="cb39-68"><a href="parameter-estimation.html#cb39-68" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-69"><a href="parameter-estimation.html#cb39-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta;</span>
-<span id="cb39-70"><a href="parameter-estimation.html#cb39-70" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="parameter-estimation.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming working parameters in initial distribution</span></span>
+<span id="cb1-2"><a href="parameter-estimation.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">// to natural parameters</span></span>
+<span id="cb1-3"><a href="parameter-estimation.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb1-4"><a href="parameter-estimation.html#cb1-4" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; delta_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tdelta) {</span>
+<span id="cb1-5"><a href="parameter-estimation.html#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="parameter-estimation.html#cb1-6" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta(m);</span>
+<span id="cb1-7"><a href="parameter-estimation.html#cb1-7" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; foo(m);</span>
+<span id="cb1-8"><a href="parameter-estimation.html#cb1-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-9"><a href="parameter-estimation.html#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>)</span>
+<span id="cb1-10"><a href="parameter-estimation.html#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Type(<span class="dv">1</span>);</span>
+<span id="cb1-11"><a href="parameter-estimation.html#cb1-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-12"><a href="parameter-estimation.html#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// set first element to one.</span></span>
+<span id="cb1-13"><a href="parameter-estimation.html#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill in the last m - 1 elements with working parameters</span></span>
+<span id="cb1-14"><a href="parameter-estimation.html#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// and take exponential</span></span>
+<span id="cb1-15"><a href="parameter-estimation.html#cb1-15" aria-hidden="true" tabindex="-1"></a>  foo &lt;&lt; Type(<span class="dv">1</span>), tdelta.exp();</span>
+<span id="cb1-16"><a href="parameter-estimation.html#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="parameter-estimation.html#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// normalize</span></span>
+<span id="cb1-18"><a href="parameter-estimation.html#cb1-18" aria-hidden="true" tabindex="-1"></a>  delta = foo / foo.sum();</span>
+<span id="cb1-19"><a href="parameter-estimation.html#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="parameter-estimation.html#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta;</span>
+<span id="cb1-21"><a href="parameter-estimation.html#cb1-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-22"><a href="parameter-estimation.html#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="parameter-estimation.html#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming the working parameters in TPM to</span></span>
+<span id="cb1-24"><a href="parameter-estimation.html#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">// natural parameters (w2n)</span></span>
+<span id="cb1-25"><a href="parameter-estimation.html#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb1-26"><a href="parameter-estimation.html#cb1-26" aria-hidden="true" tabindex="-1"></a>matrix&lt;Type&gt; gamma_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tgamma) {</span>
+<span id="cb1-27"><a href="parameter-estimation.html#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="parameter-estimation.html#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct m x m identity matrix</span></span>
+<span id="cb1-29"><a href="parameter-estimation.html#cb1-29" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma(m, m);</span>
+<span id="cb1-30"><a href="parameter-estimation.html#cb1-30" aria-hidden="true" tabindex="-1"></a>  gamma.setIdentity();</span>
+<span id="cb1-31"><a href="parameter-estimation.html#cb1-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-32"><a href="parameter-estimation.html#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>)</span>
+<span id="cb1-33"><a href="parameter-estimation.html#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gamma;</span>
+<span id="cb1-34"><a href="parameter-estimation.html#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="parameter-estimation.html#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill offdiagonal elements with working parameters column-wise:</span></span>
+<span id="cb1-36"><a href="parameter-estimation.html#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> idx = <span class="dv">0</span>;</span>
+<span id="cb1-37"><a href="parameter-estimation.html#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; m; i++){</span>
+<span id="cb1-38"><a href="parameter-estimation.html#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; m; j++){</span>
+<span id="cb1-39"><a href="parameter-estimation.html#cb1-39" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (j != i){</span>
+<span id="cb1-40"><a href="parameter-estimation.html#cb1-40" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Fill gamma according to mapping and take exponential</span></span>
+<span id="cb1-41"><a href="parameter-estimation.html#cb1-41" aria-hidden="true" tabindex="-1"></a>        gamma(j, i) = tgamma.exp()(idx);</span>
+<span id="cb1-42"><a href="parameter-estimation.html#cb1-42" aria-hidden="true" tabindex="-1"></a>        idx++;</span>
+<span id="cb1-43"><a href="parameter-estimation.html#cb1-43" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb1-44"><a href="parameter-estimation.html#cb1-44" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-45"><a href="parameter-estimation.html#cb1-45" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-46"><a href="parameter-estimation.html#cb1-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Normalize each row:</span></span>
+<span id="cb1-47"><a href="parameter-estimation.html#cb1-47" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; cs = gamma.rowwise().sum();</span>
+<span id="cb1-48"><a href="parameter-estimation.html#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; m; i++) gamma.row(i) /= cs[i];</span>
+<span id="cb1-49"><a href="parameter-estimation.html#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="parameter-estimation.html#cb1-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> gamma;</span>
+<span id="cb1-51"><a href="parameter-estimation.html#cb1-51" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-52"><a href="parameter-estimation.html#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="parameter-estimation.html#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="co">// Function computing the stationary distribution of a Markov chain</span></span>
+<span id="cb1-54"><a href="parameter-estimation.html#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb1-55"><a href="parameter-estimation.html#cb1-55" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; stat_dist(<span class="dt">int</span> m, matrix&lt;Type&gt; gamma) {</span>
+<span id="cb1-56"><a href="parameter-estimation.html#cb1-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-57"><a href="parameter-estimation.html#cb1-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
+<span id="cb1-58"><a href="parameter-estimation.html#cb1-58" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; I(m, m);</span>
+<span id="cb1-59"><a href="parameter-estimation.html#cb1-59" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; U(m, m);</span>
+<span id="cb1-60"><a href="parameter-estimation.html#cb1-60" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
+<span id="cb1-61"><a href="parameter-estimation.html#cb1-61" aria-hidden="true" tabindex="-1"></a>  U = U.setOnes();</span>
+<span id="cb1-62"><a href="parameter-estimation.html#cb1-62" aria-hidden="true" tabindex="-1"></a>  I = I.setIdentity();</span>
+<span id="cb1-63"><a href="parameter-estimation.html#cb1-63" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
+<span id="cb1-64"><a href="parameter-estimation.html#cb1-64" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; A =  I - gamma + U;</span>
+<span id="cb1-65"><a href="parameter-estimation.html#cb1-65" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; Ainv = A.inverse();</span>
+<span id="cb1-66"><a href="parameter-estimation.html#cb1-66" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; deltamat = row1vec * Ainv;</span>
+<span id="cb1-67"><a href="parameter-estimation.html#cb1-67" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = deltamat.row(<span class="dv">0</span>);</span>
+<span id="cb1-68"><a href="parameter-estimation.html#cb1-68" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-69"><a href="parameter-estimation.html#cb1-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta;</span>
+<span id="cb1-70"><a href="parameter-estimation.html#cb1-70" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Transforming the Poisson means into their natural form can be done simply with the <code>exp</code> function and doesn’t require a dedicated function.</p>
 </div>
 <div id="in-r" class="section level3" number="3.1.2">
@@ -372,43 +371,43 @@ We define the function <code>gamma.w2n</code> to perform this transformation.</p
 <div id="parameter-transformation" class="section level4" number="3.1.2.1">
 <h4><span class="header-section-number">3.1.2.1</span> Parameter transformation</h4>
 <p>While <code>TMB</code> requires functions to transform working parameters to their natural form, pre-processing in <code>R</code> requires the inverse transformation.</p>
-<p>Functions to achieve this are available in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 51</a>)</span> and are displayed here with explaining comments for convenience.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="parameter-estimation.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform Poisson natural parameters to working parameters</span></span>
-<span id="cb40-2"><a href="parameter-estimation.html#cb40-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.pn2pw <span class="ot">&lt;-</span> <span class="cf">function</span>(m, lambda, gamma, <span class="at">delta =</span> <span class="cn">NULL</span>,</span>
-<span id="cb40-3"><a href="parameter-estimation.html#cb40-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">stationary =</span> <span class="cn">TRUE</span>) {</span>
-<span id="cb40-4"><a href="parameter-estimation.html#cb40-4" aria-hidden="true" tabindex="-1"></a>  tlambda <span class="ot">&lt;-</span> <span class="fu">log</span>(lambda)</span>
-<span id="cb40-5"><a href="parameter-estimation.html#cb40-5" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">log</span>(gamma <span class="sc">/</span> <span class="fu">diag</span>(gamma))</span>
-<span id="cb40-6"><a href="parameter-estimation.html#cb40-6" aria-hidden="true" tabindex="-1"></a>  tgamma <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(foo[<span class="sc">!</span><span class="fu">diag</span>(m)])</span>
-<span id="cb40-7"><a href="parameter-estimation.html#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (stationary) {</span>
-<span id="cb40-8"><a href="parameter-estimation.html#cb40-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If tdelta is set to NULL and returned in the list,</span></span>
-<span id="cb40-9"><a href="parameter-estimation.html#cb40-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># it will cause issues when optimizing with TMB</span></span>
-<span id="cb40-10"><a href="parameter-estimation.html#cb40-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">tlambda =</span> tlambda, <span class="at">tgamma =</span> tgamma))</span>
-<span id="cb40-11"><a href="parameter-estimation.html#cb40-11" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb40-12"><a href="parameter-estimation.html#cb40-12" aria-hidden="true" tabindex="-1"></a>    tdelta <span class="ot">&lt;-</span> <span class="fu">log</span>(delta[<span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> delta[<span class="dv">1</span>])</span>
-<span id="cb40-13"><a href="parameter-estimation.html#cb40-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># TMB requires a list</span></span>
-<span id="cb40-14"><a href="parameter-estimation.html#cb40-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">tlambda =</span> tlambda, <span class="at">tgamma =</span> tgamma, <span class="at">tdelta =</span> tdelta))</span>
-<span id="cb40-15"><a href="parameter-estimation.html#cb40-15" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb40-16"><a href="parameter-estimation.html#cb40-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Functions to achieve this are available in <span class="citation"><a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, &amp; Langrock</a> (<a href="#ref-zucchini" role="doc-biblioref">2016, p. 51</a>)</span> and are displayed here with explaining comments for convenience.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="parameter-estimation.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform Poisson natural parameters to working parameters</span></span>
+<span id="cb2-2"><a href="parameter-estimation.html#cb2-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.pn2pw <span class="ot">&lt;-</span> <span class="cf">function</span>(m, lambda, gamma, <span class="at">delta =</span> <span class="cn">NULL</span>,</span>
+<span id="cb2-3"><a href="parameter-estimation.html#cb2-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">stationary =</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb2-4"><a href="parameter-estimation.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  tlambda <span class="ot">&lt;-</span> <span class="fu">log</span>(lambda)</span>
+<span id="cb2-5"><a href="parameter-estimation.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">log</span>(gamma <span class="sc">/</span> <span class="fu">diag</span>(gamma))</span>
+<span id="cb2-6"><a href="parameter-estimation.html#cb2-6" aria-hidden="true" tabindex="-1"></a>  tgamma <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(foo[<span class="sc">!</span><span class="fu">diag</span>(m)])</span>
+<span id="cb2-7"><a href="parameter-estimation.html#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (stationary) {</span>
+<span id="cb2-8"><a href="parameter-estimation.html#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If tdelta is set to NULL and returned in the list,</span></span>
+<span id="cb2-9"><a href="parameter-estimation.html#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># it will cause issues when optimizing with TMB</span></span>
+<span id="cb2-10"><a href="parameter-estimation.html#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">tlambda =</span> tlambda, <span class="at">tgamma =</span> tgamma))</span>
+<span id="cb2-11"><a href="parameter-estimation.html#cb2-11" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb2-12"><a href="parameter-estimation.html#cb2-12" aria-hidden="true" tabindex="-1"></a>    tdelta <span class="ot">&lt;-</span> <span class="fu">log</span>(delta[<span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> delta[<span class="dv">1</span>])</span>
+<span id="cb2-13"><a href="parameter-estimation.html#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># TMB requires a list</span></span>
+<span id="cb2-14"><a href="parameter-estimation.html#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">tlambda =</span> tlambda, <span class="at">tgamma =</span> tgamma, <span class="at">tdelta =</span> tdelta))</span>
+<span id="cb2-15"><a href="parameter-estimation.html#cb2-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-16"><a href="parameter-estimation.html#cb2-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>This can be broken down into sub-functions if necessary. For the <span class="math inline">\({\boldsymbol\Gamma}\)</span> part, we introduce <code>gamma.n2w</code> below.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="parameter-estimation.html#cb41-1" aria-hidden="true" tabindex="-1"></a>gamma.n2w <span class="ot">&lt;-</span> <span class="cf">function</span>(m, gamma){</span>
-<span id="cb41-2"><a href="parameter-estimation.html#cb41-2" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">log</span>(gamma <span class="sc">/</span> <span class="fu">diag</span>(gamma))</span>
-<span id="cb41-3"><a href="parameter-estimation.html#cb41-3" aria-hidden="true" tabindex="-1"></a>  tgamma <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(foo[<span class="sc">!</span><span class="fu">diag</span>(m)])</span>
-<span id="cb41-4"><a href="parameter-estimation.html#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(tgamma)</span>
-<span id="cb41-5"><a href="parameter-estimation.html#cb41-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="parameter-estimation.html#cb3-1" aria-hidden="true" tabindex="-1"></a>gamma.n2w <span class="ot">&lt;-</span> <span class="cf">function</span>(m, gamma){</span>
+<span id="cb3-2"><a href="parameter-estimation.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">log</span>(gamma <span class="sc">/</span> <span class="fu">diag</span>(gamma))</span>
+<span id="cb3-3"><a href="parameter-estimation.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  tgamma <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(foo[<span class="sc">!</span><span class="fu">diag</span>(m)])</span>
+<span id="cb3-4"><a href="parameter-estimation.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(tgamma)</span>
+<span id="cb3-5"><a href="parameter-estimation.html#cb3-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>In the case where a non-stationary distribution is specified, transforming <span class="math inline">\({\boldsymbol\delta}\)</span> is necessary. For this we use the <code>delta.n2w</code> function.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="parameter-estimation.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to transform natural parameters to working</span></span>
-<span id="cb42-2"><a href="parameter-estimation.html#cb42-2" aria-hidden="true" tabindex="-1"></a>delta.n2w <span class="ot">&lt;-</span> <span class="cf">function</span>(m, delta){</span>
-<span id="cb42-3"><a href="parameter-estimation.html#cb42-3" aria-hidden="true" tabindex="-1"></a>  tdelta <span class="ot">&lt;-</span> <span class="fu">log</span>(delta[<span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> delta[<span class="dv">1</span>])</span>
-<span id="cb42-4"><a href="parameter-estimation.html#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(tdelta) </span>
-<span id="cb42-5"><a href="parameter-estimation.html#cb42-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="parameter-estimation.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to transform natural parameters to working</span></span>
+<span id="cb4-2"><a href="parameter-estimation.html#cb4-2" aria-hidden="true" tabindex="-1"></a>delta.n2w <span class="ot">&lt;-</span> <span class="cf">function</span>(m, delta){</span>
+<span id="cb4-3"><a href="parameter-estimation.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  tdelta <span class="ot">&lt;-</span> <span class="fu">log</span>(delta[<span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> delta[<span class="dv">1</span>])</span>
+<span id="cb4-4"><a href="parameter-estimation.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(tdelta) </span>
+<span id="cb4-5"><a href="parameter-estimation.html#cb4-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>When assuming a stationary distribution, computing it can be done via the following <code>stat.dist</code> function.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="parameter-estimation.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the stationary distribution of a Markov chain</span></span>
-<span id="cb43-2"><a href="parameter-estimation.html#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co"># with transition probability gamma</span></span>
-<span id="cb43-3"><a href="parameter-estimation.html#cb43-3" aria-hidden="true" tabindex="-1"></a>stat.dist <span class="ot">&lt;-</span> <span class="cf">function</span>(gamma) {</span>
-<span id="cb43-4"><a href="parameter-estimation.html#cb43-4" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">nrow</span>(gamma)</span>
-<span id="cb43-5"><a href="parameter-estimation.html#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">solve</span>(<span class="fu">t</span>(<span class="fu">diag</span>(m) <span class="sc">-</span> gamma <span class="sc">+</span> <span class="dv">1</span>), <span class="fu">rep</span>(<span class="dv">1</span>, m)))</span>
-<span id="cb43-6"><a href="parameter-estimation.html#cb43-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p><span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 51</a>)</span> shows that calculating the stationary distribution can be achieved by solving the equation below for <span class="math inline">\({\boldsymbol\delta}\)</span>, where <span class="math inline">\({\boldsymbol I}_m\)</span> is the <span class="math inline">\(m*m\)</span> identity matrix, <span class="math inline">\({\boldsymbol U}\)</span> is a <span class="math inline">\(m*m\)</span> matrix of ones, and <span class="math inline">\({\boldsymbol 1}\)</span> is a row vector of ones.
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="parameter-estimation.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the stationary distribution of a Markov chain</span></span>
+<span id="cb5-2"><a href="parameter-estimation.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># with transition probability gamma</span></span>
+<span id="cb5-3"><a href="parameter-estimation.html#cb5-3" aria-hidden="true" tabindex="-1"></a>stat.dist <span class="ot">&lt;-</span> <span class="cf">function</span>(gamma) {</span>
+<span id="cb5-4"><a href="parameter-estimation.html#cb5-4" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">nrow</span>(gamma)</span>
+<span id="cb5-5"><a href="parameter-estimation.html#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">solve</span>(<span class="fu">t</span>(<span class="fu">diag</span>(m) <span class="sc">-</span> gamma <span class="sc">+</span> <span class="dv">1</span>), <span class="fu">rep</span>(<span class="dv">1</span>, m)))</span>
+<span id="cb5-6"><a href="parameter-estimation.html#cb5-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><span class="citation"><a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, &amp; Langrock</a> (<a href="#ref-zucchini" role="doc-biblioref">2016, p. 51</a>)</span> shows that calculating the stationary distribution can be achieved by solving the equation below for <span class="math inline">\({\boldsymbol\delta}\)</span>, where <span class="math inline">\({\boldsymbol I}_m\)</span> is the <span class="math inline">\(m*m\)</span> identity matrix, <span class="math inline">\({\boldsymbol U}\)</span> is a <span class="math inline">\(m*m\)</span> matrix of ones, and <span class="math inline">\({\boldsymbol 1}\)</span> is a row vector of ones.
 <span class="math display">\[
 {\boldsymbol\delta}({\boldsymbol I}_m - {\boldsymbol\Gamma} + {\boldsymbol U}) = {\boldsymbol 1}
 \]</span></p>
@@ -422,84 +421,84 @@ The issue can be relevant when comparing results of different optimizers, initia
 Sorting the means is direct, however re-ordering the TPM is not as straightforward.
 To do so, we take the permutations of the states given by the sorted Poisson means, and permute each row index and column index to its new value.
 A function to achieve this is named <code>pois.HMM.label.order</code> and presented below.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="parameter-estimation.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Relabel states by increasing Poisson means</span></span>
-<span id="cb44-2"><a href="parameter-estimation.html#cb44-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.label.order <span class="ot">&lt;-</span> <span class="cf">function</span>(m, lambda, gamma, <span class="at">delta =</span> <span class="cn">NULL</span>, <span class="at">lambda_std_error =</span> <span class="cn">NULL</span>, <span class="at">gamma_std_error =</span> <span class="cn">NULL</span>, <span class="at">delta_std_error =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb44-3"><a href="parameter-estimation.html#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># gamma_vector_indices is used to calculate the indices of the reordered TPM gamma as a vector</span></span>
-<span id="cb44-4"><a href="parameter-estimation.html#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># for reordering the rows of the complete CI data.frame used for the article.</span></span>
-<span id="cb44-5"><a href="parameter-estimation.html#cb44-5" aria-hidden="true" tabindex="-1"></a>  gamma_vector_indices <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(m <span class="sc">^</span> <span class="dv">2</span>)</span>
-<span id="cb44-6"><a href="parameter-estimation.html#cb44-6" aria-hidden="true" tabindex="-1"></a>  gamma_vector_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(gamma_vector_indices, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
-<span id="cb44-7"><a href="parameter-estimation.html#cb44-7" aria-hidden="true" tabindex="-1"></a>  ordered_gamma_vector_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
-<span id="cb44-8"><a href="parameter-estimation.html#cb44-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb44-9"><a href="parameter-estimation.html#cb44-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Get the indexes of the sorted states</span></span>
-<span id="cb44-10"><a href="parameter-estimation.html#cb44-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># according to ascending lambda</span></span>
-<span id="cb44-11"><a href="parameter-estimation.html#cb44-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sorted_lambda contains the permutations needed</span></span>
-<span id="cb44-12"><a href="parameter-estimation.html#cb44-12" aria-hidden="true" tabindex="-1"></a>  ordered_lambda_indices <span class="ot">&lt;-</span> <span class="fu">sort</span>(lambda, <span class="at">index.return =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>ix</span>
-<span id="cb44-13"><a href="parameter-estimation.html#cb44-13" aria-hidden="true" tabindex="-1"></a>  ordered_lambda <span class="ot">&lt;-</span> lambda[ordered_lambda_indices]</span>
-<span id="cb44-14"><a href="parameter-estimation.html#cb44-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reorder the TPM according to the switched states</span></span>
-<span id="cb44-15"><a href="parameter-estimation.html#cb44-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># in the sorted lambda</span></span>
-<span id="cb44-16"><a href="parameter-estimation.html#cb44-16" aria-hidden="true" tabindex="-1"></a>  ordered_gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
-<span id="cb44-17"><a href="parameter-estimation.html#cb44-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (col <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
-<span id="cb44-18"><a href="parameter-estimation.html#cb44-18" aria-hidden="true" tabindex="-1"></a>    new_col <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> col)</span>
-<span id="cb44-19"><a href="parameter-estimation.html#cb44-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (row <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
-<span id="cb44-20"><a href="parameter-estimation.html#cb44-20" aria-hidden="true" tabindex="-1"></a>      new_row <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> row)</span>
-<span id="cb44-21"><a href="parameter-estimation.html#cb44-21" aria-hidden="true" tabindex="-1"></a>      ordered_gamma[row, col] <span class="ot">&lt;-</span> gamma[new_row, new_col]</span>
-<span id="cb44-22"><a href="parameter-estimation.html#cb44-22" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb44-23"><a href="parameter-estimation.html#cb44-23" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Reorder the vector TPM</span></span>
-<span id="cb44-24"><a href="parameter-estimation.html#cb44-24" aria-hidden="true" tabindex="-1"></a>      ordered_gamma_vector_matrix[row, col] <span class="ot">&lt;-</span> gamma_vector_matrix[new_row, new_col]</span>
-<span id="cb44-25"><a href="parameter-estimation.html#cb44-25" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb44-26"><a href="parameter-estimation.html#cb44-26" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb44-27"><a href="parameter-estimation.html#cb44-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Same for the TPM&#39;s standard errors</span></span>
-<span id="cb44-28"><a href="parameter-estimation.html#cb44-28" aria-hidden="true" tabindex="-1"></a>  ordered_gamma_std_error <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb44-29"><a href="parameter-estimation.html#cb44-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(gamma_std_error)) {</span>
-<span id="cb44-30"><a href="parameter-estimation.html#cb44-30" aria-hidden="true" tabindex="-1"></a>    ordered_gamma_std_error <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
-<span id="cb44-31"><a href="parameter-estimation.html#cb44-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (col <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
-<span id="cb44-32"><a href="parameter-estimation.html#cb44-32" aria-hidden="true" tabindex="-1"></a>      new_col <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> col)</span>
-<span id="cb44-33"><a href="parameter-estimation.html#cb44-33" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (row <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
-<span id="cb44-34"><a href="parameter-estimation.html#cb44-34" aria-hidden="true" tabindex="-1"></a>        new_row <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> row)</span>
-<span id="cb44-35"><a href="parameter-estimation.html#cb44-35" aria-hidden="true" tabindex="-1"></a>        ordered_gamma_std_error[row, col] <span class="ot">&lt;-</span> gamma_std_error[new_row, new_col]</span>
-<span id="cb44-36"><a href="parameter-estimation.html#cb44-36" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb44-37"><a href="parameter-estimation.html#cb44-37" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb44-38"><a href="parameter-estimation.html#cb44-38" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb44-39"><a href="parameter-estimation.html#cb44-39" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb44-40"><a href="parameter-estimation.html#cb44-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reorder the stationary distribution if it is provided</span></span>
-<span id="cb44-41"><a href="parameter-estimation.html#cb44-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate it otherwise</span></span>
-<span id="cb44-42"><a href="parameter-estimation.html#cb44-42" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(delta)) {</span>
-<span id="cb44-43"><a href="parameter-estimation.html#cb44-43" aria-hidden="true" tabindex="-1"></a>    ordered_delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(ordered_gamma)</span>
-<span id="cb44-44"><a href="parameter-estimation.html#cb44-44" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb44-45"><a href="parameter-estimation.html#cb44-45" aria-hidden="true" tabindex="-1"></a>    ordered_delta <span class="ot">&lt;-</span> delta[ordered_lambda_indices]</span>
-<span id="cb44-46"><a href="parameter-estimation.html#cb44-46" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb44-47"><a href="parameter-estimation.html#cb44-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reorder the standard errors</span></span>
-<span id="cb44-48"><a href="parameter-estimation.html#cb44-48" aria-hidden="true" tabindex="-1"></a>  ordered_lambda_std_error <span class="ot">&lt;-</span> lambda_std_error[ordered_lambda_indices]</span>
-<span id="cb44-49"><a href="parameter-estimation.html#cb44-49" aria-hidden="true" tabindex="-1"></a>  ordered_delta_std_error <span class="ot">&lt;-</span> delta_std_error[ordered_lambda_indices]</span>
-<span id="cb44-50"><a href="parameter-estimation.html#cb44-50" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb44-51"><a href="parameter-estimation.html#cb44-51" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The vector is assumed filled column-wise instead of row-wise, because column-wise is the default way R handles matrix to vector conversion.</span></span>
-<span id="cb44-52"><a href="parameter-estimation.html#cb44-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Change to row-wise if needed by replacing ordered_gamma_vector_matrix with t(ordered_gamma_vector_matrix), or add byrow=TRUE to &quot;ordered_gamma_vector_matrix &lt;- matrix(0, nrow = m, ncol = m)&quot;</span></span>
-<span id="cb44-53"><a href="parameter-estimation.html#cb44-53" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We don&#39;t use it in case there is a bug, but it makes logical sense that it should work</span></span>
-<span id="cb44-54"><a href="parameter-estimation.html#cb44-54" aria-hidden="true" tabindex="-1"></a>  ordered_gamma_vector_matrix <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(ordered_gamma_vector_matrix)</span>
-<span id="cb44-55"><a href="parameter-estimation.html#cb44-55" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb44-56"><a href="parameter-estimation.html#cb44-56" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">lambda =</span> ordered_lambda,</span>
-<span id="cb44-57"><a href="parameter-estimation.html#cb44-57" aria-hidden="true" tabindex="-1"></a>                 <span class="at">gamma =</span> ordered_gamma,</span>
-<span id="cb44-58"><a href="parameter-estimation.html#cb44-58" aria-hidden="true" tabindex="-1"></a>                 <span class="at">delta =</span> ordered_delta,</span>
-<span id="cb44-59"><a href="parameter-estimation.html#cb44-59" aria-hidden="true" tabindex="-1"></a>                 <span class="at">lambda_std_error =</span> ordered_lambda_std_error,</span>
-<span id="cb44-60"><a href="parameter-estimation.html#cb44-60" aria-hidden="true" tabindex="-1"></a>                 <span class="at">gamma_std_error =</span> ordered_gamma_std_error,</span>
-<span id="cb44-61"><a href="parameter-estimation.html#cb44-61" aria-hidden="true" tabindex="-1"></a>                 <span class="at">delta_std_error =</span> ordered_delta_std_error,</span>
-<span id="cb44-62"><a href="parameter-estimation.html#cb44-62" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ordered_lambda_indices =</span> ordered_lambda_indices,</span>
-<span id="cb44-63"><a href="parameter-estimation.html#cb44-63" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ordered_gamma_vector_indices =</span> ordered_gamma_vector_matrix,</span>
-<span id="cb44-64"><a href="parameter-estimation.html#cb44-64" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># delta and lambda are the same size, so they are ordered the same way</span></span>
-<span id="cb44-65"><a href="parameter-estimation.html#cb44-65" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ordered_delta_indices =</span> ordered_lambda_indices)</span>
-<span id="cb44-66"><a href="parameter-estimation.html#cb44-66" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb44-67"><a href="parameter-estimation.html#cb44-67" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove the NULL elements</span></span>
-<span id="cb44-68"><a href="parameter-estimation.html#cb44-68" aria-hidden="true" tabindex="-1"></a>  result[<span class="fu">sapply</span>(result, is.null)] <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb44-69"><a href="parameter-estimation.html#cb44-69" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb44-70"><a href="parameter-estimation.html#cb44-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
-<span id="cb44-71"><a href="parameter-estimation.html#cb44-71" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="parameter-estimation.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Relabel states by increasing Poisson means</span></span>
+<span id="cb6-2"><a href="parameter-estimation.html#cb6-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.label.order <span class="ot">&lt;-</span> <span class="cf">function</span>(m, lambda, gamma, <span class="at">delta =</span> <span class="cn">NULL</span>, <span class="at">lambda_std_error =</span> <span class="cn">NULL</span>, <span class="at">gamma_std_error =</span> <span class="cn">NULL</span>, <span class="at">delta_std_error =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb6-3"><a href="parameter-estimation.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># gamma_vector_indices is used to calculate the indices of the reordered TPM gamma as a vector</span></span>
+<span id="cb6-4"><a href="parameter-estimation.html#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># for reordering the rows of the complete CI data.frame used for the article.</span></span>
+<span id="cb6-5"><a href="parameter-estimation.html#cb6-5" aria-hidden="true" tabindex="-1"></a>  gamma_vector_indices <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(m <span class="sc">^</span> <span class="dv">2</span>)</span>
+<span id="cb6-6"><a href="parameter-estimation.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  gamma_vector_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(gamma_vector_indices, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
+<span id="cb6-7"><a href="parameter-estimation.html#cb6-7" aria-hidden="true" tabindex="-1"></a>  ordered_gamma_vector_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
+<span id="cb6-8"><a href="parameter-estimation.html#cb6-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-9"><a href="parameter-estimation.html#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Get the indexes of the sorted states</span></span>
+<span id="cb6-10"><a href="parameter-estimation.html#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># according to ascending lambda</span></span>
+<span id="cb6-11"><a href="parameter-estimation.html#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sorted_lambda contains the permutations needed</span></span>
+<span id="cb6-12"><a href="parameter-estimation.html#cb6-12" aria-hidden="true" tabindex="-1"></a>  ordered_lambda_indices <span class="ot">&lt;-</span> <span class="fu">sort</span>(lambda, <span class="at">index.return =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>ix</span>
+<span id="cb6-13"><a href="parameter-estimation.html#cb6-13" aria-hidden="true" tabindex="-1"></a>  ordered_lambda <span class="ot">&lt;-</span> lambda[ordered_lambda_indices]</span>
+<span id="cb6-14"><a href="parameter-estimation.html#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reorder the TPM according to the switched states</span></span>
+<span id="cb6-15"><a href="parameter-estimation.html#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># in the sorted lambda</span></span>
+<span id="cb6-16"><a href="parameter-estimation.html#cb6-16" aria-hidden="true" tabindex="-1"></a>  ordered_gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
+<span id="cb6-17"><a href="parameter-estimation.html#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (col <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb6-18"><a href="parameter-estimation.html#cb6-18" aria-hidden="true" tabindex="-1"></a>    new_col <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> col)</span>
+<span id="cb6-19"><a href="parameter-estimation.html#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (row <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb6-20"><a href="parameter-estimation.html#cb6-20" aria-hidden="true" tabindex="-1"></a>      new_row <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> row)</span>
+<span id="cb6-21"><a href="parameter-estimation.html#cb6-21" aria-hidden="true" tabindex="-1"></a>      ordered_gamma[row, col] <span class="ot">&lt;-</span> gamma[new_row, new_col]</span>
+<span id="cb6-22"><a href="parameter-estimation.html#cb6-22" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb6-23"><a href="parameter-estimation.html#cb6-23" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Reorder the vector TPM</span></span>
+<span id="cb6-24"><a href="parameter-estimation.html#cb6-24" aria-hidden="true" tabindex="-1"></a>      ordered_gamma_vector_matrix[row, col] <span class="ot">&lt;-</span> gamma_vector_matrix[new_row, new_col]</span>
+<span id="cb6-25"><a href="parameter-estimation.html#cb6-25" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-26"><a href="parameter-estimation.html#cb6-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-27"><a href="parameter-estimation.html#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Same for the TPM&#39;s standard errors</span></span>
+<span id="cb6-28"><a href="parameter-estimation.html#cb6-28" aria-hidden="true" tabindex="-1"></a>  ordered_gamma_std_error <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb6-29"><a href="parameter-estimation.html#cb6-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(gamma_std_error)) {</span>
+<span id="cb6-30"><a href="parameter-estimation.html#cb6-30" aria-hidden="true" tabindex="-1"></a>    ordered_gamma_std_error <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
+<span id="cb6-31"><a href="parameter-estimation.html#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (col <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb6-32"><a href="parameter-estimation.html#cb6-32" aria-hidden="true" tabindex="-1"></a>      new_col <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> col)</span>
+<span id="cb6-33"><a href="parameter-estimation.html#cb6-33" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (row <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb6-34"><a href="parameter-estimation.html#cb6-34" aria-hidden="true" tabindex="-1"></a>        new_row <span class="ot">&lt;-</span> <span class="fu">which</span>(ordered_lambda_indices <span class="sc">==</span> row)</span>
+<span id="cb6-35"><a href="parameter-estimation.html#cb6-35" aria-hidden="true" tabindex="-1"></a>        ordered_gamma_std_error[row, col] <span class="ot">&lt;-</span> gamma_std_error[new_row, new_col]</span>
+<span id="cb6-36"><a href="parameter-estimation.html#cb6-36" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb6-37"><a href="parameter-estimation.html#cb6-37" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-38"><a href="parameter-estimation.html#cb6-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-39"><a href="parameter-estimation.html#cb6-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-40"><a href="parameter-estimation.html#cb6-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reorder the stationary distribution if it is provided</span></span>
+<span id="cb6-41"><a href="parameter-estimation.html#cb6-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate it otherwise</span></span>
+<span id="cb6-42"><a href="parameter-estimation.html#cb6-42" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(delta)) {</span>
+<span id="cb6-43"><a href="parameter-estimation.html#cb6-43" aria-hidden="true" tabindex="-1"></a>    ordered_delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(ordered_gamma)</span>
+<span id="cb6-44"><a href="parameter-estimation.html#cb6-44" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb6-45"><a href="parameter-estimation.html#cb6-45" aria-hidden="true" tabindex="-1"></a>    ordered_delta <span class="ot">&lt;-</span> delta[ordered_lambda_indices]</span>
+<span id="cb6-46"><a href="parameter-estimation.html#cb6-46" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-47"><a href="parameter-estimation.html#cb6-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reorder the standard errors</span></span>
+<span id="cb6-48"><a href="parameter-estimation.html#cb6-48" aria-hidden="true" tabindex="-1"></a>  ordered_lambda_std_error <span class="ot">&lt;-</span> lambda_std_error[ordered_lambda_indices]</span>
+<span id="cb6-49"><a href="parameter-estimation.html#cb6-49" aria-hidden="true" tabindex="-1"></a>  ordered_delta_std_error <span class="ot">&lt;-</span> delta_std_error[ordered_lambda_indices]</span>
+<span id="cb6-50"><a href="parameter-estimation.html#cb6-50" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-51"><a href="parameter-estimation.html#cb6-51" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The vector is assumed filled column-wise instead of row-wise, because column-wise is the default way R handles matrix to vector conversion.</span></span>
+<span id="cb6-52"><a href="parameter-estimation.html#cb6-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Change to row-wise if needed by replacing ordered_gamma_vector_matrix with t(ordered_gamma_vector_matrix), or add byrow=TRUE to &quot;ordered_gamma_vector_matrix &lt;- matrix(0, nrow = m, ncol = m)&quot;</span></span>
+<span id="cb6-53"><a href="parameter-estimation.html#cb6-53" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We don&#39;t use it in case there is a bug, but it makes logical sense that it should work</span></span>
+<span id="cb6-54"><a href="parameter-estimation.html#cb6-54" aria-hidden="true" tabindex="-1"></a>  ordered_gamma_vector_matrix <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(ordered_gamma_vector_matrix)</span>
+<span id="cb6-55"><a href="parameter-estimation.html#cb6-55" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-56"><a href="parameter-estimation.html#cb6-56" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">lambda =</span> ordered_lambda,</span>
+<span id="cb6-57"><a href="parameter-estimation.html#cb6-57" aria-hidden="true" tabindex="-1"></a>                 <span class="at">gamma =</span> ordered_gamma,</span>
+<span id="cb6-58"><a href="parameter-estimation.html#cb6-58" aria-hidden="true" tabindex="-1"></a>                 <span class="at">delta =</span> ordered_delta,</span>
+<span id="cb6-59"><a href="parameter-estimation.html#cb6-59" aria-hidden="true" tabindex="-1"></a>                 <span class="at">lambda_std_error =</span> ordered_lambda_std_error,</span>
+<span id="cb6-60"><a href="parameter-estimation.html#cb6-60" aria-hidden="true" tabindex="-1"></a>                 <span class="at">gamma_std_error =</span> ordered_gamma_std_error,</span>
+<span id="cb6-61"><a href="parameter-estimation.html#cb6-61" aria-hidden="true" tabindex="-1"></a>                 <span class="at">delta_std_error =</span> ordered_delta_std_error,</span>
+<span id="cb6-62"><a href="parameter-estimation.html#cb6-62" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ordered_lambda_indices =</span> ordered_lambda_indices,</span>
+<span id="cb6-63"><a href="parameter-estimation.html#cb6-63" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ordered_gamma_vector_indices =</span> ordered_gamma_vector_matrix,</span>
+<span id="cb6-64"><a href="parameter-estimation.html#cb6-64" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># delta and lambda are the same size, so they are ordered the same way</span></span>
+<span id="cb6-65"><a href="parameter-estimation.html#cb6-65" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ordered_delta_indices =</span> ordered_lambda_indices)</span>
+<span id="cb6-66"><a href="parameter-estimation.html#cb6-66" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-67"><a href="parameter-estimation.html#cb6-67" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove the NULL elements</span></span>
+<span id="cb6-68"><a href="parameter-estimation.html#cb6-68" aria-hidden="true" tabindex="-1"></a>  result[<span class="fu">sapply</span>(result, is.null)] <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb6-69"><a href="parameter-estimation.html#cb6-69" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-70"><a href="parameter-estimation.html#cb6-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
+<span id="cb6-71"><a href="parameter-estimation.html#cb6-71" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>We will go through an example to better understand the process.
 For readability, the TPM is filled with standard row and column indexes instead of probabilities.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="parameter-estimation.html#cb45-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb45-2"><a href="parameter-estimation.html#cb45-2" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>,</span>
-<span id="cb45-3"><a href="parameter-estimation.html#cb45-3" aria-hidden="true" tabindex="-1"></a>                  <span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>,</span>
-<span id="cb45-4"><a href="parameter-estimation.html#cb45-4" aria-hidden="true" tabindex="-1"></a>                  <span class="dv">31</span>, <span class="dv">32</span>, <span class="dv">33</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb45-5"><a href="parameter-estimation.html#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pois.HMM.label.order</span>(<span class="at">m =</span> <span class="dv">3</span>, lambda, gamma)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="parameter-estimation.html#cb7-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb7-2"><a href="parameter-estimation.html#cb7-2" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>,</span>
+<span id="cb7-3"><a href="parameter-estimation.html#cb7-3" aria-hidden="true" tabindex="-1"></a>                  <span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>,</span>
+<span id="cb7-4"><a href="parameter-estimation.html#cb7-4" aria-hidden="true" tabindex="-1"></a>                  <span class="dv">31</span>, <span class="dv">32</span>, <span class="dv">33</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb7-5"><a href="parameter-estimation.html#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pois.HMM.label.order</span>(<span class="at">m =</span> <span class="dv">3</span>, lambda, gamma)</span></code></pre></div>
 <pre><code>## $lambda
 ## [1] 1 2 3
 ## 
@@ -521,8 +520,8 @@ For readability, the TPM is filled with standard row and column indexes instead 
 ## $ordered_delta_indices
 ## [1] 2 3 1</code></pre>
 <p>State 1 has been relabeled state 3, state 3 became state 2, and state 2 became state 1.</p>
-<p>Another way to address this issue is by parameterizing in terms of non-negative increments <span class="math inline">\(\lambda_j - \lambda_{j-1}\)</span> with <span class="math inline">\(\lambda_0 \equiv 0\)</span>, as explained by <span class="citation"><a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="#ref-zucchini" role="doc-biblioref">2016</a>Section 7.1.1 p. 112)</span>.
-However, <span class="citation"><a href="#ref-bulla" role="doc-biblioref">Bulla and Berzel</a> (<a href="#ref-bulla" role="doc-biblioref">2008</a>Section 3.2 p. 7)</span> shows this can impose optimization issues: “over all series, the simplest parameterization, i.e., the use of log-transformed state-dependent parameters, leads to the best results as regards the number of failures and the convergence to the global maximum.”</p>
+<p>Another way to address this issue is by parameterizing in terms of non-negative increments <span class="math inline">\(\lambda_j - \lambda_{j-1}\)</span> with <span class="math inline">\(\lambda_0 \equiv 0\)</span>, as explained by <span class="citation"><a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, &amp; Langrock</a> (<a href="#ref-zucchini" role="doc-biblioref">2016</a>Section 7.1.1 p. 112)</span>.
+However, <span class="citation"><a href="#ref-bulla" role="doc-biblioref">Bulla &amp; Berzel</a> (<a href="#ref-bulla" role="doc-biblioref">2008</a>Section 3.2 p. 7)</span> shows this can impose optimization issues: “over all series, the simplest parameterization, i.e., the use of log-transformed state-dependent parameters, leads to the best results as regards the number of failures and the convergence to the global maximum.”</p>
 <p>These utility functions or subroutines are not complicated, but as you can see, they would cloud up your main code.
 Therefore, we put them in functions we can call from our main program.</p>
 </div>
@@ -531,119 +530,113 @@ Therefore, we put them in functions we can call from our main program.</p>
 <div id="negative-log-likelihood-in-tmb" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Negative log-likelihood<br> in <code>TMB</code></h2>
 <p>The Poisson HMM negative log-likelihood function in R can be written the following way.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb47-1"><a href="parameter-estimation.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
-<span id="cb47-2"><a href="parameter-estimation.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
-<span id="cb47-3"><a href="parameter-estimation.html#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-4"><a href="parameter-estimation.html#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood for a poisson hidden markov model. </span></span>
-<span id="cb47-5"><a href="parameter-estimation.html#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb47-6"><a href="parameter-estimation.html#cb47-6" aria-hidden="true" tabindex="-1"></a>Type objective_function&lt;Type&gt;::<span class="kw">operator</span>() ()</span>
-<span id="cb47-7"><a href="parameter-estimation.html#cb47-7" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb47-8"><a href="parameter-estimation.html#cb47-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-9"><a href="parameter-estimation.html#cb47-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Data</span></span>
-<span id="cb47-10"><a href="parameter-estimation.html#cb47-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR(x);          <span class="co">// timeseries vector</span></span>
-<span id="cb47-11"><a href="parameter-estimation.html#cb47-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER(m);         <span class="co">// Number of states m</span></span>
-<span id="cb47-12"><a href="parameter-estimation.html#cb47-12" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-13"><a href="parameter-estimation.html#cb47-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters</span></span>
-<span id="cb47-14"><a href="parameter-estimation.html#cb47-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tlambda);     <span class="co">// conditional log_lambdas&#39;s</span></span>
-<span id="cb47-15"><a href="parameter-estimation.html#cb47-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tgamma);      <span class="co">// m(m-1) working parameters of TPM</span></span>
-<span id="cb47-16"><a href="parameter-estimation.html#cb47-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-17"><a href="parameter-estimation.html#cb47-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Uncomment only when using a non-stationary distribution</span></span>
-<span id="cb47-18"><a href="parameter-estimation.html#cb47-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">//PARAMETER_VECTOR(tdelta);    // transformed stationary distribution,</span></span>
-<span id="cb47-19"><a href="parameter-estimation.html#cb47-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-20"><a href="parameter-estimation.html#cb47-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
-<span id="cb47-21"><a href="parameter-estimation.html#cb47-21" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; lambda = tlambda.exp();</span>
-<span id="cb47-22"><a href="parameter-estimation.html#cb47-22" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma = gamma_w2n(m, tgamma);</span>
-<span id="cb47-23"><a href="parameter-estimation.html#cb47-23" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-24"><a href="parameter-estimation.html#cb47-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
-<span id="cb47-25"><a href="parameter-estimation.html#cb47-25" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = stat_dist(m, gamma);</span>
-<span id="cb47-26"><a href="parameter-estimation.html#cb47-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If using a non-stationary distribution, use this instead</span></span>
-<span id="cb47-27"><a href="parameter-estimation.html#cb47-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">//vector&lt;Type&gt; delta = delta_w2n(m, tdelta);</span></span>
-<span id="cb47-28"><a href="parameter-estimation.html#cb47-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-29"><a href="parameter-estimation.html#cb47-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
-<span id="cb47-30"><a href="parameter-estimation.html#cb47-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n = x.size();</span>
-<span id="cb47-31"><a href="parameter-estimation.html#cb47-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-32"><a href="parameter-estimation.html#cb47-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
-<span id="cb47-33"><a href="parameter-estimation.html#cb47-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
-<span id="cb47-34"><a href="parameter-estimation.html#cb47-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
-<span id="cb47-35"><a href="parameter-estimation.html#cb47-35" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; emission_probs(n, m);</span>
-<span id="cb47-36"><a href="parameter-estimation.html#cb47-36" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
-<span id="cb47-37"><a href="parameter-estimation.html#cb47-37" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
-<span id="cb47-38"><a href="parameter-estimation.html#cb47-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
-<span id="cb47-39"><a href="parameter-estimation.html#cb47-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (x[i] != x[i]) { <span class="co">// f != f returns true if and only if f is NaN. </span></span>
-<span id="cb47-40"><a href="parameter-estimation.html#cb47-40" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
-<span id="cb47-41"><a href="parameter-estimation.html#cb47-41" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = row1vec;</span>
-<span id="cb47-42"><a href="parameter-estimation.html#cb47-42" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb47-43"><a href="parameter-estimation.html#cb47-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
-<span id="cb47-44"><a href="parameter-estimation.html#cb47-44" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = dpois(x[i], lambda, <span class="kw">false</span>);</span>
-<span id="cb47-45"><a href="parameter-estimation.html#cb47-45" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb47-46"><a href="parameter-estimation.html#cb47-46" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb47-47"><a href="parameter-estimation.html#cb47-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-48"><a href="parameter-estimation.html#cb47-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to Zucchini&#39;s book page 333</span></span>
-<span id="cb47-49"><a href="parameter-estimation.html#cb47-49" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; foo, P;</span>
-<span id="cb47-50"><a href="parameter-estimation.html#cb47-50" aria-hidden="true" tabindex="-1"></a>  Type mllk, sumfoo, lscale;</span>
-<span id="cb47-51"><a href="parameter-estimation.html#cb47-51" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-52"><a href="parameter-estimation.html#cb47-52" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>) {</span>
-<span id="cb47-53"><a href="parameter-estimation.html#cb47-53" aria-hidden="true" tabindex="-1"></a>    mllk = - emission_probs.col(<span class="dv">0</span>).array().log().sum();</span>
-<span id="cb47-54"><a href="parameter-estimation.html#cb47-54" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-55"><a href="parameter-estimation.html#cb47-55" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Use adreport on variables we are interested in:</span></span>
-<span id="cb47-56"><a href="parameter-estimation.html#cb47-56" aria-hidden="true" tabindex="-1"></a>    ADREPORT(lambda);</span>
-<span id="cb47-57"><a href="parameter-estimation.html#cb47-57" aria-hidden="true" tabindex="-1"></a>    ADREPORT(gamma);</span>
-<span id="cb47-58"><a href="parameter-estimation.html#cb47-58" aria-hidden="true" tabindex="-1"></a>    ADREPORT(delta);</span>
-<span id="cb47-59"><a href="parameter-estimation.html#cb47-59" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-60"><a href="parameter-estimation.html#cb47-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Things we need for local decoding</span></span>
-<span id="cb47-61"><a href="parameter-estimation.html#cb47-61" aria-hidden="true" tabindex="-1"></a>    REPORT(lambda);</span>
-<span id="cb47-62"><a href="parameter-estimation.html#cb47-62" aria-hidden="true" tabindex="-1"></a>    REPORT(gamma);</span>
-<span id="cb47-63"><a href="parameter-estimation.html#cb47-63" aria-hidden="true" tabindex="-1"></a>    REPORT(delta);</span>
-<span id="cb47-64"><a href="parameter-estimation.html#cb47-64" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-65"><a href="parameter-estimation.html#cb47-65" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mllk;</span>
-<span id="cb47-66"><a href="parameter-estimation.html#cb47-66" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb47-67"><a href="parameter-estimation.html#cb47-67" aria-hidden="true" tabindex="-1"></a>  foo = (delta * vector&lt;Type&gt;(emission_probs.row(<span class="dv">0</span>))).matrix();</span>
-<span id="cb47-68"><a href="parameter-estimation.html#cb47-68" aria-hidden="true" tabindex="-1"></a>  sumfoo = foo.sum();</span>
-<span id="cb47-69"><a href="parameter-estimation.html#cb47-69" aria-hidden="true" tabindex="-1"></a>  lscale = log(sumfoo);</span>
-<span id="cb47-70"><a href="parameter-estimation.html#cb47-70" aria-hidden="true" tabindex="-1"></a>  foo.transposeInPlace();</span>
-<span id="cb47-71"><a href="parameter-estimation.html#cb47-71" aria-hidden="true" tabindex="-1"></a>  foo /= sumfoo;</span>
-<span id="cb47-72"><a href="parameter-estimation.html#cb47-72" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">2</span>; i &lt;= n; i++) {</span>
-<span id="cb47-73"><a href="parameter-estimation.html#cb47-73" aria-hidden="true" tabindex="-1"></a>    P = emission_probs.row(i - <span class="dv">1</span>);</span>
-<span id="cb47-74"><a href="parameter-estimation.html#cb47-74" aria-hidden="true" tabindex="-1"></a>    foo = ((foo * gamma).array() * P.array()).matrix();</span>
-<span id="cb47-75"><a href="parameter-estimation.html#cb47-75" aria-hidden="true" tabindex="-1"></a>    sumfoo = foo.sum();</span>
-<span id="cb47-76"><a href="parameter-estimation.html#cb47-76" aria-hidden="true" tabindex="-1"></a>    lscale += log(sumfoo);</span>
-<span id="cb47-77"><a href="parameter-estimation.html#cb47-77" aria-hidden="true" tabindex="-1"></a>    foo /= sumfoo;</span>
-<span id="cb47-78"><a href="parameter-estimation.html#cb47-78" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb47-79"><a href="parameter-estimation.html#cb47-79" aria-hidden="true" tabindex="-1"></a>  mllk = -lscale;</span>
-<span id="cb47-80"><a href="parameter-estimation.html#cb47-80" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-81"><a href="parameter-estimation.html#cb47-81" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
-<span id="cb47-82"><a href="parameter-estimation.html#cb47-82" aria-hidden="true" tabindex="-1"></a>  ADREPORT(lambda);</span>
-<span id="cb47-83"><a href="parameter-estimation.html#cb47-83" aria-hidden="true" tabindex="-1"></a>  ADREPORT(gamma);</span>
-<span id="cb47-84"><a href="parameter-estimation.html#cb47-84" aria-hidden="true" tabindex="-1"></a>  ADREPORT(delta);</span>
-<span id="cb47-85"><a href="parameter-estimation.html#cb47-85" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-86"><a href="parameter-estimation.html#cb47-86" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
-<span id="cb47-87"><a href="parameter-estimation.html#cb47-87" aria-hidden="true" tabindex="-1"></a>  REPORT(lambda);</span>
-<span id="cb47-88"><a href="parameter-estimation.html#cb47-88" aria-hidden="true" tabindex="-1"></a>  REPORT(gamma);</span>
-<span id="cb47-89"><a href="parameter-estimation.html#cb47-89" aria-hidden="true" tabindex="-1"></a>  REPORT(delta);</span>
-<span id="cb47-90"><a href="parameter-estimation.html#cb47-90" aria-hidden="true" tabindex="-1"></a>  REPORT(n);</span>
-<span id="cb47-91"><a href="parameter-estimation.html#cb47-91" aria-hidden="true" tabindex="-1"></a>  REPORT(emission_probs);</span>
-<span id="cb47-92"><a href="parameter-estimation.html#cb47-92" aria-hidden="true" tabindex="-1"></a>  REPORT(mllk);</span>
-<span id="cb47-93"><a href="parameter-estimation.html#cb47-93" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-94"><a href="parameter-estimation.html#cb47-94" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk;</span>
-<span id="cb47-95"><a href="parameter-estimation.html#cb47-95" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb9-1"><a href="parameter-estimation.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
+<span id="cb9-2"><a href="parameter-estimation.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
+<span id="cb9-3"><a href="parameter-estimation.html#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="parameter-estimation.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood for a poisson hidden markov model. </span></span>
+<span id="cb9-5"><a href="parameter-estimation.html#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb9-6"><a href="parameter-estimation.html#cb9-6" aria-hidden="true" tabindex="-1"></a>Type objective_function&lt;Type&gt;::<span class="kw">operator</span>() ()</span>
+<span id="cb9-7"><a href="parameter-estimation.html#cb9-7" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb9-8"><a href="parameter-estimation.html#cb9-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-9"><a href="parameter-estimation.html#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Data</span></span>
+<span id="cb9-10"><a href="parameter-estimation.html#cb9-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR(x);          <span class="co">// timeseries vector</span></span>
+<span id="cb9-11"><a href="parameter-estimation.html#cb9-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER(m);         <span class="co">// Number of states m</span></span>
+<span id="cb9-12"><a href="parameter-estimation.html#cb9-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-13"><a href="parameter-estimation.html#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters</span></span>
+<span id="cb9-14"><a href="parameter-estimation.html#cb9-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tlambda);     <span class="co">// conditional log_lambdas&#39;s</span></span>
+<span id="cb9-15"><a href="parameter-estimation.html#cb9-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tgamma);      <span class="co">// m(m-1) working parameters of TPM</span></span>
+<span id="cb9-16"><a href="parameter-estimation.html#cb9-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-17"><a href="parameter-estimation.html#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Uncomment only when using a non-stationary distribution</span></span>
+<span id="cb9-18"><a href="parameter-estimation.html#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">//PARAMETER_VECTOR(tdelta);    // transformed stationary distribution,</span></span>
+<span id="cb9-19"><a href="parameter-estimation.html#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="parameter-estimation.html#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
+<span id="cb9-21"><a href="parameter-estimation.html#cb9-21" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; lambda = tlambda.exp();</span>
+<span id="cb9-22"><a href="parameter-estimation.html#cb9-22" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma = gamma_w2n(m, tgamma);</span>
+<span id="cb9-23"><a href="parameter-estimation.html#cb9-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-24"><a href="parameter-estimation.html#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
+<span id="cb9-25"><a href="parameter-estimation.html#cb9-25" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = stat_dist(m, gamma);</span>
+<span id="cb9-26"><a href="parameter-estimation.html#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If using a non-stationary distribution, use this instead</span></span>
+<span id="cb9-27"><a href="parameter-estimation.html#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">//vector&lt;Type&gt; delta = delta_w2n(m, tdelta);</span></span>
+<span id="cb9-28"><a href="parameter-estimation.html#cb9-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-29"><a href="parameter-estimation.html#cb9-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
+<span id="cb9-30"><a href="parameter-estimation.html#cb9-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n = x.size();</span>
+<span id="cb9-31"><a href="parameter-estimation.html#cb9-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-32"><a href="parameter-estimation.html#cb9-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
+<span id="cb9-33"><a href="parameter-estimation.html#cb9-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
+<span id="cb9-34"><a href="parameter-estimation.html#cb9-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
+<span id="cb9-35"><a href="parameter-estimation.html#cb9-35" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; emission_probs(n, m);</span>
+<span id="cb9-36"><a href="parameter-estimation.html#cb9-36" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
+<span id="cb9-37"><a href="parameter-estimation.html#cb9-37" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
+<span id="cb9-38"><a href="parameter-estimation.html#cb9-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
+<span id="cb9-39"><a href="parameter-estimation.html#cb9-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (x[i] != x[i]) { <span class="co">// f != f returns true if and only if f is NaN. </span></span>
+<span id="cb9-40"><a href="parameter-estimation.html#cb9-40" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
+<span id="cb9-41"><a href="parameter-estimation.html#cb9-41" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = row1vec;</span>
+<span id="cb9-42"><a href="parameter-estimation.html#cb9-42" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-43"><a href="parameter-estimation.html#cb9-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
+<span id="cb9-44"><a href="parameter-estimation.html#cb9-44" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = dpois(x[i], lambda, <span class="kw">false</span>);</span>
+<span id="cb9-45"><a href="parameter-estimation.html#cb9-45" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-46"><a href="parameter-estimation.html#cb9-46" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-47"><a href="parameter-estimation.html#cb9-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-48"><a href="parameter-estimation.html#cb9-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to Zucchini&#39;s book page 333</span></span>
+<span id="cb9-49"><a href="parameter-estimation.html#cb9-49" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; foo, P;</span>
+<span id="cb9-50"><a href="parameter-estimation.html#cb9-50" aria-hidden="true" tabindex="-1"></a>  Type mllk, sumfoo, lscale;</span>
+<span id="cb9-51"><a href="parameter-estimation.html#cb9-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-52"><a href="parameter-estimation.html#cb9-52" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>) {</span>
+<span id="cb9-53"><a href="parameter-estimation.html#cb9-53" aria-hidden="true" tabindex="-1"></a>    mllk = - emission_probs.col(<span class="dv">0</span>).array().log().sum();</span>
+<span id="cb9-54"><a href="parameter-estimation.html#cb9-54" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-55"><a href="parameter-estimation.html#cb9-55" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Use adreport on variables we are interested in:</span></span>
+<span id="cb9-56"><a href="parameter-estimation.html#cb9-56" aria-hidden="true" tabindex="-1"></a>    ADREPORT(lambda);</span>
+<span id="cb9-57"><a href="parameter-estimation.html#cb9-57" aria-hidden="true" tabindex="-1"></a>    ADREPORT(gamma);</span>
+<span id="cb9-58"><a href="parameter-estimation.html#cb9-58" aria-hidden="true" tabindex="-1"></a>    ADREPORT(delta);</span>
+<span id="cb9-59"><a href="parameter-estimation.html#cb9-59" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-60"><a href="parameter-estimation.html#cb9-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Things we need for local decoding</span></span>
+<span id="cb9-61"><a href="parameter-estimation.html#cb9-61" aria-hidden="true" tabindex="-1"></a>    REPORT(lambda);</span>
+<span id="cb9-62"><a href="parameter-estimation.html#cb9-62" aria-hidden="true" tabindex="-1"></a>    REPORT(gamma);</span>
+<span id="cb9-63"><a href="parameter-estimation.html#cb9-63" aria-hidden="true" tabindex="-1"></a>    REPORT(delta);</span>
+<span id="cb9-64"><a href="parameter-estimation.html#cb9-64" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-65"><a href="parameter-estimation.html#cb9-65" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mllk;</span>
+<span id="cb9-66"><a href="parameter-estimation.html#cb9-66" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-67"><a href="parameter-estimation.html#cb9-67" aria-hidden="true" tabindex="-1"></a>  foo = (delta * vector&lt;Type&gt;(emission_probs.row(<span class="dv">0</span>))).matrix();</span>
+<span id="cb9-68"><a href="parameter-estimation.html#cb9-68" aria-hidden="true" tabindex="-1"></a>  sumfoo = foo.sum();</span>
+<span id="cb9-69"><a href="parameter-estimation.html#cb9-69" aria-hidden="true" tabindex="-1"></a>  lscale = log(sumfoo);</span>
+<span id="cb9-70"><a href="parameter-estimation.html#cb9-70" aria-hidden="true" tabindex="-1"></a>  foo.transposeInPlace();</span>
+<span id="cb9-71"><a href="parameter-estimation.html#cb9-71" aria-hidden="true" tabindex="-1"></a>  foo /= sumfoo;</span>
+<span id="cb9-72"><a href="parameter-estimation.html#cb9-72" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">2</span>; i &lt;= n; i++) {</span>
+<span id="cb9-73"><a href="parameter-estimation.html#cb9-73" aria-hidden="true" tabindex="-1"></a>    P = emission_probs.row(i - <span class="dv">1</span>);</span>
+<span id="cb9-74"><a href="parameter-estimation.html#cb9-74" aria-hidden="true" tabindex="-1"></a>    foo = ((foo * gamma).array() * P.array()).matrix();</span>
+<span id="cb9-75"><a href="parameter-estimation.html#cb9-75" aria-hidden="true" tabindex="-1"></a>    sumfoo = foo.sum();</span>
+<span id="cb9-76"><a href="parameter-estimation.html#cb9-76" aria-hidden="true" tabindex="-1"></a>    lscale += log(sumfoo);</span>
+<span id="cb9-77"><a href="parameter-estimation.html#cb9-77" aria-hidden="true" tabindex="-1"></a>    foo /= sumfoo;</span>
+<span id="cb9-78"><a href="parameter-estimation.html#cb9-78" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-79"><a href="parameter-estimation.html#cb9-79" aria-hidden="true" tabindex="-1"></a>  mllk = -lscale;</span>
+<span id="cb9-80"><a href="parameter-estimation.html#cb9-80" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-81"><a href="parameter-estimation.html#cb9-81" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
+<span id="cb9-82"><a href="parameter-estimation.html#cb9-82" aria-hidden="true" tabindex="-1"></a>  ADREPORT(lambda);</span>
+<span id="cb9-83"><a href="parameter-estimation.html#cb9-83" aria-hidden="true" tabindex="-1"></a>  ADREPORT(gamma);</span>
+<span id="cb9-84"><a href="parameter-estimation.html#cb9-84" aria-hidden="true" tabindex="-1"></a>  ADREPORT(delta);</span>
+<span id="cb9-85"><a href="parameter-estimation.html#cb9-85" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-86"><a href="parameter-estimation.html#cb9-86" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
+<span id="cb9-87"><a href="parameter-estimation.html#cb9-87" aria-hidden="true" tabindex="-1"></a>  REPORT(lambda);</span>
+<span id="cb9-88"><a href="parameter-estimation.html#cb9-88" aria-hidden="true" tabindex="-1"></a>  REPORT(gamma);</span>
+<span id="cb9-89"><a href="parameter-estimation.html#cb9-89" aria-hidden="true" tabindex="-1"></a>  REPORT(delta);</span>
+<span id="cb9-90"><a href="parameter-estimation.html#cb9-90" aria-hidden="true" tabindex="-1"></a>  REPORT(n);</span>
+<span id="cb9-91"><a href="parameter-estimation.html#cb9-91" aria-hidden="true" tabindex="-1"></a>  REPORT(emission_probs);</span>
+<span id="cb9-92"><a href="parameter-estimation.html#cb9-92" aria-hidden="true" tabindex="-1"></a>  REPORT(mllk);</span>
+<span id="cb9-93"><a href="parameter-estimation.html#cb9-93" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-94"><a href="parameter-estimation.html#cb9-94" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk;</span>
+<span id="cb9-95"><a href="parameter-estimation.html#cb9-95" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>The case where <span class="math inline">\(m = 1\)</span> doesn’t involve a hidden state, and thus is a Poisson regression instead of a Poisson HMM.
 Nonetheless, <code>TMB</code> also accelerates its estimation and may be useful to the reader.</p>
 
-<!-- ```{r 4import-files, echo = FALSE, cache = FALSE} -->
-<!-- library(knitr) -->
-<!-- setwd(dir = "../") -->
-<!-- # suppressMessages(source("code/main.R")) -->
-<!-- knitr::read_chunk('functions/utils.R') -->
-<!-- ``` -->
 </div>
 </div>
 <h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-bulla" class="csl-entry">
-Bulla, Jan, and Andreas Berzel. 2008. <span>“Computational Issues in Parameter Estimation for Stationary Hidden <span>Markov</span> Models.”</span> <em>Computational Statistics</em> 23 (1): 1–18. <a href="https://doi.org/10.1007/s00180-007-0063-y">https://doi.org/10.1007/s00180-007-0063-y</a>.
+Bulla, J., &amp; Berzel, A. (2008). Computational issues in parameter estimation for stationary hidden <span>Markov</span> models. <em>Computational Statistics</em>, <em>23</em>(1), 1–18. doi:<a href="https://doi.org/10.1007/s00180-007-0063-y">10.1007/s00180-007-0063-y</a>
 </div>
 <div id="ref-zucchini" class="csl-entry">
-Zucchini, W., I. L. MacDonald, and R. Langrock. 2016. <em>Hidden Markov Models for Time Series: An Introduction Using r, Second Edition</em>. Chapman &amp; <span>Hall</span>/<span>CRC</span> Monographs on Statistics &amp; Applied Probability. <span>CRC Press</span>.
+Zucchini, W., MacDonald, I. L., &amp; Langrock, R. (2016). <em>Hidden markov models for time series: An introduction using r, second edition</em>. <span>CRC Press</span>.
 </div>
 </div>
             </section>
