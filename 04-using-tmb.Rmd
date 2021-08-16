@@ -34,7 +34,7 @@ The data can be loaded by a simple call.
 load("data/tinnitus.RData")
 ```
 
-Figure \@ref(fig:4tinnitus-fig) present the raw data in Table [5.1](#table:tinnitus_data), which are also available for download at *[data/tinnitus.RData](#tinnitus.Rdata)*.
+Figure \@ref(fig:4tinnitus-fig) present the raw data in Table [5.1](#table:tinnitus_data), which are also available for download at *[data/tinnitus.RData](#tinnitus.RData)*.
 
 ```{r 4tinnitus-table, results = 'asis', echo = FALSE}
 library(xtable)
