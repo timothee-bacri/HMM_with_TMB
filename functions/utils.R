@@ -281,7 +281,13 @@ pois.HMM.generate.sample  <- function(ns, mod) {
 
 ## ---- pois.HMM.generate.estimable.sample
 # Generate a random sample from a HMM
-pois.HMM.generate.estimable.sample <- function(ns, mod, testing_params, params_names = PARAMS_NAMES, test_marqLevAlg = FALSE, std_error = FALSE, label_switch = FALSE) {
+pois.HMM.generate.estimable.sample <- function(ns,
+                                               mod,
+                                               testing_params,
+                                               params_names = PARAMS_NAMES,
+                                               test_marqLevAlg = FALSE,
+                                               std_error = FALSE,
+                                               label_switch = FALSE) {
   if(anyNA(c(ns, mod, testing_params))) {
     stop("Some parameters are missing in pois.HMM.generate.estimable.sample")
   }
@@ -314,7 +320,10 @@ pois.HMM.generate.estimable.sample <- function(ns, mod, testing_params, params_n
     
     TMB_benchmark_data <- list(x = new_data$data, m = m)
     
-    testing_w_params <- pois.HMM.pn2pw(m = m, lambda = testing_params$lambda, gamma = testing_params$gamma, delta = testing_params$delta)
+    testing_w_params <- pois.HMM.pn2pw(m = m,
+                                       lambda = testing_params$lambda,
+                                       gamma = testing_params$gamma,
+                                       delta = testing_params$delta)
     
     # Test TMB
     suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
@@ -407,12 +416,12 @@ pois.HMM.generate.estimable.sample <- function(ns, mod, testing_params, params_n
     }
     
     natural_parameters <- list(m = m,
-                                 lambda = mod_temp$lambda,
-                                 gamma = mod_temp$gamma,
-                                 delta = mod_temp$delta,
-                                 lambda_std_error = mod_temp$lambda_std_error,
-                                 gamma_std_error = mod_temp$gamma_std_error,
-                                 delta_std_error = mod_temp$delta_std_error)
+                               lambda = mod_temp$lambda,
+                               gamma = mod_temp$gamma,
+                               delta = mod_temp$delta,
+                               lambda_std_error = mod_temp$lambda_std_error,
+                               gamma_std_error = mod_temp$gamma_std_error,
+                               delta_std_error = mod_temp$delta_std_error)
     
     # If some parameters are NA for some reason, discard the data
     if (anyNA(natural_parameters[params_names], recursive = TRUE)) {
@@ -423,12 +432,21 @@ pois.HMM.generate.estimable.sample <- function(ns, mod, testing_params, params_n
     # If everything went well, end the "repeat" loop
     break
   }
-  return(list(data = list(new_data$data), natural_parameters = list(natural_parameters), mod = list(mod_temp), failure = list(failure)))
+  return(list(data = list(new_data$data),
+              natural_parameters = list(natural_parameters),
+              mod = list(mod_temp),
+              failure = list(failure)))
 }
 
 ## ---- pois.HMM.label.order
 # Relabel states by increasing Poisson means
-pois.HMM.label.order <- function(m, lambda, gamma, delta = NULL, lambda_std_error = NULL, gamma_std_error = NULL, delta_std_error = NULL) {
+pois.HMM.label.order <- function(m,
+                                 lambda,
+                                 gamma,
+                                 delta = NULL,
+                                 lambda_std_error = NULL,
+                                 gamma_std_error = NULL,
+                                 delta_std_error = NULL) {
   # gamma_vector_indices is used to calculate the indices of the reordered TPM gamma as a vector
   # for reordering the rows of the complete CI data.frame used for the article.
   gamma_vector_indices <- 1:(m ^ 2)
@@ -540,7 +558,11 @@ DM.estimate <- function(x, m, lambda0, gamma0, delta0 = NULL, stationary = TRUE)
   # nlminb needs a vector, not a list
   parvect0 <- unlist(parvect0)
   
-  mod <- nlminb(start = parvect0, objective = pois.HMM.mllk, x_alias = x, m_alias = m, stationary = stationary)
+  mod <- nlminb(start = parvect0,
+                objective = pois.HMM.mllk,
+                x_alias = x,
+                m_alias = m,
+                stationary = stationary)
   pw <- mod$par
   pn <- pois.HMM.pw2pn(m, as.numeric(pw))
   mllk <- mod$objective
@@ -562,4 +584,36 @@ nlmfn <- function(par, obj, gr = TRUE, he = TRUE) {
   if(gr) {attr(res, "gradient") <- obj$gr(par)}
   if(he) {attr(res, "hessian") <- obj$he(par)}
   res
+}
+
+# Nice publication-worthy theme
+## ---- theme
+theme_Publication <- function(base_size = 10) {
+  library(grid)
+  library(ggthemes)
+  theme_foundation(base_size = base_size) +
+    theme(plot.title = element_text(face = "bold",
+                                    size = rel(1.2), hjust = 0.5),
+          text = element_text(),
+          panel.background = element_rect(colour = NA),
+          plot.background = element_rect(colour = NA),
+          panel.border = element_rect(colour = NA),
+          axis.title = element_text(size = rel(1)),
+          axis.title.y = element_text(angle = 90, vjust = 2),
+          axis.title.x = element_text(vjust = - 0.2),
+          axis.text = element_text(), 
+          axis.line = element_line(colour = "black"),
+          axis.ticks = element_line(),
+          panel.grid.major = element_line(colour = "#f0f0f0"),
+          panel.grid.minor = element_blank(),
+          legend.key = element_rect(colour = NA),
+          legend.position = "top",
+          legend.direction = "horizontal",
+          legend.key.size= unit(0.5, "cm"),
+          legend.spacing = unit(0, "cm"),
+          legend.title = element_text(),
+          plot.margin = unit(c(5, 5, 5, 5), "mm"),
+          strip.background = element_rect(colour = "#f0f0f0", fill = "transparent"),
+          strip.text = element_text()
+    )
 }

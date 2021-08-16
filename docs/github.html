@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 7 GitHub | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
-  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 7 GitHub | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-08-12" />
+<meta name="date" content="2021-08-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -37,7 +37,7 @@
 <link rel="prev" href="application-to-different-data-sets.html"/>
 <link rel="next" href="references.html"/>
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -316,7 +316,7 @@ Used to compute negative log-likelihoods in <code>R</code> with <code>TMB</code>
 </div>
 <div id="codelinreg_extended.cpp" class="section level3" number="7.1.5">
 <h3><span class="header-section-number">7.1.5</span> code/linreg_extended.cpp</h3>
-<p>Similar to <a href="github.html#codelinreg.cpp">code/linreg.cpp</a>, with some more complex code added to serve as an example.
+<p>Similar to <em><a href="github.html#codelinreg.cpp">code/linreg.cpp</a></em>, with some more complex code added to serve as an example.
 Used to compute negative log-likelihoods in <code>R</code> with <code>TMB</code>.</p>
 </div>
 <div id="codelinreg_extended.dll" class="section level3" number="7.1.6">
@@ -405,7 +405,7 @@ Luckily, a low variance was observed, making the acceleration evidenced in this 
 <li>In <a href="github.html#codepoi_hmm_simu1.r">code/poi_hmm_simu1.R</a>, bootstrapping is parallelized both in <code>Bootstrap</code> (accelerated from 83 seconds per sample to 29 seconds) and in <code>Coverage probabilities of the 3 CI methods</code> (likelihood profiling was slower with parallelization, likely due to loading <code>TMB</code> each time and the procedure being already fairly quick: from 2.8 seconds in total without to 3.5 seconds in total with).</li>
 <li>In <a href="github.html#codepoi_hmm_simu2.r">code/poi_hmm_simu2.R</a>, bootstrapping and likelihood profiling are both parallelized in <code>Bootstrap</code> (accelerated from 64 seconds per bootstrap sample to 21), <code>Profiling the likelihood</code>, and in <code>Coverage probabilities of the 3 CI methods</code>.</li>
 </ul>
-<p>Parallelization is handled with the <span class="citation">(<a href="#ref-R-foreach" role="doc-biblioref">Revolution Analytics and Weston, n.d.</a>)</span> package.</p>
+<p>Parallelization is handled with the <span class="citation">(<a href="#ref-R-foreach" role="doc-biblioref">Revolution Analytics &amp; Weston, n.d.</a>)</span> package.</p>
 </div>
 <div id="codesetup_parameters.r" class="section level3" number="7.1.17">
 <h3><span class="header-section-number">7.1.17</span> code/setup_parameters.R</h3>
@@ -419,7 +419,7 @@ Luckily, a low variance was observed, making the acceleration evidenced in this 
 </div>
 <div id="datafetal-lamb.rdata" class="section level3" number="7.1.19">
 <h3><span class="header-section-number">7.1.19</span> data/fetal-lamb.RData</h3>
-<p>Contains <code>lamb</code>: an integer vector of with 240 data from <span class="citation">(<a href="#ref-leroux" role="doc-biblioref">Leroux and Puterman 1992</a>)</span>.</p>
+<p>Contains <code>lamb</code>: an integer vector of with 240 data from <span class="citation">(<a href="#ref-leroux" role="doc-biblioref">Leroux &amp; Puterman, 1992</a>)</span>.</p>
 </div>
 <div id="dataresults_lamb.rdata" class="section level3" number="7.1.20">
 <h3><span class="header-section-number">7.1.20</span> data/results_lamb.RData</h3>
@@ -436,7 +436,7 @@ Luckily, a low variance was observed, making the acceleration evidenced in this 
 </div>
 <div id="datatinnitus.rdata" class="section level3" number="7.1.24">
 <h3><span class="header-section-number">7.1.24</span> data/tinnitus.RData</h3>
-<p>Tinnitus data collected with the “Track Your Tinnitus” (TYT) mobile application on 87 successive days, provided by the University of Regensburg and European School for Interdisciplinary Tinnitus Research (ESIT), of which a detailed description is presented in <span class="citation"><a href="#ref-pryss" role="doc-biblioref">Pryss, Reichert, Herrmann, et al.</a> (<a href="#ref-pryss" role="doc-biblioref">2015</a>)</span> and <span class="citation"><a href="#ref-pryssa" role="doc-biblioref">Pryss, Reichert, Langguth, et al.</a> (<a href="#ref-pryssa" role="doc-biblioref">2015</a>)</span>.</p>
+<p>Tinnitus data collected with the “Track Your Tinnitus” (TYT) mobile application on 87 successive days, provided by the University of Regensburg and European School for Interdisciplinary Tinnitus Research (ESIT), of which a detailed description is presented in <span class="citation"><a href="#ref-pryss" role="doc-biblioref">Pryss, Reichert, Herrmann, Langguth, &amp; Schlee</a> (<a href="#ref-pryss" role="doc-biblioref">2015</a>)</span> and <span class="citation"><a href="#ref-pryssa" role="doc-biblioref">Pryss, Reichert, Langguth, &amp; Schlee</a> (<a href="#ref-pryssa" role="doc-biblioref">2015</a>)</span>.</p>
 <p>A plot is available in Figure <a href="using-tmb.html#fig:4tinnitus-fig">4.1</a>.</p>
 </div>
 <div id="functions" class="section level3" number="7.1.25">
@@ -459,18 +459,18 @@ Luckily, a low variance was observed, making the acceleration evidenced in this 
 </div>
 </div>
 <h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-leroux" class="csl-entry">
-Leroux, Brian G., and Martin L. Puterman. 1992. <span>“Maximum-<span>Penalized</span>-<span>Likelihood Estimation</span> for <span>Independent</span> and <span>Markov</span>- <span>Dependent Mixture Models</span>.”</span> <em>Biometrics</em> 48 (2): 545–58. <a href="https://doi.org/10.2307/2532308">https://doi.org/10.2307/2532308</a>.
+Leroux, B. G., &amp; Puterman, M. L. (1992). Maximum-<span>Penalized</span>-<span>Likelihood Estimation</span> for <span>Independent</span> and <span>Markov</span>- <span>Dependent Mixture Models</span>. <em>Biometrics</em>, <em>48</em>(2), 545–558. doi:<a href="https://doi.org/10.2307/2532308">10.2307/2532308</a>
 </div>
 <div id="ref-pryss" class="csl-entry">
-Pryss, R., M. Reichert, J. Herrmann, B. Langguth, and W. Schlee. 2015. <span>“Mobile <span>Crowd Sensing</span> in <span>Clinical</span> and <span>Psychological Trials</span> <span></span> <span>A Case Study</span>.”</span> In <em>2015 <span>IEEE</span> 28th <span>International Symposium</span> on <span>Computer</span>-<span>Based Medical Systems</span></em>, 23–24. <a href="https://doi.org/10.1109/CBMS.2015.26">https://doi.org/10.1109/CBMS.2015.26</a>.
+Pryss, R., Reichert, M., Herrmann, J., Langguth, B., &amp; Schlee, W. (2015). Mobile <span>Crowd Sensing</span> in <span>Clinical</span> and <span>Psychological Trials</span> <span></span> <span>A Case Study</span>. In <em>2015 <span>IEEE</span> 28th <span>International Symposium</span> on <span>Computer</span>-<span>Based Medical Systems</span></em> (pp. 23–24). doi:<a href="https://doi.org/10.1109/CBMS.2015.26">10.1109/CBMS.2015.26</a>
 </div>
 <div id="ref-pryssa" class="csl-entry">
-Pryss, R., M. Reichert, B. Langguth, and W. Schlee. 2015. <span>“Mobile <span>Crowd Sensing Services</span> for <span>Tinnitus Assessment</span>, <span>Therapy</span>, and <span>Research</span>.”</span> In <em>2015 <span>IEEE International Conference</span> on <span>Mobile Services</span></em>, 352–59. <a href="https://doi.org/10.1109/MobServ.2015.55">https://doi.org/10.1109/MobServ.2015.55</a>.
+Pryss, R., Reichert, M., Langguth, B., &amp; Schlee, W. (2015). Mobile <span>Crowd Sensing Services</span> for <span>Tinnitus Assessment</span>, <span>Therapy</span>, and <span>Research</span>. In <em>2015 <span>IEEE International Conference</span> on <span>Mobile Services</span></em> (pp. 352–359). doi:<a href="https://doi.org/10.1109/MobServ.2015.55">10.1109/MobServ.2015.55</a>
 </div>
 <div id="ref-R-foreach" class="csl-entry">
-Revolution Analytics, and Steve Weston. n.d. <em>Foreach: Provides Foreach Looping Construct</em>.
+Revolution Analytics, &amp; Weston, S. (n.d.). <em>Foreach: Provides foreach looping construct</em>.
 </div>
 </div>
             </section>
@@ -523,6 +523,10 @@ gitbook.start({
 "text": null
 },
 "download": ["Data supplements.pdf", "Data supplements.epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }

@@ -11,14 +11,14 @@ RNGversion("3.6.0")
 q95_norm <- qnorm(1 - 0.05 / 2)
 
 # We use nlminb because it's a fast method that works properly
-# The available methods in optim package are BFGS, CG, Nelder-Mead, L-BFGS-B, nlm, nlminb,
+# The possible methods are BFGS, CG, Nelder-Mead, L-BFGS-B, nlm, nlminb,
 # Rcgmin, Rvmmin, hjn
 # Rvmmin and Rcgmin don't work in our case, so we don't use them
 
 # Number of benchmark runs used to time the estimation of HMM parameters (CAN = 0)
 BENCHMARK_SAMPLES <- 200
 
-# Number of bootstrap samples used to obtain confidence intervals (CAN NOT = 1, will pose issues with parallelization)
+# Number of bootstrap samples used to obtain confidence intervals (CAN = 0)
 BOOTSTRAP_SAMPLES <- 1000
 
 # Number of confidence intervals used to obtain coverage probabilities (CAN = 0)
@@ -44,7 +44,7 @@ load("data/fetal-lamb.RData")
 lamb_data <- lamb
 rm(lamb)
 
-# Loading the tinnitus dataset, arousal for 14th patient
+# Loading the tinnitus dataset
 load("data/tinnitus.RData")
 
 # Setting the size of the datasets
@@ -52,15 +52,6 @@ DATA_SIZE_LAMB <- length(lamb_data)
 DATA_SIZE_SIMU1 <- 2000
 DATA_SIZE_SIMU2 <- 5000
 DATA_SIZE_TINN <- DATA_SIZE_TYT <- length(tinn_data)
-
-# Container for the quality of fit values of HMMs for each dataset
-mllk_values_lamb <- data.frame(m = integer(),
-                               procedure = factor(levels = PROCEDURES),
-                               mllk = numeric(),
-                               AIC = numeric(),
-                               BIC = numeric())
-mllk_values_simu1 <- mllk_values_simu2 <- mllk_values_lamb
-mllk_values_tinn <- mllk_values_lamb
 
 # Container for the time benchmarks of HMMs parameter estimation on different optimizers for each dataset
 method_comparison_df_lamb <- data.frame(time = numeric(),
@@ -94,21 +85,21 @@ mllk_times_df_simu2 <- data.frame(time = numeric(),
                                   m = factor(levels = M_LIST_SIMU2),
                                   procedure = factor(levels = PROCEDURES))
 
-# Container for the time benchmarks of HMMs parameter estimation for each dataset
+# Containers for the time benchmarks of HMMs parameter estimation for each dataset
 estim_benchmarks_df_lamb <- data.frame(time = numeric(),
                                        m = integer(),
                                        procedure = factor(levels = PROCEDURES_METHOD),
                                        iterations = integer(),
                                        dataset_number = integer())
-estim_benchmarks_df_simu1 <- estim_benchmarks_df_simu2 <- estim_benchmarks_df_tinn <- estim_benchmarks_df_lamb
-
+estim_benchmarks_df_simu1 <- estim_benchmarks_df_simu2 <- estim_benchmarks_df_lamb
+estim_benchmarks_df_tinn <- estim_benchmarks_df_lamb
 
 consistency_estim_benchmarks_df_tinn <- data.frame(time = numeric(),
                                                    m = factor(levels = M_LIST_TINN),
                                                    procedure = factor(levels = PROCEDURES),
                                                    iterations = integer())
 
-# Container for the parameters estimated by HMMs and their confidence intervals for each dataset
+# Containers for the parameters estimated by HMMs and their confidence intervals for each dataset
 conf_int_lamb <- conf_int_tinn <- data.frame(m = integer(),
                                              Parameter = character(),
                                              Estimate = numeric(),
@@ -201,7 +192,7 @@ coverage_skips_tinn <- data.frame("m" = M_LIST_TINN,
 # Ensure that the algorithms BFGS and L-BFGS-B don't stop simply because of a low iteration limit
 ctrl = list(maxit = 10000)
 
-#TMB SETUP
+# TMB SETUP
 TMB::compile("code/poi_hmm.cpp")
 dyn.load(dynlib("code/poi_hmm"))
 TMB::compile("code/linreg.cpp")

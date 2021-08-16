@@ -8,7 +8,7 @@ Type objective_function<Type>::operator() ()
   
   PARAMETER(a);         // Parameter a passed from R 
   PARAMETER(b);         // Parameter b passed from R 
-  PARAMETER(tsigma);    // Parameter sigma (transformed, on log-scale) 
+  PARAMETER(tsigma);    // Parameter sigma (transformed, on log-scale)
                         // passed from R
   
   // Transform tsigma back to natural scale

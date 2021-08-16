@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 State inference | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <title>Chapter 1 State inference | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
-  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 State inference | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:title" content="Chapter 1 State inference | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 State inference | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta name="twitter:title" content="Chapter 1 State inference | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   
   <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
   
@@ -34,10 +34,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
+<link rel="prev" href="license.html"/>
 <link rel="next" href="principles-of-using-tmb-for-mle.html"/>
-<script src="libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -163,6 +163,7 @@ div.csl-indent {
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="license.html"><a href="license.html"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="1" data-path="state-inference.html"><a href="state-inference.html"><i class="fa fa-check"></i><b>1</b> State inference</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="state-inference.html"><a href="state-inference.html#prepare-the-model"><i class="fa fa-check"></i><b>1.1</b> Prepare the model</a></li>
@@ -261,7 +262,7 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
 <ul>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html#authors-github-account"><i class="fa fa-check"></i>Author’s github account</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#license"><i class="fa fa-check"></i>License</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#license-1"><i class="fa fa-check"></i>License</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -275,7 +276,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
           </h1>
         </div>
 
@@ -343,31 +344,44 @@ the emission probability matrix.</p>
 <span id="cb3-13"><a href="state-inference.html#cb3-13" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = dpois(x[i], lambda, <span class="kw">false</span>);</span>
 <span id="cb3-14"><a href="state-inference.html#cb3-14" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb3-15"><a href="state-inference.html#cb3-15" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
-<p>Nevertheless, we also need to compute them in <code>R</code> for [#forecast]</p>
+<p>Nevertheless, we also need to compute them in <code>R</code> for the <a href="state-inference.html#forecast">Forecast</a> code</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="state-inference.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate emission probabilities</span></span>
+<span id="cb4-2"><a href="state-inference.html#cb4-2" aria-hidden="true" tabindex="-1"></a>get.emission.probs <span class="ot">&lt;-</span> <span class="cf">function</span>(data, lambda) {</span>
+<span id="cb4-3"><a href="state-inference.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(data)</span>
+<span id="cb4-4"><a href="state-inference.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">length</span>(lambda)</span>
+<span id="cb4-5"><a href="state-inference.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  emission_probs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> n, <span class="at">ncol =</span> m)</span>
+<span id="cb4-6"><a href="state-inference.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb4-7"><a href="state-inference.html#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(data[i])) {</span>
+<span id="cb4-8"><a href="state-inference.html#cb4-8" aria-hidden="true" tabindex="-1"></a>      emission_probs[i, ] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, m)</span>
+<span id="cb4-9"><a href="state-inference.html#cb4-9" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb4-10"><a href="state-inference.html#cb4-10" aria-hidden="true" tabindex="-1"></a>      emission_probs[i, ] <span class="ot">&lt;-</span> <span class="fu">dpois</span>(data[i], lambda)</span>
+<span id="cb4-11"><a href="state-inference.html#cb4-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-12"><a href="state-inference.html#cb4-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-13"><a href="state-inference.html#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(emission_probs)</span>
+<span id="cb4-14"><a href="state-inference.html#cb4-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>
 <div id="log-forward" class="section level2" number="1.3">
 <h2><span class="header-section-number">1.3</span> Log-forward probabilities</h2>
 <p>The forward probabilities have been detailed in
 TO FIX LINK_TO_hmm_likelihood!!!!!!!!!!!!!!!!!.</p>
-<p>We show here a way to compute the log of the forward probabilities,
-using a scaling scheme defined by <span class="citation">(see <a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 66</a> and p.334)</span>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="state-inference.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-forward probabilities (scaling used)</span></span>
-<span id="cb4-2"><a href="state-inference.html#cb4-2" aria-hidden="true" tabindex="-1"></a>lalpha <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
-<span id="cb4-3"><a href="state-inference.html#cb4-3" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
-<span id="cb4-4"><a href="state-inference.html#cb4-4" aria-hidden="true" tabindex="-1"></a>sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb4-5"><a href="state-inference.html#cb4-5" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(sumfoo)</span>
-<span id="cb4-6"><a href="state-inference.html#cb4-6" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
-<span id="cb4-7"><a href="state-inference.html#cb4-7" aria-hidden="true" tabindex="-1"></a>lalpha[, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
-<span id="cb4-8"><a href="state-inference.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
-<span id="cb4-9"><a href="state-inference.html#cb4-9" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma <span class="sc">*</span> emission_probs[i, ]</span>
-<span id="cb4-10"><a href="state-inference.html#cb4-10" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb4-11"><a href="state-inference.html#cb4-11" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
-<span id="cb4-12"><a href="state-inference.html#cb4-12" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
-<span id="cb4-13"><a href="state-inference.html#cb4-13" aria-hidden="true" tabindex="-1"></a>  lalpha[, i] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
-<span id="cb4-14"><a href="state-inference.html#cb4-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-15"><a href="state-inference.html#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># lalpha contains n=240 columns, so we only display 5 for readability</span></span>
-<span id="cb4-16"><a href="state-inference.html#cb4-16" aria-hidden="true" tabindex="-1"></a>lalpha[, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<p>We show here a way to compute the log of the forward probabilities, using a scaling scheme defined by <span class="citation">(see <a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, &amp; Langrock, 2016, p. 66</a> and p.334)</span>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="state-inference.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-forward probabilities (scaling used)</span></span>
+<span id="cb5-2"><a href="state-inference.html#cb5-2" aria-hidden="true" tabindex="-1"></a>lalpha <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
+<span id="cb5-3"><a href="state-inference.html#cb5-3" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
+<span id="cb5-4"><a href="state-inference.html#cb5-4" aria-hidden="true" tabindex="-1"></a>sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb5-5"><a href="state-inference.html#cb5-5" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb5-6"><a href="state-inference.html#cb5-6" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb5-7"><a href="state-inference.html#cb5-7" aria-hidden="true" tabindex="-1"></a>lalpha[, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
+<span id="cb5-8"><a href="state-inference.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
+<span id="cb5-9"><a href="state-inference.html#cb5-9" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma <span class="sc">*</span> emission_probs[i, ]</span>
+<span id="cb5-10"><a href="state-inference.html#cb5-10" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb5-11"><a href="state-inference.html#cb5-11" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb5-12"><a href="state-inference.html#cb5-12" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb5-13"><a href="state-inference.html#cb5-13" aria-hidden="true" tabindex="-1"></a>  lalpha[, i] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
+<span id="cb5-14"><a href="state-inference.html#cb5-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-15"><a href="state-inference.html#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># lalpha contains n=240 columns, so we only display 5 for readability</span></span>
+<span id="cb5-16"><a href="state-inference.html#cb5-16" aria-hidden="true" tabindex="-1"></a>lalpha[, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
 <pre><code>##            [,1]       [,2]       [,3]      [,4]      [,5]
 ## [1,] -0.2920639 -0.5591179 -0.8265948 -1.094088 -1.361583
 ## [2,] -6.4651986 -7.7716769 -8.1146145 -8.385232 -8.652850</code></pre>
@@ -375,125 +389,117 @@ using a scaling scheme defined by <span class="citation">(see <a href="#ref-zucc
 <div id="log-backward" class="section level2" number="1.4">
 <h2><span class="header-section-number">1.4</span> Log-backward probabilities</h2>
 <p>The backward probabilities have been defined in the same section
-<span class="citation"><a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="#ref-zucchini" role="doc-biblioref">2016, 67</a> and p.334)</span>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="state-inference.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-backwards probabilities (scaling used)</span></span>
-<span id="cb6-2"><a href="state-inference.html#cb6-2" aria-hidden="true" tabindex="-1"></a>lbeta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
-<span id="cb6-3"><a href="state-inference.html#cb6-3" aria-hidden="true" tabindex="-1"></a>lbeta[, n] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, m)</span>
-<span id="cb6-4"><a href="state-inference.html#cb6-4" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="fu">rep</span> (<span class="dv">1</span> <span class="sc">/</span> m, m)</span>
-<span id="cb6-5"><a href="state-inference.html#cb6-5" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(m)</span>
-<span id="cb6-6"><a href="state-inference.html#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span><span class="dv">1</span>) {</span>
-<span id="cb6-7"><a href="state-inference.html#cb6-7" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> gamma <span class="sc">%*%</span> (emission_probs[i <span class="sc">+</span> <span class="dv">1</span>, ] <span class="sc">*</span> foo)</span>
-<span id="cb6-8"><a href="state-inference.html#cb6-8" aria-hidden="true" tabindex="-1"></a>  lbeta[, i] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
-<span id="cb6-9"><a href="state-inference.html#cb6-9" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb6-10"><a href="state-inference.html#cb6-10" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
-<span id="cb6-11"><a href="state-inference.html#cb6-11" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
-<span id="cb6-12"><a href="state-inference.html#cb6-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-13"><a href="state-inference.html#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># lbeta contains n=240 columns, so we only display 4 for readability</span></span>
-<span id="cb6-14"><a href="state-inference.html#cb6-14" aria-hidden="true" tabindex="-1"></a>lbeta[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
+<span class="citation"><a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, &amp; Langrock</a> (<a href="#ref-zucchini" role="doc-biblioref">2016, p. 67</a> and p.334)</span>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="state-inference.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-backwards probabilities (scaling used)</span></span>
+<span id="cb7-2"><a href="state-inference.html#cb7-2" aria-hidden="true" tabindex="-1"></a>lbeta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
+<span id="cb7-3"><a href="state-inference.html#cb7-3" aria-hidden="true" tabindex="-1"></a>lbeta[, n] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, m)</span>
+<span id="cb7-4"><a href="state-inference.html#cb7-4" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="fu">rep</span> (<span class="dv">1</span> <span class="sc">/</span> m, m)</span>
+<span id="cb7-5"><a href="state-inference.html#cb7-5" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(m)</span>
+<span id="cb7-6"><a href="state-inference.html#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span><span class="dv">1</span>) {</span>
+<span id="cb7-7"><a href="state-inference.html#cb7-7" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> gamma <span class="sc">%*%</span> (emission_probs[i <span class="sc">+</span> <span class="dv">1</span>, ] <span class="sc">*</span> foo)</span>
+<span id="cb7-8"><a href="state-inference.html#cb7-8" aria-hidden="true" tabindex="-1"></a>  lbeta[, i] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
+<span id="cb7-9"><a href="state-inference.html#cb7-9" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb7-10"><a href="state-inference.html#cb7-10" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb7-11"><a href="state-inference.html#cb7-11" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb7-12"><a href="state-inference.html#cb7-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-13"><a href="state-inference.html#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># lbeta contains n=240 columns, so we only display 4 for readability</span></span>
+<span id="cb7-14"><a href="state-inference.html#cb7-14" aria-hidden="true" tabindex="-1"></a>lbeta[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
 <pre><code>##           [,1]      [,2]      [,3]      [,4]
 ## [1,] -177.2275 -176.9600 -176.6925 -176.4250
 ## [2,] -178.3456 -178.0781 -177.8099 -177.5253</code></pre>
 </div>
 <div id="local-decoding" class="section level2" number="1.5">
 <h2><span class="header-section-number">1.5</span> Local decoding</h2>
-<p>The smoothing probabilities are defined in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 87</a> and p.336)</span> as
+<p>The smoothing probabilities are defined in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, &amp; Langrock, 2016, p. 87</a> and p.336)</span> as
 <span class="math display">\[
 \text{P}(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
 \]</span></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="state-inference.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute conditional state probabilities, smoothing probabilities</span></span>
-<span id="cb8-2"><a href="state-inference.html#cb8-2" aria-hidden="true" tabindex="-1"></a>stateprobs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> n, <span class="at">nrow =</span> m)</span>
-<span id="cb8-3"><a href="state-inference.html#cb8-3" aria-hidden="true" tabindex="-1"></a>llk <span class="ot">&lt;-</span> <span class="sc">-</span> mllk</span>
-<span id="cb8-4"><a href="state-inference.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb8-5"><a href="state-inference.html#cb8-5" aria-hidden="true" tabindex="-1"></a>  stateprobs[, i] <span class="ot">&lt;-</span> <span class="fu">exp</span>(lalpha[, i] <span class="sc">+</span> lbeta[, i] <span class="sc">-</span> llk)</span>
-<span id="cb8-6"><a href="state-inference.html#cb8-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="state-inference.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute conditional state probabilities, smoothing probabilities</span></span>
+<span id="cb9-2"><a href="state-inference.html#cb9-2" aria-hidden="true" tabindex="-1"></a>stateprobs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> n, <span class="at">nrow =</span> m)</span>
+<span id="cb9-3"><a href="state-inference.html#cb9-3" aria-hidden="true" tabindex="-1"></a>llk <span class="ot">&lt;-</span> <span class="sc">-</span> mllk</span>
+<span id="cb9-4"><a href="state-inference.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb9-5"><a href="state-inference.html#cb9-5" aria-hidden="true" tabindex="-1"></a>  stateprobs[, i] <span class="ot">&lt;-</span> <span class="fu">exp</span>(lalpha[, i] <span class="sc">+</span> lbeta[, i] <span class="sc">-</span> llk)</span>
+<span id="cb9-6"><a href="state-inference.html#cb9-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Local decoding is a straightforward maximum of the smoothing probabilities.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="state-inference.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Most probable states (local decoding)</span></span>
-<span id="cb9-2"><a href="state-inference.html#cb9-2" aria-hidden="true" tabindex="-1"></a>ldecode <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n)</span>
-<span id="cb9-3"><a href="state-inference.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb9-4"><a href="state-inference.html#cb9-4" aria-hidden="true" tabindex="-1"></a>  ldecode[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(stateprobs[, i])</span>
-<span id="cb9-5"><a href="state-inference.html#cb9-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-6"><a href="state-inference.html#cb9-6" aria-hidden="true" tabindex="-1"></a>ldecode</span></code></pre></div>
-<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-##  [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-##  [75] 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [112] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [149] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [186] 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [223] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="state-inference.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Most probable states (local decoding)</span></span>
+<span id="cb10-2"><a href="state-inference.html#cb10-2" aria-hidden="true" tabindex="-1"></a>ldecode <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n)</span>
+<span id="cb10-3"><a href="state-inference.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb10-4"><a href="state-inference.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  ldecode[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(stateprobs[, i])</span>
+<span id="cb10-5"><a href="state-inference.html#cb10-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-6"><a href="state-inference.html#cb10-6" aria-hidden="true" tabindex="-1"></a>ldecode</span></code></pre></div>
+<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [117] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [233] 1 1 1 1 1 1 1 1</code></pre>
 </div>
 <div id="forecast" class="section level2" number="1.6">
 <h2><span class="header-section-number">1.6</span> Forecast</h2>
 <p>The forecast distribution or h-step-ahead-probabilities as well as its
-implementation in R is detailed in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 83</a> and p.337)</span></p>
+implementation in R is detailed in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, &amp; Langrock, 2016, p. 83</a> and p.337)</span></p>
 <p>Then,
 <span class="math display">\[
 \text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{{\boldsymbol\alpha}_n {\boldsymbol\Gamma}^h \textbf{P}(x) {\boldsymbol 1}&#39;}{{\boldsymbol\alpha}_n {\boldsymbol 1}&#39;} = {\boldsymbol\Phi}_n {\boldsymbol\Gamma}^h \textbf{P}(x) {\boldsymbol 1}&#39;
 \]</span>
 An implementation of this using a scaling scheme is</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="state-inference.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of steps</span></span>
-<span id="cb11-2"><a href="state-inference.html#cb11-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb11-3"><a href="state-inference.html#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Values for which we want the forecast probabilities</span></span>
-<span id="cb11-4"><a href="state-inference.html#cb11-4" aria-hidden="true" tabindex="-1"></a>xf <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">50</span></span>
-<span id="cb11-5"><a href="state-inference.html#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="state-inference.html#cb11-6" aria-hidden="true" tabindex="-1"></a>nxf <span class="ot">&lt;-</span> <span class="fu">length</span>(xf)</span>
-<span id="cb11-7"><a href="state-inference.html#cb11-7" aria-hidden="true" tabindex="-1"></a>dxf <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> h, <span class="at">ncol =</span> nxf)</span>
-<span id="cb11-8"><a href="state-inference.html#cb11-8" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
-<span id="cb11-9"><a href="state-inference.html#cb11-9" aria-hidden="true" tabindex="-1"></a>sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb11-10"><a href="state-inference.html#cb11-10" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(sumfoo)</span>
-<span id="cb11-11"><a href="state-inference.html#cb11-11" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
-<span id="cb11-12"><a href="state-inference.html#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
-<span id="cb11-13"><a href="state-inference.html#cb11-13" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma <span class="sc">*</span> emission_probs[i, ]</span>
-<span id="cb11-14"><a href="state-inference.html#cb11-14" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>( foo)</span>
-<span id="cb11-15"><a href="state-inference.html#cb11-15" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
-<span id="cb11-16"><a href="state-inference.html#cb11-16" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
-<span id="cb11-17"><a href="state-inference.html#cb11-17" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-18"><a href="state-inference.html#cb11-18" aria-hidden="true" tabindex="-1"></a>emission_probs_xf <span class="ot">&lt;-</span> <span class="fu">get.emission.probs</span>(xf, lambda)</span>
-<span id="cb11-19"><a href="state-inference.html#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>h) {</span>
-<span id="cb11-20"><a href="state-inference.html#cb11-20" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma</span>
-<span id="cb11-21"><a href="state-inference.html#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
-<span id="cb11-22"><a href="state-inference.html#cb11-22" aria-hidden="true" tabindex="-1"></a>    dxf[i, ] <span class="ot">&lt;-</span> dxf[i, ] <span class="sc">+</span> foo[j] <span class="sc">*</span> emission_probs_xf[, j]</span>
-<span id="cb11-23"><a href="state-inference.html#cb11-23" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb11-24"><a href="state-inference.html#cb11-24" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-25"><a href="state-inference.html#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co"># dxf contains n=240 columns, so we only display 4 for readability</span></span>
-<span id="cb11-26"><a href="state-inference.html#cb11-26" aria-hidden="true" tabindex="-1"></a>dxf[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="state-inference.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of steps</span></span>
+<span id="cb12-2"><a href="state-inference.html#cb12-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb12-3"><a href="state-inference.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Values for which we want the forecast probabilities</span></span>
+<span id="cb12-4"><a href="state-inference.html#cb12-4" aria-hidden="true" tabindex="-1"></a>xf <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">50</span></span>
+<span id="cb12-5"><a href="state-inference.html#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="state-inference.html#cb12-6" aria-hidden="true" tabindex="-1"></a>nxf <span class="ot">&lt;-</span> <span class="fu">length</span>(xf)</span>
+<span id="cb12-7"><a href="state-inference.html#cb12-7" aria-hidden="true" tabindex="-1"></a>dxf <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> h, <span class="at">ncol =</span> nxf)</span>
+<span id="cb12-8"><a href="state-inference.html#cb12-8" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
+<span id="cb12-9"><a href="state-inference.html#cb12-9" aria-hidden="true" tabindex="-1"></a>sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb12-10"><a href="state-inference.html#cb12-10" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb12-11"><a href="state-inference.html#cb12-11" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb12-12"><a href="state-inference.html#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
+<span id="cb12-13"><a href="state-inference.html#cb12-13" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma <span class="sc">*</span> emission_probs[i, ]</span>
+<span id="cb12-14"><a href="state-inference.html#cb12-14" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>( foo)</span>
+<span id="cb12-15"><a href="state-inference.html#cb12-15" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb12-16"><a href="state-inference.html#cb12-16" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb12-17"><a href="state-inference.html#cb12-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-18"><a href="state-inference.html#cb12-18" aria-hidden="true" tabindex="-1"></a>emission_probs_xf <span class="ot">&lt;-</span> <span class="fu">get.emission.probs</span>(xf, lambda)</span>
+<span id="cb12-19"><a href="state-inference.html#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>h) {</span>
+<span id="cb12-20"><a href="state-inference.html#cb12-20" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma</span>
+<span id="cb12-21"><a href="state-inference.html#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb12-22"><a href="state-inference.html#cb12-22" aria-hidden="true" tabindex="-1"></a>    dxf[i, ] <span class="ot">&lt;-</span> dxf[i, ] <span class="sc">+</span> foo[j] <span class="sc">*</span> emission_probs_xf[, j]</span>
+<span id="cb12-23"><a href="state-inference.html#cb12-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-24"><a href="state-inference.html#cb12-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-25"><a href="state-inference.html#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co"># dxf contains n=240 columns, so we only display 4 for readability</span></span>
+<span id="cb12-26"><a href="state-inference.html#cb12-26" aria-hidden="true" tabindex="-1"></a>dxf[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
 <pre><code>## [1] 0.36414482 0.36531388 0.18441055 0.06322379</code></pre>
 </div>
 <div id="global-decoding" class="section level2" number="1.7">
 <h2><span class="header-section-number">1.7</span> Global decoding</h2>
-<p>The Viterbi algorithm is detailed in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock 2016, 88</a> and p.334)</span>.
+<p>The Viterbi algorithm is detailed in <span class="citation">(<a href="#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, &amp; Langrock, 2016, p. 88</a> and p.334)</span>.
 It calculates the sequence of states <span class="math inline">\((i_1^*, \ldots, i_T^*)\)</span> which
 maximizes the conditional probability of all states simultaneously, i.e.
 <span class="math display">\[
 (i_1^*, \ldots, i_n^*) = \mathop{\mathrm{argmax}}_{i_1, \ldots, i_n \in \{1, \ldots, m \}} \text{P}(C_1 = i_1, \ldots, C_n = i_n \vert X^{(n)} = x^{(n)}).
 \]</span>
 An implementation of it is</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="state-inference.html#cb13-1" aria-hidden="true" tabindex="-1"></a>xi <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, m)</span>
-<span id="cb13-2"><a href="state-inference.html#cb13-2" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
-<span id="cb13-3"><a href="state-inference.html#cb13-3" aria-hidden="true" tabindex="-1"></a>xi[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> foo <span class="sc">/</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb13-4"><a href="state-inference.html#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
-<span id="cb13-5"><a href="state-inference.html#cb13-5" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">apply</span>(xi[i <span class="sc">-</span> <span class="dv">1</span>, ] <span class="sc">*</span> gamma, <span class="dv">2</span>, max) <span class="sc">*</span> emission_probs[i, ]</span>
-<span id="cb13-6"><a href="state-inference.html#cb13-6" aria-hidden="true" tabindex="-1"></a>  xi[i, ] <span class="ot">&lt;-</span> foo <span class="sc">/</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb13-7"><a href="state-inference.html#cb13-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-8"><a href="state-inference.html#cb13-8" aria-hidden="true" tabindex="-1"></a>iv <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n)</span>
-<span id="cb13-9"><a href="state-inference.html#cb13-9" aria-hidden="true" tabindex="-1"></a>iv[n] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(xi[n, ])</span>
-<span id="cb13-10"><a href="state-inference.html#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span><span class="dv">1</span>){</span>
-<span id="cb13-11"><a href="state-inference.html#cb13-11" aria-hidden="true" tabindex="-1"></a>  iv[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(gamma[, iv[i <span class="sc">+</span> <span class="dv">1</span>]] <span class="sc">*</span> xi[i, ])</span>
-<span id="cb13-12"><a href="state-inference.html#cb13-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-13"><a href="state-inference.html#cb13-13" aria-hidden="true" tabindex="-1"></a>iv</span></code></pre></div>
-<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-##  [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-##  [75] 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [112] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [149] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [186] 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-## [223] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="state-inference.html#cb14-1" aria-hidden="true" tabindex="-1"></a>xi <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, m)</span>
+<span id="cb14-2"><a href="state-inference.html#cb14-2" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
+<span id="cb14-3"><a href="state-inference.html#cb14-3" aria-hidden="true" tabindex="-1"></a>xi[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> foo <span class="sc">/</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb14-4"><a href="state-inference.html#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
+<span id="cb14-5"><a href="state-inference.html#cb14-5" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">apply</span>(xi[i <span class="sc">-</span> <span class="dv">1</span>, ] <span class="sc">*</span> gamma, <span class="dv">2</span>, max) <span class="sc">*</span> emission_probs[i, ]</span>
+<span id="cb14-6"><a href="state-inference.html#cb14-6" aria-hidden="true" tabindex="-1"></a>  xi[i, ] <span class="ot">&lt;-</span> foo <span class="sc">/</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb14-7"><a href="state-inference.html#cb14-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-8"><a href="state-inference.html#cb14-8" aria-hidden="true" tabindex="-1"></a>iv <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n)</span>
+<span id="cb14-9"><a href="state-inference.html#cb14-9" aria-hidden="true" tabindex="-1"></a>iv[n] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(xi[n, ])</span>
+<span id="cb14-10"><a href="state-inference.html#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span><span class="dv">1</span>){</span>
+<span id="cb14-11"><a href="state-inference.html#cb14-11" aria-hidden="true" tabindex="-1"></a>  iv[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(gamma[, iv[i <span class="sc">+</span> <span class="dv">1</span>]] <span class="sc">*</span> xi[i, ])</span>
+<span id="cb14-12"><a href="state-inference.html#cb14-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-13"><a href="state-inference.html#cb14-13" aria-hidden="true" tabindex="-1"></a>iv</span></code></pre></div>
+<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [117] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [233] 1 1 1 1 1 1 1 1</code></pre>
 
 </div>
 </div>
 <h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-zucchini" class="csl-entry">
-Zucchini, W., I. L. MacDonald, and R. Langrock. 2016. <em>Hidden Markov Models for Time Series: An Introduction Using r, Second Edition</em>. Chapman &amp; <span>Hall</span>/<span>CRC</span> Monographs on Statistics &amp; Applied Probability. <span>CRC Press</span>.
+Zucchini, W., MacDonald, I. L., &amp; Langrock, R. (2016). <em>Hidden markov models for time series: An introduction using r, second edition</em>. <span>CRC Press</span>.
 </div>
 </div>
             </section>
@@ -501,7 +507,7 @@ Zucchini, W., I. L. MacDonald, and R. Langrock. 2016. <em>Hidden Markov Models f
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="license.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="principles-of-using-tmb-for-mle.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
@@ -546,6 +552,10 @@ gitbook.start({
 "text": null
 },
 "download": ["Data supplements.pdf", "Data supplements.epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }

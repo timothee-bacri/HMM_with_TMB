@@ -7,7 +7,7 @@
 
 # Confidence intervals
 
-From the parameters' ML estimates, we generate new data and re-estimate the parameters \Sexpr{BOOTSTRAP_SAMPLES} times.
+From the parameters' ML estimates, we generate new data and re-estimate the parameters `r BOOTSTRAP_SAMPLES` times.
 From that list of new estimates we can get the 2.5th and 97.5th percentiles and get 95\% confidence intervals for the parameters.\
 
 We show below how to derive confidence intervals using `TMB`, a likelihood profile based method, and parametric bootstrap, based on the 2 state Poisson HMM estimates.

@@ -130,5 +130,5 @@ To prevent this, it is useful to either to manually unload the file via the code
 dyn.unload(dynlib("code/linreg_extended"))
 ```
 or to restart the `R` session via the menu `Session->Restart R` (shortcut `Ctrl+Shift+F10` on Windows).
-Note that restarting the session unload all packages from the session, and will require you to load the `TMB` package again.
+Note that restarting the session unloads all packages from the session, and will require you to load the `TMB` package again.
 

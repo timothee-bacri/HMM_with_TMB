@@ -55,11 +55,10 @@ For a description of the files and the directory structure, please read [Directo
 Note that only the folders [code](#code/), [functions](#functions), and [data](#data) contain files used in the article.
 The other folders and files relate to this Gitbook and are not described in [Directory Structure].
 
-```{r 0import-files, echo = FALSE, cache = FALSE, message = FALSE, results = FALSE}
+```{r 0import-files, cache = FALSE, include = FALSE}
 library(knitr)
-suppressMessages(source("code/packages.R"))
-knitr::read_chunk('functions/utils.R')
 source('code/setup_parameters.R')
+knitr::read_chunk('functions/utils.R')
 ```
 
 ```{r 0packages_in_bib, include=FALSE}
