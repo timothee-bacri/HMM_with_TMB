@@ -33,18 +33,11 @@ header-includes:
   - \usepackage{amsthm,amsmath,amssymb,amsfonts,amssymb}
   - \usepackage{listings}
   - \newcommand{\b}[1]{{\boldsymbol#1}}
-  # - \newcommand{\balpha}{{\boldsymbol \alpha}}
-  # - \newcommand{\bphi}{{\boldsymbol \varphi}}
-  # - \newcommand{\bone}{{\boldsymbol 1}}
-  # - \newcommand{\bgamma}{{\boldsymbol \gamma}}
-  # - \newcommand{\bp}{{\boldsymbol P}}
-  # - \newcommand{\bx}{{\boldsymbol x}}
-  # - \newcommand{\by}{{\boldsymbol y}}
   - \DeclareMathOperator*{\argmax}{argmax}
 ---
 
 # Summary {-}
-<!-- bookdown::render_book("index.Rmd") -->
+<!-- COMPILE WITH bookdown::render_book("index.Rmd") -->
 Welcome !
 
 This website aims to accompany the reader of [Link to official article]

@@ -1,10 +1,3 @@
-<!-- ```{r 4import-files, echo = FALSE, cache = FALSE} -->
-<!-- library(knitr) -->
-<!-- setwd(dir = "../") -->
-<!-- # suppressMessages(source("code/main.R")) -->
-<!-- knitr::read_chunk('functions/utils.R') -->
-<!-- ``` -->
-
 # Using `TMB`
 
 ## Likelihood function
@@ -41,7 +34,7 @@ The data can be loaded by a simple call.
 load("data/tinnitus.RData")
 ```
 
-Figure \@ref(fig:4tinnitus-fig) present the raw data in Table [5.1](#table:tinnitus_data), which are also available for download at *[data/tinnitus.RData](data/tinnitus.Rdata)*.
+Figure \@ref(fig:4tinnitus-fig) present the raw data in Table [5.1](#table:tinnitus_data), which are also available for download at *[data/tinnitus.RData](#tinnitus.Rdata)*.
 
 ```{r 4tinnitus-table, results = 'asis', echo = FALSE}
 library(xtable)

@@ -1,10 +1,3 @@
-<!-- ```{r 1import-files, echo = FALSE, cache = FALSE} -->
-<!-- library(knitr) -->
-<!-- setwd(dir = "../") -->
-<!-- # suppressMessages(source("code/main.R")) -->
-<!-- knitr::read_chunk('functions/utils.R') -->
-<!-- ``` -->
-
 # State inference
 
 ## Prepare the model
@@ -98,7 +91,7 @@ lalpha[, 1:5]
 ## Log-backward probabilities {#log-backward}
 
 The backward probabilities have been defined in the same section
-@zucchini [p.67 and p.334].
+@zucchini[p.67 and p.334].
 
 ```{r 1log-backward}
 # Compute log-backwards probabilities (scaling used)
@@ -119,7 +112,7 @@ lbeta[, 1:4]
 
 ## Local decoding {#local-decoding}
 
-The smoothing probabilities are defined in [@zucchini, p.87 and p.336] as
+The smoothing probabilities are defined in @zucchini[p.87 and p.336] as
 \[
 \text{P}(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
 \]
@@ -148,7 +141,7 @@ ldecode
 ## Forecast {#forecast}
 
 The forecast distribution or h-step-ahead-probabilities as well as its
-implementation in R is detailed in [@zucchini, p.83 and p.337]
+implementation in R is detailed in @zucchini[p.83 and p.337]
 
 Then,
 \[
@@ -186,7 +179,7 @@ dxf[, 1:4]
 ```
 
 ## Global decoding {#global-decoding}
-The Viterbi algorithm is detailed in [@zucchini, p.88 and p.334].
+The Viterbi algorithm is detailed in @zucchini[p.88 and p.334].
 It calculates the sequence of states $(i_1^*, \ldots, i_T^*)$ which
 maximizes the conditional probability of all states simultaneously, i.e.
 \[

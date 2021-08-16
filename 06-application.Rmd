@@ -1,14 +1,7 @@
-<!-- ```{r 6import-files, echo = FALSE, cache = FALSE} -->
-<!-- library(knitr) -->
-<!-- setwd(dir = "../") -->
-<!-- # suppressMessages(source("code/main.R")) -->
-<!-- knitr::read_chunk('functions/utils.R') -->
-<!-- ``` -->
-
 # Application to different data sets
 
 ## TYT dataset
-We detail here the code used to estimate a 2-state Poisson HMM based on the tinnitus dataset available in *[data/tinnitus.RData](data/tinnitus.RData)*.
+We detail here the code used to estimate a 2-state Poisson HMM based on the tinnitus dataset available in *[data/tinnitus.RData](#tinnitus.RData)*.
 
 - Set a seed for randomness, and load files
 ```{r 6tyt-init}
@@ -55,11 +48,11 @@ mod_tmb$convergence == 0
 summary(sdreport(obj_tmb), "report")
 ```
 
-For the code used to generate coverage probabilities and acceleration results, please take a look at *[code/poi_hmm_tinn.R](code/poi_hmm_tinn.R)*.
+For the code used to generate coverage probabilities and acceleration results, please take a look at *[code/poi_hmm_tinn.R](#poi_hmm_tinn.R)*.
 
 ## Simulated dataset
 
-We detail here the code used to simulate two datasets from 2-states Poisson HMMs, one of size \Sexpr{DATA_SIZE_SIMU1} and one of size \Sexpr{DATA_SIZE_SIMU2}.
+We detail here the code used to simulate two datasets from 2-states Poisson HMMs, one of size `r DATA_SIZE_SIMU1` and one of size `r DATA_SIZE_SIMU2`.
 Then, using the same procedure as above, we estimate a model using different initial parameters.
 
 - Set initial parameters (data size and HMM parameters)
@@ -121,7 +114,7 @@ mod_tmb$convergence == 0
 summary(sdreport(obj_tmb), "report")
 ```
 
-For the code used to generate coverage probabilities and acceleration results, please take a look at *[code/poi_hmm_simu1.R](code/poi_hmm_simu1.R)* and *[code/poi_hmm_simu2.R](code/poi_hmm_simu2.R)*.
+For the code used to generate coverage probabilities and acceleration results, please take a look at *[code/poi_hmm_simu1.R](#poi_hmm_simu1.R)* and *[code/poi_hmm_simu2.R](#poi_hmm_simu2.R)*.
 
 ## Lamb data
 We detail here the code used to estimate a 2-state Poisson HMM based on the lamb dataset available in INSERT GITHUB LINK
