@@ -65,7 +65,7 @@ We compute these probabilities in `C++` rather than in `R` because it is faster 
 ```{Rcpp 1poi_hmm.cpp, code=readLines("code/poi_hmm.cpp")[32:46], eval=FALSE}
 ```
 
-Nevertheless, we also need to compute them in `R` for [#forecast]
+Nevertheless, we also need to compute them in `R` for the [Forecast](#forecast) code
 ```{r get.emission.probs}
 ```
 
@@ -74,8 +74,7 @@ Nevertheless, we also need to compute them in `R` for [#forecast]
 The forward probabilities have been detailed in
 TO FIX LINK_TO_hmm_likelihood!!!!!!!!!!!!!!!!!.
 
-We show here a way to compute the log of the forward probabilities,
-using a scaling scheme defined by [see @zucchini, p.66 and p.334].
+We show here a way to compute the log of the forward probabilities, using a scaling scheme defined by [see @zucchini, p.66 and p.334].
 
 ```{r 1log-forward}
 # Compute log-forward probabilities (scaling used)

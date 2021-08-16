@@ -1,13 +1,16 @@
-# Utility functions
+# Utility functions for hmm
+# The "## ---- function_name" text lets us define code chunks to import and display in the supplement on GitHub easily
+# without needing to copy-paste.
 
 ## ---- delta.n2w
-# Function to transform natural parameters to working
+# Function to transform natural parameters to working ones
 delta.n2w <- function(m, delta){
   tdelta <- log(delta[- 1] / delta[1])
   return(tdelta) 
 }
 
 ## ---- delta.w2n
+# Function to transform working parameters to natural ones
 delta.w2n <- function(m, tdelta){
   if (m == 1) return(1)
   
@@ -21,6 +24,7 @@ delta.w2n <- function(m, tdelta){
 }
 
 ## ---- gamma.n2w
+# Function to transform natural parameters to working ones
 gamma.n2w <- function(m, gamma){
   foo <- log(gamma / diag(gamma))
   tgamma <- as.vector(foo[!diag(m)])
@@ -28,6 +32,7 @@ gamma.n2w <- function(m, gamma){
 }
 
 ## ---- gamma.w2n
+# Function to transform working parameters to natural ones
 gamma.w2n <- function(m, tgamma){
   gamma <- diag(m)
   if (m == 1) return(gamma)
@@ -401,28 +406,13 @@ pois.HMM.generate.estimable.sample <- function(ns, mod, testing_params, params_n
       }
     }
     
-    if (label_switch == TRUE) {
-      # Label switching
-      # In practice, we don't use it for the tests because it doesn't sort mod$obj
-      # Sorting them could lead to bugs and errors, and although it is better in principle,
-      # there is little benefit in practice. The benefit would be to infer profile likelihood CIs
-      # more easily when calculating coverage probabilities.
-      natural_parameters <- pois.HMM.label.order(m = m,
-                                                 lambda = mod_temp$lambda,
-                                                 gamma = mod_temp$gamma,
-                                                 delta = mod_temp$delta,
-                                                 lambda_std_error = mod_temp$lambda_std_error,
-                                                 gamma_std_error = mod_temp$gamma_std_error,
-                                                 delta_std_error = mod_temp$delta_std_error)
-    } else {
-      natural_parameters <- list(m = m,
+    natural_parameters <- list(m = m,
                                  lambda = mod_temp$lambda,
                                  gamma = mod_temp$gamma,
                                  delta = mod_temp$delta,
                                  lambda_std_error = mod_temp$lambda_std_error,
                                  gamma_std_error = mod_temp$gamma_std_error,
                                  delta_std_error = mod_temp$delta_std_error)
-    }
     
     # If some parameters are NA for some reason, discard the data
     if (anyNA(natural_parameters[params_names], recursive = TRUE)) {
@@ -433,7 +423,7 @@ pois.HMM.generate.estimable.sample <- function(ns, mod, testing_params, params_n
     # If everything went well, end the "repeat" loop
     break
   }
-  return(c(data = list(new_data$data), natural_parameters = list(natural_parameters), mod = list(mod_temp), failure = list(failure)))
+  return(list(data = list(new_data$data), natural_parameters = list(natural_parameters), mod = list(mod_temp), failure = list(failure)))
 }
 
 ## ---- pois.HMM.label.order
@@ -510,14 +500,14 @@ pois.HMM.label.order <- function(m, lambda, gamma, delta = NULL, lambda_std_erro
 }
 
 ## ---- pois.HMM.mllk
-# Calculate the negative log-likelihood, based on the book
+# Calculate the negative log-likelihood, based on the book by Zucchini
 pois.HMM.mllk <- function(parvect, x_alias, m_alias, stationary = TRUE) {
   # The variable names m and x are already used as parameters for the hessian
   # m_alias and x_alias are only replacement names
   m <- m_alias
   x <- x_alias
   n <- length(x)
-  pn <- pois.HMM.pw2pn(m, parvect)
+  pn <- pois.HMM.pw2pn(m, parvect, stationary = stationary)
   emission_probs <- get.emission.probs(x, pn$lambda)
   
   if (m == 1) return(- sum(log(emission_probs[, 1])))
@@ -543,7 +533,7 @@ pois.HMM.mllk <- function(parvect, x_alias, m_alias, stationary = TRUE) {
 }
 
 ## ---- DM.estimate
-# Compute the ML estimates without using TMB
+# Compute the ML estimates without using TMB. Bases on pois.HMM.mle in the book by Zucchini.
 DM.estimate <- function(x, m, lambda0, gamma0, delta0 = NULL, stationary = TRUE) {
   parvect0 <- pois.HMM.pn2pw(m = m, lambda = lambda0, gamma = gamma0,
                              delta = delta0, stationary = stationary)
