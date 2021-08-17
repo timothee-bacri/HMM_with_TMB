@@ -1,10 +1,32 @@
-# Parameter estimation
+# Parameter estimation techniques for HMMs
 
 In this section we recall basic concepts underlying parameter estimation for HMMs via direct numerical optimization of the likelihood. In terms of notation, we stay as close as possible to @zucchini, where a more detailed presentation is available.
 
-## Utility functions
+## Basic notation and model setup
 
-### In `TMB`
+The conditional distribution densities can be called in `R` as well as in `C++` (provided that the `TMB` template is respected) via
+```{r 2densities}
+dpois(x = 1, lambda = 5) # Poisson
+dnorm(x = 1, mean = 0, sd = 1) # Normal
+```
+Other distributions are available.
+
+## The likelihood function of an HMM
+
+The Poisson HMM negative log-likelihood function in `C++` can be written the following way using `TMB`'s template..
+```{Rcpp 2poi_hmm.cpp, code=readLines("code/poi_hmm.cpp"), eval=FALSE}
+```
+
+The case where $m = 1$ doesn't involve a hidden state, and thus is a Poisson regression instead of a Poisson HMM.
+Nonetheless, `TMB` also accelerates its estimation and may be useful to the reader.
+
+## Forward algorithm and backward algorithm
+
+We refer to the Section [State Inference](#state-inference).
+
+## Reparameterization of the likelihood function
+
+### Utility functions in `TMB`
 
 Defining the negative log-likelihood function requires transforming the working parameters into their natural form.
 We define the function `gamma.w2n` to perform this transformation.
@@ -13,13 +35,12 @@ The function `stat.dist` handles computing the stationary distribution, while `d
 
 They are defined in *[functions/utils.cpp](functions/utils.cpp)*
 
-```{Rcpp 3utils.cpp, code=readLines("functions/utils.cpp"), eval=FALSE}
+```{Rcpp 2utils.cpp, code=readLines("functions/utils.cpp"), eval=FALSE}
 ```
 
 Transforming the Poisson means into their natural form can be done simply with the `exp` function and doesn't require a dedicated function.
 
-### In `R`
-#### Parameter transformation
+### Utility functions in `R`
 While `TMB` requires functions to transform working parameters to their natural form, pre-processing in `R` requires the inverse transformation.
 
 Functions to achieve this are available in @zucchini [p.51] and are displayed here with explaining comments for convenience.
@@ -45,7 +66,6 @@ When assuming a stationary distribution, computing it can be done via the follow
 \]
 
 
-
 #### Label switching {#label-switching}
 As the model gets estimated each time, we do not impose by default an order for the states.
 This can lead to the label switching problem, where states aren't ordered the same way in each model and are grouped incorrectly.
@@ -60,7 +80,7 @@ A function to achieve this is named `pois.HMM.label.order` and presented below.
 
 We will go through an example to better understand the process.
 For readability, the TPM is filled with standard row and column indexes instead of probabilities.
-```{r 3label-switch}
+```{r 2label-switch}
 lambda <- c(3, 1, 2)
 gamma <- matrix(c(11, 12, 13,
                   21, 22, 23,
@@ -76,11 +96,3 @@ However, @bulla [Section 3.2 p. 7] shows this can impose optimization issues: "o
 These utility functions or subroutines are not complicated, but as you can see, they would cloud up your main code.
 Therefore, we put them in functions we can call from our main program.
 
-## Negative log-likelihood<br> in `TMB`
-
-The Poisson HMM negative log-likelihood function in R can be written the following way.
-```{Rcpp 3poi_hmm.cpp, code=readLines("code/poi_hmm.cpp"), eval=FALSE}
-```
-
-The case where $m = 1$ doesn't involve a hidden state, and thus is a Poisson regression instead of a Poisson HMM.
-Nonetheless, `TMB` also accelerates its estimation and may be useful to the reader.

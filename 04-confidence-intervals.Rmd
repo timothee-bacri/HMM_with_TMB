@@ -6,7 +6,7 @@ From that list of new estimates we can get the 2.5th and 97.5th percentiles and 
 We show below how to derive confidence intervals using `TMB`, a likelihood profile based method, and parametric bootstrap, based on the 2 state Poisson HMM estimates.
 
 For all three methods, we require a model, so we generate a 2-state Poisson HMM based on the TYT dataset
-```{r 5ci_setup}
+```{r 4ci_setup}
 set.seed(123)
 library(TMB)
 TMB::compile("code/poi_hmm.cpp")
@@ -42,7 +42,7 @@ gamma <- ML_natural_estimates$gamma
 delta <- ML_natural_estimates$delta
 ```
 
-## Wald-type
+## Wald-type confidence<br>intervals based on the Hessian
 
 Now that we have a model estimated via `TMB`, we can derive Wald-type [@wald] confidence intervals.
 For example, the $(1 - \alpha) \%$ CI for $\lambda_1$ is given by $\lambda_1 \pm z_{1-\alpha/2} * \sigma_{\lambda_1}$ where $z_{x}$ is the $x$-percentile of the standard normal distribution, and $\sigma_{\lambda_1}$ is the standard error of $\lambda_1$ obtained via the delta method.
@@ -52,13 +52,13 @@ The standard errors of the working parameters `tlambda` and `tgamma` can be retr
 However, it is usually more interesting to access the standard errors of the natural parameters `lambda`, `gamma` and `delta`. This requires adding a few lines to the C++ file to produce these standard errors, as detailed in [Getting started with a linear regression].
 
 Be careful: `adrep` lists `gamma` column-wise
-```{r 5adrep_warning}
+```{r 4adrep_warning}
 adrep <- summary(sdreport(obj_tmb), "report")
 adrep
 ```
 
 Standard errors for $\hat{\b{\lambda}}$
-```{r 5adrep_lambda}
+```{r 4adrep_lambda}
 rows <- rownames(adrep) == "lambda"
 lambda <- adrep[rows, "Estimate"]
 lambda_std_error <- adrep[rows, "Std. Error"]
@@ -67,7 +67,7 @@ lambda_std_error
 ```
 
 Standard errors for $\hat{\b{\Gamma}}$
-```{r 5adrep_gamma}
+```{r 4adrep_gamma}
 rows <- rownames(adrep) == "gamma"
 gamma <- adrep[rows, "Estimate"]
 gamma <- matrix(gamma, ncol = m)
@@ -78,7 +78,7 @@ gamma_std_error
 ```
 
 Standard errors for $\hat{\b{\delta}}$
-```{r 5adrep_delta}
+```{r 4adrep_delta}
 rows <- rownames(adrep) == "delta"
 delta <- adrep[rows, "Estimate"]
 delta_std_error <- adrep[rows, "Std. Error"]
@@ -86,14 +86,84 @@ delta
 delta_std_error
 ```
 
-## Parametric bootstrap
+## Likelihood profile based confidence intervals
+
+Our nll function is parametrized in terms of and optimized with respect to the working parameters.
+In practice, this aspect is easy to deal with.
+Once a profile CI for the working parameter (here $\eta_2$) has been obtained following the procedure above, the corresponding CI for the natural parameter $\lambda_2$ results directly from transforming the upper and lower boundary of the CI for $\eta_2$ by the one-to-one transformation $\lambda_2 = \exp(\eta_2)$.
+For further details on the invariance of likelihood-based CIs to parameter transformations, we refer to [@meeker].
+
+Profiling $\eta_2$ (the working parameter corresponding to $\lambda_2$) with `TMB` can be done with
+```{r 4profile}
+profile <- tmbprofile(obj = obj_tmb,
+                      name = 2,
+                      trace = FALSE)
+head(profile)
+```
+
+A plot allows for a visual representation of the profile
+```{r 4profile-plot}
+# par(mgp = c(2, 0.5, 0), mar = c(3, 3, 2.5, 1),
+    # cex.lab = 1.5)
+plot(profile, level = 0.95, 
+     xlab = expression(eta[2]),
+     ylab = "nll")
+```
+
+Then we can infer $\eta_2$'s confidence interval, and hence $\lambda_2$'s confidence interval
+```{r 4profile-confint}
+confint(profile)
+exp(confint(profile))
+```
+
+Further, profiling the TPM is done similarly.
+However, since individual natural TPM parameters cannot be deduced from single working parameters, we need to profile the entire working TPM then transform it back to a natural TPM.
+
+```{r 4profile-tpm}
+profile3 <- tmbprofile(obj = obj_tmb,
+                       name = 3,
+                       trace = FALSE)
+profile4 <- tmbprofile(obj = obj_tmb,
+                       name = 4,
+                       trace = FALSE)
+# Obtain confidence intervals for working parameters
+tgamma_3_confint <- confint(profile3)
+tgamma_4_confint <- confint(profile4)
+
+# Group lower bounds and upper bounds
+lower <- c(tgamma_3_confint[1], tgamma_4_confint[1])
+upper <- c(tgamma_3_confint[2], tgamma_4_confint[2])
+
+# Infer bounds on natural parameters
+gamma_1 <- gamma.w2n(m, lower)
+gamma_2 <- gamma.w2n(m, upper)
+
+# Display unsorted lower and upper bounds
+gamma_1
+gamma_2
+
+# Sorted confidence interval for gamma_11
+sort(c(gamma_1[1, 1], gamma_2[1, 1]))
+```
+
+It is noteworthy that `gamma_1` is not necessarily lower than `gamma_2`, because only the working confidence intervals are automatically sorted.
+
+Also note that linear combinations of parameters can be profiled by passing the `lincomb` argument.
+More details are available by executing `??TMB::tmbprofile` to access the `tmbprofile`'s help.
+
+The `name` parameter should be the index of a parameter to profile.
+While the function's help mentions it can be a parameter's name, the first two parameters are both named `tlambda` as can be seen here
+```{r 4w-param-name}
+mod_tmb$par
+```
+## Bootstrap-based<br>confidence intervals
 ### Generating data {#generating-data}
 In order to perform a parametric bootstrap, we need to be able to generate data from a set of parameters.
 
 For readability and code maintenance, it is conventional to store procedures that will be used more than once into functions.
 
 The data-generating function is defined in [@zucchini, Section A.1.5 p.333].
-```{r 5generate_sample-original, eval=FALSE}
+```{r 4generate_sample-original, eval=FALSE}
 pois.HMM.generate.sample <- function(ns,mod) {
   mvect <- 1:mod$m
   state <- numeric(ns)
@@ -120,7 +190,7 @@ This function relies on the custom function `TMB.estimate` which is a wrapper of
 ```
 
 ### Bootstrap
-```{r 5bootstrap-code, eval = FALSE}
+```{r 4bootstrap-code, eval = FALSE}
 set.seed(123)
 library(TMB)
 TMB::compile("code/poi_hmm.cpp")
@@ -215,74 +285,3 @@ Since we are looking to aggregate these estimates in order to derive CI through 
 
 The first that comes to mind is the ascending order.
 To ensure that $\b{\hat{\lambda}}$ are kept in ascending order, we refer to our Section [Label Switching](#label-switching) for a solution to this issue.
-
-## Negative log-likelihood<br> profile
-
-Our nll function is parametrized in terms of and optimized with respect to the working parameters.
-In practice, this aspect is easy to deal with.
-Once a profile CI for the working parameter (here $\eta_2$) has been obtained following the procedure above, the corresponding CI for the natural parameter $\lambda_2$ results directly from transforming the upper and lower boundary of the CI for $\eta_2$ by the one-to-one transformation $\lambda_2 = \exp(\eta_2)$.
-For further details on the invariance of likelihood-based CIs to parameter transformations, we refer to [@meeker].
-
-Profiling $\eta_2$ (the working parameter corresponding to $\lambda_2$) with `TMB` can be done with
-```{r 5profile}
-profile <- tmbprofile(obj = obj_tmb,
-                      name = 2,
-                      trace = FALSE)
-head(profile)
-```
-
-A plot allows for a visual representation of the profile
-```{r 5profile-plot}
-# par(mgp = c(2, 0.5, 0), mar = c(3, 3, 2.5, 1),
-    # cex.lab = 1.5)
-plot(profile, level = 0.95, 
-     xlab = expression(eta[2]),
-     ylab = "nll")
-```
-
-Then we can infer $\eta_2$'s confidence interval, and hence $\lambda_2$'s confidence interval
-```{r 5profile-confint}
-confint(profile)
-exp(confint(profile))
-```
-
-Further, profiling the TPM is done similarly.
-However, since individual natural TPM parameters cannot be deduced from single working parameters, we need to profile the entire working TPM then transform it back to a natural TPM.
-
-```{r 5profile-tpm}
-profile3 <- tmbprofile(obj = obj_tmb,
-                       name = 3,
-                       trace = FALSE)
-profile4 <- tmbprofile(obj = obj_tmb,
-                       name = 4,
-                       trace = FALSE)
-# Obtain confidence intervals for working parameters
-tgamma_3_confint <- confint(profile3)
-tgamma_4_confint <- confint(profile4)
-
-# Group lower bounds and upper bounds
-lower <- c(tgamma_3_confint[1], tgamma_4_confint[1])
-upper <- c(tgamma_3_confint[2], tgamma_4_confint[2])
-
-# Infer bounds on natural parameters
-gamma_1 <- gamma.w2n(m, lower)
-gamma_2 <- gamma.w2n(m, upper)
-
-# Display unsorted lower and upper bounds
-gamma_1
-gamma_2
-
-# Sorted confidence interval for gamma_11
-sort(c(gamma_1[1, 1], gamma_2[1, 1]))
-```
-
-It is noteworthy that `gamma_1` is not necessarily lower than `gamma_2`, because only the working confidence intervals are automatically sorted.
-
-Also note that linear combinations of parameters can be profiled by passing the `lincomb` argument.
-More details are available by executing `??TMB::tmbprofile` to access the `tmbprofile`'s help.
-
-The `name` parameter should be the index of a parameter to profile.
-While the function's help mentions it can be a parameter's name, the first two parameters are both named `tlambda` as can be seen here
-```{r 5w-param-name}
-mod_tmb$par
-```

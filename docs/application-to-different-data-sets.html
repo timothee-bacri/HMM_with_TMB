@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Application to different data sets | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <title>Chapter 5 Application to different data sets | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
   <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Application to different data sets | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:title" content="Chapter 5 Application to different data sets | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Application to different data sets | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta name="twitter:title" content="Chapter 5 Application to different data sets | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   
   <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
   
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-08-17" />
+<meta name="date" content="2021-08-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -164,96 +164,97 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Summary</a></li>
 <li class="chapter" data-level="" data-path="license.html"><a href="license.html"><i class="fa fa-check"></i>License</a></li>
-<li class="chapter" data-level="1" data-path="state-inference.html"><a href="state-inference.html"><i class="fa fa-check"></i><b>1</b> State inference</a>
+<li class="chapter" data-level="1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>1</b> Principles of using <code>TMB</code> for MLE</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="state-inference.html"><a href="state-inference.html#prepare-the-model"><i class="fa fa-check"></i><b>1.1</b> Prepare the model</a></li>
-<li class="chapter" data-level="1.2" data-path="state-inference.html"><a href="state-inference.html#setup"><i class="fa fa-check"></i><b>1.2</b> Setup</a>
-<ul>
-<li class="chapter" data-level="1.2.1" data-path="state-inference.html"><a href="state-inference.html#define-variables"><i class="fa fa-check"></i><b>1.2.1</b> Define variables</a></li>
-<li class="chapter" data-level="1.2.2" data-path="state-inference.html"><a href="state-inference.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>1.2.2</b> Emission/output probabilities</a></li>
+<li class="chapter" data-level="1.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#setup"><i class="fa fa-check"></i><b>1.1</b> Setup</a></li>
+<li class="chapter" data-level="1.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#linear-regression-example"><i class="fa fa-check"></i><b>1.2</b> Linear regression example</a></li>
+<li class="chapter" data-level="1.3" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#extending-the-c-nll"><i class="fa fa-check"></i><b>1.3</b> Extending the <code>C++</code> nll</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="state-inference.html"><a href="state-inference.html#log-forward"><i class="fa fa-check"></i><b>1.3</b> Log-forward probabilities</a></li>
-<li class="chapter" data-level="1.4" data-path="state-inference.html"><a href="state-inference.html#log-backward"><i class="fa fa-check"></i><b>1.4</b> Log-backward probabilities</a></li>
-<li class="chapter" data-level="1.5" data-path="state-inference.html"><a href="state-inference.html#local-decoding"><i class="fa fa-check"></i><b>1.5</b> Local decoding</a></li>
-<li class="chapter" data-level="1.6" data-path="state-inference.html"><a href="state-inference.html#forecast"><i class="fa fa-check"></i><b>1.6</b> Forecast</a></li>
-<li class="chapter" data-level="1.7" data-path="state-inference.html"><a href="state-inference.html#global-decoding"><i class="fa fa-check"></i><b>1.7</b> Global decoding</a></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for MLE</a>
+<li class="chapter" data-level="2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html"><i class="fa fa-check"></i><b>2</b> Parameter estimation techniques for HMMs</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#setting-up-tmb"><i class="fa fa-check"></i><b>2.1</b> Setting up <code>TMB</code></a></li>
-<li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#getting-started"><i class="fa fa-check"></i><b>2.2</b> Getting started</a></li>
-<li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#extending-the-c-nll"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> nll</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation</a>
+<li class="chapter" data-level="2.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#basic-notation-and-model-setup"><i class="fa fa-check"></i><b>2.1</b> Basic notation and model setup</a></li>
+<li class="chapter" data-level="2.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#the-likelihood-function-of-an-hmm"><i class="fa fa-check"></i><b>2.2</b> The likelihood function of an HMM</a></li>
+<li class="chapter" data-level="2.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#forward-algorithm-and-backward-algorithm"><i class="fa fa-check"></i><b>2.3</b> Forward algorithm and backward algorithm</a></li>
+<li class="chapter" data-level="2.4" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#reparameterization-of-the-likelihood-function"><i class="fa fa-check"></i><b>2.4</b> Reparameterization of the likelihood function</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="parameter-estimation.html"><a href="parameter-estimation.html#utility-functions"><i class="fa fa-check"></i><b>3.1</b> Utility functions</a>
+<li class="chapter" data-level="2.4.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-tmb"><i class="fa fa-check"></i><b>2.4.1</b> Utility functions in <code>TMB</code></a></li>
+<li class="chapter" data-level="2.4.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-r"><i class="fa fa-check"></i><b>2.4.2</b> Utility functions in <code>R</code></a>
 <ul>
-<li class="chapter" data-level="3.1.1" data-path="parameter-estimation.html"><a href="parameter-estimation.html#in-tmb"><i class="fa fa-check"></i><b>3.1.1</b> In <code>TMB</code></a></li>
-<li class="chapter" data-level="3.1.2" data-path="parameter-estimation.html"><a href="parameter-estimation.html#in-r"><i class="fa fa-check"></i><b>3.1.2</b> In <code>R</code></a>
-<ul>
-<li class="chapter" data-level="3.1.2.1" data-path="parameter-estimation.html"><a href="parameter-estimation.html#parameter-transformation"><i class="fa fa-check"></i><b>3.1.2.1</b> Parameter transformation</a></li>
-<li class="chapter" data-level="3.1.2.2" data-path="parameter-estimation.html"><a href="parameter-estimation.html#label-switching"><i class="fa fa-check"></i><b>3.1.2.2</b> Label switching</a></li>
+<li class="chapter" data-level="2.4.2.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#label-switching"><i class="fa fa-check"></i><b>2.4.2.1</b> Label switching</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="parameter-estimation.html"><a href="parameter-estimation.html#negative-log-likelihood-in-tmb"><i class="fa fa-check"></i><b>3.2</b> Negative log-likelihood<br> in <code>TMB</code></a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using <code>TMB</code></a>
+<li class="chapter" data-level="3" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>3</b> Using <code>TMB</code></a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
-<li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#optimization"><i class="fa fa-check"></i><b>4.2</b> Optimization</a></li>
-<li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#nested-models"><i class="fa fa-check"></i><b>4.3</b> Nested models</a>
+<li class="chapter" data-level="3.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>3.1</b> Likelihood function</a></li>
+<li class="chapter" data-level="3.2" data-path="using-tmb.html"><a href="using-tmb.html#optimization"><i class="fa fa-check"></i><b>3.2</b> Optimization</a></li>
+<li class="chapter" data-level="3.3" data-path="using-tmb.html"><a href="using-tmb.html#basic-nested-model-specification"><i class="fa fa-check"></i><b>3.3</b> Basic nested model specification</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>4.3.1</b> Principle</a></li>
-<li class="chapter" data-level="4.3.2" data-path="using-tmb.html"><a href="using-tmb.html#limits"><i class="fa fa-check"></i><b>4.3.2</b> Limits</a></li>
-<li class="chapter" data-level="4.3.3" data-path="using-tmb.html"><a href="using-tmb.html#param-eq-constraints"><i class="fa fa-check"></i><b>4.3.3</b> Parameter equality constraints</a></li>
+<li class="chapter" data-level="3.3.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>3.3.1</b> Principle</a></li>
+<li class="chapter" data-level="3.3.2" data-path="using-tmb.html"><a href="using-tmb.html#limits"><i class="fa fa-check"></i><b>3.3.2</b> Limits</a></li>
+<li class="chapter" data-level="3.3.3" data-path="using-tmb.html"><a href="using-tmb.html#param-eq-constraints"><i class="fa fa-check"></i><b>3.3.3</b> Parameter equality constraints</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#appendix"><i class="fa fa-check"></i><b>4.4</b> Appendix</a></li>
+<li class="chapter" data-level="3.4" data-path="using-tmb.html"><a href="using-tmb.html#state-inference"><i class="fa fa-check"></i><b>3.4</b> State inference</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="using-tmb.html"><a href="using-tmb.html#prepare-the-model"><i class="fa fa-check"></i><b>3.4.1</b> Prepare the model</a></li>
+<li class="chapter" data-level="3.4.2" data-path="using-tmb.html"><a href="using-tmb.html#setup-1"><i class="fa fa-check"></i><b>3.4.2</b> Setup</a>
+<ul>
+<li class="chapter" data-level="3.4.2.1" data-path="using-tmb.html"><a href="using-tmb.html#define-variables"><i class="fa fa-check"></i><b>3.4.2.1</b> Define variables</a></li>
+<li class="chapter" data-level="3.4.2.2" data-path="using-tmb.html"><a href="using-tmb.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>3.4.2.2</b> Emission/output probabilities</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a>
-<ul>
-<li class="chapter" data-level="5.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#wald-type"><i class="fa fa-check"></i><b>5.1</b> Wald-type</a></li>
-<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#parametric-bootstrap"><i class="fa fa-check"></i><b>5.2</b> Parametric bootstrap</a>
-<ul>
-<li class="chapter" data-level="5.2.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>5.2.1</b> Generating data</a></li>
-<li class="chapter" data-level="5.2.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>5.2.2</b> Bootstrap</a></li>
+<li class="chapter" data-level="3.4.3" data-path="using-tmb.html"><a href="using-tmb.html#log-forward"><i class="fa fa-check"></i><b>3.4.3</b> Log-forward probabilities</a></li>
+<li class="chapter" data-level="3.4.4" data-path="using-tmb.html"><a href="using-tmb.html#log-backward"><i class="fa fa-check"></i><b>3.4.4</b> Log-backward probabilities</a></li>
+<li class="chapter" data-level="3.4.5" data-path="using-tmb.html"><a href="using-tmb.html#local-decoding"><i class="fa fa-check"></i><b>3.4.5</b> Local decoding</a></li>
+<li class="chapter" data-level="3.4.6" data-path="using-tmb.html"><a href="using-tmb.html#forecast"><i class="fa fa-check"></i><b>3.4.6</b> Forecast</a></li>
+<li class="chapter" data-level="3.4.7" data-path="using-tmb.html"><a href="using-tmb.html#global-decoding"><i class="fa fa-check"></i><b>3.4.7</b> Global decoding</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#negative-log-likelihood-profile"><i class="fa fa-check"></i><b>5.3</b> Negative log-likelihood<br> profile</a></li>
+<li class="chapter" data-level="3.5" data-path="using-tmb.html"><a href="using-tmb.html#appendix"><i class="fa fa-check"></i><b>3.5</b> Appendix</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a>
+<li class="chapter" data-level="4" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>4</b> Confidence intervals</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-dataset"><i class="fa fa-check"></i><b>6.1</b> TYT dataset</a></li>
-<li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-dataset"><i class="fa fa-check"></i><b>6.2</b> Simulated dataset</a></li>
-<li class="chapter" data-level="6.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>6.3</b> Lamb data</a></li>
+<li class="chapter" data-level="4.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#wald-type-confidence-intervals-based-on-the-hessian"><i class="fa fa-check"></i><b>4.1</b> Wald-type confidence<br>intervals based on the Hessian</a></li>
+<li class="chapter" data-level="4.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#likelihood-profile-based-confidence-intervals"><i class="fa fa-check"></i><b>4.2</b> Likelihood profile based confidence intervals</a></li>
+<li class="chapter" data-level="4.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-based-confidence-intervals"><i class="fa fa-check"></i><b>4.3</b> Bootstrap-based<br>confidence intervals</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>4.3.1</b> Generating data</a></li>
+<li class="chapter" data-level="4.3.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>4.3.2</b> Bootstrap</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="github.html"><a href="github.html"><i class="fa fa-check"></i><b>7</b> GitHub</a>
+</ul></li>
+<li class="chapter" data-level="5" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>5</b> Application to different data sets</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="github.html"><a href="github.html#directory-structure"><i class="fa fa-check"></i><b>7.1</b> Directory structure</a>
+<li class="chapter" data-level="5.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-data"><i class="fa fa-check"></i><b>5.1</b> TYT data</a></li>
+<li class="chapter" data-level="5.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>5.2</b> Lamb data</a></li>
+<li class="chapter" data-level="5.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-data"><i class="fa fa-check"></i><b>5.3</b> Simulated data</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="github.html"><a href="github.html"><i class="fa fa-check"></i><b>6</b> GitHub</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="github.html"><a href="github.html#code"><i class="fa fa-check"></i><b>7.1.1</b> code/</a></li>
-<li class="chapter" data-level="7.1.2" data-path="github.html"><a href="github.html#linreg.cpp"><i class="fa fa-check"></i><b>7.1.2</b> code/linreg.cpp</a></li>
-<li class="chapter" data-level="7.1.3" data-path="github.html"><a href="github.html#codelinreg.dll"><i class="fa fa-check"></i><b>7.1.3</b> code/linreg.dll</a></li>
-<li class="chapter" data-level="7.1.4" data-path="github.html"><a href="github.html#linreg.o"><i class="fa fa-check"></i><b>7.1.4</b> code/linreg.o</a></li>
-<li class="chapter" data-level="7.1.5" data-path="github.html"><a href="github.html#linreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.5</b> code/linreg_extended.cpp</a></li>
-<li class="chapter" data-level="7.1.6" data-path="github.html"><a href="github.html#codelinreg_extended.dll"><i class="fa fa-check"></i><b>7.1.6</b> code/linreg_extended.dll</a></li>
-<li class="chapter" data-level="7.1.7" data-path="github.html"><a href="github.html#codelinreg_extended.o"><i class="fa fa-check"></i><b>7.1.7</b> code/linreg_extended.o</a></li>
-<li class="chapter" data-level="7.1.8" data-path="github.html"><a href="github.html#main.R"><i class="fa fa-check"></i><b>7.1.8</b> code/main.R</a></li>
-<li class="chapter" data-level="7.1.9" data-path="github.html"><a href="github.html#codepackages.r"><i class="fa fa-check"></i><b>7.1.9</b> code/packages.R</a></li>
-<li class="chapter" data-level="7.1.10" data-path="github.html"><a href="github.html#poi_hmm.cpp"><i class="fa fa-check"></i><b>7.1.10</b> code/poi_hmm.cpp</a></li>
-<li class="chapter" data-level="7.1.11" data-path="github.html"><a href="github.html#codepoi_hmm.dll"><i class="fa fa-check"></i><b>7.1.11</b> code/poi_hmm.dll</a></li>
-<li class="chapter" data-level="7.1.12" data-path="github.html"><a href="github.html#codepoi_hmm.o"><i class="fa fa-check"></i><b>7.1.12</b> code/poi_hmm.o</a></li>
-<li class="chapter" data-level="7.1.13" data-path="github.html"><a href="github.html#poi_hmm_lamb.R"><i class="fa fa-check"></i><b>7.1.13</b> code/poi_hmm_lamb.R</a></li>
-<li class="chapter" data-level="7.1.14" data-path="github.html"><a href="github.html#poi_hmm_simu1.R"><i class="fa fa-check"></i><b>7.1.14</b> code/poi_hmm_simu1.R</a></li>
-<li class="chapter" data-level="7.1.15" data-path="github.html"><a href="github.html#poi_hmm_simu2.R"><i class="fa fa-check"></i><b>7.1.15</b> code/poi_hmm_simu2.R</a></li>
-<li class="chapter" data-level="7.1.16" data-path="github.html"><a href="github.html#poi_hmm_tinn.R"><i class="fa fa-check"></i><b>7.1.16</b> code/poi_hmm_tinn.R</a></li>
-<li class="chapter" data-level="7.1.17" data-path="github.html"><a href="github.html#setup_parameters.R"><i class="fa fa-check"></i><b>7.1.17</b> code/setup_parameters.R</a></li>
-<li class="chapter" data-level="7.1.18" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>7.1.18</b> data/</a></li>
-<li class="chapter" data-level="7.1.19" data-path="github.html"><a href="github.html#datafetal-lamb.rdata"><i class="fa fa-check"></i><b>7.1.19</b> data/fetal-lamb.RData</a></li>
-<li class="chapter" data-level="7.1.20" data-path="github.html"><a href="github.html#dataresults_lamb.rdata"><i class="fa fa-check"></i><b>7.1.20</b> data/results_lamb.RData</a></li>
-<li class="chapter" data-level="7.1.21" data-path="github.html"><a href="github.html#tinnitus.RData"><i class="fa fa-check"></i><b>7.1.21</b> data/tinnitus.RData</a></li>
-<li class="chapter" data-level="7.1.22" data-path="github.html"><a href="github.html#functions"><i class="fa fa-check"></i><b>7.1.22</b> functions/</a></li>
-<li class="chapter" data-level="7.1.23" data-path="github.html"><a href="github.html#functionsutils.cpp"><i class="fa fa-check"></i><b>7.1.23</b> functions/utils.cpp</a></li>
-<li class="chapter" data-level="7.1.24" data-path="github.html"><a href="github.html#functionsutils.r"><i class="fa fa-check"></i><b>7.1.24</b> functions/utils.R</a></li>
-<li class="chapter" data-level="7.1.25" data-path="github.html"><a href="github.html#utils_linreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.25</b> functions/utils_linreg_extended.cpp</a></li>
+<li class="chapter" data-level="6.1" data-path="github.html"><a href="github.html#direct-fileory-structure"><i class="fa fa-check"></i><b>6.1</b> Direct fileory structure</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="github.html"><a href="github.html#code"><i class="fa fa-check"></i><b>6.1.1</b> code/</a></li>
+<li class="chapter" data-level="6.1.2" data-path="github.html"><a href="github.html#linreg.cpp"><i class="fa fa-check"></i><b>6.1.2</b> code/linreg.cpp</a></li>
+<li class="chapter" data-level="6.1.3" data-path="github.html"><a href="github.html#codelinreg.dll"><i class="fa fa-check"></i><b>6.1.3</b> code/linreg.dll</a></li>
+<li class="chapter" data-level="6.1.4" data-path="github.html"><a href="github.html#linreg.o"><i class="fa fa-check"></i><b>6.1.4</b> code/linreg.o</a></li>
+<li class="chapter" data-level="6.1.5" data-path="github.html"><a href="github.html#linreg_extended.cpp"><i class="fa fa-check"></i><b>6.1.5</b> code/linreg_extended.cpp</a></li>
+<li class="chapter" data-level="6.1.6" data-path="github.html"><a href="github.html#codelinreg_extended.dll"><i class="fa fa-check"></i><b>6.1.6</b> code/linreg_extended.dll</a></li>
+<li class="chapter" data-level="6.1.7" data-path="github.html"><a href="github.html#codelinreg_extended.o"><i class="fa fa-check"></i><b>6.1.7</b> code/linreg_extended.o</a></li>
+<li class="chapter" data-level="6.1.8" data-path="github.html"><a href="github.html#main.R"><i class="fa fa-check"></i><b>6.1.8</b> code/main.R</a></li>
+<li class="chapter" data-level="6.1.9" data-path="github.html"><a href="github.html#codepackages.r"><i class="fa fa-check"></i><b>6.1.9</b> code/packages.R</a></li>
+<li class="chapter" data-level="6.1.10" data-path="github.html"><a href="github.html#poi_hmm.cpp"><i class="fa fa-check"></i><b>6.1.10</b> code/poi_hmm.cpp</a></li>
+<li class="chapter" data-level="6.1.11" data-path="github.html"><a href="github.html#codepoi_hmm.dll"><i class="fa fa-check"></i><b>6.1.11</b> code/poi_hmm.dll</a></li>
+<li class="chapter" data-level="6.1.12" data-path="github.html"><a href="github.html#codepoi_hmm.o"><i class="fa fa-check"></i><b>6.1.12</b> code/poi_hmm.o</a></li>
+<li class="chapter" data-level="6.1.13" data-path="github.html"><a href="github.html#poi_hmm_lamb.R"><i class="fa fa-check"></i><b>6.1.13</b> code/poi_hmm_lamb.R</a></li>
+<li class="chapter" data-level="6.1.14" data-path="github.html"><a href="github.html#poi_hmm_simu1.R"><i class="fa fa-check"></i><b>6.1.14</b> code/poi_hmm_simu1.R</a></li>
+<li class="chapter" data-level="6.1.15" data-path="github.html"><a href="github.html#poi_hmm_simu2.R"><i class="fa fa-check"></i><b>6.1.15</b> code/poi_hmm_simu2.R</a></li>
+<li class="chapter" data-level="6.1.16" data-path="github.html"><a href="github.html#poi_hmm_tinn.R"><i class="fa fa-check"></i><b>6.1.16</b> code/poi_hmm_tinn.R</a></li>
+<li class="chapter" data-level="6.1.17" data-path="github.html"><a href="github.html#setup_parameters.R"><i class="fa fa-check"></i><b>6.1.17</b> code/setup_parameters.R</a></li>
+<li class="chapter" data-level="6.1.18" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>6.1.18</b> data/</a></li>
+<li class="chapter" data-level="6.1.19" data-path="github.html"><a href="github.html#datafetal-lamb.rdata"><i class="fa fa-check"></i><b>6.1.19</b> data/fetal-lamb.RData</a></li>
+<li class="chapter" data-level="6.1.20" data-path="github.html"><a href="github.html#dataresults_lamb.rdata"><i class="fa fa-check"></i><b>6.1.20</b> data/results_lamb.RData</a></li>
+<li class="chapter" data-level="6.1.21" data-path="github.html"><a href="github.html#tinnitus.RData"><i class="fa fa-check"></i><b>6.1.21</b> data/tinnitus.RData</a></li>
+<li class="chapter" data-level="6.1.22" data-path="github.html"><a href="github.html#functions"><i class="fa fa-check"></i><b>6.1.22</b> functions/</a></li>
+<li class="chapter" data-level="6.1.23" data-path="github.html"><a href="github.html#functionsutils.cpp"><i class="fa fa-check"></i><b>6.1.23</b> functions/utils.cpp</a></li>
+<li class="chapter" data-level="6.1.24" data-path="github.html"><a href="github.html#functionsutils.r"><i class="fa fa-check"></i><b>6.1.24</b> functions/utils.R</a></li>
+<li class="chapter" data-level="6.1.25" data-path="github.html"><a href="github.html#utils_linreg_extended.cpp"><i class="fa fa-check"></i><b>6.1.25</b> functions/utils_linreg_extended.cpp</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
@@ -281,54 +282,54 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="application-to-different-data-sets" class="section level1" number="6">
-<h1><span class="header-section-number">Chapter 6</span> Application to different data sets</h1>
-<div id="tyt-dataset" class="section level2" number="6.1">
-<h2><span class="header-section-number">6.1</span> TYT dataset</h2>
+<div id="application-to-different-data-sets" class="section level1" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Application to different data sets</h1>
+<div id="tyt-data" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> TYT data</h2>
 <p>We detail here the code used to estimate a 2-state Poisson HMM based on the tinnitus dataset available in <em><a href="github.html#tinnitus.RData">data/tinnitus.RData</a></em>.</p>
 <ul>
 <li>Set a seed for randomness, and load files</li>
 </ul>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="application-to-different-data-sets.html#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb152-2"><a href="application-to-different-data-sets.html#cb152-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
-<span id="cb152-3"><a href="application-to-different-data-sets.html#cb152-3" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="application-to-different-data-sets.html#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb156-2"><a href="application-to-different-data-sets.html#cb156-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
+<span id="cb156-3"><a href="application-to-different-data-sets.html#cb156-3" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="application-to-different-data-sets.html#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="application-to-different-data-sets.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span></code></pre></div>
 <pre><code>## Warning: 3 external pointers will be removed</code></pre>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="application-to-different-data-sets.html#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
-<span id="cb156-2"><a href="application-to-different-data-sets.html#cb156-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="application-to-different-data-sets.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
+<span id="cb160-2"><a href="application-to-different-data-sets.html#cb160-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span></code></pre></div>
 <ul>
 <li>Set initial parameters</li>
 </ul>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="application-to-different-data-sets.html#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters and covariates</span></span>
-<span id="cb157-2"><a href="application-to-different-data-sets.html#cb157-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb157-3"><a href="application-to-different-data-sets.html#cb157-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
-<span id="cb157-4"><a href="application-to-different-data-sets.html#cb157-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
-<span id="cb157-5"><a href="application-to-different-data-sets.html#cb157-5" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">quantile</span>(tinn_data, <span class="fl">0.1</span>), <span class="fu">quantile</span>(tinn_data, <span class="fl">0.9</span>), <span class="at">length.out =</span> m)</span>
-<span id="cb157-6"><a href="application-to-different-data-sets.html#cb157-6" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(gamma)</span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="application-to-different-data-sets.html#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters and covariates</span></span>
+<span id="cb161-2"><a href="application-to-different-data-sets.html#cb161-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb161-3"><a href="application-to-different-data-sets.html#cb161-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
+<span id="cb161-4"><a href="application-to-different-data-sets.html#cb161-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
+<span id="cb161-5"><a href="application-to-different-data-sets.html#cb161-5" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">quantile</span>(tinn_data, <span class="fl">0.1</span>), <span class="fu">quantile</span>(tinn_data, <span class="fl">0.9</span>), <span class="at">length.out =</span> m)</span>
+<span id="cb161-6"><a href="application-to-different-data-sets.html#cb161-6" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(gamma)</span></code></pre></div>
 <ul>
 <li>Transform them into working parameters</li>
 </ul>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="application-to-different-data-sets.html#cb158-1" aria-hidden="true" tabindex="-1"></a>working_params <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
-<span id="cb158-2"><a href="application-to-different-data-sets.html#cb158-2" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span></code></pre></div>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="application-to-different-data-sets.html#cb162-1" aria-hidden="true" tabindex="-1"></a>working_params <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
+<span id="cb162-2"><a href="application-to-different-data-sets.html#cb162-2" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span></code></pre></div>
 <ul>
 <li>Estimate the parameters via a function</li>
 </ul>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="application-to-different-data-sets.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the TMB object</span></span>
-<span id="cb159-2"><a href="application-to-different-data-sets.html#cb159-2" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, working_params,</span>
-<span id="cb159-3"><a href="application-to-different-data-sets.html#cb159-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb159-4"><a href="application-to-different-data-sets.html#cb159-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb159-5"><a href="application-to-different-data-sets.html#cb159-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize</span></span>
-<span id="cb159-6"><a href="application-to-different-data-sets.html#cb159-6" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
-<span id="cb159-7"><a href="application-to-different-data-sets.html#cb159-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
-<span id="cb159-8"><a href="application-to-different-data-sets.html#cb159-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
-<span id="cb159-9"><a href="application-to-different-data-sets.html#cb159-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
-<span id="cb159-10"><a href="application-to-different-data-sets.html#cb159-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb159-11"><a href="application-to-different-data-sets.html#cb159-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Check convergence</span></span>
-<span id="cb159-12"><a href="application-to-different-data-sets.html#cb159-12" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span></code></pre></div>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="application-to-different-data-sets.html#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the TMB object</span></span>
+<span id="cb163-2"><a href="application-to-different-data-sets.html#cb163-2" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, working_params,</span>
+<span id="cb163-3"><a href="application-to-different-data-sets.html#cb163-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb163-4"><a href="application-to-different-data-sets.html#cb163-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb163-5"><a href="application-to-different-data-sets.html#cb163-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize</span></span>
+<span id="cb163-6"><a href="application-to-different-data-sets.html#cb163-6" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
+<span id="cb163-7"><a href="application-to-different-data-sets.html#cb163-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb163-8"><a href="application-to-different-data-sets.html#cb163-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
+<span id="cb163-9"><a href="application-to-different-data-sets.html#cb163-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb163-10"><a href="application-to-different-data-sets.html#cb163-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb163-11"><a href="application-to-different-data-sets.html#cb163-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Check convergence</span></span>
+<span id="cb163-12"><a href="application-to-different-data-sets.html#cb163-12" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="application-to-different-data-sets.html#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
-<span id="cb161-2"><a href="application-to-different-data-sets.html#cb161-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="application-to-different-data-sets.html#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
+<span id="cb165-2"><a href="application-to-different-data-sets.html#cb165-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
 <pre><code>##          Estimate Std. Error
 ## lambda 1.63641100 0.27758296
 ## lambda 5.53309576 0.31876147
@@ -340,124 +341,54 @@ div.csl-indent {
 ## delta  0.65945800 0.23056437</code></pre>
 <p>For the code used to generate coverage probabilities and acceleration results, please take a look at <em><a href="github.html#poi_hmm_tinn.R">code/poi_hmm_tinn.R</a></em>.</p>
 </div>
-<div id="simulated-dataset" class="section level2" number="6.2">
-<h2><span class="header-section-number">6.2</span> Simulated dataset</h2>
-<p>We detail here the code used to simulate two datasets from 2-states Poisson HMMs, one of size 2000 and one of size 5000.
-Then, using the same procedure as above, we estimate a model using different initial parameters.</p>
-<ul>
-<li>Set initial parameters (data size and HMM parameters)</li>
-</ul>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="application-to-different-data-sets.html#cb163-1" aria-hidden="true" tabindex="-1"></a>DATA_SIZE_SIMU <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
-<span id="cb163-2"><a href="application-to-different-data-sets.html#cb163-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb163-3"><a href="application-to-different-data-sets.html#cb163-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate parameters</span></span>
-<span id="cb163-4"><a href="application-to-different-data-sets.html#cb163-4" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">14</span>, <span class="at">length.out =</span> m)</span>
-<span id="cb163-5"><a href="application-to-different-data-sets.html#cb163-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the transition probability matrix with 0.8 on its diagonal</span></span>
-<span id="cb163-6"><a href="application-to-different-data-sets.html#cb163-6" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
-<span id="cb163-7"><a href="application-to-different-data-sets.html#cb163-7" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
-<span id="cb163-8"><a href="application-to-different-data-sets.html#cb163-8" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(gamma)</span></code></pre></div>
-<p>The <code>stat.dist</code> function computes the stationary distribution.</p>
-<ul>
-<li>Generate data with one of the functions defined in <a href="confidence-intervals.html#generating-data">Generating data</a></li>
-</ul>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="application-to-different-data-sets.html#cb164-1" aria-hidden="true" tabindex="-1"></a>simu_data <span class="ot">&lt;-</span> <span class="fu">pois.HMM.generate.sample</span>(<span class="at">ns =</span> DATA_SIZE_SIMU,</span>
-<span id="cb164-2"><a href="application-to-different-data-sets.html#cb164-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">mod =</span> <span class="fu">list</span>(<span class="at">m =</span> m,</span>
-<span id="cb164-3"><a href="application-to-different-data-sets.html#cb164-3" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">lambda =</span> lambda,</span>
-<span id="cb164-4"><a href="application-to-different-data-sets.html#cb164-4" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">gamma =</span> gamma,</span>
-<span id="cb164-5"><a href="application-to-different-data-sets.html#cb164-5" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">delta =</span> delta))<span class="sc">$</span>data</span></code></pre></div>
-<ul>
-<li>Set initial parameters</li>
-</ul>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="application-to-different-data-sets.html#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters and covariates</span></span>
-<span id="cb165-2"><a href="application-to-different-data-sets.html#cb165-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb165-3"><a href="application-to-different-data-sets.html#cb165-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.4</span>,</span>
-<span id="cb165-4"><a href="application-to-different-data-sets.html#cb165-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.4</span>, <span class="fl">0.6</span>), <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
-<span id="cb165-5"><a href="application-to-different-data-sets.html#cb165-5" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">quantile</span>(simu_data, <span class="fl">0.1</span>), <span class="fu">quantile</span>(simu_data, <span class="fl">0.9</span>), <span class="at">length.out =</span> m)</span>
-<span id="cb165-6"><a href="application-to-different-data-sets.html#cb165-6" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(gamma)</span>
-<span id="cb165-7"><a href="application-to-different-data-sets.html#cb165-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Display Poisson means</span></span>
-<span id="cb165-8"><a href="application-to-different-data-sets.html#cb165-8" aria-hidden="true" tabindex="-1"></a>lambda</span></code></pre></div>
-<pre><code>## [1]  7 17</code></pre>
-<ul>
-<li>Transform them into working parameters</li>
-</ul>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="application-to-different-data-sets.html#cb167-1" aria-hidden="true" tabindex="-1"></a>working_params <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
-<span id="cb167-2"><a href="application-to-different-data-sets.html#cb167-2" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> simu_data, <span class="at">m =</span> m)</span></code></pre></div>
-<ul>
-<li>Estimate the parameters via a function</li>
-</ul>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="application-to-different-data-sets.html#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the TMB object</span></span>
-<span id="cb168-2"><a href="application-to-different-data-sets.html#cb168-2" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, working_params,</span>
-<span id="cb168-3"><a href="application-to-different-data-sets.html#cb168-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb168-4"><a href="application-to-different-data-sets.html#cb168-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb168-5"><a href="application-to-different-data-sets.html#cb168-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize</span></span>
-<span id="cb168-6"><a href="application-to-different-data-sets.html#cb168-6" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
-<span id="cb168-7"><a href="application-to-different-data-sets.html#cb168-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
-<span id="cb168-8"><a href="application-to-different-data-sets.html#cb168-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
-<span id="cb168-9"><a href="application-to-different-data-sets.html#cb168-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
-<span id="cb168-10"><a href="application-to-different-data-sets.html#cb168-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb168-11"><a href="application-to-different-data-sets.html#cb168-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Check convergence</span></span>
-<span id="cb168-12"><a href="application-to-different-data-sets.html#cb168-12" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="application-to-different-data-sets.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
-<span id="cb170-2"><a href="application-to-different-data-sets.html#cb170-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
-<pre><code>##          Estimate Std. Error
-## lambda  9.7345726 0.23644285
-## lambda 13.8098676 0.22273984
-## gamma   0.8068975 0.03331223
-## gamma   0.1564875 0.02671332
-## gamma   0.1931025 0.03331223
-## gamma   0.8435125 0.02671332
-## delta   0.4476315 0.05201103
-## delta   0.5523685 0.05201103</code></pre>
-<p>For the code used to generate coverage probabilities and acceleration results, please take a look at <em><a href="github.html#poi_hmm_simu1.R">code/poi_hmm_simu1.R</a></em> and <em><a href="github.html#poi_hmm_simu2.R">code/poi_hmm_simu2.R</a></em>.</p>
-</div>
-<div id="lamb-data" class="section level2" number="6.3">
-<h2><span class="header-section-number">6.3</span> Lamb data</h2>
+<div id="lamb-data" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Lamb data</h2>
 <p>We detail here the code used to estimate a 2-state Poisson HMM based on the lamb dataset available in INSERT GITHUB LINK</p>
 <ul>
 <li>Set a seed for randomness, and load files</li>
 </ul>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="application-to-different-data-sets.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb172-2"><a href="application-to-different-data-sets.html#cb172-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
-<span id="cb172-3"><a href="application-to-different-data-sets.html#cb172-3" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="application-to-different-data-sets.html#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb167-2"><a href="application-to-different-data-sets.html#cb167-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
+<span id="cb167-3"><a href="application-to-different-data-sets.html#cb167-3" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="application-to-different-data-sets.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span></code></pre></div>
-<pre><code>## Warning: 12 external pointers will be removed</code></pre>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="application-to-different-data-sets.html#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
-<span id="cb176-2"><a href="application-to-different-data-sets.html#cb176-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/fetal-lamb.RData&quot;</span>)</span>
-<span id="cb176-3"><a href="application-to-different-data-sets.html#cb176-3" aria-hidden="true" tabindex="-1"></a>lamb_data <span class="ot">&lt;-</span> lamb</span>
-<span id="cb176-4"><a href="application-to-different-data-sets.html#cb176-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(lamb)</span></code></pre></div>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="application-to-different-data-sets.html#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span></code></pre></div>
+<pre><code>## Warning: 3 external pointers will be removed</code></pre>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="application-to-different-data-sets.html#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
+<span id="cb171-2"><a href="application-to-different-data-sets.html#cb171-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/fetal-lamb.RData&quot;</span>)</span>
+<span id="cb171-3"><a href="application-to-different-data-sets.html#cb171-3" aria-hidden="true" tabindex="-1"></a>lamb_data <span class="ot">&lt;-</span> lamb</span>
+<span id="cb171-4"><a href="application-to-different-data-sets.html#cb171-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(lamb)</span></code></pre></div>
 <ul>
 <li>Set initial parameters</li>
 </ul>
-<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="application-to-different-data-sets.html#cb177-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters and covariates</span></span>
-<span id="cb177-2"><a href="application-to-different-data-sets.html#cb177-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb177-3"><a href="application-to-different-data-sets.html#cb177-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
-<span id="cb177-4"><a href="application-to-different-data-sets.html#cb177-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
-<span id="cb177-5"><a href="application-to-different-data-sets.html#cb177-5" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.3</span>, <span class="dv">4</span>, <span class="at">length.out =</span> m)</span>
-<span id="cb177-6"><a href="application-to-different-data-sets.html#cb177-6" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(gamma)</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="application-to-different-data-sets.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters and covariates</span></span>
+<span id="cb172-2"><a href="application-to-different-data-sets.html#cb172-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb172-3"><a href="application-to-different-data-sets.html#cb172-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
+<span id="cb172-4"><a href="application-to-different-data-sets.html#cb172-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
+<span id="cb172-5"><a href="application-to-different-data-sets.html#cb172-5" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.3</span>, <span class="dv">4</span>, <span class="at">length.out =</span> m)</span>
+<span id="cb172-6"><a href="application-to-different-data-sets.html#cb172-6" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(gamma)</span></code></pre></div>
 <ul>
 <li>Transform them into working parameters</li>
 </ul>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="application-to-different-data-sets.html#cb178-1" aria-hidden="true" tabindex="-1"></a>working_params <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
-<span id="cb178-2"><a href="application-to-different-data-sets.html#cb178-2" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> lamb_data, <span class="at">m =</span> m)</span></code></pre></div>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="application-to-different-data-sets.html#cb173-1" aria-hidden="true" tabindex="-1"></a>working_params <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
+<span id="cb173-2"><a href="application-to-different-data-sets.html#cb173-2" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> lamb_data, <span class="at">m =</span> m)</span></code></pre></div>
 <ul>
 <li>Estimate the parameters via a function</li>
 </ul>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="application-to-different-data-sets.html#cb179-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the TMB object</span></span>
-<span id="cb179-2"><a href="application-to-different-data-sets.html#cb179-2" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, working_params,</span>
-<span id="cb179-3"><a href="application-to-different-data-sets.html#cb179-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb179-4"><a href="application-to-different-data-sets.html#cb179-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb179-5"><a href="application-to-different-data-sets.html#cb179-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize</span></span>
-<span id="cb179-6"><a href="application-to-different-data-sets.html#cb179-6" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
-<span id="cb179-7"><a href="application-to-different-data-sets.html#cb179-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
-<span id="cb179-8"><a href="application-to-different-data-sets.html#cb179-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
-<span id="cb179-9"><a href="application-to-different-data-sets.html#cb179-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
-<span id="cb179-10"><a href="application-to-different-data-sets.html#cb179-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb179-11"><a href="application-to-different-data-sets.html#cb179-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Check convergence</span></span>
-<span id="cb179-12"><a href="application-to-different-data-sets.html#cb179-12" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="application-to-different-data-sets.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the TMB object</span></span>
+<span id="cb174-2"><a href="application-to-different-data-sets.html#cb174-2" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, working_params,</span>
+<span id="cb174-3"><a href="application-to-different-data-sets.html#cb174-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb174-4"><a href="application-to-different-data-sets.html#cb174-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb174-5"><a href="application-to-different-data-sets.html#cb174-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize</span></span>
+<span id="cb174-6"><a href="application-to-different-data-sets.html#cb174-6" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
+<span id="cb174-7"><a href="application-to-different-data-sets.html#cb174-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb174-8"><a href="application-to-different-data-sets.html#cb174-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
+<span id="cb174-9"><a href="application-to-different-data-sets.html#cb174-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb174-10"><a href="application-to-different-data-sets.html#cb174-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb174-11"><a href="application-to-different-data-sets.html#cb174-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Check convergence</span></span>
+<span id="cb174-12"><a href="application-to-different-data-sets.html#cb174-12" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="application-to-different-data-sets.html#cb181-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
-<span id="cb181-2"><a href="application-to-different-data-sets.html#cb181-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="application-to-different-data-sets.html#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
+<span id="cb176-2"><a href="application-to-different-data-sets.html#cb176-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
 <pre><code>##          Estimate Std. Error
 ## lambda 0.25636541 0.04016445
 ## lambda 3.11475432 1.02131182
@@ -480,15 +411,85 @@ l(\lambda) &amp;= \log \left(\prod_{i=1}^{T} \frac{\lambda^{x_i} e^{-\lambda}}{x
 \end{align*}\]</span>
 The authors find a ML estimate <span class="math inline">\(\lambda = 0.3583\)</span> and a log-likelihood of -174.26.
 In contrast, calculating the log-likelihood explicitly shows a different result.</p>
-<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="application-to-different-data-sets.html#cb183-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> lamb_data</span>
-<span id="cb183-2"><a href="application-to-different-data-sets.html#cb183-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We use n instead of T in R code</span></span>
-<span id="cb183-3"><a href="application-to-different-data-sets.html#cb183-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
-<span id="cb183-4"><a href="application-to-different-data-sets.html#cb183-4" aria-hidden="true" tabindex="-1"></a>l <span class="ot">&lt;-</span> <span class="fl">0.3583</span></span>
-<span id="cb183-5"><a href="application-to-different-data-sets.html#cb183-5" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span> n <span class="sc">*</span> l <span class="sc">+</span> <span class="fu">log</span>(l) <span class="sc">*</span> <span class="fu">sum</span>(x) <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">log</span>(<span class="fu">factorial</span>(x)))</span></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="application-to-different-data-sets.html#cb178-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> lamb_data</span>
+<span id="cb178-2"><a href="application-to-different-data-sets.html#cb178-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We use n instead of T in R code</span></span>
+<span id="cb178-3"><a href="application-to-different-data-sets.html#cb178-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb178-4"><a href="application-to-different-data-sets.html#cb178-4" aria-hidden="true" tabindex="-1"></a>l <span class="ot">&lt;-</span> <span class="fl">0.3583</span></span>
+<span id="cb178-5"><a href="application-to-different-data-sets.html#cb178-5" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span> n <span class="sc">*</span> l <span class="sc">+</span> <span class="fu">log</span>(l) <span class="sc">*</span> <span class="fu">sum</span>(x) <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">log</span>(<span class="fu">factorial</span>(x)))</span></code></pre></div>
 <pre><code>## [1] -201.0436</code></pre>
 <p>The log-likelihood is different, but when the constant <span class="math inline">\(- \sum_{i=1}^{T} \log(x_{i}!)\)</span> is removed, it matches our result.</p>
-<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="application-to-different-data-sets.html#cb185-1" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span> n <span class="sc">*</span> l <span class="sc">+</span> <span class="fu">log</span>(l) <span class="sc">*</span> <span class="fu">sum</span>(x)</span></code></pre></div>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="application-to-different-data-sets.html#cb180-1" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span> n <span class="sc">*</span> l <span class="sc">+</span> <span class="fu">log</span>(l) <span class="sc">*</span> <span class="fu">sum</span>(x)</span></code></pre></div>
 <pre><code>## [1] -174.2611</code></pre>
+</div>
+<div id="simulated-data" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Simulated data</h2>
+<p>We detail here the code used to simulate two datasets from 2-states Poisson HMMs, one of size 2000 and one of size 5000.
+Then, using the same procedure as above, we estimate a model using different initial parameters.</p>
+<ul>
+<li>Set initial parameters (data size and HMM parameters)</li>
+</ul>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="application-to-different-data-sets.html#cb182-1" aria-hidden="true" tabindex="-1"></a>DATA_SIZE_SIMU <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb182-2"><a href="application-to-different-data-sets.html#cb182-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb182-3"><a href="application-to-different-data-sets.html#cb182-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate parameters</span></span>
+<span id="cb182-4"><a href="application-to-different-data-sets.html#cb182-4" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">14</span>, <span class="at">length.out =</span> m)</span>
+<span id="cb182-5"><a href="application-to-different-data-sets.html#cb182-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the transition probability matrix with 0.8 on its diagonal</span></span>
+<span id="cb182-6"><a href="application-to-different-data-sets.html#cb182-6" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
+<span id="cb182-7"><a href="application-to-different-data-sets.html#cb182-7" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
+<span id="cb182-8"><a href="application-to-different-data-sets.html#cb182-8" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(gamma)</span></code></pre></div>
+<p>The <code>stat.dist</code> function computes the stationary distribution.</p>
+<ul>
+<li>Generate data with one of the functions defined in <a href="confidence-intervals.html#generating-data">Generating data</a></li>
+</ul>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="application-to-different-data-sets.html#cb183-1" aria-hidden="true" tabindex="-1"></a>simu_data <span class="ot">&lt;-</span> <span class="fu">pois.HMM.generate.sample</span>(<span class="at">ns =</span> DATA_SIZE_SIMU,</span>
+<span id="cb183-2"><a href="application-to-different-data-sets.html#cb183-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">mod =</span> <span class="fu">list</span>(<span class="at">m =</span> m,</span>
+<span id="cb183-3"><a href="application-to-different-data-sets.html#cb183-3" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">lambda =</span> lambda,</span>
+<span id="cb183-4"><a href="application-to-different-data-sets.html#cb183-4" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">gamma =</span> gamma,</span>
+<span id="cb183-5"><a href="application-to-different-data-sets.html#cb183-5" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">delta =</span> delta))<span class="sc">$</span>data</span></code></pre></div>
+<ul>
+<li>Set initial parameters</li>
+</ul>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="application-to-different-data-sets.html#cb184-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters and covariates</span></span>
+<span id="cb184-2"><a href="application-to-different-data-sets.html#cb184-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb184-3"><a href="application-to-different-data-sets.html#cb184-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.4</span>,</span>
+<span id="cb184-4"><a href="application-to-different-data-sets.html#cb184-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.4</span>, <span class="fl">0.6</span>), <span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
+<span id="cb184-5"><a href="application-to-different-data-sets.html#cb184-5" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">quantile</span>(simu_data, <span class="fl">0.1</span>), <span class="fu">quantile</span>(simu_data, <span class="fl">0.9</span>), <span class="at">length.out =</span> m)</span>
+<span id="cb184-6"><a href="application-to-different-data-sets.html#cb184-6" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(gamma)</span>
+<span id="cb184-7"><a href="application-to-different-data-sets.html#cb184-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Display Poisson means</span></span>
+<span id="cb184-8"><a href="application-to-different-data-sets.html#cb184-8" aria-hidden="true" tabindex="-1"></a>lambda</span></code></pre></div>
+<pre><code>## [1]  7 17</code></pre>
+<ul>
+<li>Transform them into working parameters</li>
+</ul>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="application-to-different-data-sets.html#cb186-1" aria-hidden="true" tabindex="-1"></a>working_params <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
+<span id="cb186-2"><a href="application-to-different-data-sets.html#cb186-2" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> simu_data, <span class="at">m =</span> m)</span></code></pre></div>
+<ul>
+<li>Estimate the parameters via a function</li>
+</ul>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="application-to-different-data-sets.html#cb187-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the TMB object</span></span>
+<span id="cb187-2"><a href="application-to-different-data-sets.html#cb187-2" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, working_params,</span>
+<span id="cb187-3"><a href="application-to-different-data-sets.html#cb187-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb187-4"><a href="application-to-different-data-sets.html#cb187-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb187-5"><a href="application-to-different-data-sets.html#cb187-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize</span></span>
+<span id="cb187-6"><a href="application-to-different-data-sets.html#cb187-6" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
+<span id="cb187-7"><a href="application-to-different-data-sets.html#cb187-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb187-8"><a href="application-to-different-data-sets.html#cb187-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
+<span id="cb187-9"><a href="application-to-different-data-sets.html#cb187-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb187-10"><a href="application-to-different-data-sets.html#cb187-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb187-11"><a href="application-to-different-data-sets.html#cb187-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Check convergence</span></span>
+<span id="cb187-12"><a href="application-to-different-data-sets.html#cb187-12" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="application-to-different-data-sets.html#cb189-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
+<span id="cb189-2"><a href="application-to-different-data-sets.html#cb189-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span></code></pre></div>
+<pre><code>##          Estimate Std. Error
+## lambda  9.7345726 0.23644285
+## lambda 13.8098676 0.22273984
+## gamma   0.8068975 0.03331223
+## gamma   0.1564875 0.02671332
+## gamma   0.1931025 0.03331223
+## gamma   0.8435125 0.02671332
+## delta   0.4476315 0.05201103
+## delta   0.5523685 0.05201103</code></pre>
+<p>For the code used to generate coverage probabilities and acceleration results, please take a look at <em><a href="github.html#poi_hmm_simu1.R">code/poi_hmm_simu1.R</a></em> and <em><a href="github.html#poi_hmm_simu2.R">code/poi_hmm_simu2.R</a></em>.</p>
 
 </div>
 </div>

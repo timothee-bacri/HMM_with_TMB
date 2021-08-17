@@ -3,7 +3,7 @@
 ## Likelihood function
 
 The function is defined in *[code/poi_hmm.cpp](#poi_hmm.cpp)*
-```{Rcpp 4poi_hmm.cpp, code=readLines("code/poi_hmm.cpp"), eval=FALSE}
+```{Rcpp 3poi_hmm.cpp, code=readLines("code/poi_hmm.cpp"), eval=FALSE}
 ```
 
 ## Optimization
@@ -11,7 +11,7 @@ Before we can fit the model, we need to load some necessary packages and data fi
 
 (i) We start by compiling the `C++` code for computing the likelihood and its gradients. Once it is compiled, we can load the TMB likelihood object into `R` -- making it available from `R`. 
 
-```{r 4init-example1, message = FALSE, warning = FALSE, results = FALSE}
+```{r 3init-example1, message = FALSE, warning = FALSE, results = FALSE}
 # Load TMB and optimization packages
 library(TMB)
 library(optimr)
@@ -21,7 +21,7 @@ TMB::compile("code/poi_hmm.cpp")
 dyn.load(dynlib("code/poi_hmm"))
 ```
 Next, we need to load the necessary packages and the utility `R` functions.
-```{r 4init-example2, message = FALSE, warning = FALSE, results = FALSE}
+```{r 3init-example2, message = FALSE, warning = FALSE, results = FALSE}
 # Load the parameter transformation function
 source("functions/utils.R")
 ```
@@ -30,13 +30,13 @@ source("functions/utils.R")
 We analyze 87 successive days of the "arousal" variable, which is measured on a discrete scale.
 Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state [for details, see @probst].
 The data can be loaded by a simple call.
-```{r 4load-example}
+```{r 3load-example}
 load("data/tinnitus.RData")
 ```
 
-Figure \@ref(fig:4tinnitus-fig) present the raw data in Table [5.1](#table:tinnitus_data), which are also available for download at *[data/tinnitus.RData](#tinnitus.RData)*.
+Figure \@ref(fig:3tinnitus-fig) present the raw data in Table [5.1](#table:tinnitus_data), which are also available for download at *[data/tinnitus.RData](#tinnitus.RData)*.
 
-```{r 4tinnitus-table, results = 'asis', echo = FALSE}
+```{r 3tinnitus-table, results = 'asis', echo = FALSE}
 library(xtable)
 temp <- paste(tinn_data, collapse = " ")
 temp <- as.data.frame(temp)
@@ -49,7 +49,7 @@ print(temp, include.rownames = FALSE, include.colnames = FALSE,
       type = "html")
 ```
 
-```{r 4tinnitus-fig, echo = FALSE, warning = FALSE, fig.cap = "Plot of observations from TYT app data for 87 succesive days."}
+```{r 3tinnitus-fig, echo = FALSE, warning = FALSE, fig.cap = "Plot of observations from TYT app data for 87 succesive days."}
 plot(tinn_data, ylab = "Arousal", xlab = "Day (#)")
 ```
 
@@ -59,7 +59,7 @@ As shown in [the appendix](#appendix), the model selection procedure shows that 
 
 The list object `TMB_data` contains the data and the number of states.
 
-```{r 4param-example1}
+```{r 3param-example1}
 # Model with 2 states
 m <- 2
 TMB_data <- list(x = tinn_data, m = m)
@@ -68,28 +68,28 @@ TMB_data <- list(x = tinn_data, m = m)
 Secondly, initial values for the optimization procedure need to be defined.
 Although we will apply unconstrained optimization, we initialize the natural parameters, because this is much more intuitive and practical than handling the working parameters. 
 
-```{r 4param-example2}
+```{r 3param-example2}
 # Generate initial set of parameters for optimization
 lambda <- c(1, 3)
 gamma <- matrix(c(0.8, 0.2,
                   0.2, 0.8), byrow = TRUE, nrow = m)
 ```
 
-2. Transformation from natural to working parameters
+(iv) Transformation from natural to working parameters
 
 The previously created initial values are transformed and stored in the list `parameters` for the optimization procedure.
 
-```{r 4pn2pw-example}
+```{r 3pn2pw-example}
 # Turn them into working parameters
 parameters <- pois.HMM.pn2pw(m, lambda, gamma)
 ```
 
-3. Creation of the `TMB` negative log-likelihood function with its derivatives
+(v) Creation of the `TMB` negative log-likelihood function with its derivatives
 
 This object, stored as `obj_tmb` requires the data, the initial values, and the previously created DLL as input.
 Setting argument `silent = TRUE` disables tracing information and is only used here to avoid excessive output.
 
-```{r 4makeadfun-example}
+```{r 3makeadfun-example}
 obj_tmb <- MakeADFun(TMB_data, parameters,
                      DLL = "poi_hmm", silent = TRUE)
 ```
@@ -97,18 +97,18 @@ obj_tmb <- MakeADFun(TMB_data, parameters,
 This object also contains the previously defined initial values as a vector (`par`) rather than a list.
 The negative log-likelihood (`fn`), its gradient (`gr`), and Hessian (`he`) are functions of the parameters (in vector form) while the data are considered fixed: 
 
-```{r 4makeadfun-example2}
+```{r 3makeadfun-example2}
 obj_tmb$par
 obj_tmb$fn(obj_tmb$par)
 obj_tmb$gr(obj_tmb$par)
 obj_tmb$he(obj_tmb$par)
 ```
 
-4. Execution of the optimization
+(vi) Execution of the optimization
 
 For this step we rely again on the optimizer implemented in the `nlminb` function.
 The arguments, i.e.~ initial values for the parameters and the function to be optimized, are extracted from the previously created TMB object. 
-```{r 4optimizing-example}
+```{r 3optimizing-example}
 mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn)
 # Check that it converged successfully
 mod_tmb$convergence == 0
@@ -117,13 +117,13 @@ mod_tmb$convergence == 0
 It is noteworthy that various alternatives to `nlminb` exist.
 Nevertheless, we focus on this established optimization routine because of its high speed of convergence.
 
-5. Obtaining ML estimates
+(vii) Obtaining ML estimates
 
 Obtaining the ML estimates of the natural parameters together with their standard errors is possible by using the previously introduced command `sdreport`.
 
 Recall that this requires the parameters of interest to be treated by the `ADREPORT` statement in the `C++` part. It should be noted that the presentation of the set of parameters `gamma` below results from a column-wise representation of the TPM.
 
-```{r 4summary-sdreport-example1}
+```{r 3summary-sdreport-example1}
 summary(sdreport(obj_tmb, par.fixed = mod_tmb$par), "report")
 ```
 
@@ -131,18 +131,18 @@ Note that the table above also contains estimation results for $\b{\delta}$ and 
 We provide further details on this aspect in [Confidence intervals].\
 The value of the nll function in the minimum found by the optimizer can also be extracted directly from the object `mod_tmb` by accessing the list element `objective`:
 
-```{r 4summary-sdreport-example2}
+```{r 3summary-sdreport-example2}
 mod_tmb$objective
 ```
 
-6. Use exact gradient and Hessian
+(viii) Use exact gradient and Hessian
 
 In the optimization above we already benefited from an increased speed due to the evaluation of the nll in `C++` compared to the forward algorithm being executed entirely in `R`.
 However, the use of `TMB` also permits to introduce the gradient and/or the Hessian computed by `TMB` into the optimization procedure.
 This is in general advisable, because `TMB` provides an exact value of both gradient and Hessian up to machine precision, which is superior to approximations used by optimizing procedure.
 Similar to the nll, both quantities can be extracted directly from the `TMB` object `obj_tmb`:
 
-```{r 4gradient-hessian-example}
+```{r 3gradient-hessian-example}
 # The negative log-likelihood is accessed by the objective
 # attribute of the optimized object
 mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn,
@@ -155,7 +155,7 @@ Is it noteworthy that inconsistencies can happen in the estimates due to compute
 
 The stationary distribution is a vector of probabilities and should sum to 1.
 However, it doesn't always behave as expected.
-```{r 4_1-diff-1}
+```{r 3_1-diff-1}
 adrep <- summary(sdreport(obj_tmb), "report")
 estimate_delta <- adrep[rownames(adrep) == "delta", "Estimate"]
 sum(estimate_delta)
@@ -169,16 +169,16 @@ This is likely due to machine approximations when numbers far apart from each ot
 In R, a small number is not 0 but is treated as 0 when added to a much larger number.
 
 This can result in incoherent findings when checking equality between 2 numbers.
-```{r 4_0-diff-0}
+```{r 3_0-diff-0}
 1e-100 == 0 # Small numbers are 0
 (1 + 1e-100) == 1
 ```
 
-## Nested models
+## Basic nested model specification
 ### Principle
 
 As a first step in building a nested model, we arbitrarily fix $\lambda_1$ to the value 1.
-```{r 4nested_params}
+```{r 3nested_params}
 # Get the previous values, and fix some
 fixed_par_lambda <- lambda
 fixed_par_lambda[1] <- 1
@@ -191,7 +191,7 @@ new_parameters <- pois.HMM.pn2pw(m = m,
 Then, we instruct `TMB` to read these custom parameters.
 We indicate fixed values by mapping them to NA values, whereas the variable values need to be mapped to different factor variables.
 Lastly, we specify this mapping with the `map` argument when making the `TMB` object.
-```{r 4nested_fix}
+```{r 3nested_fix}
 map <- list(tlambda = as.factor(c(NA, 1)),
             tgamma = as.factor(c(2, 3)))
 fixed_par_obj_tmb <- MakeADFun(TMB_data, new_parameters,
@@ -201,7 +201,7 @@ fixed_par_obj_tmb <- MakeADFun(TMB_data, new_parameters,
 ```
 
 Estimating of the model and displaying the results is performed as usual
-```{r 4nested_nlminb}
+```{r 3nested_nlminb}
 fixed_par_mod_tmb <- nlminb(start = fixed_par_obj_tmb$par,
                             objective = fixed_par_obj_tmb$fn,
                             gradient = fixed_par_obj_tmb$gr,
@@ -235,7 +235,7 @@ With a two-state Poisson HMM, the constraint $\gamma_{11} = \gamma_{22}$ is equi
 Thus, the constraint can be transformed into $\tau_{12} = \log(\gamma_{12}/\gamma_{11}) = \log(\gamma_{21}/\gamma_{22}) = \tau_{21}$.
 
 The mapping parameters must be set to a common factor to be forced equal.
-```{r 4nested_multiple_param}
+```{r 3nested_multiple_param}
 map <- list(tlambda = as.factor(c(1, 2)),
             tgamma = as.factor(c(3, 3)))
 fixed_par_obj_tmb <- MakeADFun(TMB_data, parameters,
@@ -263,7 +263,7 @@ Possible solutions are constrained optimization and different parametrization.
 
 As an example, we will look at a three-state HMM with the constraint $\gamma_{12} = \gamma_{13}$.
 
-```{r 4nested_multiple_param_example}
+```{r 3nested_multiple_param_example}
 # Model with 2 states
 m <- 3
 TMB_data <- list(x = tinn_data, m = m)
@@ -308,7 +308,7 @@ $$\begin{pmatrix}
 As a vector in `R`, it becomes $\left(\tau_{21}, \tau_{31}, \tau_{12}, \tau_{32}, \tau_{13}, \tau_{23}\right)$.
 Therefore, the constraint needs to be placed on the $3^{rd}$ and $5^{th}$ vector parameter.
 
-```{r 4nested_multiple_param_example_nlminb}
+```{r 3nested_multiple_param_example_nlminb}
 map <- list(tlambda = as.factor(c(1, 2, 3)),
             tgamma = as.factor(c(4, 5, 6, 7, 6, 8)))
 fixed_par_obj_tmb <- MakeADFun(TMB_data, parameters,
@@ -331,12 +331,219 @@ tpm[1, 2] == tpm[1, 3]
 
 Equality constraints involving a diagonal member of the TPM are simpler to specify: the constraint $\gamma_{i,j} = \gamma_{i,i}$ becomes transformed to $\tau_{i,j} = 1$ and this can be specified in the same way the Poisson mean $\lambda_1$ was fixed.
 
+
+## State inference {#state-inference}
+
+### Prepare the model
+
+```{r 3prepare, results=FALSE}
+library(TMB)
+source("functions/utils.R")
+load("data/fetal-lamb.RData")
+TMB::compile("code/poi_hmm.cpp")
+dyn.load(dynlib("code/poi_hmm"))
+lamb_data <- lamb
+m <- 2
+TMB_data <- list(x = lamb_data, m = m)
+lambda <- c(1, 3)
+gamma <- matrix(c(0.8, 0.2,
+                  0.2, 0.8), byrow = TRUE, nrow = m)
+parameters <- pois.HMM.pn2pw(m, lambda, gamma)
+obj_tmb <- MakeADFun(TMB_data, parameters,
+                     DLL = "poi_hmm", silent = TRUE)
+mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn,
+                  gradient = obj_tmb$gr, hessian = obj_tmb$he)
+```
+
+### Setup
+#### Define variables
+Given an optimized `MakeADFun` object `obj`, we need to setup some variables to compute the probabilities detailed below.
+
+```{r 3init-decoding}
+# Retrieve the objects at ML value
+adrep <- obj_tmb$report(obj_tmb$env$last.par.best)
+delta <- adrep$delta
+gamma <- adrep$gamma
+emission_probs <- adrep$emission_probs
+n <- adrep$n
+m <- length(delta)
+mllk <- adrep$mllk
+```
+
+Note that $\b{\lambda}$ is not needed as we already have access to the emission probabilities.
+
+#### Emission/output probabilities
+Emission probabilities (also called output probabilities) are the conditional probabilities of the data given a state.
+
+Using the notation in the article Section 3.1, emission probabilities are the conditional distributions $p_i(x) = \text{P}(X_t = x \vert C_t = i) = \frac{e^{-\lambda_i} \lambda_i^x}{x!}$.
+We store all these in a data frame where each row and column represent a data and a state respectively.
+
+More formally, we call
+$\begin{pmatrix}
+p_1(x_1)  & p_2(x_1) & \ldots & p_m(x_1)\\
+p_1(x_2)  & p_2(x_2) & \ldots & p_m(x_2)\\
+\vdots    &  \vdots  & \ddots & \vdots\\
+p_1(x_n)  & p_2(x_n) & \ldots & p_m(x_n)\\
+\end{pmatrix}$
+the emission probability matrix.
+
+We compute these probabilities in `C++` rather than in `R` because it is faster and not more complicated to write
+
+```{Rcpp 1poi_hmm.cpp, code=readLines("code/poi_hmm.cpp")[32:46], eval=FALSE}
+```
+
+Nevertheless, we also need to compute them in `R` for the [Forecast](#forecast) code
+```{r get.emission.probs}
+```
+
+### Log-forward probabilities {#log-forward}
+
+The forward probabilities have been detailed in
+TO FIX LINK_TO_hmm_likelihood!!!!!!!!!!!!!!!!!.
+
+We show here a way to compute the log of the forward probabilities, using a scaling scheme defined by [see @zucchini, p.66 and p.334].
+
+```{r 3log-forward}
+# Compute log-forward probabilities (scaling used)
+lalpha <- matrix(NA, m, n)
+foo <- delta * emission_probs[1, ]
+sumfoo <- sum(foo)
+lscale <- log(sumfoo)
+foo <- foo / sumfoo
+lalpha[, 1] <- log(foo) + lscale
+for (i in 2:n) {
+  foo <- foo %*% gamma * emission_probs[i, ]
+  sumfoo <- sum(foo)
+  lscale <- lscale + log(sumfoo)
+  foo <- foo / sumfoo
+  lalpha[, i] <- log(foo) + lscale
+}
+# lalpha contains n=240 columns, so we only display 5 for readability
+lalpha[, 1:5]
+```
+
+### Log-backward probabilities {#log-backward}
+
+The backward probabilities have been defined in the same section
+@zucchini[p.67 and p.334].
+
+```{r 3log-backward}
+# Compute log-backwards probabilities (scaling used)
+lbeta <- matrix(NA, m, n)
+lbeta[, n] <- rep(0, m)
+foo <- rep (1 / m, m)
+lscale <- log(m)
+for (i in (n - 1):1) {
+  foo <- gamma %*% (emission_probs[i + 1, ] * foo)
+  lbeta[, i] <- log(foo) + lscale
+  sumfoo <- sum(foo)
+  foo <- foo / sumfoo
+  lscale <- lscale + log(sumfoo)
+}
+# lbeta contains n=240 columns, so we only display 4 for readability
+lbeta[, 1:4]
+```
+
+### Local decoding {#local-decoding}
+
+The smoothing probabilities are defined in @zucchini[p.87 and p.336] as
+\[
+\text{P}(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
+\]
+
+
+```{r 3smoothing}
+# Compute conditional state probabilities, smoothing probabilities
+stateprobs <- matrix(NA, ncol = n, nrow = m)
+llk <- - mllk
+for(i in 1:n) {
+  stateprobs[, i] <- exp(lalpha[, i] + lbeta[, i] - llk)
+}
+```
+
+Local decoding is a straightforward maximum of the smoothing probabilities.
+
+```{r 3localdecoding}
+# Most probable states (local decoding)
+ldecode <- rep(NA, n)
+for (i in 1:n) {
+  ldecode[i] <- which.max(stateprobs[, i])
+}
+ldecode
+```
+
+### Forecast {#forecast}
+
+The forecast distribution or h-step-ahead-probabilities as well as its
+implementation in R is detailed in @zucchini[p.83 and p.337]
+
+Then,
+\[
+\text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_n \b{\Gamma}^h \textbf{P}(x) \b{1}'}{\b{\alpha}_n \b{1}'} = \b{\Phi}_n \b{\Gamma}^h \textbf{P}(x) \b{1}'
+\]
+An implementation of this using a scaling scheme is
+
+```{r 3forecast}
+# Number of steps
+h <- 1
+# Values for which we want the forecast probabilities
+xf <- 0:50
+
+nxf <- length(xf)
+dxf <- matrix(0, nrow = h, ncol = nxf)
+foo <- delta * emission_probs[1, ]
+sumfoo <- sum(foo)
+lscale <- log(sumfoo)
+foo <- foo / sumfoo
+for (i in 2:n) {
+  foo <- foo %*% gamma * emission_probs[i, ]
+  sumfoo <- sum( foo)
+  lscale <- lscale + log(sumfoo)
+  foo <- foo / sumfoo
+}
+emission_probs_xf <- get.emission.probs(xf, lambda)
+for (i in 1:h) {
+  foo <- foo %*% gamma
+  for (j in 1:m) {
+    dxf[i, ] <- dxf[i, ] + foo[j] * emission_probs_xf[, j]
+  }
+}
+# dxf contains n=240 columns, so we only display 4 for readability
+dxf[, 1:4]
+```
+
+### Global decoding {#global-decoding}
+The Viterbi algorithm is detailed in @zucchini[p.88 and p.334].
+It calculates the sequence of states $(i_1^*, \ldots, i_T^*)$ which
+maximizes the conditional probability of all states simultaneously, i.e.
+\[
+(i_1^*, \ldots, i_n^*) = \argmax_{i_1, \ldots, i_n \in \{1, \ldots, m \}} \text{P}(C_1 = i_1, \ldots, C_n = i_n \vert X^{(n)} = x^{(n)}).
+\]
+An implementation of it is
+
+```{r 3global}
+xi <- matrix(0, n, m)
+foo <- delta * emission_probs[1, ]
+xi[1, ] <- foo / sum(foo)
+for (i in 2:n) {
+  foo <- apply(xi[i - 1, ] * gamma, 2, max) * emission_probs[i, ]
+  xi[i, ] <- foo / sum(foo)
+}
+iv <- numeric(n)
+iv[n] <- which.max(xi[n, ])
+for (i in (n - 1):1){
+  iv[i] <- which.max(gamma[, iv[i + 1]] * xi[i, ])
+}
+iv
+```
+
+
 ## Appendix {#appendix}
 
-Model selection tinnitus via AIC and BIC (calculation defined in @zucchini)
+Model selection tinnitus via AIC and BIC (calculation defined in @zucchini).
 
 * AIC and BIC for a Poisson regression
-```{r 4model-selection-tinnitus1}
+```{r 3model-selection-tinnitus1}
 m <- 1
 TMB_data <- list(x = tinn_data, m = m)
 lambda <- 2
@@ -354,7 +561,7 @@ mod_tmb$convergence == 0
 paste("AIC =", AIC_1, "and BIC =", BIC_1)
 ```
 * AIC and BIC for a two-state HMM
-```{r 4model-selection-tinnitus2}
+```{r 3model-selection-tinnitus2}
 m <- 2
 TMB_data <- list(x = tinn_data, m = m)
 lambda <- seq(from = 1, to = 3, length.out = m)
@@ -376,7 +583,7 @@ mod_tmb$convergence == 0
 paste("AIC =", AIC_2, "and BIC =", BIC_2)
 ```
 * AIC and BIC for a two-state HMM
-```{r 4model-selection-tinnitus3}
+```{r 3model-selection-tinnitus3}
 m <- 3
 TMB_data <- list(x = tinn_data, m = m)
 lambda <- seq(from = 1, to = 3, length.out = m)
@@ -398,7 +605,7 @@ mod_tmb$convergence == 0
 paste("AIC =", AIC_3, "and BIC =", BIC_3)
 ```
 * AIC and BIC for a four-state HMM
-```{r 4model-selection-tinnitus4}
+```{r 3model-selection-tinnitus4}
 m <- 4
 TMB_data <- list(x = tinn_data, m = m)
 lambda <- seq(from = 1, to = 3, length.out = m)
@@ -419,7 +626,6 @@ BIC_4 <- 2 * mllk + np * log(n)
 mod_tmb$convergence == 0
 paste("AIC =", AIC_4, "and BIC =", BIC_4)
 ```
-
 * Summary
 
 Models                | AIC           | BIC

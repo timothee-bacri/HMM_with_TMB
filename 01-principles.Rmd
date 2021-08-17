@@ -1,12 +1,12 @@
 # Principles of using `TMB` for MLE
 
-## Setting up `TMB`
+## Setup
 In order to run the scripts and example code, you first need to set up TMB by going through the following steps:
 
 - Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/)
 - Install the R-package `TMB` [@R-TMB] by executing the following code in R:
 
-```{r 2install_TMB, eval=FALSE}
+```{r 1install_TMB, eval=FALSE}
 install.packages("TMB")
 ```
 
@@ -15,7 +15,7 @@ install.packages("TMB")
 
 Advanced use is detailed in https://kaskr.github.io/adcomp/_book/Tutorial.html
 
-## Getting started
+## Linear regression example
 
 Let $\b{x}$ and $\b{y}$ denote the predictor and response vector, respectively, both of length $n$.
 For a simple linear regression model with intercept $a$ and slope $b$, the negative log-likelihood equals
@@ -29,12 +29,12 @@ The minimization of this function and other post-processing procedures are all c
 Therefore, we require two files.\
 The first file, named *[code/linreg.cpp](#linreg.cpp)*, is written in C++ and defines the objective function, i.e. the negative log-likelihood (nll) function of the linear model.
 
-```{Rcpp 2linreg.cpp, code=readLines("code/linreg.cpp"), eval=FALSE}
+```{Rcpp 1linreg.cpp, code=readLines("code/linreg.cpp"), eval=FALSE}
 ```
 
 The second file needed is written in `R` and serves for compiling the nll function defined above and carrying out the estimation procedure by numerical optimization of the nll function.
 The .R file (shown below) carries out the compilation of the C++ file and minimization of the nll function:
-```{r 2init-linreg}
+```{r 1init-linreg}
 # Loading TMB package
 library(TMB)
 # Compilation. The compiler returns 0 if the compilation of
@@ -62,18 +62,18 @@ sdreport(obj_linreg)
 ```
 If we use `summary` on this object, we also get the variables we have passed to `ADREPORT` in the *[code/linreg.cpp](#linreg.cpp)* file.
 In this example, this is only the residual standard deviation;  `sigma`.
-```{r 2summary_sdreport}
+```{r 1summary_sdreport}
 summary(sdreport(obj_linreg))
 ```
 The `select` argument restricts the output to variables passed
 by `ADREPORT(variable_name);` in the cpp file.
 As we will see in [Wald-type], this lets us derive confidence intervals for these natural parameters easily.
-```{r 2summary_sdreport_report}
+```{r 1summary_sdreport_report}
 summary(sdreport(obj_linreg), select = "report")
 ```
 
 Certainly, you would not build a TMB model to fit a linear regression. We can use standard R functions for that. Therefore, we use `stats::lm` on the same data and compare the estimates to those obtained by `TMB`.
-```{r 2lm}
+```{r 1lm}
 rbind(
   "lm"  = lm(y ~ x, data = data)$coef, # linear regression using R
   "TMB" = mod_linreg$par[1:2] # intercept and slope from TMB fit
@@ -90,13 +90,13 @@ Writing extra files to define functions compatible with `TMB` requires some care
 To illustrate how this works, we add a separate function to the *[code/linreg.cpp](#linreg.cpp)* example.
 The following function does not do anything meaningful, but is just meant to show you how you can add write an additional function and load it into your C++.
 We start by writing the subroutine function as a separate file called *[functions/utils_linreg_extended.cpp](#utils_linreg_extended.cpp)*.
-```{Rcpp 2utils_linreg_extended.cpp, code=readLines("functions/utils_linreg_extended.cpp"), eval=FALSE}
+```{Rcpp 1utils_linreg_extended.cpp, code=readLines("functions/utils_linreg_extended.cpp"), eval=FALSE}
 ```
 We then import it into *[code/linreg_extended.cpp](#linreg_extended.cpp)*. 
-```{Rcpp 2utils_linreg_extended.cpp, code=readLines("code/linreg_extended.cpp"), eval=FALSE}
+```{Rcpp 1utils_linreg_extended.cpp, code=readLines("code/linreg_extended.cpp"), eval=FALSE}
 ```
 And eventually we can use it in R, as shown in this minimal example.
-```{r 2linreg_extended}
+```{r 1linreg_extended}
 # Loading TMB package
 library(TMB)
 # Compilation. The compiler returns 0 if the compilation of

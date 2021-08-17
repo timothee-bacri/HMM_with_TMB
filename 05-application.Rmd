@@ -1,10 +1,10 @@
 # Application to different data sets
 
-## TYT dataset
+## TYT data
 We detail here the code used to estimate a 2-state Poisson HMM based on the tinnitus dataset available in *[data/tinnitus.RData](#tinnitus.RData)*.
 
 - Set a seed for randomness, and load files
-```{r 6tyt-init}
+```{r 5tyt-init}
 set.seed(123)
 library(TMB)
 TMB::compile("code/poi_hmm.cpp")
@@ -14,7 +14,7 @@ load("data/tinnitus.RData")
 ```
 
 - Set initial parameters
-```{r 6tyt-init-params}
+```{r 5tyt-init-params}
 # Parameters and covariates
 m <- 2
 gamma <- matrix(c(0.8, 0.2,
@@ -24,13 +24,13 @@ delta <- stat.dist(gamma)
 ```
 
 - Transform them into working parameters
-```{r 6tyt-pn2pw}
+```{r 5tyt-pn2pw}
 working_params <- pois.HMM.pn2pw(m, lambda, gamma)
 TMB_data <- list(x = tinn_data, m = m)
 ```
 
 - Estimate the parameters via a function
-```{r 6tyt-estim}
+```{r 5tyt-estim}
 # Build the TMB object
 obj_tmb <- MakeADFun(TMB_data, working_params,
                      DLL = "poi_hmm", silent = TRUE)
@@ -50,77 +50,11 @@ summary(sdreport(obj_tmb), "report")
 
 For the code used to generate coverage probabilities and acceleration results, please take a look at *[code/poi_hmm_tinn.R](#poi_hmm_tinn.R)*.
 
-## Simulated dataset
-
-We detail here the code used to simulate two datasets from 2-states Poisson HMMs, one of size `r DATA_SIZE_SIMU1` and one of size `r DATA_SIZE_SIMU2`.
-Then, using the same procedure as above, we estimate a model using different initial parameters.
-
-- Set initial parameters (data size and HMM parameters)
-```{r 6simu-gen-init-params}
-DATA_SIZE_SIMU <- 2000
-m <- 2
-# Generate parameters
-lambda <- seq(10, 14, length.out = m)
-# Create the transition probability matrix with 0.8 on its diagonal
-gamma <- matrix(c(0.8, 0.2,
-                  0.2, 0.8), nrow = m, ncol = m)
-delta <- stat.dist(gamma)
-```
-The `stat.dist` function computes the stationary distribution.
-
-- Generate data with one of the functions defined in [Generating data](#generating-data)
-```{r 6simu-gen-data}
-simu_data <- pois.HMM.generate.sample(ns = DATA_SIZE_SIMU,
-                                      mod = list(m = m,
-                                                 lambda = lambda,
-                                                 gamma = gamma,
-                                                 delta = delta))$data
-```
-
-- Set initial parameters
-```{r 6simu-init-params}
-# Parameters and covariates
-m <- 2
-gamma <- matrix(c(0.6, 0.4,
-                  0.4, 0.6), nrow = m, ncol = m)
-lambda <- seq(quantile(simu_data, 0.1), quantile(simu_data, 0.9), length.out = m)
-delta <- stat.dist(gamma)
-# Display Poisson means
-lambda
-```
-
-- Transform them into working parameters
-```{r 6simu-pn2pw}
-working_params <- pois.HMM.pn2pw(m, lambda, gamma)
-TMB_data <- list(x = simu_data, m = m)
-```
-
-- Estimate the parameters via a function
-```{r 6simu-estim}
-# Build the TMB object
-obj_tmb <- MakeADFun(TMB_data, working_params,
-                     DLL = "poi_hmm", silent = TRUE)
-
-# Optimize
-mod_tmb <- nlminb(start = obj_tmb$par,
-                  objective = obj_tmb$fn,
-                  gradient = obj_tmb$gr,
-                  hessian = obj_tmb$he)
-
-# Check convergence
-mod_tmb$convergence == 0
-
-# Results
-summary(sdreport(obj_tmb), "report")
-```
-
-For the code used to generate coverage probabilities and acceleration results, please take a look at *[code/poi_hmm_simu1.R](#poi_hmm_simu1.R)* and *[code/poi_hmm_simu2.R](#poi_hmm_simu2.R)*.
-
 ## Lamb data
 We detail here the code used to estimate a 2-state Poisson HMM based on the lamb dataset available in INSERT GITHUB LINK
 
 - Set a seed for randomness, and load files
-```{r 6lamb-init}
+```{r 5lamb-init}
 set.seed(123)
 library(TMB)
 TMB::compile("code/poi_hmm.cpp")
@@ -132,7 +66,7 @@ rm(lamb)
 ```
 
 - Set initial parameters
-```{r 6lamb-init-params}
+```{r 5lamb-init-params}
 # Parameters and covariates
 m <- 2
 gamma <- matrix(c(0.8, 0.2,
@@ -142,13 +76,13 @@ delta <- stat.dist(gamma)
 ```
 
 - Transform them into working parameters
-```{r 6lamb-pn2pw}
+```{r 5lamb-pn2pw}
 working_params <- pois.HMM.pn2pw(m, lambda, gamma)
 TMB_data <- list(x = lamb_data, m = m)
 ```
 
 - Estimate the parameters via a function
-```{r 6lamb-estim}
+```{r 5lamb-estim}
 # Build the TMB object
 obj_tmb <- MakeADFun(TMB_data, working_params,
                      DLL = "poi_hmm", silent = TRUE)
@@ -180,7 +114,7 @@ l(\lambda) &= \log \left(\prod_{i=1}^{T} \frac{\lambda^{x_i} e^{-\lambda}}{x_{i}
 \end{align*}
 The authors find a ML estimate $\lambda = 0.3583$ and a log-likelihood of -174.26.
 In contrast, calculating the log-likelihood explicitly shows a different result.
-```{r 6leroux-likelihood-calculation}
+```{r 5leroux-likelihood-calculation}
 x <- lamb_data
 # We use n instead of T in R code
 n <- length(x)
@@ -189,6 +123,72 @@ l <- 0.3583
 ```
 
 The log-likelihood is different, but when the constant $- \sum_{i=1}^{T} \log(x_{i}!)$ is removed, it matches our result.
-```{r 6leroux-likelihood}
+```{r 5leroux-likelihood}
 - n * l + log(l) * sum(x)
 ```
+
+## Simulated data
+
+We detail here the code used to simulate two datasets from 2-states Poisson HMMs, one of size `r DATA_SIZE_SIMU1` and one of size `r DATA_SIZE_SIMU2`.
+Then, using the same procedure as above, we estimate a model using different initial parameters.
+
+- Set initial parameters (data size and HMM parameters)
+```{r 5simu-gen-init-params}
+DATA_SIZE_SIMU <- 2000
+m <- 2
+# Generate parameters
+lambda <- seq(10, 14, length.out = m)
+# Create the transition probability matrix with 0.8 on its diagonal
+gamma <- matrix(c(0.8, 0.2,
+                  0.2, 0.8), nrow = m, ncol = m)
+delta <- stat.dist(gamma)
+```
+The `stat.dist` function computes the stationary distribution.
+
+- Generate data with one of the functions defined in [Generating data](#generating-data)
+```{r 5simu-gen-data}
+simu_data <- pois.HMM.generate.sample(ns = DATA_SIZE_SIMU,
+                                      mod = list(m = m,
+                                                 lambda = lambda,
+                                                 gamma = gamma,
+                                                 delta = delta))$data
+```
+
+- Set initial parameters
+```{r 5simu-init-params}
+# Parameters and covariates
+m <- 2
+gamma <- matrix(c(0.6, 0.4,
+                  0.4, 0.6), nrow = m, ncol = m)
+lambda <- seq(quantile(simu_data, 0.1), quantile(simu_data, 0.9), length.out = m)
+delta <- stat.dist(gamma)
+# Display Poisson means
+lambda
+```
+
+- Transform them into working parameters
+```{r 5simu-pn2pw}
+working_params <- pois.HMM.pn2pw(m, lambda, gamma)
+TMB_data <- list(x = simu_data, m = m)
+```
+
+- Estimate the parameters via a function
+```{r 5simu-estim}
+# Build the TMB object
+obj_tmb <- MakeADFun(TMB_data, working_params,
+                     DLL = "poi_hmm", silent = TRUE)
+
+# Optimize
+mod_tmb <- nlminb(start = obj_tmb$par,
+                  objective = obj_tmb$fn,
+                  gradient = obj_tmb$gr,
+                  hessian = obj_tmb$he)
+
+# Check convergence
+mod_tmb$convergence == 0
+
+# Results
+summary(sdreport(obj_tmb), "report")
+```
+
+For the code used to generate coverage probabilities and acceleration results, please take a look at *[code/poi_hmm_simu1.R](#poi_hmm_simu1.R)* and *[code/poi_hmm_simu2.R](#poi_hmm_simu2.R)*.
