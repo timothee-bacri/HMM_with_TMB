@@ -6,30 +6,30 @@ The function is defined in *[code/poi_hmm.cpp](#poi_hmm.cpp)*
 ```{Rcpp 4poi_hmm.cpp, code=readLines("code/poi_hmm.cpp"), eval=FALSE}
 ```
 
-## Preparing data and functions
+## Optimization
 Before we can fit the model, we need to load some necessary packages and data files. We also need to compile the `C++` code and load the functions into our working environment in `R`.
 
-We start by loading the necessary packages and the utility R functions.
+(i) We start by compiling the `C++` code for computing the likelihood and its gradients. Once it is compiled, we can load the TMB likelihood object into `R` -- making it available from `R`. 
 
 ```{r 4init-example1, message = FALSE, warning = FALSE, results = FALSE}
 # Load TMB and optimization packages
 library(TMB)
 library(optimr)
-# Load the parameter transformation function
-source("functions/utils.R")
-```
-Next, we need to compile the c++ code for computing the likelihood and its gradients. Once it is compiled, we can load the TMB likelihood object into R -- making it available from R. 
-```{r 4init-example2, message = FALSE, warning = FALSE, results = FALSE}
-# Run the `C++` file containing the TMB code
+# Run the C++ file containing the TMB code
 TMB::compile("code/poi_hmm.cpp")
 # Load it
 dyn.load(dynlib("code/poi_hmm"))
 ```
+Next, we need to load the necessary packages and the utility `R` functions.
+```{r 4init-example2, message = FALSE, warning = FALSE, results = FALSE}
+# Load the parameter transformation function
+source("functions/utils.R")
+```
 
-The data are part of a large data set collected with the "Track Your Tinnitus" (TYT) mobile application, a detailed description of which is presented in [@pryss; @pryssa].
+(ii) The data are part of a large data set collected with the "Track Your Tinnitus" (TYT) mobile application, a detailed description of which is presented in [@pryss; @pryssa].
 We analyze 87 successive days of the "arousal" variable, which is measured on a discrete scale.
 Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state [for details, see @probst].
-The data can be loaded by a simple call. 
+The data can be loaded by a simple call.
 ```{r 4load-example}
 load("data/tinnitus.RData")
 ```
@@ -53,15 +53,10 @@ print(temp, include.rownames = FALSE, include.colnames = FALSE,
 plot(tinn_data, ylab = "Arousal", xlab = "Day (#)")
 ```
 
+(iii) Initialization of the number of states and starting (or initial) values for the optimization.
+First, the number of states needs to be determined. As explained by @pohlea, @pohle, and @[zucchini, Section 6] (to name only a few), usually one would first fit models with a different number of states. Then, these models are evaluated e.g. by means of model selection criteria [as carried out by, @leroux] or prediction performance [@celeux].
+As shown in [the appendix](#appendix), the model selection procedure shows that both AIC and BIC prefer a two-state model over a Poisson regression and over a model with three or four states. Consequently, we focus on the two-state model in the following.
 
-## Modeling
-
-1. Initialization of the number of states and starting (or initial) values for the optimization
-
-First, the number of states needs to be determined.
-As explained by [@pohlea], [@pohle], and [@zucchini Section 6] (to name only a few), usually one would first fit models with a different number of states.
-Then, these models are evaluated e.g. by means of model selection criteria [as carried out by @leroux] or prediction performance [@celeux].
-Since the results reported by [@leroux] show that a two-state model is preferred by the BIC, we focus on this model only here - although other choices would be possible, e.g. the AIC selects a three-state model.
 The list object `TMB_data` contains the data and the number of states.
 
 ```{r 4param-example1}
@@ -98,7 +93,6 @@ Setting argument `silent = TRUE` disables tracing information and is only used h
 obj_tmb <- MakeADFun(TMB_data, parameters,
                      DLL = "poi_hmm", silent = TRUE)
 ```
-
 
 This object also contains the previously defined initial values as a vector (`par`) rather than a list.
 The negative log-likelihood (`fn`), its gradient (`gr`), and Hessian (`he`) are functions of the parameters (in vector form) while the data are considered fixed: 
@@ -336,3 +330,103 @@ tpm[1, 2] == tpm[1, 3]
 ```
 
 Equality constraints involving a diagonal member of the TPM are simpler to specify: the constraint $\gamma_{i,j} = \gamma_{i,i}$ becomes transformed to $\tau_{i,j} = 1$ and this can be specified in the same way the Poisson mean $\lambda_1$ was fixed.
+
+## Appendix {#appendix}
+
+Model selection tinnitus via AIC and BIC (calculation defined in @zucchini)
+
+* AIC and BIC for a Poisson regression
+```{r 4model-selection-tinnitus1}
+m <- 1
+TMB_data <- list(x = tinn_data, m = m)
+lambda <- 2
+gamma <- 1
+parameters <- pois.HMM.pn2pw(m, lambda, gamma)
+obj_tmb <- MakeADFun(TMB_data, parameters,
+                     DLL = "poi_hmm", silent = TRUE)
+mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn)
+mllk <- mod_tmb$objective
+np <- length(unlist(parameters))
+AIC_1 <- 2 * (mllk + np)
+n <- sum(!is.na(TMB_data$x))
+BIC_1 <- 2 * mllk + np * log(n)
+mod_tmb$convergence == 0
+paste("AIC =", AIC_1, "and BIC =", BIC_1)
+```
+* AIC and BIC for a two-state HMM
+```{r 4model-selection-tinnitus2}
+m <- 2
+TMB_data <- list(x = tinn_data, m = m)
+lambda <- seq(from = 1, to = 3, length.out = m)
+# 0.8 on the diagonal, and 0.2 split along the rest of each line, size m
+gamma <- matrix(0.2 / (m - 1),
+                nrow = m,
+                ncol = m)
+diag(gamma) <- 0.8
+parameters <- pois.HMM.pn2pw(m, lambda, gamma)
+obj_tmb <- MakeADFun(TMB_data, parameters,
+                     DLL = "poi_hmm", silent = TRUE)
+mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn)
+mllk <- mod_tmb$objective
+np <- length(unlist(parameters))
+AIC_2 <- 2 * (mllk + np)
+n <- sum(!is.na(TMB_data$x))
+BIC_2 <- 2 * mllk + np * log(n)
+mod_tmb$convergence == 0
+paste("AIC =", AIC_2, "and BIC =", BIC_2)
+```
+* AIC and BIC for a two-state HMM
+```{r 4model-selection-tinnitus3}
+m <- 3
+TMB_data <- list(x = tinn_data, m = m)
+lambda <- seq(from = 1, to = 3, length.out = m)
+# 0.8 on the diagonal, and 0.2 split along the rest of each line, size m
+gamma <- matrix(0.2 / (m - 1),
+                nrow = m,
+                ncol = m)
+diag(gamma) <- 0.8
+parameters <- pois.HMM.pn2pw(m, lambda, gamma)
+obj_tmb <- MakeADFun(TMB_data, parameters,
+                     DLL = "poi_hmm", silent = TRUE)
+mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn)
+mllk <- mod_tmb$objective
+np <- length(unlist(parameters))
+AIC_3 <- 2 * (mllk + np)
+n <- sum(!is.na(TMB_data$x))
+BIC_3 <- 2 * mllk + np * log(n)
+mod_tmb$convergence == 0
+paste("AIC =", AIC_3, "and BIC =", BIC_3)
+```
+* AIC and BIC for a four-state HMM
+```{r 4model-selection-tinnitus4}
+m <- 4
+TMB_data <- list(x = tinn_data, m = m)
+lambda <- seq(from = 1, to = 3, length.out = m)
+# 0.8 on the diagonal, and 0.2 split along the rest of each line, size m
+gamma <- matrix(0.2 / (m - 1),
+                nrow = m,
+                ncol = m)
+diag(gamma) <- 0.8
+parameters <- pois.HMM.pn2pw(m, lambda, gamma)
+obj_tmb <- MakeADFun(TMB_data, parameters,
+                     DLL = "poi_hmm", silent = TRUE)
+mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn)
+mllk <- mod_tmb$objective
+np <- length(unlist(parameters))
+AIC_4 <- 2 * (mllk + np)
+n <- sum(!is.na(TMB_data$x))
+BIC_4 <- 2 * mllk + np * log(n)
+mod_tmb$convergence == 0
+paste("AIC =", AIC_4, "and BIC =", BIC_4)
+```
+
+* Summary
+
+Models                | AIC           | BIC
+--------------------- | ------------- | ---------
+Poisson regression    | `r AIC_1`     | `r BIC_1`
+Two-state HMM         | `r AIC_2`     | `r BIC_2`
+Three-state HMM       | `r AIC_3`     | `r BIC_3`
+Four-state HMM        | `r AIC_4`     | `r BIC_4`
+
+AIC and BIC prefer a two-state model over a Poisson regression and over three and four-state HMMs.

@@ -22,12 +22,12 @@ label-switching
 negative-log-likelihood-in-tmb
 using-tmb
 likelihood-function
-preparing-data-and-functions
-modeling
+optimization
 nested-models
 principle
 limits
 param-eq-constraints
+appendix
 confidence-intervals
 wald-type
 parametric-bootstrap
@@ -53,6 +53,9 @@ poi_hmm.cpp
 codepoi_hmm.dll
 codepoi_hmm.o
 poi_hmm_lamb.R
+poi_hmm_simu1.R
+poi_hmm_simu2.R
+poi_hmm_tinn.R
 setup_parameters.R
 data
 datafetal-lamb.rdata

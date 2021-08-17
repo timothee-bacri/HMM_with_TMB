@@ -102,17 +102,17 @@ File link: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm
 Direct link: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm.o
 
 ### code/poi_hmm_lamb.R {#poi_hmm_lamb.R}
-
 File link: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm_lamb.R \
 Direct link: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_lamb.R
-### code/poi_hmm_simu1.R {#poi_hmm_simu1.R}
 
+### code/poi_hmm_simu1.R {#poi_hmm_simu1.R}
 File link: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm_simu1.R \
 Direct link: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_simu1.R
-### code/poi_hmm_simu2.R {#poi_hmm_simu2.R}
 
+### code/poi_hmm_simu2.R {#poi_hmm_simu2.R}
 File link: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm_simu2.R \
 Direct link: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_simu2.R
+
 ### code/poi_hmm_tinn.R {#poi_hmm_tinn.R}
 Most of their code is common:
 
@@ -120,7 +120,7 @@ Most of their code is common:
 * `Parameters & covariates for TMB` transforms parameters and covariates to their working form.
 * `Estimation` computes estimates with and without TMB for further comparison. The estimates are stored in the data-frames `conf_int_*`.
 * `Creating variables for the CIs` creates necessary variables for to compute confidence intervals (CIs).
-* `Benchmarks` uses the `microbenchmark` package to accurately time:
+* `Benchmarks` uses the `microbenchmark` [@R-microbenchmark] package to accurately time:
 
     * the $TMB_0$ $TMB_G$ $TMB_H$ and $TMB_{GH}$ procedures. Their times are stored in the data-frames `estim_benchmarks_df_*`
     * the negative log-likelihood computation with and without `TMB`. Their times are stored in the data-frames `mllk_times_df_*`.
