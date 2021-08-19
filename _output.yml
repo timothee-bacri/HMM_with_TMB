@@ -3,4 +3,4 @@ bookdown::gitbook:
   config:
     toc:
       before: |
-        <li><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a></li>
+        <li><a href="./">A gentle tutorial of accelerated<br>parameter and confidence interval<br>estimation for Hidden Markov Models<BR>using Template Model Builder</a></li>

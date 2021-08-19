@@ -159,7 +159,7 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a></li>
+<li><a href="./">A gentle tutorial of accelerated<br>parameter and confidence interval<br>estimation for Hidden Markov Models<BR>using Template Model Builder</a></li>
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Summary</a></li>
 <li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for MLE</a>
@@ -290,7 +290,7 @@ From that list of new estimates we can get the 2.5th and 97.5th percentiles and 
 <span id="cb118-3"><a href="confidence-intervals.html#cb118-3" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="confidence-intervals.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span></code></pre></div>
-<pre><code>## Warning: 16 external pointers will be removed</code></pre>
+<pre><code>## Warning: 15 external pointers will be removed</code></pre>
 <div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="confidence-intervals.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
 <span id="cb122-2"><a href="confidence-intervals.html#cb122-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
 <span id="cb122-3"><a href="confidence-intervals.html#cb122-3" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span>
