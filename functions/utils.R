@@ -447,8 +447,8 @@ pois.HMM.label.order <- function(m,
                                  lambda_std_error = NULL,
                                  gamma_std_error = NULL,
                                  delta_std_error = NULL) {
-  # gamma_vector_indices is used to calculate the indices of the reordered TPM gamma as a vector
-  # for reordering the rows of the complete CI data.frame used for the article.
+  # gamma_vector_indices is used to calculate the indices of the reordered TPM gamma as
+  # a vector for reordering the rows of the complete CI data.frame used for the article.
   gamma_vector_indices <- 1:(m ^ 2)
   gamma_vector_matrix <- matrix(gamma_vector_indices, nrow = m, ncol = m)
   ordered_gamma_vector_matrix <- matrix(0, nrow = m, ncol = m)
@@ -495,8 +495,11 @@ pois.HMM.label.order <- function(m,
   ordered_lambda_std_error <- lambda_std_error[ordered_lambda_indices]
   ordered_delta_std_error <- delta_std_error[ordered_lambda_indices]
   
-  # The vector is assumed filled column-wise instead of row-wise, because column-wise is the default way R handles matrix to vector conversion.
-  # Change to row-wise if needed by replacing ordered_gamma_vector_matrix with t(ordered_gamma_vector_matrix), or add byrow=TRUE to "ordered_gamma_vector_matrix <- matrix(0, nrow = m, ncol = m)"
+  # The vector is assumed filled column-wise instead of row-wise,
+  # because column-wise is the default way R handles matrix to vector conversion.
+  # Change to row-wise if needed by replacing ordered_gamma_vector_matrix with
+  # t(ordered_gamma_vector_matrix), or add byrow=TRUE
+  # to "ordered_gamma_vector_matrix <- matrix(0, nrow = m, ncol = m)"
   # We don't use it in case there is a bug, but it makes logical sense that it should work
   ordered_gamma_vector_matrix <- as.numeric(ordered_gamma_vector_matrix)
   

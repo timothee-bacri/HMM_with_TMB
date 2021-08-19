@@ -105,8 +105,7 @@ lalpha[, 1:5]
 ```
 
 ### Log-backward probabilities {#log-backward}
-The backward probabilities have been defined in the same section
-@zucchini[p.67 and p.334].
+We show here a way to compute the log of the backward probabilities with a scaling scheme defined by @zucchini[p.67 and p.334].
 
 ```{r 3log-backward}
 # Compute log-backwards probabilities (scaling used)

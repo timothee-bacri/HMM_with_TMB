@@ -21,7 +21,7 @@ output:
 header-includes:
   - \usepackage{amsthm,amsmath,amssymb,amsfonts,amssymb}
   - \usepackage{listings}
-  - \newcommand{\bs}[1]{{\boldsymbol#1}}
+  - \newcommand{\b}[1]{{\boldsymbol#1}}
   - \DeclareMathOperator*{\argmax}{argmax}
 ---
 

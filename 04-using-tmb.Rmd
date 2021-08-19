@@ -367,7 +367,7 @@ implementation in R is detailed in @zucchini[p.83 and p.337]
 
 Then,
 \[
-\text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\bs{\alpha}_n \bs{\Gamma}^h \textbf{P}(x) \bs{1}'}{\bs{\alpha}_n \bs{1}'} = \bs{\Phi}_n \bs{\Gamma}^h \textbf{P}(x) \bs{1}'
+\text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_n \bs{\Gamma}^h \textbf{P}(x) \bs{1}'}{\b{\alpha}_n \bs{1}'} = \bs{\Phi}_n \bs{\Gamma}^h \textbf{P}(x) \bs{1}'
 \]
 An implementation of this using a scaling scheme is
 
