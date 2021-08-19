@@ -19,6 +19,7 @@ knitr::knit_engines$set()
 
 This repository contains the code to produce the R-bookdown website found [here](https://timothee-bacri.github.io/HMM_with_TMB/).
 
+The folders (*[code/](#code)*, *[data/](#data)*, *[functions/](#functions)*) related to the analysis code and results of the paper [LINK available later](https://www.nrk.no) are described in [Directory structure](#directory-structure).
 
 ## Author's github account{-}
 
@@ -28,5 +29,3 @@ This repository contains the code to produce the R-bookdown website found [here]
 ## License{-}
 
 This project is licensed under the xxxx License - see [LICENSE.md](LICENSE.md) for details. 
-
-

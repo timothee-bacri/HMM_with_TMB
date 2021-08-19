@@ -1,7 +1,6 @@
 # Using `TMB`
 
 ## Likelihood function
-
 The function is defined in *[code/poi_hmm.cpp](#poi_hmm.cpp)*
 ```{Rcpp 3poi_hmm.cpp, code=readLines("code/poi_hmm.cpp"), eval=FALSE}
 ```
@@ -176,7 +175,6 @@ This can result in incoherent findings when checking equality between 2 numbers.
 
 ## Basic nested model specification
 ### Principle
-
 As a first step in building a nested model, we arbitrarily fix $\lambda_1$ to the value 1.
 ```{r 3nested_params}
 # Get the previous values, and fix some
@@ -211,7 +209,6 @@ summary(sdreport(fixed_par_obj_tmb), "report")
 Note that the standard error of $\lambda_1$ is zero, because it is no longer considered a variable parameter and does not enter the optimization procedure.
 
 ### Limits
-
 This method cannot work in general for working parameters which are not linked to a single natural parameter.
 This is because only working parameters can be fixed with this method, but the working parameters of the TPM are not each linked to a single natural parameter.
 As an example, fixing the natural parameter $\gamma_{11}$ is not equivalent to fixing any working parameter $\tau_{ij}$.
@@ -222,7 +219,6 @@ However, if conditions on the natural parameters can be translated to conditions
 We will show in the next section that a type of general constraints on the TPM can be carried out.
 
 ### Parameter equality constraints {#param-eq-constraints}
-
 More complex constraints than above are possible.
 For example, imposing equality constraints (such as $\gamma_{11} = \gamma_{22}$) requires the corresponding factor level to be identical for the concerned entries.
 
@@ -333,9 +329,7 @@ Equality constraints involving a diagonal member of the TPM are simpler to speci
 
 
 ## State inference {#state-inference}
-
 ### Prepare the model
-
 ```{r 3prepare, results=FALSE}
 library(TMB)
 source("functions/utils.R")
@@ -397,11 +391,7 @@ Nevertheless, we also need to compute them in `R` for the [Forecast](#forecast) 
 ```
 
 ### Log-forward probabilities {#log-forward}
-
-The forward probabilities have been detailed in
-TO FIX LINK_TO_hmm_likelihood!!!!!!!!!!!!!!!!!.
-
-We show here a way to compute the log of the forward probabilities, using a scaling scheme defined by [see @zucchini, p.66 and p.334].
+We show here a way to compute the log of the forward probabilities, using a scaling scheme defined by @zucchini[p.66 and p.334].
 
 ```{r 3log-forward}
 # Compute log-forward probabilities (scaling used)
@@ -423,7 +413,6 @@ lalpha[, 1:5]
 ```
 
 ### Log-backward probabilities {#log-backward}
-
 The backward probabilities have been defined in the same section
 @zucchini[p.67 and p.334].
 
@@ -445,7 +434,6 @@ lbeta[, 1:4]
 ```
 
 ### Local decoding {#local-decoding}
-
 The smoothing probabilities are defined in @zucchini[p.87 and p.336] as
 \[
 \text{P}(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
@@ -473,7 +461,6 @@ ldecode
 ```
 
 ### Forecast {#forecast}
-
 The forecast distribution or h-step-ahead-probabilities as well as its
 implementation in R is detailed in @zucchini[p.83 and p.337]
 
@@ -539,7 +526,6 @@ iv
 
 
 ## Appendix {#appendix}
-
 Model selection tinnitus via AIC and BIC (calculation defined in @zucchini).
 
 * AIC and BIC for a Poisson regression

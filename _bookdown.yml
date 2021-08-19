@@ -4,3 +4,11 @@ language:
   ui:
     chapter_name: "Chapter "
 output_dir: "docs"
+rmd_files:
+  - index.Rmd
+  - 02-principles.Rmd
+  - 03-estimation.Rmd
+  - 04-using-tmb.Rmd
+  - 05-confidence-intervals.Rmd
+  - 06-application.Rmd
+  - 07-guide-code.Rmd

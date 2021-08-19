@@ -15,20 +15,7 @@ link-citations: yes
 description: "This accompanies the article published at [GITHUB LINK]."
 url: "https://github.com/timothee-bacri/HMM_with_TMB"
 github-repo: "timothee-bacri/HMM_with_TMB"
-output:
-  # html_document:
-  #   toc: true
-  #   toc_float:
-  #     collapsed: false
-  #     smooth_scroll: true
-  # https://bookdown.org/yihui/bookdown/html.html#gitbook-style
-  bookdown::gitbook:
-    toc_depth: 4
-    # config:
-      # toc:
-        # collapse: subsection
-    # fig_caption: yes
-    # number_sections: yes
+output: bookdown::gitbook
 header-includes:
   - \usepackage{amsthm,amsmath,amssymb,amsfonts,amssymb}
   - \usepackage{listings}
@@ -36,7 +23,7 @@ header-includes:
   - \DeclareMathOperator*{\argmax}{argmax}
 ---
 
-# Summary {-}
+# Summary
 <!-- COMPILE WITH bookdown::render_book("index.Rmd") -->
 Welcome !
 
@@ -61,5 +48,5 @@ knitr::write_bib(c(
 ), 'packages.bib')
 ```
 
-# License {-}
-This project is licensed under the xxxx License - see [LICENSE.md](LICENSE.md) for details.
+<!-- # License {-} -->
+<!-- This project is licensed under the xxxx License - see [LICENSE.md](LICENSE.md) for details. -->

@@ -51,7 +51,7 @@ summary(sdreport(obj_tmb), "report")
 For the code used to generate coverage probabilities and acceleration results, please take a look at *[code/poi_hmm_tinn.R](#poi_hmm_tinn.R)*.
 
 ## Lamb data
-We detail here the code used to estimate a 2-state Poisson HMM based on the lamb dataset available in INSERT GITHUB LINK
+We detail here the code used to estimate a 2-state Poisson HMM based on the lamb dataset available in *[data/fetal-lamb.RData](#fetal-lamb.RData)*
 
 - Set a seed for randomness, and load files
 ```{r 5lamb-init}

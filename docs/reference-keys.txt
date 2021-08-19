@@ -1,4 +1,5 @@
 fig:3tinnitus-fig
+summary
 principles-of-using-tmb-for-mle
 setup
 linear-regression-example
@@ -40,7 +41,7 @@ tyt-data
 lamb-data
 simulated-data
 github
-direct-fileory-structure
+directory-structure
 code
 linreg.cpp
 codelinreg.dll
@@ -59,8 +60,11 @@ poi_hmm_simu2.R
 poi_hmm_tinn.R
 setup_parameters.R
 data
-datafetal-lamb.rdata
+fetal-lamb.RData
 dataresults_lamb.rdata
+dataresults_simu1.rdata
+dataresults_simu2.rdata
+dataresults_tinn.rdata
 tinnitus.RData
 functions
 functionsutils.cpp

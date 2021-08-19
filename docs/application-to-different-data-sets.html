@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Application to different data sets | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <title>Chapter 6 Application to different data sets | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
   <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Application to different data sets | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:title" content="Chapter 6 Application to different data sets | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Application to different data sets | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta name="twitter:title" content="Chapter 6 Application to different data sets | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   
   <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
   
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-08-18" />
+<meta name="date" content="2021-08-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -162,105 +162,95 @@ div.csl-indent {
 <li><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="" data-path="license.html"><a href="license.html"><i class="fa fa-check"></i>License</a></li>
-<li class="chapter" data-level="1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>1</b> Principles of using <code>TMB</code> for MLE</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Summary</a></li>
+<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for MLE</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#setup"><i class="fa fa-check"></i><b>1.1</b> Setup</a></li>
-<li class="chapter" data-level="1.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#linear-regression-example"><i class="fa fa-check"></i><b>1.2</b> Linear regression example</a></li>
-<li class="chapter" data-level="1.3" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#extending-the-c-nll"><i class="fa fa-check"></i><b>1.3</b> Extending the <code>C++</code> nll</a></li>
+<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#setup"><i class="fa fa-check"></i><b>2.1</b> Setup</a></li>
+<li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#linear-regression-example"><i class="fa fa-check"></i><b>2.2</b> Linear regression example</a></li>
+<li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#extending-the-c-nll"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> nll</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html"><i class="fa fa-check"></i><b>2</b> Parameter estimation techniques for HMMs</a>
+<li class="chapter" data-level="3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques for HMMs</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#basic-notation-and-model-setup"><i class="fa fa-check"></i><b>2.1</b> Basic notation and model setup</a></li>
-<li class="chapter" data-level="2.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#the-likelihood-function-of-an-hmm"><i class="fa fa-check"></i><b>2.2</b> The likelihood function of an HMM</a></li>
-<li class="chapter" data-level="2.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#forward-algorithm-and-backward-algorithm"><i class="fa fa-check"></i><b>2.3</b> Forward algorithm and backward algorithm</a></li>
-<li class="chapter" data-level="2.4" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#reparameterization-of-the-likelihood-function"><i class="fa fa-check"></i><b>2.4</b> Reparameterization of the likelihood function</a>
+<li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#basic-notation-and-model-setup"><i class="fa fa-check"></i><b>3.1</b> Basic notation and model setup</a></li>
+<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#the-likelihood-function-of-an-hmm"><i class="fa fa-check"></i><b>3.2</b> The likelihood function of an HMM</a></li>
+<li class="chapter" data-level="3.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#forward-algorithm-and-backward-algorithm"><i class="fa fa-check"></i><b>3.3</b> Forward algorithm and backward algorithm</a></li>
+<li class="chapter" data-level="3.4" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#reparameterization-of-the-likelihood-function"><i class="fa fa-check"></i><b>3.4</b> Reparameterization of the likelihood function</a>
 <ul>
-<li class="chapter" data-level="2.4.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-tmb"><i class="fa fa-check"></i><b>2.4.1</b> Utility functions in <code>TMB</code></a></li>
-<li class="chapter" data-level="2.4.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-r"><i class="fa fa-check"></i><b>2.4.2</b> Utility functions in <code>R</code></a>
-<ul>
-<li class="chapter" data-level="2.4.2.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#label-switching"><i class="fa fa-check"></i><b>2.4.2.1</b> Label switching</a></li>
+<li class="chapter" data-level="3.4.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-tmb"><i class="fa fa-check"></i><b>3.4.1</b> Utility functions in <code>TMB</code></a></li>
+<li class="chapter" data-level="3.4.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-r"><i class="fa fa-check"></i><b>3.4.2</b> Utility functions in <code>R</code></a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using <code>TMB</code></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
+<li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#optimization"><i class="fa fa-check"></i><b>4.2</b> Optimization</a></li>
+<li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#basic-nested-model-specification"><i class="fa fa-check"></i><b>4.3</b> Basic nested model specification</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>4.3.1</b> Principle</a></li>
+<li class="chapter" data-level="4.3.2" data-path="using-tmb.html"><a href="using-tmb.html#limits"><i class="fa fa-check"></i><b>4.3.2</b> Limits</a></li>
+<li class="chapter" data-level="4.3.3" data-path="using-tmb.html"><a href="using-tmb.html#param-eq-constraints"><i class="fa fa-check"></i><b>4.3.3</b> Parameter equality constraints</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>3</b> Using <code>TMB</code></a>
+<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#state-inference"><i class="fa fa-check"></i><b>4.4</b> State inference</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>3.1</b> Likelihood function</a></li>
-<li class="chapter" data-level="3.2" data-path="using-tmb.html"><a href="using-tmb.html#optimization"><i class="fa fa-check"></i><b>3.2</b> Optimization</a></li>
-<li class="chapter" data-level="3.3" data-path="using-tmb.html"><a href="using-tmb.html#basic-nested-model-specification"><i class="fa fa-check"></i><b>3.3</b> Basic nested model specification</a>
-<ul>
-<li class="chapter" data-level="3.3.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>3.3.1</b> Principle</a></li>
-<li class="chapter" data-level="3.3.2" data-path="using-tmb.html"><a href="using-tmb.html#limits"><i class="fa fa-check"></i><b>3.3.2</b> Limits</a></li>
-<li class="chapter" data-level="3.3.3" data-path="using-tmb.html"><a href="using-tmb.html#param-eq-constraints"><i class="fa fa-check"></i><b>3.3.3</b> Parameter equality constraints</a></li>
+<li class="chapter" data-level="4.4.1" data-path="using-tmb.html"><a href="using-tmb.html#prepare-the-model"><i class="fa fa-check"></i><b>4.4.1</b> Prepare the model</a></li>
+<li class="chapter" data-level="4.4.2" data-path="using-tmb.html"><a href="using-tmb.html#setup-1"><i class="fa fa-check"></i><b>4.4.2</b> Setup</a></li>
+<li class="chapter" data-level="4.4.3" data-path="using-tmb.html"><a href="using-tmb.html#log-forward"><i class="fa fa-check"></i><b>4.4.3</b> Log-forward probabilities</a></li>
+<li class="chapter" data-level="4.4.4" data-path="using-tmb.html"><a href="using-tmb.html#log-backward"><i class="fa fa-check"></i><b>4.4.4</b> Log-backward probabilities</a></li>
+<li class="chapter" data-level="4.4.5" data-path="using-tmb.html"><a href="using-tmb.html#local-decoding"><i class="fa fa-check"></i><b>4.4.5</b> Local decoding</a></li>
+<li class="chapter" data-level="4.4.6" data-path="using-tmb.html"><a href="using-tmb.html#forecast"><i class="fa fa-check"></i><b>4.4.6</b> Forecast</a></li>
+<li class="chapter" data-level="4.4.7" data-path="using-tmb.html"><a href="using-tmb.html#global-decoding"><i class="fa fa-check"></i><b>4.4.7</b> Global decoding</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="using-tmb.html"><a href="using-tmb.html#state-inference"><i class="fa fa-check"></i><b>3.4</b> State inference</a>
-<ul>
-<li class="chapter" data-level="3.4.1" data-path="using-tmb.html"><a href="using-tmb.html#prepare-the-model"><i class="fa fa-check"></i><b>3.4.1</b> Prepare the model</a></li>
-<li class="chapter" data-level="3.4.2" data-path="using-tmb.html"><a href="using-tmb.html#setup-1"><i class="fa fa-check"></i><b>3.4.2</b> Setup</a>
-<ul>
-<li class="chapter" data-level="3.4.2.1" data-path="using-tmb.html"><a href="using-tmb.html#define-variables"><i class="fa fa-check"></i><b>3.4.2.1</b> Define variables</a></li>
-<li class="chapter" data-level="3.4.2.2" data-path="using-tmb.html"><a href="using-tmb.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>3.4.2.2</b> Emission/output probabilities</a></li>
+<li class="chapter" data-level="4.5" data-path="using-tmb.html"><a href="using-tmb.html#appendix"><i class="fa fa-check"></i><b>4.5</b> Appendix</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4.3" data-path="using-tmb.html"><a href="using-tmb.html#log-forward"><i class="fa fa-check"></i><b>3.4.3</b> Log-forward probabilities</a></li>
-<li class="chapter" data-level="3.4.4" data-path="using-tmb.html"><a href="using-tmb.html#log-backward"><i class="fa fa-check"></i><b>3.4.4</b> Log-backward probabilities</a></li>
-<li class="chapter" data-level="3.4.5" data-path="using-tmb.html"><a href="using-tmb.html#local-decoding"><i class="fa fa-check"></i><b>3.4.5</b> Local decoding</a></li>
-<li class="chapter" data-level="3.4.6" data-path="using-tmb.html"><a href="using-tmb.html#forecast"><i class="fa fa-check"></i><b>3.4.6</b> Forecast</a></li>
-<li class="chapter" data-level="3.4.7" data-path="using-tmb.html"><a href="using-tmb.html#global-decoding"><i class="fa fa-check"></i><b>3.4.7</b> Global decoding</a></li>
-</ul></li>
-<li class="chapter" data-level="3.5" data-path="using-tmb.html"><a href="using-tmb.html#appendix"><i class="fa fa-check"></i><b>3.5</b> Appendix</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>4</b> Confidence intervals</a>
+<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#wald-type-confidence-intervals-based-on-the-hessian"><i class="fa fa-check"></i><b>4.1</b> Wald-type confidence<br>intervals based on the Hessian</a></li>
-<li class="chapter" data-level="4.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#likelihood-profile-based-confidence-intervals"><i class="fa fa-check"></i><b>4.2</b> Likelihood profile based confidence intervals</a></li>
-<li class="chapter" data-level="4.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-based-confidence-intervals"><i class="fa fa-check"></i><b>4.3</b> Bootstrap-based<br>confidence intervals</a>
+<li class="chapter" data-level="5.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#wald-type-confidence-intervals-based-on-the-hessian"><i class="fa fa-check"></i><b>5.1</b> Wald-type confidence<br>intervals based on the Hessian</a></li>
+<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#likelihood-profile-based-confidence-intervals"><i class="fa fa-check"></i><b>5.2</b> Likelihood profile based confidence intervals</a></li>
+<li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-based-confidence-intervals"><i class="fa fa-check"></i><b>5.3</b> Bootstrap-based<br>confidence intervals</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>4.3.1</b> Generating data</a></li>
-<li class="chapter" data-level="4.3.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>4.3.2</b> Bootstrap</a></li>
+<li class="chapter" data-level="5.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>5.3.1</b> Generating data</a></li>
+<li class="chapter" data-level="5.3.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>5.3.2</b> Bootstrap</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>5</b> Application to different data sets</a>
+<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-data"><i class="fa fa-check"></i><b>5.1</b> TYT data</a></li>
-<li class="chapter" data-level="5.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>5.2</b> Lamb data</a></li>
-<li class="chapter" data-level="5.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-data"><i class="fa fa-check"></i><b>5.3</b> Simulated data</a></li>
+<li class="chapter" data-level="6.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-data"><i class="fa fa-check"></i><b>6.1</b> TYT data</a></li>
+<li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>6.2</b> Lamb data</a></li>
+<li class="chapter" data-level="6.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-data"><i class="fa fa-check"></i><b>6.3</b> Simulated data</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="github.html"><a href="github.html"><i class="fa fa-check"></i><b>6</b> GitHub</a>
+<li class="chapter" data-level="7" data-path="github.html"><a href="github.html"><i class="fa fa-check"></i><b>7</b> GitHub</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="github.html"><a href="github.html#direct-fileory-structure"><i class="fa fa-check"></i><b>6.1</b> Direct fileory structure</a>
+<li class="chapter" data-level="7.1" data-path="github.html"><a href="github.html#directory-structure"><i class="fa fa-check"></i><b>7.1</b> Directory structure</a>
 <ul>
-<li class="chapter" data-level="6.1.1" data-path="github.html"><a href="github.html#code"><i class="fa fa-check"></i><b>6.1.1</b> code/</a></li>
-<li class="chapter" data-level="6.1.2" data-path="github.html"><a href="github.html#linreg.cpp"><i class="fa fa-check"></i><b>6.1.2</b> code/linreg.cpp</a></li>
-<li class="chapter" data-level="6.1.3" data-path="github.html"><a href="github.html#codelinreg.dll"><i class="fa fa-check"></i><b>6.1.3</b> code/linreg.dll</a></li>
-<li class="chapter" data-level="6.1.4" data-path="github.html"><a href="github.html#linreg.o"><i class="fa fa-check"></i><b>6.1.4</b> code/linreg.o</a></li>
-<li class="chapter" data-level="6.1.5" data-path="github.html"><a href="github.html#linreg_extended.cpp"><i class="fa fa-check"></i><b>6.1.5</b> code/linreg_extended.cpp</a></li>
-<li class="chapter" data-level="6.1.6" data-path="github.html"><a href="github.html#codelinreg_extended.dll"><i class="fa fa-check"></i><b>6.1.6</b> code/linreg_extended.dll</a></li>
-<li class="chapter" data-level="6.1.7" data-path="github.html"><a href="github.html#codelinreg_extended.o"><i class="fa fa-check"></i><b>6.1.7</b> code/linreg_extended.o</a></li>
-<li class="chapter" data-level="6.1.8" data-path="github.html"><a href="github.html#main.R"><i class="fa fa-check"></i><b>6.1.8</b> code/main.R</a></li>
-<li class="chapter" data-level="6.1.9" data-path="github.html"><a href="github.html#codepackages.r"><i class="fa fa-check"></i><b>6.1.9</b> code/packages.R</a></li>
-<li class="chapter" data-level="6.1.10" data-path="github.html"><a href="github.html#poi_hmm.cpp"><i class="fa fa-check"></i><b>6.1.10</b> code/poi_hmm.cpp</a></li>
-<li class="chapter" data-level="6.1.11" data-path="github.html"><a href="github.html#codepoi_hmm.dll"><i class="fa fa-check"></i><b>6.1.11</b> code/poi_hmm.dll</a></li>
-<li class="chapter" data-level="6.1.12" data-path="github.html"><a href="github.html#codepoi_hmm.o"><i class="fa fa-check"></i><b>6.1.12</b> code/poi_hmm.o</a></li>
-<li class="chapter" data-level="6.1.13" data-path="github.html"><a href="github.html#poi_hmm_lamb.R"><i class="fa fa-check"></i><b>6.1.13</b> code/poi_hmm_lamb.R</a></li>
-<li class="chapter" data-level="6.1.14" data-path="github.html"><a href="github.html#poi_hmm_simu1.R"><i class="fa fa-check"></i><b>6.1.14</b> code/poi_hmm_simu1.R</a></li>
-<li class="chapter" data-level="6.1.15" data-path="github.html"><a href="github.html#poi_hmm_simu2.R"><i class="fa fa-check"></i><b>6.1.15</b> code/poi_hmm_simu2.R</a></li>
-<li class="chapter" data-level="6.1.16" data-path="github.html"><a href="github.html#poi_hmm_tinn.R"><i class="fa fa-check"></i><b>6.1.16</b> code/poi_hmm_tinn.R</a></li>
-<li class="chapter" data-level="6.1.17" data-path="github.html"><a href="github.html#setup_parameters.R"><i class="fa fa-check"></i><b>6.1.17</b> code/setup_parameters.R</a></li>
-<li class="chapter" data-level="6.1.18" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>6.1.18</b> data/</a></li>
-<li class="chapter" data-level="6.1.19" data-path="github.html"><a href="github.html#datafetal-lamb.rdata"><i class="fa fa-check"></i><b>6.1.19</b> data/fetal-lamb.RData</a></li>
-<li class="chapter" data-level="6.1.20" data-path="github.html"><a href="github.html#dataresults_lamb.rdata"><i class="fa fa-check"></i><b>6.1.20</b> data/results_lamb.RData</a></li>
-<li class="chapter" data-level="6.1.21" data-path="github.html"><a href="github.html#tinnitus.RData"><i class="fa fa-check"></i><b>6.1.21</b> data/tinnitus.RData</a></li>
-<li class="chapter" data-level="6.1.22" data-path="github.html"><a href="github.html#functions"><i class="fa fa-check"></i><b>6.1.22</b> functions/</a></li>
-<li class="chapter" data-level="6.1.23" data-path="github.html"><a href="github.html#functionsutils.cpp"><i class="fa fa-check"></i><b>6.1.23</b> functions/utils.cpp</a></li>
-<li class="chapter" data-level="6.1.24" data-path="github.html"><a href="github.html#functionsutils.r"><i class="fa fa-check"></i><b>6.1.24</b> functions/utils.R</a></li>
-<li class="chapter" data-level="6.1.25" data-path="github.html"><a href="github.html#utils_linreg_extended.cpp"><i class="fa fa-check"></i><b>6.1.25</b> functions/utils_linreg_extended.cpp</a></li>
+<li class="chapter" data-level="7.1.1" data-path="github.html"><a href="github.html#code"><i class="fa fa-check"></i><b>7.1.1</b> code/</a></li>
+<li class="chapter" data-level="7.1.2" data-path="github.html"><a href="github.html#linreg.cpp"><i class="fa fa-check"></i><b>7.1.2</b> code/linreg.cpp</a></li>
+<li class="chapter" data-level="7.1.3" data-path="github.html"><a href="github.html#codelinreg.dll"><i class="fa fa-check"></i><b>7.1.3</b> code/linreg.dll</a></li>
+<li class="chapter" data-level="7.1.4" data-path="github.html"><a href="github.html#linreg.o"><i class="fa fa-check"></i><b>7.1.4</b> code/linreg.o</a></li>
+<li class="chapter" data-level="7.1.5" data-path="github.html"><a href="github.html#linreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.5</b> code/linreg_extended.cpp</a></li>
+<li class="chapter" data-level="7.1.6" data-path="github.html"><a href="github.html#codelinreg_extended.dll"><i class="fa fa-check"></i><b>7.1.6</b> code/linreg_extended.dll</a></li>
+<li class="chapter" data-level="7.1.7" data-path="github.html"><a href="github.html#codelinreg_extended.o"><i class="fa fa-check"></i><b>7.1.7</b> code/linreg_extended.o</a></li>
+<li class="chapter" data-level="7.1.8" data-path="github.html"><a href="github.html#main.R"><i class="fa fa-check"></i><b>7.1.8</b> code/main.R</a></li>
+<li class="chapter" data-level="7.1.9" data-path="github.html"><a href="github.html#codepackages.r"><i class="fa fa-check"></i><b>7.1.9</b> code/packages.R</a></li>
+<li class="chapter" data-level="7.1.10" data-path="github.html"><a href="github.html#poi_hmm.cpp"><i class="fa fa-check"></i><b>7.1.10</b> code/poi_hmm.cpp</a></li>
+<li class="chapter" data-level="7.1.11" data-path="github.html"><a href="github.html#codepoi_hmm.dll"><i class="fa fa-check"></i><b>7.1.11</b> code/poi_hmm.dll</a></li>
+<li class="chapter" data-level="7.1.12" data-path="github.html"><a href="github.html#codepoi_hmm.o"><i class="fa fa-check"></i><b>7.1.12</b> code/poi_hmm.o</a></li>
+<li class="chapter" data-level="7.1.13" data-path="github.html"><a href="github.html#poi_hmm_lamb.R"><i class="fa fa-check"></i><b>7.1.13</b> code/poi_hmm_lamb.R</a></li>
+<li class="chapter" data-level="7.1.14" data-path="github.html"><a href="github.html#poi_hmm_simu1.R"><i class="fa fa-check"></i><b>7.1.14</b> code/poi_hmm_simu1.R</a></li>
+<li class="chapter" data-level="7.1.15" data-path="github.html"><a href="github.html#poi_hmm_simu2.R"><i class="fa fa-check"></i><b>7.1.15</b> code/poi_hmm_simu2.R</a></li>
+<li class="chapter" data-level="7.1.16" data-path="github.html"><a href="github.html#poi_hmm_tinn.R"><i class="fa fa-check"></i><b>7.1.16</b> code/poi_hmm_tinn.R</a></li>
+<li class="chapter" data-level="7.1.17" data-path="github.html"><a href="github.html#setup_parameters.R"><i class="fa fa-check"></i><b>7.1.17</b> code/setup_parameters.R</a></li>
+<li class="chapter" data-level="7.1.18" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>7.1.18</b> data/</a></li>
+<li class="chapter" data-level="7.1.19" data-path="github.html"><a href="github.html#fetal-lamb.RData"><i class="fa fa-check"></i><b>7.1.19</b> data/fetal-lamb.RData</a></li>
+<li class="chapter" data-level="7.1.20" data-path="github.html"><a href="github.html#dataresults_lamb.rdata"><i class="fa fa-check"></i><b>7.1.20</b> data/results_lamb.RData</a></li>
+<li class="chapter" data-level="7.1.21" data-path="github.html"><a href="github.html#dataresults_simu1.rdata"><i class="fa fa-check"></i><b>7.1.21</b> data/results_simu1.RData</a></li>
+<li class="chapter" data-level="7.1.22" data-path="github.html"><a href="github.html#dataresults_simu2.rdata"><i class="fa fa-check"></i><b>7.1.22</b> data/results_simu2.RData</a></li>
+<li class="chapter" data-level="7.1.23" data-path="github.html"><a href="github.html#dataresults_tinn.rdata"><i class="fa fa-check"></i><b>7.1.23</b> data/results_tinn.RData</a></li>
+<li class="chapter" data-level="7.1.24" data-path="github.html"><a href="github.html#tinnitus.RData"><i class="fa fa-check"></i><b>7.1.24</b> data/tinnitus.RData</a></li>
+<li class="chapter" data-level="7.1.25" data-path="github.html"><a href="github.html#functions"><i class="fa fa-check"></i><b>7.1.25</b> functions/</a></li>
+<li class="chapter" data-level="7.1.26" data-path="github.html"><a href="github.html#functionsutils.cpp"><i class="fa fa-check"></i><b>7.1.26</b> functions/utils.cpp</a></li>
+<li class="chapter" data-level="7.1.27" data-path="github.html"><a href="github.html#functionsutils.r"><i class="fa fa-check"></i><b>7.1.27</b> functions/utils.R</a></li>
+<li class="chapter" data-level="7.1.28" data-path="github.html"><a href="github.html#utils_linreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.28</b> functions/utils_linreg_extended.cpp</a></li>
 </ul></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
-<ul>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#authors-github-account"><i class="fa fa-check"></i>Author’s github account</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html#license-1"><i class="fa fa-check"></i>License</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -274,7 +264,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
           </h1>
         </div>
 
@@ -282,10 +272,10 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="application-to-different-data-sets" class="section level1" number="5">
-<h1><span class="header-section-number">Chapter 5</span> Application to different data sets</h1>
-<div id="tyt-data" class="section level2" number="5.1">
-<h2><span class="header-section-number">5.1</span> TYT data</h2>
+<div id="application-to-different-data-sets" class="section level1" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Application to different data sets</h1>
+<div id="tyt-data" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> TYT data</h2>
 <p>We detail here the code used to estimate a 2-state Poisson HMM based on the tinnitus dataset available in <em><a href="github.html#tinnitus.RData">data/tinnitus.RData</a></em>.</p>
 <ul>
 <li>Set a seed for randomness, and load files</li>
@@ -341,9 +331,9 @@ div.csl-indent {
 ## delta  0.65945800 0.23056437</code></pre>
 <p>For the code used to generate coverage probabilities and acceleration results, please take a look at <em><a href="github.html#poi_hmm_tinn.R">code/poi_hmm_tinn.R</a></em>.</p>
 </div>
-<div id="lamb-data" class="section level2" number="5.2">
-<h2><span class="header-section-number">5.2</span> Lamb data</h2>
-<p>We detail here the code used to estimate a 2-state Poisson HMM based on the lamb dataset available in INSERT GITHUB LINK</p>
+<div id="lamb-data" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Lamb data</h2>
+<p>We detail here the code used to estimate a 2-state Poisson HMM based on the lamb dataset available in <em><a href="github.html#fetal-lamb.RData">data/fetal-lamb.RData</a></em></p>
 <ul>
 <li>Set a seed for randomness, and load files</li>
 </ul>
@@ -352,7 +342,7 @@ div.csl-indent {
 <span id="cb167-3"><a href="application-to-different-data-sets.html#cb167-3" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="application-to-different-data-sets.html#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span></code></pre></div>
-<pre><code>## Warning: 3 external pointers will be removed</code></pre>
+<pre><code>## Warning: 6 external pointers will be removed</code></pre>
 <div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="application-to-different-data-sets.html#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
 <span id="cb171-2"><a href="application-to-different-data-sets.html#cb171-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/fetal-lamb.RData&quot;</span>)</span>
 <span id="cb171-3"><a href="application-to-different-data-sets.html#cb171-3" aria-hidden="true" tabindex="-1"></a>lamb_data <span class="ot">&lt;-</span> lamb</span>
@@ -421,8 +411,8 @@ In contrast, calculating the log-likelihood explicitly shows a different result.
 <div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="application-to-different-data-sets.html#cb180-1" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span> n <span class="sc">*</span> l <span class="sc">+</span> <span class="fu">log</span>(l) <span class="sc">*</span> <span class="fu">sum</span>(x)</span></code></pre></div>
 <pre><code>## [1] -174.2611</code></pre>
 </div>
-<div id="simulated-data" class="section level2" number="5.3">
-<h2><span class="header-section-number">5.3</span> Simulated data</h2>
+<div id="simulated-data" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Simulated data</h2>
 <p>We detail here the code used to simulate two datasets from 2-states Poisson HMMs, one of size 2000 and one of size 5000.
 Then, using the same procedure as above, we estimate a model using different initial parameters.</p>
 <ul>
