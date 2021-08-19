@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 GitHub | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <title> 7 GitHub | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
   <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 GitHub | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:title" content=" 7 GitHub | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 GitHub | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta name="twitter:title" content=" 7 GitHub | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   
   <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
   
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-08-19" />
+<meta name="date" content="2021-08-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -35,7 +35,7 @@
   
   
 <link rel="prev" href="application-to-different-data-sets.html"/>
-
+<link rel="next" href="references.html"/>
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -160,7 +160,6 @@ div.csl-indent {
 
 <ul class="summary">
 <li><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a></li>
-
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Summary</a></li>
 <li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for MLE</a>
@@ -169,43 +168,52 @@ div.csl-indent {
 <li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#linear-regression-example"><i class="fa fa-check"></i><b>2.2</b> Linear regression example</a></li>
 <li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#extending-the-c-nll"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> nll</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques for HMMs</a>
+<li class="chapter" data-level="3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques<br>for HMMs</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#basic-notation-and-model-setup"><i class="fa fa-check"></i><b>3.1</b> Basic notation and model setup</a></li>
 <li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#the-likelihood-function-of-an-hmm"><i class="fa fa-check"></i><b>3.2</b> The likelihood function of an HMM</a></li>
-<li class="chapter" data-level="3.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#forward-algorithm-and-backward-algorithm"><i class="fa fa-check"></i><b>3.3</b> Forward algorithm and backward algorithm</a></li>
-<li class="chapter" data-level="3.4" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#reparameterization-of-the-likelihood-function"><i class="fa fa-check"></i><b>3.4</b> Reparameterization of the likelihood function</a>
+<li class="chapter" data-level="3.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#forward-backward"><i class="fa fa-check"></i><b>3.3</b> Forward algorithm and<br>backward algorithm</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#setup-1"><i class="fa fa-check"></i><b>3.3.1</b> Setup</a>
+<ul>
+<li class="chapter" data-level="3.3.1.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#prepare-the-model"><i class="fa fa-check"></i><b>3.3.1.1</b> Prepare the model</a></li>
+<li class="chapter" data-level="3.3.1.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#define-variables"><i class="fa fa-check"></i><b>3.3.1.2</b> Define variables</a></li>
+<li class="chapter" data-level="3.3.1.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>3.3.1.3</b> Emission/output probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#log-forward"><i class="fa fa-check"></i><b>3.3.2</b> Log-forward probabilities</a></li>
+<li class="chapter" data-level="3.3.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#log-backward"><i class="fa fa-check"></i><b>3.3.3</b> Log-backward probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#reparameterization-of-the-likelihood-function"><i class="fa fa-check"></i><b>3.4</b> Reparameterization of the<br>likelihood function</a>
 <ul>
 <li class="chapter" data-level="3.4.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-tmb"><i class="fa fa-check"></i><b>3.4.1</b> Utility functions in <code>TMB</code></a></li>
-<li class="chapter" data-level="3.4.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-r"><i class="fa fa-check"></i><b>3.4.2</b> Utility functions in <code>R</code></a></li>
+<li class="chapter" data-level="3.4.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-r"><i class="fa fa-check"></i><b>3.4.2</b> Utility functions in <code>R</code></a>
+<ul>
+<li class="chapter" data-level="3.4.2.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#label-switching"><i class="fa fa-check"></i><b>3.4.2.1</b> Label switching</a></li>
+</ul></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using <code>TMB</code></a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
 <li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#optimization"><i class="fa fa-check"></i><b>4.2</b> Optimization</a></li>
-<li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#basic-nested-model-specification"><i class="fa fa-check"></i><b>4.3</b> Basic nested model specification</a>
+<li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#basic-nested-model-specification"><i class="fa fa-check"></i><b>4.3</b> Basic nested model<br>specification</a>
 <ul>
 <li class="chapter" data-level="4.3.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>4.3.1</b> Principle</a></li>
 <li class="chapter" data-level="4.3.2" data-path="using-tmb.html"><a href="using-tmb.html#limits"><i class="fa fa-check"></i><b>4.3.2</b> Limits</a></li>
-<li class="chapter" data-level="4.3.3" data-path="using-tmb.html"><a href="using-tmb.html#param-eq-constraints"><i class="fa fa-check"></i><b>4.3.3</b> Parameter equality constraints</a></li>
+<li class="chapter" data-level="4.3.3" data-path="using-tmb.html"><a href="using-tmb.html#param-eq-constraints"><i class="fa fa-check"></i><b>4.3.3</b> Parameter equality<br>constraints</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#state-inference"><i class="fa fa-check"></i><b>4.4</b> State inference</a>
+<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#state-inference"><i class="fa fa-check"></i><b>4.4</b> State inference and forecasting</a>
 <ul>
-<li class="chapter" data-level="4.4.1" data-path="using-tmb.html"><a href="using-tmb.html#prepare-the-model"><i class="fa fa-check"></i><b>4.4.1</b> Prepare the model</a></li>
-<li class="chapter" data-level="4.4.2" data-path="using-tmb.html"><a href="using-tmb.html#setup-1"><i class="fa fa-check"></i><b>4.4.2</b> Setup</a></li>
-<li class="chapter" data-level="4.4.3" data-path="using-tmb.html"><a href="using-tmb.html#log-forward"><i class="fa fa-check"></i><b>4.4.3</b> Log-forward probabilities</a></li>
-<li class="chapter" data-level="4.4.4" data-path="using-tmb.html"><a href="using-tmb.html#log-backward"><i class="fa fa-check"></i><b>4.4.4</b> Log-backward probabilities</a></li>
-<li class="chapter" data-level="4.4.5" data-path="using-tmb.html"><a href="using-tmb.html#local-decoding"><i class="fa fa-check"></i><b>4.4.5</b> Local decoding</a></li>
-<li class="chapter" data-level="4.4.6" data-path="using-tmb.html"><a href="using-tmb.html#forecast"><i class="fa fa-check"></i><b>4.4.6</b> Forecast</a></li>
-<li class="chapter" data-level="4.4.7" data-path="using-tmb.html"><a href="using-tmb.html#global-decoding"><i class="fa fa-check"></i><b>4.4.7</b> Global decoding</a></li>
+<li class="chapter" data-level="4.4.1" data-path="using-tmb.html"><a href="using-tmb.html#local-decoding"><i class="fa fa-check"></i><b>4.4.1</b> Local decoding</a></li>
+<li class="chapter" data-level="4.4.2" data-path="using-tmb.html"><a href="using-tmb.html#forecast"><i class="fa fa-check"></i><b>4.4.2</b> Forecast</a></li>
+<li class="chapter" data-level="4.4.3" data-path="using-tmb.html"><a href="using-tmb.html#global-decoding"><i class="fa fa-check"></i><b>4.4.3</b> Global decoding</a></li>
 </ul></li>
 <li class="chapter" data-level="4.5" data-path="using-tmb.html"><a href="using-tmb.html#appendix"><i class="fa fa-check"></i><b>4.5</b> Appendix</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#wald-type-confidence-intervals-based-on-the-hessian"><i class="fa fa-check"></i><b>5.1</b> Wald-type confidence<br>intervals based on the Hessian</a></li>
-<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#likelihood-profile-based-confidence-intervals"><i class="fa fa-check"></i><b>5.2</b> Likelihood profile based confidence intervals</a></li>
+<li class="chapter" data-level="5.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#Wald-type"><i class="fa fa-check"></i><b>5.1</b> Wald-type confidence<br>intervals based on the Hessian</a></li>
+<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#likelihood-profile-based-confidence-intervals"><i class="fa fa-check"></i><b>5.2</b> Likelihood profile based<br>confidence intervals</a></li>
 <li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-based-confidence-intervals"><i class="fa fa-check"></i><b>5.3</b> Bootstrap-based<br>confidence intervals</a>
 <ul>
 <li class="chapter" data-level="5.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>5.3.1</b> Generating data</a></li>
@@ -252,9 +260,7 @@ div.csl-indent {
 <li class="chapter" data-level="7.1.28" data-path="github.html"><a href="github.html#utils_linreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.28</b> functions/utils_linreg_extended.cpp</a></li>
 </ul></li>
 </ul></li>
-<li class="divider"></li>
-<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
 
       </nav>
@@ -273,7 +279,7 @@ div.csl-indent {
 
             <section class="normal" id="section-">
 <div id="github" class="section level1" number="7">
-<h1><span class="header-section-number">Chapter 7</span> GitHub</h1>
+<h1><span class="header-section-number"> 7</span> GitHub</h1>
 <p>For reading more easily, we recommend opening the file <em>Data supplements.Rproj</em> with R-Studio, which lets the user have the correct working path set up automatically.
 Other files can be opened directly by double-clicking on them, or via the <code>Files</code> tab in R-Studio.<br />
 Most of the code can be folded/collapsed into sections easily by clicking in the menu <code>Edit</code>-&gt;<code>Collapse All Output</code>.<br />
@@ -496,50 +502,6 @@ File: <a href="https://github.com/timothee-bacri/HMM_with_TMB/raw/main/functions
 <p>File on GitHub:<a href="https://github.com/timothee-bacri/HMM_with_TMB/blob/main/functions/utils_linreg_extended.cpp" class="uri">https://github.com/timothee-bacri/HMM_with_TMB/blob/main/functions/utils_linreg_extended.cpp</a><br />
 File: <a href="https://github.com/timothee-bacri/HMM_with_TMB/raw/main/functions/utils_linreg_extended.cpp" class="uri">https://github.com/timothee-bacri/HMM_with_TMB/raw/main/functions/utils_linreg_extended.cpp</a></p>
 
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div class="csl-entry">
-Bulla, J., &amp; Berzel, A. (2008). Computational issues in parameter estimation for stationary hidden <span>Markov</span> models. <em>Computational Statistics</em>, <em>23</em>(1), 1–18. doi:<a href="https://doi.org/10.1007/s00180-007-0063-y">10.1007/s00180-007-0063-y</a>
-</div>
-<div class="csl-entry">
-Celeux, G., &amp; Durand, J.-B. (2008). Selecting hidden <span>Markov</span> model state number with cross-validated likelihood. <em>Computational Statistics</em>, <em>23</em>(4), 541–564. doi:<a href="https://doi.org/10.1007/s00180-007-0097-1">10.1007/s00180-007-0097-1</a>
-</div>
-<div class="csl-entry">
-Kristensen, K. (2021). <em>TMB: Template model builder: A general random effect tool inspired by ADMB</em>. Retrieved from <a href="https://github.com/kaskr/adcomp/wiki">https://github.com/kaskr/adcomp/wiki</a>
-</div>
-<div class="csl-entry">
-Leroux, B. G., &amp; Puterman, M. L. (1992). Maximum-<span>Penalized</span>-<span>Likelihood Estimation</span> for <span>Independent</span> and <span>Markov</span>- <span>Dependent Mixture Models</span>. <em>Biometrics</em>, <em>48</em>(2), 545–558. doi:<a href="https://doi.org/10.2307/2532308">10.2307/2532308</a>
-</div>
-<div class="csl-entry">
-Meeker, W. Q., &amp; Escobar, L. A. (1995). Teaching about <span>Approximate Confidence Regions Based</span> on <span>Maximum Likelihood Estimation</span>. <em>The American Statistician</em>, <em>49</em>(1), 48–53. doi:<a href="https://doi.org/10.1080/00031305.1995.10476112">10.1080/00031305.1995.10476112</a>
-</div>
-<div class="csl-entry">
-Mersmann, O. (2019). <em>Microbenchmark: Accurate timing functions</em>. Retrieved from <a href="https://github.com/joshuaulrich/microbenchmark/">https://github.com/joshuaulrich/microbenchmark/</a>
-</div>
-<div class="csl-entry">
-Pohle, J., Langrock, R., van Beest, F. M., &amp; Schmidt, N. M. (2017a). Selecting the <span>Number</span> of <span>States</span> in <span>Hidden Markov Models</span>: <span>Pragmatic Solutions Illustrated Using Animal Movement</span>. <em>Journal of Agricultural, Biological and Environmental Statistics</em>, <em>22</em>(3), 270–293. doi:<a href="https://doi.org/10.1007/s13253-017-0283-8">10.1007/s13253-017-0283-8</a>
-</div>
-<div class="csl-entry">
-Pohle, J., Langrock, R., van Beest, F., &amp; Schmidt, N. M. (2017b). Selecting the <span>Number</span> of <span>States</span> in <span>Hidden Markov Models</span> - <span>Pitfalls</span>, <span>Practical Challenges</span> and <span>Pragmatic Solutions</span>. <em>arXiv:1701.08673 [q-Bio, Stat]</em>. Retrieved from <a href="http://arxiv.org/abs/1701.08673">http://arxiv.org/abs/1701.08673</a>
-</div>
-<div class="csl-entry">
-Probst, T., Pryss, R., Langguth, B., &amp; Schlee, W. (2016). Emotion dynamics and tinnitus: <span>Daily</span> life data from the <span>“<span>TrackYourTinnitus</span>”</span> application. <em>Scientific Reports</em>, <em>6</em>(1), 31166. doi:<a href="https://doi.org/10.1038/srep31166">10.1038/srep31166</a>
-</div>
-<div class="csl-entry">
-Pryss, R., Reichert, M., Herrmann, J., Langguth, B., &amp; Schlee, W. (2015). Mobile <span>Crowd Sensing</span> in <span>Clinical</span> and <span>Psychological Trials</span> <span></span> <span>A Case Study</span>. In <em>2015 <span>IEEE</span> 28th <span>International Symposium</span> on <span>Computer</span>-<span>Based Medical Systems</span></em> (pp. 23–24). doi:<a href="https://doi.org/10.1109/CBMS.2015.26">10.1109/CBMS.2015.26</a>
-</div>
-<div class="csl-entry">
-Pryss, R., Reichert, M., Langguth, B., &amp; Schlee, W. (2015). Mobile <span>Crowd Sensing Services</span> for <span>Tinnitus Assessment</span>, <span>Therapy</span>, and <span>Research</span>. In <em>2015 <span>IEEE International Conference</span> on <span>Mobile Services</span></em> (pp. 352–359). doi:<a href="https://doi.org/10.1109/MobServ.2015.55">10.1109/MobServ.2015.55</a>
-</div>
-<div class="csl-entry">
-Revolution Analytics, &amp; Weston, S. (n.d.). <em>Foreach: Provides foreach looping construct</em>.
-</div>
-<div class="csl-entry">
-Wald, A. (1943). Tests of <span>Statistical Hypotheses Concerning Several Parameters When</span> the <span>Number</span> of <span>Observations</span> is <span>Large</span>. <em>Transactions of the American Mathematical Society</em>, <em>54</em>(3), 426–482. doi:<a href="https://doi.org/10.2307/1990256">10.2307/1990256</a>
-</div>
-<div class="csl-entry">
-Zucchini, W., MacDonald, I. L., &amp; Langrock, R. (2016). <em>Hidden markov models for time series: An introduction using r, second edition</em>. <span>CRC Press</span>.
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -566,8 +528,8 @@ Revolution Analytics, &amp; Weston, S. (n.d.). <em>Foreach: Provides foreach loo
           </div>
         </div>
       </div>
-<a href="application-to-different-data-sets.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="application-to-different-data-sets.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -610,7 +572,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["Data supplements.pdf", "Data supplements.epub"],
+"download": null,
 "search": {
 "engine": "lunr",
 "options": null

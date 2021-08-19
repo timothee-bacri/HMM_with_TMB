@@ -2,7 +2,7 @@ book_filename: "Data supplements"
 delete_merged_file: true
 language:
   ui:
-    chapter_name: "Chapter "
+    chapter_name: " "
 output_dir: "docs"
 rmd_files:
   - index.Rmd
@@ -12,3 +12,4 @@ rmd_files:
   - 05-confidence-intervals.Rmd
   - 06-application.Rmd
   - 07-guide-code.Rmd
+  - 08-references.Rmd

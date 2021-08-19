@@ -16,7 +16,7 @@ Type objective_function<Type>::operator() ()
   
   // Uncomment only when using a non-stationary distribution
   //PARAMETER_VECTOR(tdelta);    // transformed stationary distribution,
-
+  
   // Transform working parameters to natural parameters:
   vector<Type> lambda = tlambda.exp();
   matrix<Type> gamma = gamma_w2n(m, tgamma);
@@ -44,11 +44,13 @@ Type objective_function<Type>::operator() ()
       emission_probs.row(i) = dpois(x[i], lambda, false);
     }
   }
-
+  
   // Corresponds to Zucchini's book page 333
   matrix<Type> foo, P;
   Type mllk, sumfoo, lscale;
   
+  // No need for an "else" statement because we return
+  // the likelihood directly if m is 1, thus ending the function
   if (m == 1) {
     mllk = - emission_probs.col(0).array().log().sum();
     

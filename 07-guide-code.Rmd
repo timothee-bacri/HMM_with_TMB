@@ -126,11 +126,11 @@ Most of their code is common:
     * the negative log-likelihood computation with and without `TMB`. Their times are stored in the data-frames `mllk_times_df_*`.
     * multiple estimation procedures: `r PROCEDURES_METHOD` and `TMB`. Their times are stored in the data-frames `method_comparison_df_*`.
 
-* `Profiling the likelihood` uses the `TMB` package's `tmbprofile` function to determine a profile of the likelihood, then determines a CI based on it for the corresponding working parameter. Eventually, CIs are derived when possible for the natural parameters $\hat{\b{\lambda}}$ and $\hat{\b{\Gamma}}$. The CIs are stored in the data-frames `conf_int_*`.
+* `Profiling the likelihood` uses the `TMB` package's `tmbprofile` function to determine a profile of the likelihood, then determines a CI based on it for the corresponding working parameter. Eventually, CIs are derived when possible for the natural parameters $\hat{\bs{\lambda}}$ and $\hat{\bs{\Gamma}}$. The CIs are stored in the data-frames `conf_int_*`.
 * `Bootstrap` derives a parametric bootstrap CI from the dataset, while checking that the generated data can be estimated without errors, after which we apply our label switching function to ensure that estimates of a parameter are only aggregated with estimates of the same parameter. The CIs are stored in the data-frames `conf_int_*`.
 * `TMB confidence intervals` computes CIs based on `TMB`-derived standard errors. The CIs are stored in the data-frames `conf_int_*`.
 * `Coverage probabilities of the 3 CI methods` simulates coverage samples based on true values when available or on estimates otherwise, then derives CIs using the three CI generation methods described above. The coverage probabilities are stored in the data-frames `conf_int_*`.
-* `Fixes` uses the label-switching algorithm on the estimates in the `conf_int_*` variable to ensure they are correctly ordered, and then reorders $\hat{\b{\Gamma}}$ in the `conf_int_*` variable to a row-wise order instead of the default column-wise order. In short this applies two fixes on the `conf_int_*` variable to make it easier to read.\
+* `Fixes` uses the label-switching algorithm on the estimates in the `conf_int_*` variable to ensure they are correctly ordered, and then reorders $\hat{\bs{\Gamma}}$ in the `conf_int_*` variable to a row-wise order instead of the default column-wise order. In short this applies two fixes on the `conf_int_*` variable to make it easier to read.\
 At the end, we reorder the profile likelihood based CIs in case they are not in ascending order.
 
 A unique randomness seed is set in each of these four files before all time-consuming tasks involving some randomness.

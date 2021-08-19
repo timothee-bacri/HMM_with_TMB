@@ -33,7 +33,7 @@ The data can be loaded by a simple call.
 load("data/tinnitus.RData")
 ```
 
-Figure \@ref(fig:3tinnitus-fig) present the raw data in Table [5.1](#table:tinnitus_data), which are also available for download at *[data/tinnitus.RData](#tinnitus.RData)*.
+Figure \@ref(fig:3tinnitus-fig) presents the raw data in the [Table](#table:tinnitus_data) below, which are also available for download at *[data/tinnitus.RData](#tinnitus.RData)*.
 
 ```{r 3tinnitus-table, results = 'asis', echo = FALSE}
 library(xtable)
@@ -53,9 +53,9 @@ plot(tinn_data, ylab = "Arousal", xlab = "Day (#)")
 ```
 
 (iii) Initialization of the number of states and starting (or initial) values for the optimization.
-First, the number of states needs to be determined. As explained by @pohlea, @pohle, and @[zucchini, Section 6] (to name only a few), usually one would first fit models with a different number of states. Then, these models are evaluated e.g. by means of model selection criteria [as carried out by, @leroux] or prediction performance [@celeux].
-As shown in [the appendix](#appendix), the model selection procedure shows that both AIC and BIC prefer a two-state model over a Poisson regression and over a model with three or four states. Consequently, we focus on the two-state model in the following.
 
+First, the number of states needs to be determined. As explained by @pohlea, @pohle, and [@zucchini, Section 6] (to name only a few), usually one would first fit models with a different number of states. Then, these models are evaluated e.g. by means of model selection criteria [as carried out by, @leroux] or prediction performance [@celeux].
+As shown in [the appendix](#appendix), the model selection procedure shows that both AIC and BIC prefer a two-state model over a Poisson regression and over a model with three or four states. Consequently, we focus on the two-state model in the following.\
 The list object `TMB_data` contains the data and the number of states.
 
 ```{r 3param-example1}
@@ -63,7 +63,6 @@ The list object `TMB_data` contains the data and the number of states.
 m <- 2
 TMB_data <- list(x = tinn_data, m = m)
 ```
-
 Secondly, initial values for the optimization procedure need to be defined.
 Although we will apply unconstrained optimization, we initialize the natural parameters, because this is much more intuitive and practical than handling the working parameters. 
 
@@ -107,6 +106,7 @@ obj_tmb$he(obj_tmb$par)
 
 For this step we rely again on the optimizer implemented in the `nlminb` function.
 The arguments, i.e.~ initial values for the parameters and the function to be optimized, are extracted from the previously created TMB object. 
+
 ```{r 3optimizing-example}
 mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn)
 # Check that it converged successfully
@@ -126,7 +126,7 @@ Recall that this requires the parameters of interest to be treated by the `ADREP
 summary(sdreport(obj_tmb, par.fixed = mod_tmb$par), "report")
 ```
 
-Note that the table above also contains estimation results for $\b{\delta}$ and accompanying standard errors, although $\b{\delta}$ is not estimated, but derived from $\b{\Gamma}$.
+Note that the table above also contains estimation results for $\bs{\delta}$ and accompanying standard errors, although $\bs{\delta}$ is not estimated, but derived from $\bs{\Gamma}$.
 We provide further details on this aspect in [Confidence intervals].\
 The value of the nll function in the minimum found by the optimizer can also be extracted directly from the object `mod_tmb` by accessing the list element `objective`:
 
@@ -161,7 +161,7 @@ sum(estimate_delta)
 sum(estimate_delta) == 1 # The sum is displayed as 1 but is not 1
 ```
 
-As noted on [@zucchini, pp. 159-160], ``the row sums of $\b{\Gamma}$ will only approximately equal 1, and the components of the vector $\b{\delta}$ will only approximately total 1. This can be remedied by scaling the vector $\b{\delta}$ and each row of $\b{\Gamma}$ to total 1''.
+As noted on [@zucchini, pp. 159-160], ``the row sums of $\bs{\Gamma}$ will only approximately equal 1, and the components of the vector $\bs{\delta}$ will only approximately total 1. This can be remedied by scaling the vector $\bs{\delta}$ and each row of $\bs{\Gamma}$ to total 1''.
 We do not remedy this issue because it provides no benefit to us, but this may lead to surprising results when checking equality.
 
 This is likely due to machine approximations when numbers far apart from each other interact together.
@@ -173,7 +173,7 @@ This can result in incoherent findings when checking equality between 2 numbers.
 (1 + 1e-100) == 1
 ```
 
-## Basic nested model specification
+## Basic nested model<br>specification
 ### Principle
 As a first step in building a nested model, we arbitrarily fix $\lambda_1$ to the value 1.
 ```{r 3nested_params}
@@ -218,7 +218,7 @@ However, if conditions on the natural parameters can be translated to conditions
 
 We will show in the next section that a type of general constraints on the TPM can be carried out.
 
-### Parameter equality constraints {#param-eq-constraints}
+### Parameter equality<br>constraints {#param-eq-constraints}
 More complex constraints than above are possible.
 For example, imposing equality constraints (such as $\gamma_{11} = \gamma_{22}$) requires the corresponding factor level to be identical for the concerned entries.
 
@@ -328,109 +328,10 @@ tpm[1, 2] == tpm[1, 3]
 Equality constraints involving a diagonal member of the TPM are simpler to specify: the constraint $\gamma_{i,j} = \gamma_{i,i}$ becomes transformed to $\tau_{i,j} = 1$ and this can be specified in the same way the Poisson mean $\lambda_1$ was fixed.
 
 
-## State inference {#state-inference}
-### Prepare the model
-```{r 3prepare, results=FALSE}
-library(TMB)
-source("functions/utils.R")
-load("data/fetal-lamb.RData")
-TMB::compile("code/poi_hmm.cpp")
-dyn.load(dynlib("code/poi_hmm"))
-lamb_data <- lamb
-m <- 2
-TMB_data <- list(x = lamb_data, m = m)
-lambda <- c(1, 3)
-gamma <- matrix(c(0.8, 0.2,
-                  0.2, 0.8), byrow = TRUE, nrow = m)
-parameters <- pois.HMM.pn2pw(m, lambda, gamma)
-obj_tmb <- MakeADFun(TMB_data, parameters,
-                     DLL = "poi_hmm", silent = TRUE)
-mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn,
-                  gradient = obj_tmb$gr, hessian = obj_tmb$he)
-```
+## State inference and forecasting {#state-inference}
+The following code requires executing the code presented in the Section [Forward algorithm and backward algorithm](#forward-backward), as the log-forward and log-backward probabilities are needed.
 
-### Setup
-#### Define variables
-Given an optimized `MakeADFun` object `obj`, we need to setup some variables to compute the probabilities detailed below.
-
-```{r 3init-decoding}
-# Retrieve the objects at ML value
-adrep <- obj_tmb$report(obj_tmb$env$last.par.best)
-delta <- adrep$delta
-gamma <- adrep$gamma
-emission_probs <- adrep$emission_probs
-n <- adrep$n
-m <- length(delta)
-mllk <- adrep$mllk
-```
-
-Note that $\b{\lambda}$ is not needed as we already have access to the emission probabilities.
-
-#### Emission/output probabilities
-Emission probabilities (also called output probabilities) are the conditional probabilities of the data given a state.
-
-Using the notation in the article Section 3.1, emission probabilities are the conditional distributions $p_i(x) = \text{P}(X_t = x \vert C_t = i) = \frac{e^{-\lambda_i} \lambda_i^x}{x!}$.
-We store all these in a data frame where each row and column represent a data and a state respectively.
-
-More formally, we call
-$\begin{pmatrix}
-p_1(x_1)  & p_2(x_1) & \ldots & p_m(x_1)\\
-p_1(x_2)  & p_2(x_2) & \ldots & p_m(x_2)\\
-\vdots    &  \vdots  & \ddots & \vdots\\
-p_1(x_n)  & p_2(x_n) & \ldots & p_m(x_n)\\
-\end{pmatrix}$
-the emission probability matrix.
-
-We compute these probabilities in `C++` rather than in `R` because it is faster and not more complicated to write
-
-```{Rcpp 1poi_hmm.cpp, code=readLines("code/poi_hmm.cpp")[32:46], eval=FALSE}
-```
-
-Nevertheless, we also need to compute them in `R` for the [Forecast](#forecast) code
-```{r get.emission.probs}
-```
-
-### Log-forward probabilities {#log-forward}
-We show here a way to compute the log of the forward probabilities, using a scaling scheme defined by @zucchini[p.66 and p.334].
-
-```{r 3log-forward}
-# Compute log-forward probabilities (scaling used)
-lalpha <- matrix(NA, m, n)
-foo <- delta * emission_probs[1, ]
-sumfoo <- sum(foo)
-lscale <- log(sumfoo)
-foo <- foo / sumfoo
-lalpha[, 1] <- log(foo) + lscale
-for (i in 2:n) {
-  foo <- foo %*% gamma * emission_probs[i, ]
-  sumfoo <- sum(foo)
-  lscale <- lscale + log(sumfoo)
-  foo <- foo / sumfoo
-  lalpha[, i] <- log(foo) + lscale
-}
-# lalpha contains n=240 columns, so we only display 5 for readability
-lalpha[, 1:5]
-```
-
-### Log-backward probabilities {#log-backward}
-The backward probabilities have been defined in the same section
-@zucchini[p.67 and p.334].
-
-```{r 3log-backward}
-# Compute log-backwards probabilities (scaling used)
-lbeta <- matrix(NA, m, n)
-lbeta[, n] <- rep(0, m)
-foo <- rep (1 / m, m)
-lscale <- log(m)
-for (i in (n - 1):1) {
-  foo <- gamma %*% (emission_probs[i + 1, ] * foo)
-  lbeta[, i] <- log(foo) + lscale
-  sumfoo <- sum(foo)
-  foo <- foo / sumfoo
-  lscale <- lscale + log(sumfoo)
-}
-# lbeta contains n=240 columns, so we only display 4 for readability
-lbeta[, 1:4]
+```{r 4prepare-state-inference, ref.label=c('3prepare', '3init-decoding', '3log-forward', '3log-backward'), include=FALSE}
 ```
 
 ### Local decoding {#local-decoding}
@@ -440,7 +341,7 @@ The smoothing probabilities are defined in @zucchini[p.87 and p.336] as
 \]
 
 
-```{r 3smoothing}
+```{r 4smoothing}
 # Compute conditional state probabilities, smoothing probabilities
 stateprobs <- matrix(NA, ncol = n, nrow = m)
 llk <- - mllk
@@ -451,7 +352,7 @@ for(i in 1:n) {
 
 Local decoding is a straightforward maximum of the smoothing probabilities.
 
-```{r 3localdecoding}
+```{r 4localdecoding}
 # Most probable states (local decoding)
 ldecode <- rep(NA, n)
 for (i in 1:n) {
@@ -466,11 +367,11 @@ implementation in R is detailed in @zucchini[p.83 and p.337]
 
 Then,
 \[
-\text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_n \b{\Gamma}^h \textbf{P}(x) \b{1}'}{\b{\alpha}_n \b{1}'} = \b{\Phi}_n \b{\Gamma}^h \textbf{P}(x) \b{1}'
+\text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\bs{\alpha}_n \bs{\Gamma}^h \textbf{P}(x) \bs{1}'}{\bs{\alpha}_n \bs{1}'} = \bs{\Phi}_n \bs{\Gamma}^h \textbf{P}(x) \bs{1}'
 \]
 An implementation of this using a scaling scheme is
 
-```{r 3forecast}
+```{r 4forecast}
 # Number of steps
 h <- 1
 # Values for which we want the forecast probabilities
@@ -508,7 +409,7 @@ maximizes the conditional probability of all states simultaneously, i.e.
 \]
 An implementation of it is
 
-```{r 3global}
+```{r 4global}
 xi <- matrix(0, n, m)
 foo <- delta * emission_probs[1, ]
 xi[1, ] <- foo / sum(foo)

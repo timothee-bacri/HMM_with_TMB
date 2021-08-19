@@ -100,6 +100,8 @@ mod_tmb$convergence == 0
 summary(sdreport(obj_tmb), "report")
 ```
 
+For the code used to generate coverage probabilities and acceleration results, please take a look at *[code/poi_hmm_lamb.R](#poi_hmm_lamb.R)*.
+
 On a minor note, when comparing our estimation results to those reported by [@leroux], some non-negligible differences can be noted.
 The reasons for this are difficult to determine, but some likely explanations are given in the following.
 First, differences in the parameter estimates may result e.g. from the optimizing algorithms used and related setting (e.g. convergence criterion, number of steps, optimization routines used in 1992,...).

@@ -3,7 +3,7 @@
 ## Setup
 In order to run the scripts and example code, you first need to set up TMB by going through the following steps:
 
-- Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/)
+- Install [Rtools](https://cran.r-project.org)
 - Install the R-package `TMB` [@R-TMB] by executing the following code in R:
 
 ```{r 1install_TMB, eval=FALSE}
@@ -17,7 +17,7 @@ Advanced use is detailed in https://kaskr.github.io/adcomp/_book/Tutorial.html
 
 ## Linear regression example
 
-Let $\b{x}$ and $\b{y}$ denote the predictor and response vector, respectively, both of length $n$.
+Let $\bs{x}$ and $\bs{y}$ denote the predictor and response vector, respectively, both of length $n$.
 For a simple linear regression model with intercept $a$ and slope $b$, the negative log-likelihood equals
 \begin{equation*}
 - \log L(a, b, \sigma^2) = - \sum_{i=1}^n \log(\phi(y_i; a + bx_i, \sigma^2)),
@@ -67,7 +67,7 @@ summary(sdreport(obj_linreg))
 ```
 The `select` argument restricts the output to variables passed
 by `ADREPORT(variable_name);` in the cpp file.
-As we will see in [Wald-type], this lets us derive confidence intervals for these natural parameters easily.
+As we will see in the Section [Wald-type confidence intervals based on the Hessian](#Wald-type), this lets us derive confidence intervals for these natural parameters easily.
 ```{r 1summary_sdreport_report}
 summary(sdreport(obj_linreg), select = "report")
 ```
