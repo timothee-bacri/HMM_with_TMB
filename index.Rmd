@@ -21,7 +21,7 @@ output:
 header-includes:
   - \usepackage{amsthm,amsmath,amssymb,amsfonts,amssymb}
   - \usepackage{listings}
-  - \newcommand{\b}[1]{{\boldsymbol#1}}
+  - \newcommand{\bs}[1]{{\boldsymbol#1}}
   - \DeclareMathOperator*{\argmax}{argmax}
 ---
 
@@ -37,10 +37,13 @@ For a description of the files and the directory structure, please read [Directo
 Note that only the folders [code](#code/), [functions](#functions), and [data](#data) contain files used in the article.
 The other folders and files relate to this Gitbook and are not described in [Directory Structure].
 
+For a description of the functions in *[functions/utils.R](#utils.R)* and their parameters and return objects, please take a look at *[functions/utils.R-explanation.R](#utils.R-explanation.R)*.
+
 ```{r 0import-files, cache = FALSE, include = FALSE}
 library(knitr)
 source('code/setup_parameters.R')
 knitr::read_chunk('functions/utils.R')
+knitr::opts_chunk$set(collapse = TRUE)
 ```
 
 ```{r 0packages_in_bib, include=FALSE}

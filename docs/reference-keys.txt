@@ -1,4 +1,4 @@
-fig:3tinnitus-fig
+fig:4tinnitus-fig
 summary
 principles-of-using-tmb-for-mle
 setup
@@ -67,6 +67,7 @@ dataresults_simu2.rdata
 dataresults_tinn.rdata
 tinnitus.RData
 functions
-functionsutils.cpp
-functionsutils.r
+utils.cpp
+utils.R
+utils.R-explanation.R
 utils_linreg_extended.cpp

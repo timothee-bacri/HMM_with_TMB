@@ -6,40 +6,7 @@ From that list of new estimates we can get the 2.5th and 97.5th percentiles and 
 We show below how to derive confidence intervals using `TMB`, a likelihood profile based method, and parametric bootstrap, based on the 2 state Poisson HMM estimates.
 
 For all three methods, we require a model, so we generate a 2-state Poisson HMM based on the TYT dataset
-```{r 4ci_setup}
-set.seed(123)
-library(TMB)
-TMB::compile("code/poi_hmm.cpp")
-dyn.load(dynlib("code/poi_hmm"))
-source("functions/utils.R")
-m <- 2
-load("data/tinnitus.RData")
-TMB_data <- list(x = tinn_data, m = m)
-
-# Initial set of parameters
-lambda_init <- c(1, 3)
-gamma_init <- matrix(c(0.8, 0.2,
-                       0.2, 0.8), byrow = TRUE, nrow = m)
-
-# Turn them into working parameters
-parameters <- pois.HMM.pn2pw(m, lambda_init, gamma_init)
-
-# Build the TMB object
-obj_tmb <- MakeADFun(TMB_data, parameters,
-                     DLL = "poi_hmm", silent = TRUE)
-
-# Optimize
-mod_tmb <- nlminb(start = obj_tmb$par,
-                  objective = obj_tmb$fn,
-                  gradient = obj_tmb$gr,
-                  hessian = obj_tmb$he)
-
-# MLE
-ML_working_estimates <- mod_tmb$par # obj_tmb$env$last.par.best is also possible
-ML_natural_estimates <- obj_tmb$report(ML_working_estimates)
-lambda <- ML_natural_estimates$lambda
-gamma <- ML_natural_estimates$gamma
-delta <- ML_natural_estimates$delta
+```{r 5ci-setup-1, ref.label=c('4init-example1', '4init-example2', '4load-example', '4param-example1', '4param-example2', '4pn2pw-example', '4makeadfun-example', '4gradient-hessian-example')}
 ```
 
 ## Wald-type confidence<br>intervals based on the Hessian {#Wald-type}
@@ -52,13 +19,13 @@ The standard errors of the working parameters `tlambda` and `tgamma` can be retr
 However, it is usually more interesting to access the standard errors of the natural parameters `lambda`, `gamma` and `delta`. This requires adding a few lines to the C++ file to produce these standard errors, as detailed in [Getting started with a linear regression].
 
 Be careful: `adrep` lists `gamma` column-wise
-```{r 4adrep_warning}
+```{r 5adrep_warning}
 adrep <- summary(sdreport(obj_tmb), "report")
 adrep
 ```
 
-Standard errors for $\hat{\b{\lambda}}$
-```{r 4adrep_lambda}
+Standard errors for $\hat{\bs{\lambda}}$
+```{r 5adrep_lambda}
 rows <- rownames(adrep) == "lambda"
 lambda <- adrep[rows, "Estimate"]
 lambda_std_error <- adrep[rows, "Std. Error"]
@@ -66,19 +33,19 @@ lambda
 lambda_std_error
 ```
 
-Standard errors for $\hat{\b{\Gamma}}$
-```{r 4adrep_gamma}
+Standard errors for $\hat{\bs{\Gamma}}$
+```{r 5adrep_gamma}
 rows <- rownames(adrep) == "gamma"
 gamma <- adrep[rows, "Estimate"]
-gamma <- matrix(gamma, ncol = m)
+gamma <- matrix(gamma, ncol = m) # Convert to matrix
 gamma_std_error <- adrep[rows, "Std. Error"]
 gamma_std_error <- matrix(gamma_std_error, nrow = m, ncol = m)
 gamma
 gamma_std_error
 ```
 
-Standard errors for $\hat{\b{\delta}}$
-```{r 4adrep_delta}
+Standard errors for $\hat{\bs{\delta}}$
+```{r 5adrep_delta}
 rows <- rownames(adrep) == "delta"
 delta <- adrep[rows, "Estimate"]
 delta_std_error <- adrep[rows, "Std. Error"]
@@ -94,7 +61,7 @@ Once a profile CI for the working parameter (here $\eta_2$) has been obtained fo
 For further details on the invariance of likelihood-based CIs to parameter transformations, we refer to [@meeker].
 
 Profiling $\eta_2$ (the working parameter corresponding to $\lambda_2$) with `TMB` can be done with
-```{r 4profile}
+```{r 5profile}
 profile <- tmbprofile(obj = obj_tmb,
                       name = 2,
                       trace = FALSE)
@@ -102,7 +69,7 @@ head(profile)
 ```
 
 A plot allows for a visual representation of the profile
-```{r 4profile-plot}
+```{r 5profile-plot}
 # par(mgp = c(2, 0.5, 0), mar = c(3, 3, 2.5, 1),
     # cex.lab = 1.5)
 plot(profile, level = 0.95, 
@@ -111,7 +78,7 @@ plot(profile, level = 0.95,
 ```
 
 Then we can infer $\eta_2$'s confidence interval, and hence $\lambda_2$'s confidence interval
-```{r 4profile-confint}
+```{r 5profile-confint}
 confint(profile)
 exp(confint(profile))
 ```
@@ -119,7 +86,7 @@ exp(confint(profile))
 Further, profiling the TPM is done similarly.
 However, since individual natural TPM parameters cannot be deduced from single working parameters, we need to profile the entire working TPM then transform it back to a natural TPM.
 
-```{r 4profile-tpm}
+```{r 5profile-tpm}
 profile3 <- tmbprofile(obj = obj_tmb,
                        name = 3,
                        trace = FALSE)
@@ -153,7 +120,7 @@ More details are available by executing `??TMB::tmbprofile` to access the `tmbpr
 
 The `name` parameter should be the index of a parameter to profile.
 While the function's help mentions it can be a parameter's name, the first two parameters are both named `tlambda` as can be seen here
-```{r 4w-param-name}
+```{r 5w-param-name}
 mod_tmb$par
 ```
 ## Bootstrap-based<br>confidence intervals
@@ -163,7 +130,7 @@ In order to perform a parametric bootstrap, we need to be able to generate data 
 For readability and code maintenance, it is conventional to store procedures that will be used more than once into functions.
 
 The data-generating function is defined in [@zucchini, Section A.1.5 p.333].
-```{r 4generate_sample-original, eval=FALSE}
+```{r 5generate_sample-original, eval=FALSE}
 pois.HMM.generate.sample <- function(ns,mod) {
   mvect <- 1:mod$m
   state <- numeric(ns)
@@ -181,7 +148,7 @@ Further, one can retrieve the state sequence used to generate the data by perfor
 The results are returned in a list to simplify usage, as the intuitive way (`c(x, state)`) would append the state sequence to the data.
 
 In practice, HMMs sometimes cannot be estimated on generated samples.
-To deal with this, we can generate a new sample as long as HMMs cannot be estimated on it with the help of this more robust function which can easily be adapted to different needs.
+To deal with this, we can generate a new sample as long as HMMs cannot be estimated on it, with the help of this more resilient function which can easily be adapted to different needs.
 Natural parameter estimates are returned for convenience.
 The argument `test_marqLevAlg` decides if convergence of `marqLevAlg` is required.
 The argument `std_error` decides if standard errors are returned along with TMB's estimates.
@@ -190,7 +157,7 @@ This function relies on the custom function `TMB.estimate` which is a wrapper of
 ```
 
 ### Bootstrap
-```{r 4bootstrap-code, eval = FALSE}
+```{r 5bootstrap-code, eval = FALSE}
 set.seed(123)
 library(TMB)
 TMB::compile("code/poi_hmm.cpp")
@@ -254,8 +221,8 @@ q <- apply(bootstrap_estimates, 2, function(par_estimate) {
 })
 
 PARAMS_NAMES <- paste0(rep("lambda", m), 1:m)
-# Get row and column indexes for gamma instead of the default
-# columnwise index: the default indexes are 1:m for the 1st column,
+# Get row and column indices for gamma instead of the default
+# columnwise index: the default indices are 1:m for the 1st column,
 # then (m + 1):(2 * m) for the 2nd, etc...
 for (gamma_idx in 1:m ^ 2) {
   row <- (gamma_idx - 1) %% m + 1
@@ -284,4 +251,4 @@ For example, the first bootstrap may evaluate $(\lambda_1, \lambda_2) = (1.1, 3.
 Since we are looking to aggregate these estimates in order to derive CI through their 95\% quantiles, it is necessary to impose an order on these estimates, to avoid grouping some $\lambda_1$ with some $\lambda_2$.
 
 The first that comes to mind is the ascending order.
-To ensure that $\hat{\b{\lambda}}$ are kept in ascending order, we refer to our Section [Label Switching](#label-switching) for a solution.
+To ensure that $\hat{\bs{\lambda}}$ are kept in ascending order, we refer to our Section [Label Switching](#label-switching) for a solution.

@@ -255,9 +255,10 @@ div.csl-indent {
 <li class="chapter" data-level="7.1.23" data-path="github.html"><a href="github.html#dataresults_tinn.rdata"><i class="fa fa-check"></i><b>7.1.23</b> data/results_tinn.RData</a></li>
 <li class="chapter" data-level="7.1.24" data-path="github.html"><a href="github.html#tinnitus.RData"><i class="fa fa-check"></i><b>7.1.24</b> data/tinnitus.RData</a></li>
 <li class="chapter" data-level="7.1.25" data-path="github.html"><a href="github.html#functions"><i class="fa fa-check"></i><b>7.1.25</b> functions/</a></li>
-<li class="chapter" data-level="7.1.26" data-path="github.html"><a href="github.html#functionsutils.cpp"><i class="fa fa-check"></i><b>7.1.26</b> functions/utils.cpp</a></li>
-<li class="chapter" data-level="7.1.27" data-path="github.html"><a href="github.html#functionsutils.r"><i class="fa fa-check"></i><b>7.1.27</b> functions/utils.R</a></li>
-<li class="chapter" data-level="7.1.28" data-path="github.html"><a href="github.html#utils_linreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.28</b> functions/utils_linreg_extended.cpp</a></li>
+<li class="chapter" data-level="7.1.26" data-path="github.html"><a href="github.html#utils.cpp"><i class="fa fa-check"></i><b>7.1.26</b> functions/utils.cpp</a></li>
+<li class="chapter" data-level="7.1.27" data-path="github.html"><a href="github.html#utils.R"><i class="fa fa-check"></i><b>7.1.27</b> functions/utils.R</a></li>
+<li class="chapter" data-level="7.1.28" data-path="github.html"><a href="github.html#utils.R-explanation.R"><i class="fa fa-check"></i><b>7.1.28</b> functions/utils.R-explanation.R</a></li>
+<li class="chapter" data-level="7.1.29" data-path="github.html"><a href="github.html#utils_linreg_extended.cpp"><i class="fa fa-check"></i><b>7.1.29</b> functions/utils_linreg_extended.cpp</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -475,7 +476,7 @@ File: <a href="https://github.com/timothee-bacri/HMM_with_TMB/raw/main/data/resu
 <div id="tinnitus.RData" class="section level3" number="7.1.24">
 <h3><span class="header-section-number">7.1.24</span> data/tinnitus.RData</h3>
 <p>Tinnitus data collected with the “Track Your Tinnitus” (TYT) mobile application on 87 successive days, provided by the University of Regensburg and European School for Interdisciplinary Tinnitus Research (ESIT), of which a detailed description is presented in <span class="citation"><a href="#ref-pryss" role="doc-biblioref">Pryss, Reichert, Herrmann, Langguth, &amp; Schlee</a> (<a href="#ref-pryss" role="doc-biblioref">2015</a>)</span> and <span class="citation"><a href="#ref-pryssa" role="doc-biblioref">Pryss, Reichert, Langguth, &amp; Schlee</a> (<a href="#ref-pryssa" role="doc-biblioref">2015</a>)</span>.</p>
-<p>A plot is available in Figure <a href="using-tmb.html#fig:3tinnitus-fig">4.1</a>.</p>
+<p>A plot is available in Figure <a href="using-tmb.html#fig:4tinnitus-fig">4.1</a>.</p>
 <p>File on GitHub:<a href="https://github.com/timothee-bacri/HMM_with_TMB/blob/main/data/tinnitus.RData" class="uri">https://github.com/timothee-bacri/HMM_with_TMB/blob/main/data/tinnitus.RData</a><br />
 File: <a href="https://github.com/timothee-bacri/HMM_with_TMB/raw/main/data/tinnitus.RData" class="uri">https://github.com/timothee-bacri/HMM_with_TMB/raw/main/data/tinnitus.RData</a></p>
 </div>
@@ -484,20 +485,26 @@ File: <a href="https://github.com/timothee-bacri/HMM_with_TMB/raw/main/data/tinn
 <p>Utility functions used both in <code>C++</code> files and in <code>R</code> files.</p>
 <p>Folder on GitHub: <a href="https://github.com/timothee-bacri/HMM_with_TMB/blob/main/functions" class="uri">https://github.com/timothee-bacri/HMM_with_TMB/blob/main/functions</a></p>
 </div>
-<div id="functionsutils.cpp" class="section level3" number="7.1.26">
+<div id="utils.cpp" class="section level3" number="7.1.26">
 <h3><span class="header-section-number">7.1.26</span> functions/utils.cpp</h3>
 <p>Utility functions used in <em><a href="github.html#poi_hmm.cpp">code/poi_hmm.cpp</a></em> to transform working parameters to their natural form, and to compute the hidden Markov chain’s stationary distribution when needed.</p>
 <p>File on GitHub:<a href="https://github.com/timothee-bacri/HMM_with_TMB/blob/main/functions/utils.cpp" class="uri">https://github.com/timothee-bacri/HMM_with_TMB/blob/main/functions/utils.cpp</a><br />
 File: <a href="https://github.com/timothee-bacri/HMM_with_TMB/raw/main/functions/utils.cpp" class="uri">https://github.com/timothee-bacri/HMM_with_TMB/raw/main/functions/utils.cpp</a></p>
 </div>
-<div id="functionsutils.r" class="section level3" number="7.1.27">
+<div id="utils.R" class="section level3" number="7.1.27">
 <h3><span class="header-section-number">7.1.27</span> functions/utils.R</h3>
 <p>Useful functions to estimate HMMs with and without <code>TMB</code> and perform various pre-processing and post-processing.</p>
 <p>File on GitHub:<a href="https://github.com/timothee-bacri/HMM_with_TMB/blob/main/functions/utils.R" class="uri">https://github.com/timothee-bacri/HMM_with_TMB/blob/main/functions/utils.R</a><br />
 File: <a href="https://github.com/timothee-bacri/HMM_with_TMB/raw/main/functions/utils.R" class="uri">https://github.com/timothee-bacri/HMM_with_TMB/raw/main/functions/utils.R</a></p>
 </div>
-<div id="utils_linreg_extended.cpp" class="section level3" number="7.1.28">
-<h3><span class="header-section-number">7.1.28</span> functions/utils_linreg_extended.cpp</h3>
+<div id="utils.R-explanation.R" class="section level3" number="7.1.28">
+<h3><span class="header-section-number">7.1.28</span> functions/utils.R-explanation.R</h3>
+<p>Description of the function parameters and return objects defined in <em><a href="github.html#utils.R">functions/utils.R</a></em>.</p>
+<p>File on GitHub:<a href="https://github.com/timothee-bacri/HMM_with_TMB/blob/main/functions/utils.R-explanation.R" class="uri">https://github.com/timothee-bacri/HMM_with_TMB/blob/main/functions/utils.R-explanation.R</a><br />
+File: <a href="https://github.com/timothee-bacri/HMM_with_TMB/raw/main/functions/utils.R-explanation.R" class="uri">https://github.com/timothee-bacri/HMM_with_TMB/raw/main/functions/utils.R-explanation.R</a></p>
+</div>
+<div id="utils_linreg_extended.cpp" class="section level3" number="7.1.29">
+<h3><span class="header-section-number">7.1.29</span> functions/utils_linreg_extended.cpp</h3>
 <p>Contains the useless example function.</p>
 <p>File on GitHub:<a href="https://github.com/timothee-bacri/HMM_with_TMB/blob/main/functions/utils_linreg_extended.cpp" class="uri">https://github.com/timothee-bacri/HMM_with_TMB/blob/main/functions/utils_linreg_extended.cpp</a><br />
 File: <a href="https://github.com/timothee-bacri/HMM_with_TMB/raw/main/functions/utils_linreg_extended.cpp" class="uri">https://github.com/timothee-bacri/HMM_with_TMB/raw/main/functions/utils_linreg_extended.cpp</a></p>

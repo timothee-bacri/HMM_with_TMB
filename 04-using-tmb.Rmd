@@ -1,16 +1,20 @@
 # Using `TMB`
 
+We are now ready to present the main `TMB` code for calculating the negative log-likelihood of an HMM.
+
 ## Likelihood function
-The function is defined in *[code/poi_hmm.cpp](#poi_hmm.cpp)*
-```{Rcpp 3poi_hmm.cpp, code=readLines("code/poi_hmm.cpp"), eval=FALSE}
+The function is defined in *[code/poi_hmm.cpp](#poi_hmm.cpp)* and imports the utility functions defined in *[functions/utils.cpp](#utils.cpp)*.
+```{Rcpp 4poi_hmm.cpp, code=readLines("code/poi_hmm.cpp"), eval=FALSE}
 ```
+
+Note that we use similar names as to the TMB side.
 
 ## Optimization
 Before we can fit the model, we need to load some necessary packages and data files. We also need to compile the `C++` code and load the functions into our working environment in `R`.
 
 (i) We start by compiling the `C++` code for computing the likelihood and its gradients. Once it is compiled, we can load the TMB likelihood object into `R` -- making it available from `R`. 
 
-```{r 3init-example1, message = FALSE, warning = FALSE, results = FALSE}
+```{r 4init-example1, message = FALSE, warning = FALSE, results = FALSE}
 # Load TMB and optimization packages
 library(TMB)
 library(optimr)
@@ -20,7 +24,7 @@ TMB::compile("code/poi_hmm.cpp")
 dyn.load(dynlib("code/poi_hmm"))
 ```
 Next, we need to load the necessary packages and the utility `R` functions.
-```{r 3init-example2, message = FALSE, warning = FALSE, results = FALSE}
+```{r 4init-example2, message = FALSE, warning = FALSE, results = FALSE}
 # Load the parameter transformation function
 source("functions/utils.R")
 ```
@@ -29,13 +33,13 @@ source("functions/utils.R")
 We analyze 87 successive days of the "arousal" variable, which is measured on a discrete scale.
 Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state [for details, see @probst].
 The data can be loaded by a simple call.
-```{r 3load-example}
+```{r 4load-example}
 load("data/tinnitus.RData")
 ```
 
-Figure \@ref(fig:3tinnitus-fig) presents the raw data in the [Table](#table:tinnitus_data) below, which are also available for download at *[data/tinnitus.RData](#tinnitus.RData)*.
+Figure \@ref(fig:4tinnitus-fig) presents the raw data in the [Table](#table:tinnitus_data) below, which are also available for download at *[data/tinnitus.RData](#tinnitus.RData)*.
 
-```{r 3tinnitus-table, results = 'asis', echo = FALSE}
+```{r 4tinnitus-table, results = 'asis', echo = FALSE}
 library(xtable)
 temp <- paste(tinn_data, collapse = " ")
 temp <- as.data.frame(temp)
@@ -48,7 +52,7 @@ print(temp, include.rownames = FALSE, include.colnames = FALSE,
       type = "html")
 ```
 
-```{r 3tinnitus-fig, echo = FALSE, warning = FALSE, fig.cap = "Plot of observations from TYT app data for 87 succesive days."}
+```{r 4tinnitus-fig, echo = FALSE, warning = FALSE, fig.cap = "Plot of observations from TYT app data for 87 succesive days."}
 plot(tinn_data, ylab = "Arousal", xlab = "Day (#)")
 ```
 
@@ -58,7 +62,7 @@ First, the number of states needs to be determined. As explained by @pohlea, @po
 As shown in [the appendix](#appendix), the model selection procedure shows that both AIC and BIC prefer a two-state model over a Poisson regression and over a model with three or four states. Consequently, we focus on the two-state model in the following.\
 The list object `TMB_data` contains the data and the number of states.
 
-```{r 3param-example1}
+```{r 4param-example1}
 # Model with 2 states
 m <- 2
 TMB_data <- list(x = tinn_data, m = m)
@@ -66,7 +70,7 @@ TMB_data <- list(x = tinn_data, m = m)
 Secondly, initial values for the optimization procedure need to be defined.
 Although we will apply unconstrained optimization, we initialize the natural parameters, because this is much more intuitive and practical than handling the working parameters. 
 
-```{r 3param-example2}
+```{r 4param-example2}
 # Generate initial set of parameters for optimization
 lambda <- c(1, 3)
 gamma <- matrix(c(0.8, 0.2,
@@ -77,7 +81,7 @@ gamma <- matrix(c(0.8, 0.2,
 
 The previously created initial values are transformed and stored in the list `parameters` for the optimization procedure.
 
-```{r 3pn2pw-example}
+```{r 4pn2pw-example}
 # Turn them into working parameters
 parameters <- pois.HMM.pn2pw(m, lambda, gamma)
 ```
@@ -87,15 +91,16 @@ parameters <- pois.HMM.pn2pw(m, lambda, gamma)
 This object, stored as `obj_tmb` requires the data, the initial values, and the previously created DLL as input.
 Setting argument `silent = TRUE` disables tracing information and is only used here to avoid excessive output.
 
-```{r 3makeadfun-example}
+```{r 4makeadfun-example}
 obj_tmb <- MakeADFun(TMB_data, parameters,
                      DLL = "poi_hmm", silent = TRUE)
 ```
 
 This object also contains the previously defined initial values as a vector (`par`) rather than a list.
-The negative log-likelihood (`fn`), its gradient (`gr`), and Hessian (`he`) are functions of the parameters (in vector form) while the data are considered fixed: 
+The negative log-likelihood (`fn`), its gradient (`gr`), and Hessian (`he`) are functions of the parameters (in vector form) while the data are considered fixed.
+These functions are available to the user and can be evaluated for instance at the initial parameter values: 
 
-```{r 3makeadfun-example2}
+```{r 4makeadfun-example2}
 obj_tmb$par
 obj_tmb$fn(obj_tmb$par)
 obj_tmb$gr(obj_tmb$par)
@@ -107,7 +112,7 @@ obj_tmb$he(obj_tmb$par)
 For this step we rely again on the optimizer implemented in the `nlminb` function.
 The arguments, i.e.~ initial values for the parameters and the function to be optimized, are extracted from the previously created TMB object. 
 
-```{r 3optimizing-example}
+```{r 4optimizing-example}
 mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn)
 # Check that it converged successfully
 mod_tmb$convergence == 0
@@ -122,7 +127,7 @@ Obtaining the ML estimates of the natural parameters together with their standar
 
 Recall that this requires the parameters of interest to be treated by the `ADREPORT` statement in the `C++` part. It should be noted that the presentation of the set of parameters `gamma` below results from a column-wise representation of the TPM.
 
-```{r 3summary-sdreport-example1}
+```{r 4summary-sdreport-example1}
 summary(sdreport(obj_tmb, par.fixed = mod_tmb$par), "report")
 ```
 
@@ -130,18 +135,18 @@ Note that the table above also contains estimation results for $\bs{\delta}$ and
 We provide further details on this aspect in [Confidence intervals].\
 The value of the nll function in the minimum found by the optimizer can also be extracted directly from the object `mod_tmb` by accessing the list element `objective`:
 
-```{r 3summary-sdreport-example2}
+```{r 4summary-sdreport-example2}
 mod_tmb$objective
 ```
 
 (viii) Use exact gradient and Hessian
 
 In the optimization above we already benefited from an increased speed due to the evaluation of the nll in `C++` compared to the forward algorithm being executed entirely in `R`.
-However, the use of `TMB` also permits to introduce the gradient and/or the Hessian computed by `TMB` into the optimization procedure.
-This is in general advisable, because `TMB` provides an exact value of both gradient and Hessian up to machine precision, which is superior to approximations used by optimizing procedure.
+However, since `TMB` computes the gradient and hessian of the likelihood, we can provide this information to the optimizer
+This is in general advisable, because `TMB` provides an exact value of both gradient and Hessian up to machine precision, which is superior to approximations used by the optimizing procedure.
 Similar to the nll, both quantities can be extracted directly from the `TMB` object `obj_tmb`:
 
-```{r 3gradient-hessian-example}
+```{r 4gradient-hessian-example}
 # The negative log-likelihood is accessed by the objective
 # attribute of the optimized object
 mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn,
@@ -154,7 +159,7 @@ Is it noteworthy that inconsistencies can happen in the estimates due to compute
 
 The stationary distribution is a vector of probabilities and should sum to 1.
 However, it doesn't always behave as expected.
-```{r 3_1-diff-1}
+```{r 4_1-diff-1}
 adrep <- summary(sdreport(obj_tmb), "report")
 estimate_delta <- adrep[rownames(adrep) == "delta", "Estimate"]
 sum(estimate_delta)
@@ -168,7 +173,7 @@ This is likely due to machine approximations when numbers far apart from each ot
 In R, a small number is not 0 but is treated as 0 when added to a much larger number.
 
 This can result in incoherent findings when checking equality between 2 numbers.
-```{r 3_0-diff-0}
+```{r 4_0-diff-0}
 1e-100 == 0 # Small numbers are 0
 (1 + 1e-100) == 1
 ```
@@ -176,7 +181,7 @@ This can result in incoherent findings when checking equality between 2 numbers.
 ## Basic nested model<br>specification
 ### Principle
 As a first step in building a nested model, we arbitrarily fix $\lambda_1$ to the value 1.
-```{r 3nested_params}
+```{r 4nested_params}
 # Get the previous values, and fix some
 fixed_par_lambda <- lambda
 fixed_par_lambda[1] <- 1
@@ -189,7 +194,7 @@ new_parameters <- pois.HMM.pn2pw(m = m,
 Then, we instruct `TMB` to read these custom parameters.
 We indicate fixed values by mapping them to NA values, whereas the variable values need to be mapped to different factor variables.
 Lastly, we specify this mapping with the `map` argument when making the `TMB` object.
-```{r 3nested_fix}
+```{r 4nested_fix}
 map <- list(tlambda = as.factor(c(NA, 1)),
             tgamma = as.factor(c(2, 3)))
 fixed_par_obj_tmb <- MakeADFun(TMB_data, new_parameters,
@@ -198,8 +203,8 @@ fixed_par_obj_tmb <- MakeADFun(TMB_data, new_parameters,
                                map = map)
 ```
 
-Estimating of the model and displaying the results is performed as usual
-```{r 3nested_nlminb}
+Estimation of the model and displaying the results is performed as usual
+```{r 4nested_nlminb}
 fixed_par_mod_tmb <- nlminb(start = fixed_par_obj_tmb$par,
                             objective = fixed_par_obj_tmb$fn,
                             gradient = fixed_par_obj_tmb$gr,
@@ -216,10 +221,8 @@ Hence, the TPM cannot in general be fixed, except perhaps via constrained optimi
 
 However, if conditions on the natural parameters can be translated to conditions on the working parameters, then there should not be any issue. We refer to [the next section](#param-eq-constraints) for more details.
 
-We will show in the next section that a type of general constraints on the TPM can be carried out.
-
 ### Parameter equality<br>constraints {#param-eq-constraints}
-More complex constraints than above are possible.
+More complex constraints are also possible.
 For example, imposing equality constraints (such as $\gamma_{11} = \gamma_{22}$) requires the corresponding factor level to be identical for the concerned entries.
 
 As a reminder, we defined the working parameters via
@@ -231,7 +234,7 @@ With a two-state Poisson HMM, the constraint $\gamma_{11} = \gamma_{22}$ is equi
 Thus, the constraint can be transformed into $\tau_{12} = \log(\gamma_{12}/\gamma_{11}) = \log(\gamma_{21}/\gamma_{22}) = \tau_{21}$.
 
 The mapping parameters must be set to a common factor to be forced equal.
-```{r 3nested_multiple_param}
+```{r 4nested_multiple_param}
 map <- list(tlambda = as.factor(c(1, 2)),
             tgamma = as.factor(c(3, 3)))
 fixed_par_obj_tmb <- MakeADFun(TMB_data, parameters,
@@ -253,13 +256,13 @@ tpm[1, 1] == tpm[2, 2]
 ```
 
 Similar complex constraints on the TPM can also be setup for HMMs with three or more states.
-However, it appears it can only be done in general when the constraint involves natural parameters of the same row with the exception of a 2 state model.
+However, it appears this can only be achieved in general when the constraint involves natural parameters of the same row (with the exception of a two-state model).
 We have not found a way to easily implement equality constraints between natural TPM parameters of different rows.
-Possible solutions are constrained optimization and different parametrization.
+A solution might be constrained optimization.
 
 As an example, we will look at a three-state HMM with the constraint $\gamma_{12} = \gamma_{13}$.
 
-```{r 3nested_multiple_param_example}
+```{r 4nested_multiple_param_example}
 # Model with 2 states
 m <- 3
 TMB_data <- list(x = tinn_data, m = m)
@@ -302,9 +305,9 @@ $$\begin{pmatrix}
 \end{pmatrix}$$
 
 As a vector in `R`, it becomes $\left(\tau_{21}, \tau_{31}, \tau_{12}, \tau_{32}, \tau_{13}, \tau_{23}\right)$.
-Therefore, the constraint needs to be placed on the $3^{rd}$ and $5^{th}$ vector parameter.
+Therefore, the constraint needs to be placed on the $3^{rd}$ and $5^{th}$ vector parameter in the same way as we did when the Poisson mean $\lambda_1$ was fixed.
 
-```{r 3nested_multiple_param_example_nlminb}
+```{r 4nested_multiple_param_example_nlminb}
 map <- list(tlambda = as.factor(c(1, 2, 3)),
             tgamma = as.factor(c(4, 5, 6, 7, 6, 8)))
 fixed_par_obj_tmb <- MakeADFun(TMB_data, parameters,
@@ -367,7 +370,7 @@ implementation in R is detailed in @zucchini[p.83 and p.337]
 
 Then,
 \[
-\text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\b{\alpha}_n \bs{\Gamma}^h \textbf{P}(x) \bs{1}'}{\b{\alpha}_n \bs{1}'} = \bs{\Phi}_n \bs{\Gamma}^h \textbf{P}(x) \bs{1}'
+\text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{\bs{\alpha}_n \bs{\Gamma}^h \textbf{P}(x) \bs{1}'}{\bs{\alpha}_n \bs{1}'} = \bs{\Phi}_n \bs{\Gamma}^h \textbf{P}(x) \bs{1}'
 \]
 An implementation of this using a scaling scheme is
 
@@ -429,8 +432,8 @@ iv
 ## Appendix {#appendix}
 Model selection tinnitus via AIC and BIC (calculation defined in @zucchini).
 
-* AIC and BIC for a Poisson regression
-```{r 3model-selection-tinnitus1}
+* AIC and BIC of a Poisson regression
+```{r 4model-selection-tinnitus1}
 m <- 1
 TMB_data <- list(x = tinn_data, m = m)
 lambda <- 2
@@ -445,10 +448,11 @@ AIC_1 <- 2 * (mllk + np)
 n <- sum(!is.na(TMB_data$x))
 BIC_1 <- 2 * mllk + np * log(n)
 mod_tmb$convergence == 0
-paste("AIC =", AIC_1, "and BIC =", BIC_1)
+AIC_1
+BIC_1
 ```
-* AIC and BIC for a two-state HMM
-```{r 3model-selection-tinnitus2}
+* AIC and BIC of a two-state Poisson HMM
+```{r 4model-selection-tinnitus2}
 m <- 2
 TMB_data <- list(x = tinn_data, m = m)
 lambda <- seq(from = 1, to = 3, length.out = m)
@@ -467,10 +471,11 @@ AIC_2 <- 2 * (mllk + np)
 n <- sum(!is.na(TMB_data$x))
 BIC_2 <- 2 * mllk + np * log(n)
 mod_tmb$convergence == 0
-paste("AIC =", AIC_2, "and BIC =", BIC_2)
+AIC_2
+BIC_2
 ```
-* AIC and BIC for a two-state HMM
-```{r 3model-selection-tinnitus3}
+* AIC and BIC of a three-state Poisson HMM
+```{r 4model-selection-tinnitus3}
 m <- 3
 TMB_data <- list(x = tinn_data, m = m)
 lambda <- seq(from = 1, to = 3, length.out = m)
@@ -489,10 +494,11 @@ AIC_3 <- 2 * (mllk + np)
 n <- sum(!is.na(TMB_data$x))
 BIC_3 <- 2 * mllk + np * log(n)
 mod_tmb$convergence == 0
-paste("AIC =", AIC_3, "and BIC =", BIC_3)
+AIC_3
+BIC_3
 ```
-* AIC and BIC for a four-state HMM
-```{r 3model-selection-tinnitus4}
+* AIC and BIC of a four-state Poisson HMM
+```{r 4model-selection-tinnitus4}
 m <- 4
 TMB_data <- list(x = tinn_data, m = m)
 lambda <- seq(from = 1, to = 3, length.out = m)
@@ -511,15 +517,16 @@ AIC_4 <- 2 * (mllk + np)
 n <- sum(!is.na(TMB_data$x))
 BIC_4 <- 2 * mllk + np * log(n)
 mod_tmb$convergence == 0
-paste("AIC =", AIC_4, "and BIC =", BIC_4)
+AIC_4
+BIC_4
 ```
 * Summary
 
-Models                | AIC           | BIC
---------------------- | ------------- | ---------
-Poisson regression    | `r AIC_1`     | `r BIC_1`
-Two-state HMM         | `r AIC_2`     | `r BIC_2`
-Three-state HMM       | `r AIC_3`     | `r BIC_3`
-Four-state HMM        | `r AIC_4`     | `r BIC_4`
+Models                    AIC       | BIC
+----------------------- | --------- | ---------
+Poisson regression      | `r AIC_1` | `r BIC_1`
+Two-state Poisson HMM   | `r AIC_2` | `r BIC_2`
+Three-state Poisson HMM | `r AIC_3` | `r BIC_3`
+Four-state Poisson HMM  | `r AIC_4` | `r BIC_4`
 
 AIC and BIC prefer a two-state model over a Poisson regression and over three and four-state HMMs.

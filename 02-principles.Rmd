@@ -56,6 +56,9 @@ mod_linreg <- nlminb(obj_linreg$par, obj_linreg$fn,
 mod_linreg$par
 ```
 
+It is noteworthy that if one estimates multiple models (for example on the same data with different initial values of parameters), then `mod_linreg$par` will output the latest optimized parameters.
+If one wishes to access the best set of optimized parameters (in terms of likelihood) among the ones that were estimated, then `obj_tmb$env$last.par.best` will output these.
+
 Now that the optimization is taken care of, we can display the estimates with standard errors using the `sdreport` function.
 ```{r sdreport}
 sdreport(obj_linreg)

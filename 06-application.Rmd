@@ -1,7 +1,7 @@
 # Application to different data sets
 
 ## TYT data
-We detail here the code used to estimate a 2-state Poisson HMM based on the tinnitus dataset available in *[data/tinnitus.RData](#tinnitus.RData)*.
+We detail here the code used to estimate a two-state Poisson HMM based on the tinnitus dataset available in *[data/tinnitus.RData](#tinnitus.RData)*.
 
 - Set a seed for randomness, and load files
 ```{r 5tyt-init}
@@ -51,7 +51,7 @@ summary(sdreport(obj_tmb), "report")
 For the code used to generate coverage probabilities and acceleration results, please take a look at *[code/poi_hmm_tinn.R](#poi_hmm_tinn.R)*.
 
 ## Lamb data
-We detail here the code used to estimate a 2-state Poisson HMM based on the lamb dataset available in *[data/fetal-lamb.RData](#fetal-lamb.RData)*
+We detail here the code used to estimate a two-state Poisson HMM based on the lamb dataset available in *[data/fetal-lamb.RData](#fetal-lamb.RData)*
 
 - Set a seed for randomness, and load files
 ```{r 5lamb-init}
@@ -131,7 +131,7 @@ The log-likelihood is different, but when the constant $- \sum_{i=1}^{T} \log(x_
 
 ## Simulated data
 
-We detail here the code used to simulate two datasets from 2-states Poisson HMMs, one of size `r DATA_SIZE_SIMU1` and one of size `r DATA_SIZE_SIMU2`.
+We detail here the code used to simulate two datasets from two-states Poisson HMMs, one of size `r DATA_SIZE_SIMU1` and one of size `r DATA_SIZE_SIMU2`.
 Then, using the same procedure as above, we estimate a model using different initial parameters.
 
 - Set initial parameters (data size and HMM parameters)

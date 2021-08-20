@@ -145,7 +145,7 @@ Transforming the Poisson means into their natural form can be done simply with t
 ### Utility functions in `R`
 While `TMB` requires functions to transform working parameters to their natural form, pre-processing in `R` requires the inverse transformation.
 
-Functions to achieve this are available in @zucchini [p.51] and are displayed here with explaining comments for convenience.
+Functions to achieve this are available in @zucchini[p.51] and are displayed here with explaining comments for convenience.
 
 ```{r pois.HMM.pn2pw}
 ```
@@ -181,7 +181,7 @@ The function `pois.HMM.label.order` solves the issue and is presented below.
 ```
 
 We will go through an example to better understand the process.
-For readability, the TPM is filled with standard row and column indexes instead of probabilities.
+For readability, the TPM is filled with standard row and column indices instead of probabilities.
 ```{r 2label-switch}
 lambda <- c(3, 1, 2)
 gamma <- matrix(c(11, 12, 13,
