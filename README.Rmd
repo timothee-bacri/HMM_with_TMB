@@ -1,8 +1,6 @@
 ---
 title: "[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder"
-output:
-  md_document:
-    variant: gfm
+output: md_document
 ---
 
 <!-- Compile this into README.md with -->
