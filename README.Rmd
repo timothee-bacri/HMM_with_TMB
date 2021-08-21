@@ -1,12 +1,12 @@
 ---
 title: "[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder"
-output: md_document
+output:
+  md_document:
+    variant: gfm
 ---
 
 <!-- Compile this into README.md with -->
 <!-- rmarkdown::render("README.Rmd", md_document()) -->
-<!-- or with -->
-<!-- knitr::knit("README.Rmd") -->
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -26,12 +26,12 @@ This repository contains the code to produce the R-bookdown website found [here]
 
 The folders (*[code/](#code)*, *[data/](#data)*, *[functions/](#functions)*) related to the analysis code and results of the paper [LINK available later](https://www.nrk.no) are described in [Directory structure](#directory-structure).
 
-## Author's github account{-}
+## Author's github account
 
 **Timothee Bacri** - [timothee-bacri](https://github.com/timothee-bacri)
 **Sondre Hølleland** - [holleland](https://github.com/holleland)
 
-## License{-}
+## License
 
 [ UNDER CONSTRUCTION ] \
 This project is licensed under the GPL v2 License - see [LICENSE](LICENSE) for details.
