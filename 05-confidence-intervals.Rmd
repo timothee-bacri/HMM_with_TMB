@@ -18,13 +18,13 @@ First, we require the standard errors. We can retrieve them from the `MakeADFun`
 The standard errors of the working parameters `tlambda` and `tgamma` can be retrieved without needing to add `ADREPORT` in the C++ file.
 However, it is usually more interesting to access the standard errors of the natural parameters `lambda`, `gamma` and `delta`. This requires adding a few lines to the C++ file to produce these standard errors, as detailed in [Getting started with a linear regression].
 
-Be careful: `adrep` lists `gamma` column-wise
+Be careful: `adrep` lists `gamma` column-wise.
 ```{r 5adrep_warning}
 adrep <- summary(sdreport(obj_tmb), "report")
 adrep
 ```
 
-Standard errors for $\hat{\bs{\lambda}}$
+Standard errors for $\hat{\bs{\lambda}}$:
 ```{r 5adrep_lambda}
 rows <- rownames(adrep) == "lambda"
 lambda <- adrep[rows, "Estimate"]
@@ -44,7 +44,7 @@ gamma
 gamma_std_error
 ```
 
-Standard errors for $\hat{\bs{\delta}}$
+Standard errors for $\hat{\bs{\delta}}$:
 ```{r 5adrep_delta}
 rows <- rownames(adrep) == "delta"
 delta <- adrep[rows, "Estimate"]
@@ -58,7 +58,7 @@ delta_std_error
 Our nll function is parametrized in terms of and optimized with respect to the working parameters.
 In practice, this aspect is easy to deal with.
 Once a profile CI for the working parameter (here $\eta_2$) has been obtained following the procedure above, the corresponding CI for the natural parameter $\lambda_2$ results directly from transforming the upper and lower boundary of the CI for $\eta_2$ by the one-to-one transformation $\lambda_2 = \exp(\eta_2)$.
-For further details on the invariance of likelihood-based CIs to parameter transformations, we refer to [@meeker].
+For further details on the invariance of likelihood-based CIs to parameter transformations, we refer to @meeker.
 
 Profiling $\eta_2$ (the working parameter corresponding to $\lambda_2$) with `TMB` can be done with
 ```{r 5profile}
@@ -129,7 +129,7 @@ In order to perform a parametric bootstrap, we need to be able to generate data 
 
 For readability and code maintenance, it is conventional to store procedures that will be used more than once into functions.
 
-The data-generating function is defined in [@zucchini, Section A.1.5 p.333].
+The data-generating function is defined in @zucchini[, Section A.1.5 p.333].
 ```{r 5generate_sample-original, eval=FALSE}
 pois.HMM.generate.sample <- function(ns,mod) {
   mvect <- 1:mod$m

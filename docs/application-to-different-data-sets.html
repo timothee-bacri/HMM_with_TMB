@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title> 6 Application to different data sets | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <title> 6 Application to different data sets | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content=" 6 Application to different data sets | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:title" content=" 6 Application to different data sets | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content=" 6 Application to different data sets | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta name="twitter:title" content=" 6 Application to different data sets | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   
   <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
   
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-08-21" />
+<meta name="date" content="2021-09-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -38,6 +38,7 @@
 <link rel="next" href="github.html"/>
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -45,7 +46,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
 
 
 
@@ -271,7 +271,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
           </h1>
         </div>
 
@@ -398,10 +398,10 @@ div.csl-indent {
 <span id="cb77-24"><a href="application-to-different-data-sets.html#cb77-24" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.96493123 0.03181445</span></span>
 <span id="cb77-25"><a href="application-to-different-data-sets.html#cb77-25" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.03506877 0.03181445</span></span></code></pre></div>
 <p>For the code used to generate coverage probabilities and acceleration results, please take a look at <em><a href="github.html#poi_hmm_lamb.R">code/poi_hmm_lamb.R</a></em>.</p>
-<p>On a minor note, when comparing our estimation results to those reported by <span class="citation">(<a href="#ref-leroux" role="doc-biblioref">Leroux &amp; Puterman, 1992</a>)</span>, some non-negligible differences can be noted.
+<p>On a minor note, when comparing our estimation results to those reported by <span class="citation"><a href="#ref-leroux" role="doc-biblioref">Leroux &amp; Puterman</a> (<a href="#ref-leroux" role="doc-biblioref">1992</a>)</span>, some non-negligible differences can be noted.
 The reasons for this are difficult to determine, but some likely explanations are given in the following.
-First, differences in the parameter estimates may result e.g. from the optimizing algorithms used and related setting (e.g. convergence criterion, number of steps, optimization routines used in 1992,…).
-Moreover, <span class="citation">(<a href="#ref-leroux" role="doc-biblioref">Leroux &amp; Puterman, 1992</a>)</span> seem to base their calculations on an altered likelihood, which is reduced by removing the constant term <span class="math inline">\(\sum_{i=1}^{T} \log(x_{i}!)\)</span> from the log-likelihood.
+First, differences in the parameter estimates may result e.g. from the optimizing algorithms used and related setting (e.g. convergence criterion, number of steps, optimization routines used in 1992, etc).
+Moreover, <span class="citation"><a href="#ref-leroux" role="doc-biblioref">Leroux &amp; Puterman</a> (<a href="#ref-leroux" role="doc-biblioref">1992</a>)</span> seem to base their calculations on an altered likelihood, which is reduced by removing the constant term <span class="math inline">\(\sum_{i=1}^{T} \log(x_{i}!)\)</span> from the log-likelihood.
 This modification may also possess an impact on the behavior of the optimization algorithm, as e.g. relative convergence criteria and step size could be affected.</p>
 <p>The altered likelihood becomes apparent when computing it on a one-state HMM.
 A one-state Poisson HMM is a Poisson regression model, for which the log-likelihood has the expression
@@ -510,7 +510,6 @@ Leroux, B. G., &amp; Puterman, M. L. (1992). Maximum-<span>Penalized</span>-<spa
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -551,7 +550,7 @@ gitbook.start({
 },
 "download": null,
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {

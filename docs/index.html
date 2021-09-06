@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <title>A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:title" content="A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta name="twitter:title" content="A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   
   <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
   
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-08-21" />
+<meta name="date" content="2021-09-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -38,6 +38,7 @@
 <link rel="next" href="principles-of-using-tmb-for-mle.html"/>
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -45,7 +46,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
 
 
 
@@ -271,7 +271,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
           </h1>
         </div>
 
@@ -280,12 +280,12 @@ div.csl-indent {
 
             <section class="normal" id="section-">
 <div id="header">
-<h1 class="title">[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</h1>
+<h1 class="title">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</h1>
 <p class="author"><em>Timothée Bacri <a href="mailto:timothee.bacri@uib.no?subject=%5BGitHub%20TMB%20HMM%5D">timothee.bacri@uib.no</a></em></p>
 <p class="author"><em>Jan Bulla <a href="mailto:jan.bulla@uib.no?subject=%5BGitHub%20TMB%20HMM%5D">jan.bulla@uib.no</a></em></p>
 <p class="author"><em>Geir Berentsen <a href="mailto:geir.berentsen@nhh.no?subject=%5BGitHub%20TMB%20HMM%5D">geir.berentsen@nhh.no</a></em></p>
 <p class="author"><em>Sondre Hølleland <a href="mailto:sondre.hoelleland@hi.no?subject=%5BGitHub%20TMB%20HMM%5D">sondre.hoelleland@hi.no</a></em></p>
-<p class="date"><em>2021-08-21</em></p>
+<p class="date"><em>2021-09-06</em></p>
 </div>
 <div id="summary" class="section level1" number="1">
 <h1><span class="header-section-number"> 1</span> Summary</h1>
@@ -311,7 +311,6 @@ The other folders and files relate to this Gitbook and are not described in <a h
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -352,7 +351,7 @@ gitbook.start({
 },
 "download": null,
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {

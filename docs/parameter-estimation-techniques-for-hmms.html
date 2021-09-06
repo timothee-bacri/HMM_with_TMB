@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title> 3 Parameter estimation techniquesfor HMMs | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <title> 3 Parameter estimation techniquesfor HMMs | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content=" 3 Parameter estimation techniquesfor HMMs | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:title" content=" 3 Parameter estimation techniquesfor HMMs | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content=" 3 Parameter estimation techniquesfor HMMs | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta name="twitter:title" content=" 3 Parameter estimation techniquesfor HMMs | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   
   <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
   
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-08-21" />
+<meta name="date" content="2021-09-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -38,6 +38,7 @@
 <link rel="next" href="using-tmb.html"/>
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -45,7 +46,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
 
 
 
@@ -271,7 +271,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
           </h1>
         </div>
 
@@ -293,7 +293,7 @@ div.csl-indent {
 </div>
 <div id="the-likelihood-function-of-an-hmm" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> The likelihood function of an HMM</h2>
-<p>The Poisson HMM negative log-likelihood function in <code>C++</code> can be written the following way using <code>TMB</code>’s template..</p>
+<p>The Poisson HMM negative log-likelihood function in <code>C++</code> can be written the following way using <code>TMB</code>’s template.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb13-1"><a href="parameter-estimation-techniques-for-hmms.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
 <span id="cb13-2"><a href="parameter-estimation-techniques-for-hmms.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
 <span id="cb13-3"><a href="parameter-estimation-techniques-for-hmms.html#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -786,7 +786,6 @@ Zucchini, W., MacDonald, I. L., &amp; Langrock, R. (2016). <em>Hidden markov mod
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -827,7 +826,7 @@ gitbook.start({
 },
 "download": null,
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {

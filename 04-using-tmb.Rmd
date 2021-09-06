@@ -29,7 +29,7 @@ Next, we need to load the necessary packages and the utility `R` functions.
 source("functions/utils.R")
 ```
 
-(ii) The data are part of a large data set collected with the "Track Your Tinnitus" (TYT) mobile application, a detailed description of which is presented in [@pryss; @pryssa].
+(ii) The data are part of a large data set collected with the "Track Your Tinnitus" (TYT) mobile application, a detailed description of which is presented in @pryss and @pryssa.
 We analyze 87 successive days of the "arousal" variable, which is measured on a discrete scale.
 Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state [for details, see @probst].
 The data can be loaded by a simple call.
@@ -58,7 +58,7 @@ plot(tinn_data, ylab = "Arousal", xlab = "Day (#)")
 
 (iii) Initialization of the number of states and starting (or initial) values for the optimization.
 
-First, the number of states needs to be determined. As explained by @pohlea, @pohle, and [@zucchini, Section 6] (to name only a few), usually one would first fit models with a different number of states. Then, these models are evaluated e.g. by means of model selection criteria [as carried out by, @leroux] or prediction performance [@celeux].
+First, the number of states needs to be determined. As explained by @pohlea, @pohle, and @zucchini[, Section 6] (to name only a few), usually one would first fit models with a different number of states. Then, these models are evaluated e.g. by means of model selection criteria [as carried out by @leroux] or prediction performance [@celeux].
 As shown in [the appendix](#appendix), the model selection procedure shows that both AIC and BIC prefer a two-state model over a Poisson regression and over a model with three or four states. Consequently, we focus on the two-state model in the following.\
 The list object `TMB_data` contains the data and the number of states.
 
@@ -166,7 +166,7 @@ sum(estimate_delta)
 sum(estimate_delta) == 1 # The sum is displayed as 1 but is not 1
 ```
 
-As noted on [@zucchini, pp. 159-160], ``the row sums of $\bs{\Gamma}$ will only approximately equal 1, and the components of the vector $\bs{\delta}$ will only approximately total 1. This can be remedied by scaling the vector $\bs{\delta}$ and each row of $\bs{\Gamma}$ to total 1''.
+As noted on @zucchini[, pp. 159-160], ``the row sums of $\bs{\Gamma}$ will only approximately equal 1, and the components of the vector $\bs{\delta}$ will only approximately total 1. This can be remedied by scaling the vector $\bs{\delta}$ and each row of $\bs{\Gamma}$ to total 1''.
 We do not remedy this issue because it provides no benefit to us, but this may lead to surprising results when checking equality.
 
 This is likely due to machine approximations when numbers far apart from each other interact together.
@@ -203,7 +203,7 @@ fixed_par_obj_tmb <- MakeADFun(TMB_data, new_parameters,
                                map = map)
 ```
 
-Estimation of the model and displaying the results is performed as usual
+Estimation of the model and displaying the results is performed as usual.
 ```{r 4nested_nlminb}
 fixed_par_mod_tmb <- nlminb(start = fixed_par_obj_tmb$par,
                             objective = fixed_par_obj_tmb$fn,

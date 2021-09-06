@@ -1,5 +1,5 @@
 --- 
-title: "[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder"
+title: "A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder"
 author:
   - Timothée Bacri [timothee.bacri@uib.no](mailto:timothee.bacri@uib.no?subject=[GitHub%20TMB%20HMM])
   - Jan Bulla [jan.bulla@uib.no](mailto:jan.bulla@uib.no?subject=[GitHub%20TMB%20HMM])

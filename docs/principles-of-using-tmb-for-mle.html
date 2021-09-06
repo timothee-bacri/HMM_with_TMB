@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title> 2 Principles of using TMB for MLE | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <title> 2 Principles of using TMB for MLE | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content=" 2 Principles of using TMB for MLE | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:title" content=" 2 Principles of using TMB for MLE | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content=" 2 Principles of using TMB for MLE | [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta name="twitter:title" content=" 2 Principles of using TMB for MLE | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   
   <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
   
@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-08-21" />
+<meta name="date" content="2021-09-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -38,6 +38,7 @@
 <link rel="next" href="parameter-estimation-techniques-for-hmms.html"/>
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -45,7 +46,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
 
 
 
@@ -271,7 +271,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
           </h1>
         </div>
 
@@ -503,7 +503,7 @@ We start by writing the subroutine function as a separate file called <em><a hre
 <span id="cb10-37"><a href="principles-of-using-tmb-for-mle.html#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,]    5    5    5</span></span></code></pre></div>
 <p>Note that when you are writing the <code>C++</code> nll file, compiling the file again may lead to an error.
 This is because the dynamic library (the <code>.dll</code> file) is already loaded, and cannot be overwritten.
-To prevent this, it is useful to either to manually unload the file via the code</p>
+To prevent this, it is useful either to manually unload the file via the code</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="principles-of-using-tmb-for-mle.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.unload</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/linreg_extended&quot;</span>))</span></code></pre></div>
 <p>or to restart the <code>R</code> session via the menu <code>Session-&gt;Restart R</code> (shortcut <code>Ctrl+Shift+F10</code> on Windows).
 Note that restarting the session unloads all packages from the session, and will require you to load the <code>TMB</code> package again.</p>
@@ -526,7 +526,6 @@ Kristensen, K. (2021). <em>TMB: Template model builder: A general random effect 
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -567,7 +566,7 @@ gitbook.start({
 },
 "download": null,
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {

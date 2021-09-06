@@ -13,7 +13,7 @@ Other distributions are available.
 
 ## The likelihood function of an HMM
 
-The Poisson HMM negative log-likelihood function in `C++` can be written the following way using `TMB`'s template..
+The Poisson HMM negative log-likelihood function in `C++` can be written the following way using `TMB`'s template.
 ```{Rcpp 2poi_hmm.cpp, code=readLines("code/poi_hmm.cpp"), eval=FALSE}
 ```
 
