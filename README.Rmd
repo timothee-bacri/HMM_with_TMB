@@ -1,9 +1,9 @@
 ---
-title: "[ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder"
-output: md_document
+title: "A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder"
+output:  github_document
 ---
 
-# [ UNDER CONSTRUCTION ] A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder
+<!-- # A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder -->
 
 <!-- Compile this into README.md with -->
 <!-- rmarkdown::render("README.Rmd", md_document()) -->
@@ -20,7 +20,7 @@ knitr::knit_engines$set()
 
   *Correspondance to: jan.bulla@uib.no*
  
- *Biometrical Journal paper can be found [here](https://www.nrk.no).*
+ *Biometrical Journal paper can be found [here (correct link will come)](https://onlinelibrary.wiley.com/journal/15214036).*
 
 This repository contains the code to produce the R-bookdown website found [here](https://timothee-bacri.github.io/HMM_with_TMB/).
 
@@ -29,6 +29,7 @@ The folders (*[code/](#code)*, *[data/](#data)*, *[functions/](#functions)*) rel
 ## Author's github account
 
 **Timothee Bacri** - [timothee-bacri](https://github.com/timothee-bacri)
+
 **Sondre Hølleland** - [holleland](https://github.com/holleland)
 
 ## License
