@@ -1,5 +1,5 @@
 fig:4tinnitus-fig
-summary
+introduction
 principles-of-using-tmb-for-mle
 setup
 linear-regression-example

@@ -25,7 +25,7 @@ header-includes:
   - \DeclareMathOperator*{\argmax}{argmax}
 ---
 
-# Summary
+# Introduction
 <!-- COMPILE WITH bookdown::render_book("index.Rmd") -->
 Welcome !
 
