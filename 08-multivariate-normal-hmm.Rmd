@@ -1,0 +1,104 @@
+# Multivariate Gaussian HMM
+
+Multivariate Gaussian HMMs with TMB are very similar to the previous Poisson HMM.
+The main changes are the distribution parameters being changed from $\bs{\lambda}$ to $\bs{\mu}$ and $\bs{\sigma}$.
+In turn, these cause the density function to change from `dpois` to `dnorm` (and from `rpois` to `rnorm` for simulations).
+
+Many functions available in *[functions/utils.R](#utils.R)* have been adapted for the multivariate Gaussian case in *[functions/mvnorm_utils.R](#mvnorm_utils.R)*.
+
+We detail below an example of a Gaussian HMM with TMB.
+The dataset we show in this example contains log-returns of the SP500 dataset pulled from Yahoo finances.
+These log-returns are generated with the following code.
+
+```{r}
+source("code/packages.R")
+source("functions/mvnorm_utils.R")
+
+# TMB::precompile()
+TMB::compile("code/mvnorm_hmm.cpp")
+dyn.load(TMB::dynlib("code/mvnorm_hmm"))
+
+set.seed(123)
+
+# Two states
+m <- 2
+# Trivariate Normal distribution
+p <- 3
+
+# One row per state, one column per dimension of the data
+mu <- matrix(c(6,8,9,
+               1,2,3), nrow = m, ncol = p, byrow = TRUE)
+# Two covariance matrices
+sigma1 <- matrix(c(1.0, 0.5, 0.5,
+                   0.5, 1.0, 0.5,
+                   0.5, 0.5, 1.0), nrow = p, ncol = p)
+
+sigma2 <-  matrix(c(2.0, 1.5, 1.5,
+                    1.5, 2.0, 1.5,
+                    1.5, 1.5, 2.0), nrow = p, ncol = p)
+# They are stored in an array for convenience, making it easy to distinguish at a glance when displaying
+sigma <- array(c(sigma1, sigma2), dim = c(p, p, m))
+
+gamma <- matrix(c(0.95, 0.05,
+                  0.15, 0.85), byrow = TRUE, nrow = m, ncol = m)
+
+mod <- list(m = m,
+            mu = mu,
+            sigma = sigma,
+            gamma = gamma)
+
+# Similarly to the Poisson case, we can generate data.
+# Here, we generate a bivariate Gaussian sample of size 1000.
+TMBdata <- mvnorm.HMM.generate.sample(1000, mod)
+# TMB requires a list
+TMB_data <- list(x = TMBdata$data,
+                 m = m)
+# TMB requires the parameters to be either vectors, matrices, or arrays.
+# For simplicity, we pass the parameters as a list of vectors and matrices.
+pw <- mvnorm.HMM.pn2pw(m = m,
+                       mu = mu, sigma = sigma, gamma = gamma)
+
+obj_tmb <- TMB::MakeADFun(data = TMB_data,
+                          parameters = pw,
+                          DLL = "mvnorm_hmm",
+                          silent = TRUE)
+
+res <- nlminb(start = obj_tmb$par,
+              objective = obj_tmb$fn,
+              gradient = obj_tmb$gr,
+              hessian = obj_tmb$he)
+
+summary(sdreport(obj_tmb), "report")
+```
+
+A more readable view of the estimates can be displayed with
+```{r}
+a <- obj_tmb$report()
+a
+```
+
+Since we generated data from parameters, we can check the validity of the estimates
+```{r}
+t(a$mu) - mu
+a$sigma - sigma
+a$gamma - gamma
+```
+As expected, the estimates are close to their true values.
+
+In order to work on the C++ objective function, it is required to unload the DLL.
+This can be achieved with
+```{r}
+dyn.unload(dynlib("code/mvnorm_hmm"))
+```
+or by restarting the R session.
+
+The warning can be suppressed if desired via
+```{r eval = FALSE}
+sink(file = nullfile())
+dyn.unload(dynlib("code/norm_hmm"))
+sink()
+```
+Be careful, as the sink function will divert all messages to the `file` specified, including errors.
+`nullfile()` points to a file that cannot contain anything (`/dev/null` on Linux distributions).
+Make sure to end it with `sink()` when you are done!
+

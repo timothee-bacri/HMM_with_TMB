@@ -16,8 +16,8 @@ Hølleland<sup>3</sup>.*
 
 *Correspondance to: <jan.bulla@uib.no>*
 
-*Biometrical Journal paper can be found [here (correct link will
-come)](https://onlinelibrary.wiley.com/journal/15214036).*
+<!-- *Biometrical Journal paper can be found [here (correct link will
+come)](https://onlinelibrary.wiley.com/journal/15214036).* -->
 
 This repository contains the code to produce the R-bookdown website
 found [here](https://timothee-bacri.github.io/HMM_with_TMB/).
