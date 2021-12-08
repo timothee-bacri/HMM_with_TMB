@@ -18,6 +18,7 @@ github-repo: "timothee-bacri/HMM_with_TMB"
 output:
   bookdown::gitbook:
     toc_depth: 4
+    css: width.css
 header-includes:
   - \usepackage{amsthm,amsmath,amssymb,amsfonts,amssymb}
   - \usepackage{listings}

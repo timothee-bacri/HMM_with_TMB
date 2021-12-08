@@ -4,7 +4,7 @@
 We detail here the code used to estimate a two-state Poisson HMM based on the tinnitus dataset available in *[data/tinnitus.RData](#tinnitus.RData)*.
 
 - Set a seed for randomness, and load files
-```{r 5tyt-init}
+```{r 6tyt-init}
 set.seed(123)
 library(TMB)
 TMB::compile("code/poi_hmm.cpp")
@@ -14,7 +14,7 @@ load("data/tinnitus.RData")
 ```
 
 - Set initial parameters
-```{r 5tyt-init-params}
+```{r 6tyt-init-params}
 # Parameters and covariates
 m <- 2
 gamma <- matrix(c(0.8, 0.2,
@@ -24,13 +24,13 @@ delta <- stat.dist(gamma)
 ```
 
 - Transform them into working parameters
-```{r 5tyt-pn2pw}
+```{r 6tyt-pn2pw}
 working_params <- pois.HMM.pn2pw(m, lambda, gamma)
 TMB_data <- list(x = tinn_data, m = m)
 ```
 
 - Estimate the parameters via a function
-```{r 5tyt-estim}
+```{r 6tyt-estim}
 # Build the TMB object
 obj_tmb <- MakeADFun(TMB_data, working_params,
                      DLL = "poi_hmm", silent = TRUE)
@@ -54,7 +54,7 @@ For the code used to generate coverage probabilities and acceleration results, p
 We detail here the code used to estimate a two-state Poisson HMM based on the lamb dataset available in *[data/fetal-lamb.RData](#fetal-lamb.RData)*
 
 - Set a seed for randomness, and load files
-```{r 5lamb-init}
+```{r 6lamb-init}
 set.seed(123)
 library(TMB)
 TMB::compile("code/poi_hmm.cpp")
@@ -66,7 +66,7 @@ rm(lamb)
 ```
 
 - Set initial parameters
-```{r 5lamb-init-params}
+```{r 6lamb-init-params}
 # Parameters and covariates
 m <- 2
 gamma <- matrix(c(0.8, 0.2,
@@ -76,13 +76,13 @@ delta <- stat.dist(gamma)
 ```
 
 - Transform them into working parameters
-```{r 5lamb-pn2pw}
+```{r 6lamb-pn2pw}
 working_params <- pois.HMM.pn2pw(m, lambda, gamma)
 TMB_data <- list(x = lamb_data, m = m)
 ```
 
 - Estimate the parameters via a function
-```{r 5lamb-estim}
+```{r 6lamb-estim}
 # Build the TMB object
 obj_tmb <- MakeADFun(TMB_data, working_params,
                      DLL = "poi_hmm", silent = TRUE)
@@ -116,7 +116,7 @@ l(\lambda) &= \log \left(\prod_{i=1}^{T} \frac{\lambda^{x_i} e^{-\lambda}}{x_{i}
 \end{align*}
 The authors find a ML estimate $\lambda = 0.3583$ and a log-likelihood of -174.26.
 In contrast, calculating the log-likelihood explicitly shows a different result.
-```{r 5leroux-likelihood-calculation}
+```{r 6leroux-likelihood-calculation}
 x <- lamb_data
 # We use n instead of T in R code
 n <- length(x)
@@ -125,7 +125,7 @@ l <- 0.3583
 ```
 
 The log-likelihood is different, but when the constant $- \sum_{i=1}^{T} \log(x_{i}!)$ is removed, it matches our result.
-```{r 5leroux-likelihood}
+```{r 6leroux-likelihood}
 - n * l + log(l) * sum(x)
 ```
 
@@ -135,7 +135,7 @@ We detail here the code used to simulate two datasets from two-states Poisson HM
 Then, using the same procedure as above, we estimate a model using different initial parameters.
 
 - Set initial parameters (data size and HMM parameters)
-```{r 5simu-gen-init-params}
+```{r 6simu-gen-init-params}
 DATA_SIZE_SIMU <- 2000
 m <- 2
 # Generate parameters
@@ -148,7 +148,7 @@ delta <- stat.dist(gamma)
 The `stat.dist` function computes the stationary distribution.
 
 - Generate data with one of the functions defined in [Generating data](#generating-data)
-```{r 5simu-gen-data}
+```{r 6simu-gen-data}
 simu_data <- pois.HMM.generate.sample(ns = DATA_SIZE_SIMU,
                                       mod = list(m = m,
                                                  lambda = lambda,
@@ -157,7 +157,7 @@ simu_data <- pois.HMM.generate.sample(ns = DATA_SIZE_SIMU,
 ```
 
 - Set initial parameters
-```{r 5simu-init-params}
+```{r 6simu-init-params}
 # Parameters and covariates
 m <- 2
 gamma <- matrix(c(0.6, 0.4,
@@ -169,13 +169,13 @@ lambda
 ```
 
 - Transform them into working parameters
-```{r 5simu-pn2pw}
+```{r 6simu-pn2pw}
 working_params <- pois.HMM.pn2pw(m, lambda, gamma)
 TMB_data <- list(x = simu_data, m = m)
 ```
 
 - Estimate the parameters via a function
-```{r 5simu-estim}
+```{r 6simu-estim}
 # Build the TMB object
 obj_tmb <- MakeADFun(TMB_data, working_params,
                      DLL = "poi_hmm", silent = TRUE)
