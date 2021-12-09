@@ -44,6 +44,8 @@ For a description of the functions in *[functions/utils.R](#utils.R)* and their 
 library(knitr)
 source('code/setup_parameters.R')
 knitr::read_chunk('functions/utils.R')
+knitr::read_chunk('functions/norm_utils.R')
+knitr::read_chunk('functions/mvnorm_utils.R')
 knitr::opts_chunk$set(collapse = TRUE)
 ```
 

@@ -7,9 +7,11 @@ In turn, these cause the density function to change from `dpois` to `dnorm` (and
 Many functions available in *[functions/utils.R](#utils.R)* have been adapted for the Gaussian case in *[functions/norm_utils.R](#norm_utils.R)*.
 
 We detail below an example of a Gaussian HMM with TMB.
+
+## Dataset
 The dataset we show in this example contains log-returns of the SP500 dataset pulled from Yahoo finances.
 These log-returns are generated with the following code.
-```{r eval = FALSE}
+```{r 7sp500-generate, eval = FALSE}
 library(dplyr)
 # Loading the sp500 dataset
 SP500 <- read_csv("data/S&P500.csv") %>%
@@ -21,6 +23,7 @@ SP500 <- 100 * SP500$lr
 save(SP500, file = "data/SP500.RData")
 ```
 
+## Likelihood function
 The Gaussian negative log-likelihood in TMB can be coded as
 ```{Rcpp 7norm_hmm.cpp, code=readLines("code/norm_hmm.cpp"), eval=FALSE}
 ```
@@ -29,8 +32,9 @@ and requires the following utility functions.
 ```{Rcpp 7norm_utils.cpp, code=readLines("functions/norm_utils.cpp"), eval=FALSE}
 ```
 
+## Estimation
 The following R code illustrates how to compute the estimates and standard errors, using the objective function written above.
-```{r}
+```{r 7example}
 source("code/packages.R")
 source("functions/norm_utils.R")
 
@@ -53,32 +57,15 @@ obj <- MakeADFun(TMB_data, working_params, DLL = "norm_hmm", silent = TRUE)
 obj_tmb <- MakeADFun(TMB_data, working_params, DLL = "norm_hmm", silent = TRUE)
 mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn,
                   gradient = obj_tmb$gr, hessian = obj_tmb$he)
+```
 
+## Results
+```{r}
 summary(sdreport(obj_tmb), "report")
+# Readable estimates
+obj_tmb$report()
 ```
 
 As could be expected, the low positive mean is associated with with a low variance whereas the larger mean is negative and tied to a higher variance.
 Note that the TPM is displayed column-wise.
-
-A more readable view of the estimates can be displayed with
-```{r}
-obj_tmb$report()
-```
-
-In order to work on the C++ objective function, it is required to unload the DLL.
-This can be achieved with
-```{r}
-dyn.unload(dynlib("code/norm_hmm"))
-```
-or by restarting the R session.
-
-The warning can be suppressed if desired via
-```{r eval = FALSE}
-sink(file = nullfile())
-dyn.unload(dynlib("code/norm_hmm"))
-sink()
-```
-Be careful, as the sink function will divert all messages to the `file` specified, including errors.
-`nullfile()` points to a file that cannot contain anything (`/dev/null` on Linux distributions).
-Make sure to end it with `sink()` when you are done!
 

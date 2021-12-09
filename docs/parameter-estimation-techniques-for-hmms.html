@@ -226,8 +226,21 @@ div.csl-indent {
 <li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>6.2</b> Lamb data</a></li>
 <li class="chapter" data-level="6.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-data"><i class="fa fa-check"></i><b>6.3</b> Simulated data</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="normal-hmm.html"><a href="normal-hmm.html"><i class="fa fa-check"></i><b>7</b> Normal HMM</a></li>
-<li class="chapter" data-level="8" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html"><i class="fa fa-check"></i><b>8</b> Multivariate Gaussian HMM</a></li>
+<li class="chapter" data-level="7" data-path="normal-hmm.html"><a href="normal-hmm.html"><i class="fa fa-check"></i><b>7</b> Normal HMM</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="normal-hmm.html"><a href="normal-hmm.html#dataset"><i class="fa fa-check"></i><b>7.1</b> Dataset</a></li>
+<li class="chapter" data-level="7.2" data-path="normal-hmm.html"><a href="normal-hmm.html#likelihood-function-1"><i class="fa fa-check"></i><b>7.2</b> Likelihood function</a></li>
+<li class="chapter" data-level="7.3" data-path="normal-hmm.html"><a href="normal-hmm.html#estimation"><i class="fa fa-check"></i><b>7.3</b> Estimation</a></li>
+<li class="chapter" data-level="7.4" data-path="normal-hmm.html"><a href="normal-hmm.html#results"><i class="fa fa-check"></i><b>7.4</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html"><i class="fa fa-check"></i><b>8</b> Multivariate Gaussian HMM</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#dataset-1"><i class="fa fa-check"></i><b>8.1</b> Dataset</a></li>
+<li class="chapter" data-level="8.2" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#likelihood-function-2"><i class="fa fa-check"></i><b>8.2</b> Likelihood function</a></li>
+<li class="chapter" data-level="8.3" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#estimation-1"><i class="fa fa-check"></i><b>8.3</b> Estimation</a></li>
+<li class="chapter" data-level="8.4" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#results-1"><i class="fa fa-check"></i><b>8.4</b> Results</a></li>
+<li class="chapter" data-level="8.5" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#residuals"><i class="fa fa-check"></i><b>8.5</b> Residuals</a></li>
+</ul></li>
 <li class="chapter" data-level="9" data-path="github.html"><a href="github.html"><i class="fa fa-check"></i><b>9</b> GitHub</a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="github.html"><a href="github.html#directory-structure"><i class="fa fa-check"></i><b>9.1</b> Directory structure</a>
@@ -636,9 +649,14 @@ We define the function <code>gamma.w2n</code> to perform this transformation.</p
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="parameter-estimation-techniques-for-hmms.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the stationary distribution of a Markov chain</span></span>
 <span id="cb24-2"><a href="parameter-estimation-techniques-for-hmms.html#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># with transition probability gamma</span></span>
 <span id="cb24-3"><a href="parameter-estimation-techniques-for-hmms.html#cb24-3" aria-hidden="true" tabindex="-1"></a>stat.dist <span class="ot">&lt;-</span> <span class="cf">function</span>(gamma) {</span>
-<span id="cb24-4"><a href="parameter-estimation-techniques-for-hmms.html#cb24-4" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">nrow</span>(gamma)</span>
-<span id="cb24-5"><a href="parameter-estimation-techniques-for-hmms.html#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">solve</span>(<span class="fu">t</span>(<span class="fu">diag</span>(m) <span class="sc">-</span> gamma <span class="sc">+</span> <span class="dv">1</span>), <span class="fu">rep</span>(<span class="dv">1</span>, m)))</span>
-<span id="cb24-6"><a href="parameter-estimation-techniques-for-hmms.html#cb24-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb24-4"><a href="parameter-estimation-techniques-for-hmms.html#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The code from Zucchini can crash when dealing with computationally small numbers.</span></span>
+<span id="cb24-5"><a href="parameter-estimation-techniques-for-hmms.html#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This is likely an approximation error.</span></span>
+<span id="cb24-6"><a href="parameter-estimation-techniques-for-hmms.html#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># For some reason, the result may be a complex number with imaginary part equal to 0.</span></span>
+<span id="cb24-7"><a href="parameter-estimation-techniques-for-hmms.html#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We can just ignore the imaginary part because the eigenvectors of a real eigenvalue must be real.</span></span>
+<span id="cb24-8"><a href="parameter-estimation-techniques-for-hmms.html#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># In the cases where it happened, solve(t(diag(m) - gamma + 1), rep(1, m)) produced the same result without the imaginary part.</span></span>
+<span id="cb24-9"><a href="parameter-estimation-techniques-for-hmms.html#cb24-9" aria-hidden="true" tabindex="-1"></a>  first_eigen_row <span class="ot">&lt;-</span> <span class="fu">Re</span>(<span class="fu">eigen</span>(<span class="fu">t</span>(gamma))<span class="sc">$</span>vectors[, <span class="dv">1</span>])</span>
+<span id="cb24-10"><a href="parameter-estimation-techniques-for-hmms.html#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(first_eigen_row <span class="sc">/</span> <span class="fu">sum</span>(first_eigen_row))</span>
+<span id="cb24-11"><a href="parameter-estimation-techniques-for-hmms.html#cb24-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p><span class="citation"><a href="#ref-zucchini" role="doc-biblioref">Zucchini et al.</a> (<a href="#ref-zucchini" role="doc-biblioref">2016, p. 51</a>)</span> shows that calculating the stationary distribution can be achieved by solving the equation below for <span class="math inline">\({\boldsymbol\delta}\)</span>, where <span class="math inline">\({\boldsymbol I}_m\)</span> is the <span class="math inline">\(m*m\)</span> identity matrix, <span class="math inline">\({\boldsymbol U}\)</span> is a <span class="math inline">\(m*m\)</span> matrix of ones, and <span class="math inline">\({\boldsymbol 1}\)</span> is a row vector of ones.
 <span class="math display">\[
 {\boldsymbol\delta}({\boldsymbol I}_m - {\boldsymbol\Gamma} + {\boldsymbol U}) = {\boldsymbol 1}
@@ -749,7 +767,7 @@ For readability, the TPM is filled with standard row and column indices instead 
 <span id="cb26-13"><a href="parameter-estimation-techniques-for-hmms.html#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,]   23   21   22</span></span>
 <span id="cb26-14"><a href="parameter-estimation-techniques-for-hmms.html#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb26-15"><a href="parameter-estimation-techniques-for-hmms.html#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="do">## $delta</span></span>
-<span id="cb26-16"><a href="parameter-estimation-techniques-for-hmms.html#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] -0.032786885  0.016393443 -0.008196721</span></span>
+<span id="cb26-16"><a href="parameter-estimation-techniques-for-hmms.html#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.3482817 0.3183850 0.3333333</span></span>
 <span id="cb26-17"><a href="parameter-estimation-techniques-for-hmms.html#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb26-18"><a href="parameter-estimation-techniques-for-hmms.html#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="do">## $ordered_lambda_indices</span></span>
 <span id="cb26-19"><a href="parameter-estimation-techniques-for-hmms.html#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2 3 1</span></span>

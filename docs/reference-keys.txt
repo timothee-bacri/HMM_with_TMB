@@ -41,7 +41,16 @@ tyt-data
 lamb-data
 simulated-data
 normal-hmm
+dataset
+likelihood-function-1
+estimation
+results
 multivariate-gaussian-hmm
+dataset-1
+likelihood-function-2
+estimation-1
+results-1
+residuals
 github
 directory-structure
 code

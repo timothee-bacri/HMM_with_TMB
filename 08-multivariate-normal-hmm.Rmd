@@ -1,16 +1,29 @@
 # Multivariate Gaussian HMM
 
 Multivariate Gaussian HMMs with TMB are very similar to the previous Poisson HMM.
-The main changes are the distribution parameters being changed from $\bs{\lambda}$ to $\bs{\mu}$ and $\bs{\sigma}$.
-In turn, these cause the density function to change from `dpois` to `dnorm` (and from `rpois` to `rnorm` for simulations).
+The main changes are the distribution parameters being changed from $\bs{\lambda}$ to $\bs{\mu}$ and $\bs{\Sigma}$.
+In turn, these cause the density function to change from `dpois` to `mvdnorm` (and from `rpois` to `mvrnorm` for simulations).
 
 Many functions available in *[functions/utils.R](#utils.R)* have been adapted for the multivariate Gaussian case in *[functions/mvnorm_utils.R](#mvnorm_utils.R)*.
 
-We detail below an example of a Gaussian HMM with TMB.
-The dataset we show in this example contains log-returns of the SP500 dataset pulled from Yahoo finances.
-These log-returns are generated with the following code.
+We detail below an example of a two-state trivariate Gaussian HMM with TMB.
 
-```{r}
+## Dataset
+The data is generated with the function below (similarly to the Poisson case)
+```{r mvnorm.HMM.generate.sample}
+```
+
+## Likelihood function
+The Gaussian negative log-likelihood in TMB can be coded as
+```{Rcpp 7norm_hmm.cpp, code=readLines("code/norm_hmm.cpp"), eval=FALSE}
+```
+
+and requires the following utility functions.
+```{Rcpp 7norm_utils.cpp, code=readLines("functions/norm_utils.cpp"), eval=FALSE}
+```
+
+## Estimation
+```{r 8example}
 source("code/packages.R")
 source("functions/mvnorm_utils.R")
 
@@ -31,12 +44,13 @@ mu <- matrix(c(6,8,9,
 # Two covariance matrices
 sigma1 <- matrix(c(1.0, 0.5, 0.5,
                    0.5, 1.0, 0.5,
-                   0.5, 0.5, 1.0), nrow = p, ncol = p)
+                   0.5, 0.5, 1.0), nrow = p, ncol = p, byrow = TRUE)
 
-sigma2 <-  matrix(c(2.0, 1.5, 1.5,
-                    1.5, 2.0, 1.5,
-                    1.5, 1.5, 2.0), nrow = p, ncol = p)
-# They are stored in an array for convenience, making it easy to distinguish at a glance when displaying
+sigma2 <- matrix(c(2.0, 1.5, 1.5,
+                   1.5, 2.0, 1.5,
+                   1.5, 1.5, 2.0), nrow = p, ncol = p, byrow = TRUE)
+# We store them in an array for convenience, making them
+# easily distinguishable at a glance when displayed
 sigma <- array(c(sigma1, sigma2), dim = c(p, p, m))
 
 gamma <- matrix(c(0.95, 0.05,
@@ -48,7 +62,7 @@ mod <- list(m = m,
             gamma = gamma)
 
 # Similarly to the Poisson case, we can generate data.
-# Here, we generate a bivariate Gaussian sample of size 1000.
+# Here, we generate a trivariate Gaussian sample of size 1000.
 TMBdata <- mvnorm.HMM.generate.sample(1000, mod)
 # TMB requires a list
 TMB_data <- list(x = TMBdata$data,
@@ -67,38 +81,21 @@ res <- nlminb(start = obj_tmb$par,
               objective = obj_tmb$fn,
               gradient = obj_tmb$gr,
               hessian = obj_tmb$he)
+```
 
+## Results
+```{r 8obj-report}
 summary(sdreport(obj_tmb), "report")
+# More readable estimates
+report <- obj_tmb$report()
+report
 ```
 
-A more readable view of the estimates can be displayed with
-```{r}
-a <- obj_tmb$report()
-a
+## Residuals
+Since the data was simulated, the true parameters are known and the validity of the estimates cam be checked.
+```{r 8results-verification}
+t(report$mu) - mu
+report$sigma - sigma
+report$gamma - gamma
 ```
-
-Since we generated data from parameters, we can check the validity of the estimates
-```{r}
-t(a$mu) - mu
-a$sigma - sigma
-a$gamma - gamma
-```
-As expected, the estimates are close to their true values.
-
-In order to work on the C++ objective function, it is required to unload the DLL.
-This can be achieved with
-```{r}
-dyn.unload(dynlib("code/mvnorm_hmm"))
-```
-or by restarting the R session.
-
-The warning can be suppressed if desired via
-```{r eval = FALSE}
-sink(file = nullfile())
-dyn.unload(dynlib("code/norm_hmm"))
-sink()
-```
-Be careful, as the sink function will divert all messages to the `file` specified, including errors.
-`nullfile()` points to a file that cannot contain anything (`/dev/null` on Linux distributions).
-Make sure to end it with `sink()` when you are done!
-
+The parameter estimation was successful

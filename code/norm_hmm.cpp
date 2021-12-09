@@ -29,7 +29,8 @@ Type objective_function<Type>::operator() ()
   // Get number of timesteps (n)
   int n = x.size();
   
-  // Evaluate conditional distribution: Put conditional probabilities of observed x in n times m matrix (one column for each state):
+  // Evaluate conditional distribution: Put conditional probabilities
+  // of observed x in n times m matrix (one column for each state)
   matrix<Type> emission_probs(n, m);
   matrix<Type> row1vec(1, m);
   row1vec.setOnes();

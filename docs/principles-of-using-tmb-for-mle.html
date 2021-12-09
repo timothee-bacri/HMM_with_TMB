@@ -226,8 +226,21 @@ div.csl-indent {
 <li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>6.2</b> Lamb data</a></li>
 <li class="chapter" data-level="6.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-data"><i class="fa fa-check"></i><b>6.3</b> Simulated data</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="normal-hmm.html"><a href="normal-hmm.html"><i class="fa fa-check"></i><b>7</b> Normal HMM</a></li>
-<li class="chapter" data-level="8" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html"><i class="fa fa-check"></i><b>8</b> Multivariate Gaussian HMM</a></li>
+<li class="chapter" data-level="7" data-path="normal-hmm.html"><a href="normal-hmm.html"><i class="fa fa-check"></i><b>7</b> Normal HMM</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="normal-hmm.html"><a href="normal-hmm.html#dataset"><i class="fa fa-check"></i><b>7.1</b> Dataset</a></li>
+<li class="chapter" data-level="7.2" data-path="normal-hmm.html"><a href="normal-hmm.html#likelihood-function-1"><i class="fa fa-check"></i><b>7.2</b> Likelihood function</a></li>
+<li class="chapter" data-level="7.3" data-path="normal-hmm.html"><a href="normal-hmm.html#estimation"><i class="fa fa-check"></i><b>7.3</b> Estimation</a></li>
+<li class="chapter" data-level="7.4" data-path="normal-hmm.html"><a href="normal-hmm.html#results"><i class="fa fa-check"></i><b>7.4</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html"><i class="fa fa-check"></i><b>8</b> Multivariate Gaussian HMM</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#dataset-1"><i class="fa fa-check"></i><b>8.1</b> Dataset</a></li>
+<li class="chapter" data-level="8.2" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#likelihood-function-2"><i class="fa fa-check"></i><b>8.2</b> Likelihood function</a></li>
+<li class="chapter" data-level="8.3" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#estimation-1"><i class="fa fa-check"></i><b>8.3</b> Estimation</a></li>
+<li class="chapter" data-level="8.4" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#results-1"><i class="fa fa-check"></i><b>8.4</b> Results</a></li>
+<li class="chapter" data-level="8.5" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#residuals"><i class="fa fa-check"></i><b>8.5</b> Residuals</a></li>
+</ul></li>
 <li class="chapter" data-level="9" data-path="github.html"><a href="github.html"><i class="fa fa-check"></i><b>9</b> GitHub</a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="github.html"><a href="github.html#directory-structure"><i class="fa fa-check"></i><b>9.1</b> Directory structure</a>
@@ -474,34 +487,35 @@ We start by writing the subroutine function as a separate file called <em><a hre
 <span id="cb10-6"><a href="principles-of-using-tmb-for-mle.html#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0</span></span>
 <span id="cb10-7"><a href="principles-of-using-tmb-for-mle.html#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Dynamic loading of the compiled cpp file</span></span>
 <span id="cb10-8"><a href="principles-of-using-tmb-for-mle.html#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/linreg_extended&quot;</span>))</span>
-<span id="cb10-9"><a href="principles-of-using-tmb-for-mle.html#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the data for our test sample</span></span>
-<span id="cb10-10"><a href="principles-of-using-tmb-for-mle.html#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb10-11"><a href="principles-of-using-tmb-for-mle.html#cb10-11" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
-<span id="cb10-12"><a href="principles-of-using-tmb-for-mle.html#cb10-12" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">20</span>, <span class="at">sd =</span> sigma) <span class="sc">+</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span>
-<span id="cb10-13"><a href="principles-of-using-tmb-for-mle.html#cb10-13" aria-hidden="true" tabindex="-1"></a>tsigma <span class="ot">&lt;-</span> <span class="fu">log</span>(sigma <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> sigma)) <span class="co"># Logit transform</span></span>
-<span id="cb10-14"><a href="principles-of-using-tmb-for-mle.html#cb10-14" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">tsigma =</span> <span class="fl">0.1</span>)</span>
-<span id="cb10-15"><a href="principles-of-using-tmb-for-mle.html#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Instruct TMB to create the likelihood function</span></span>
-<span id="cb10-16"><a href="principles-of-using-tmb-for-mle.html#cb10-16" aria-hidden="true" tabindex="-1"></a>obj_linreg <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(data, parameters, <span class="at">DLL =</span> <span class="st">&quot;linreg_extended&quot;</span>,</span>
-<span id="cb10-17"><a href="principles-of-using-tmb-for-mle.html#cb10-17" aria-hidden="true" tabindex="-1"></a>                        <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb10-18"><a href="principles-of-using-tmb-for-mle.html#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimization of the objective function with nlminb</span></span>
-<span id="cb10-19"><a href="principles-of-using-tmb-for-mle.html#cb10-19" aria-hidden="true" tabindex="-1"></a>mod_linreg <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(obj_linreg<span class="sc">$</span>par, obj_linreg<span class="sc">$</span>fn,</span>
-<span id="cb10-20"><a href="principles-of-using-tmb-for-mle.html#cb10-20" aria-hidden="true" tabindex="-1"></a>                     obj_linreg<span class="sc">$</span>gr,</span>
-<span id="cb10-21"><a href="principles-of-using-tmb-for-mle.html#cb10-21" aria-hidden="true" tabindex="-1"></a>                     obj_linreg<span class="sc">$</span>he)</span>
-<span id="cb10-22"><a href="principles-of-using-tmb-for-mle.html#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Objects returned by ADREPORT() in C++</span></span>
-<span id="cb10-23"><a href="principles-of-using-tmb-for-mle.html#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_linreg), <span class="at">select =</span> <span class="st">&quot;report&quot;</span>)</span>
-<span id="cb10-24"><a href="principles-of-using-tmb-for-mle.html#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="do">##       Estimate Std. Error</span></span>
-<span id="cb10-25"><a href="principles-of-using-tmb-for-mle.html#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.566107 0.08950934</span></span>
-<span id="cb10-26"><a href="principles-of-using-tmb-for-mle.html#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Object</span></span>
-<span id="cb10-27"><a href="principles-of-using-tmb-for-mle.html#cb10-27" aria-hidden="true" tabindex="-1"></a>obj_linreg<span class="sc">$</span><span class="fu">report</span>()</span>
-<span id="cb10-28"><a href="principles-of-using-tmb-for-mle.html#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="do">## $mat_example</span></span>
-<span id="cb10-29"><a href="principles-of-using-tmb-for-mle.html#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="do">##      [,1] [,2]      [,3]</span></span>
-<span id="cb10-30"><a href="principles-of-using-tmb-for-mle.html#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,]    1    1 1.0000000</span></span>
-<span id="cb10-31"><a href="principles-of-using-tmb-for-mle.html#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,]    1    1 0.5658614</span></span>
-<span id="cb10-32"><a href="principles-of-using-tmb-for-mle.html#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb10-33"><a href="principles-of-using-tmb-for-mle.html#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="do">## $mat_example2</span></span>
-<span id="cb10-34"><a href="principles-of-using-tmb-for-mle.html#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="do">##      [,1] [,2] [,3]</span></span>
-<span id="cb10-35"><a href="principles-of-using-tmb-for-mle.html#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,]    1    1   15</span></span>
-<span id="cb10-36"><a href="principles-of-using-tmb-for-mle.html#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,]    5    5    5</span></span></code></pre></div>
+<span id="cb10-9"><a href="principles-of-using-tmb-for-mle.html#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: 2 external pointers will be removed</span></span>
+<span id="cb10-10"><a href="principles-of-using-tmb-for-mle.html#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the data for our test sample</span></span>
+<span id="cb10-11"><a href="principles-of-using-tmb-for-mle.html#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb10-12"><a href="principles-of-using-tmb-for-mle.html#cb10-12" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
+<span id="cb10-13"><a href="principles-of-using-tmb-for-mle.html#cb10-13" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">20</span>, <span class="at">sd =</span> sigma) <span class="sc">+</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span>
+<span id="cb10-14"><a href="principles-of-using-tmb-for-mle.html#cb10-14" aria-hidden="true" tabindex="-1"></a>tsigma <span class="ot">&lt;-</span> <span class="fu">log</span>(sigma <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> sigma)) <span class="co"># Logit transform</span></span>
+<span id="cb10-15"><a href="principles-of-using-tmb-for-mle.html#cb10-15" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">tsigma =</span> <span class="fl">0.1</span>)</span>
+<span id="cb10-16"><a href="principles-of-using-tmb-for-mle.html#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Instruct TMB to create the likelihood function</span></span>
+<span id="cb10-17"><a href="principles-of-using-tmb-for-mle.html#cb10-17" aria-hidden="true" tabindex="-1"></a>obj_linreg <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(data, parameters, <span class="at">DLL =</span> <span class="st">&quot;linreg_extended&quot;</span>,</span>
+<span id="cb10-18"><a href="principles-of-using-tmb-for-mle.html#cb10-18" aria-hidden="true" tabindex="-1"></a>                        <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-19"><a href="principles-of-using-tmb-for-mle.html#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimization of the objective function with nlminb</span></span>
+<span id="cb10-20"><a href="principles-of-using-tmb-for-mle.html#cb10-20" aria-hidden="true" tabindex="-1"></a>mod_linreg <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(obj_linreg<span class="sc">$</span>par, obj_linreg<span class="sc">$</span>fn,</span>
+<span id="cb10-21"><a href="principles-of-using-tmb-for-mle.html#cb10-21" aria-hidden="true" tabindex="-1"></a>                     obj_linreg<span class="sc">$</span>gr,</span>
+<span id="cb10-22"><a href="principles-of-using-tmb-for-mle.html#cb10-22" aria-hidden="true" tabindex="-1"></a>                     obj_linreg<span class="sc">$</span>he)</span>
+<span id="cb10-23"><a href="principles-of-using-tmb-for-mle.html#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Objects returned by ADREPORT() in C++</span></span>
+<span id="cb10-24"><a href="principles-of-using-tmb-for-mle.html#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_linreg), <span class="at">select =</span> <span class="st">&quot;report&quot;</span>)</span>
+<span id="cb10-25"><a href="principles-of-using-tmb-for-mle.html#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="do">##       Estimate Std. Error</span></span>
+<span id="cb10-26"><a href="principles-of-using-tmb-for-mle.html#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.566107 0.08950934</span></span>
+<span id="cb10-27"><a href="principles-of-using-tmb-for-mle.html#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Object</span></span>
+<span id="cb10-28"><a href="principles-of-using-tmb-for-mle.html#cb10-28" aria-hidden="true" tabindex="-1"></a>obj_linreg<span class="sc">$</span><span class="fu">report</span>()</span>
+<span id="cb10-29"><a href="principles-of-using-tmb-for-mle.html#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="do">## $mat_example</span></span>
+<span id="cb10-30"><a href="principles-of-using-tmb-for-mle.html#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="do">##      [,1] [,2]      [,3]</span></span>
+<span id="cb10-31"><a href="principles-of-using-tmb-for-mle.html#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,]    1    1 1.0000000</span></span>
+<span id="cb10-32"><a href="principles-of-using-tmb-for-mle.html#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,]    1    1 0.5658614</span></span>
+<span id="cb10-33"><a href="principles-of-using-tmb-for-mle.html#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb10-34"><a href="principles-of-using-tmb-for-mle.html#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="do">## $mat_example2</span></span>
+<span id="cb10-35"><a href="principles-of-using-tmb-for-mle.html#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="do">##      [,1] [,2] [,3]</span></span>
+<span id="cb10-36"><a href="principles-of-using-tmb-for-mle.html#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,]    1    1   15</span></span>
+<span id="cb10-37"><a href="principles-of-using-tmb-for-mle.html#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,]    5    5    5</span></span></code></pre></div>
 <p>Note that when you are writing the <code>C++</code> nll file, compiling the file again may lead to an error.
 This is because the dynamic library (the <code>.dll</code> file) is already loaded, and cannot be overwritten.
 To prevent this, it is useful either to manually unload the file via the code</p>
