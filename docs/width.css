@@ -1,0 +1,22 @@
+.book .book-body .page-wrapper .page-inner {
+    max-width: 950px;
+}
+
+table.diff {
+	font-size: 1.4rem;
+}
+
+/* DIV.diffobj-container DIV.diffobj-line.banner DIV.diffobj-text DIV {
+	title inside bottom diff
+	white-space: wrap !important;
+	
+}
+DIV.diffobj-container DIV.diffobj-line.banner {
+	title inside bottom diff
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+.book.font-size-2 .book-body .page-inner section {
+	text inside bottom diff
+    font-size: 1.6rem;
+} */

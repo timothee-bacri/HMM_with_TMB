@@ -7,6 +7,8 @@ source("code/setup_parameters.R")
 RUN_LAMB <- FALSE
 RUN_SIMULATION1 <- FALSE
 RUN_SIMULATION2 <- FALSE
+RUN_SIMULATION3 <- FALSE
+# RUN_SIMULATION4 <- FALSE
 RUN_TINNITUS <- FALSE
 
 ## ---- Lamb
@@ -35,6 +37,22 @@ if (RUN_SIMULATION2) {
 } else {
   load("data/results_simu2.RData")
 }
+if (RUN_SIMULATION3) {
+  source("code/poi_hmm_simu3.R")
+  save(M_LIST_SIMU3, estim_benchmarks_df_simu3, method_comparison_df_simu3, coverage_skips_simu3,
+       mllk_times_df_simu3, conf_int_simu3,
+       file = "data/results_simu3.RData")
+} else {
+  load("data/results_simu3.RData")
+}
+# if (RUN_SIMULATION4) {
+#   source("code/poi_hmm_simu4.R")
+#   save(M_LIST_SIMU4, estim_benchmarks_df_simu4, method_comparison_df_simu4, coverage_skips_simu4,
+#        mllk_times_df_simu4, conf_int_simu4,
+#        file = "data/results_simu4.RData")
+# } else {
+#   load("data/results_simu4.RData")
+# }
 ## ---- Tinnitus
 if (RUN_TINNITUS) {
   source("code/poi_hmm_tinn.R")

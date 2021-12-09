@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title> 7 Normal HMM | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content=" 7 Normal HMM | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
+  
+  <meta property="og:description" content="This accompanies the article published at [GITHUB LINK]." />
+  <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content=" 7 Normal HMM | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  
+  <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
+  
+
+<meta name="author" content="Timothée Bacri timothee.bacri@uib.no" />
+<meta name="author" content="Jan Bulla jan.bulla@uib.no" />
+<meta name="author" content="Geir Berentsen geir.berentsen@nhh.no" />
+<meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
+
+
+<meta name="date" content="2021-12-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="application-to-different-data-sets.html"/>
+<link rel="next" href="multivariate-gaussian-hmm.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="width.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A gentle tutorial of accelerated<br>parameter and confidence interval<br>estimation for Hidden Markov Models<BR>using Template Model Builder</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for MLE</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#setup"><i class="fa fa-check"></i><b>2.1</b> Setup</a></li>
+<li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#linear-regression-example"><i class="fa fa-check"></i><b>2.2</b> Linear regression example</a></li>
+<li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#extending-the-c-nll"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> nll</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques<br>for HMMs</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#basic-notation-and-model-setup"><i class="fa fa-check"></i><b>3.1</b> Basic notation and model setup</a></li>
+<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#the-likelihood-function-of-an-hmm"><i class="fa fa-check"></i><b>3.2</b> The likelihood function of an HMM</a></li>
+<li class="chapter" data-level="3.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#forward-backward"><i class="fa fa-check"></i><b>3.3</b> Forward algorithm and<br>backward algorithm</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#setup-1"><i class="fa fa-check"></i><b>3.3.1</b> Setup</a>
+<ul>
+<li class="chapter" data-level="3.3.1.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#prepare-the-model"><i class="fa fa-check"></i><b>3.3.1.1</b> Prepare the model</a></li>
+<li class="chapter" data-level="3.3.1.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#define-variables"><i class="fa fa-check"></i><b>3.3.1.2</b> Define variables</a></li>
+<li class="chapter" data-level="3.3.1.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>3.3.1.3</b> Emission/output probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#log-forward"><i class="fa fa-check"></i><b>3.3.2</b> Log-forward probabilities</a></li>
+<li class="chapter" data-level="3.3.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#log-backward"><i class="fa fa-check"></i><b>3.3.3</b> Log-backward probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#reparameterization-of-the-likelihood-function"><i class="fa fa-check"></i><b>3.4</b> Reparameterization of the<br>likelihood function</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-tmb"><i class="fa fa-check"></i><b>3.4.1</b> Utility functions in <code>TMB</code></a></li>
+<li class="chapter" data-level="3.4.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-r"><i class="fa fa-check"></i><b>3.4.2</b> Utility functions in <code>R</code></a>
+<ul>
+<li class="chapter" data-level="3.4.2.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#label-switching"><i class="fa fa-check"></i><b>3.4.2.1</b> Label switching</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using <code>TMB</code></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
+<li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#optimization"><i class="fa fa-check"></i><b>4.2</b> Optimization</a></li>
+<li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#basic-nested-model-specification"><i class="fa fa-check"></i><b>4.3</b> Basic nested model<br>specification</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>4.3.1</b> Principle</a></li>
+<li class="chapter" data-level="4.3.2" data-path="using-tmb.html"><a href="using-tmb.html#limits"><i class="fa fa-check"></i><b>4.3.2</b> Limits</a></li>
+<li class="chapter" data-level="4.3.3" data-path="using-tmb.html"><a href="using-tmb.html#param-eq-constraints"><i class="fa fa-check"></i><b>4.3.3</b> Parameter equality<br>constraints</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#state-inference"><i class="fa fa-check"></i><b>4.4</b> State inference and forecasting</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="using-tmb.html"><a href="using-tmb.html#local-decoding"><i class="fa fa-check"></i><b>4.4.1</b> Local decoding</a></li>
+<li class="chapter" data-level="4.4.2" data-path="using-tmb.html"><a href="using-tmb.html#forecast"><i class="fa fa-check"></i><b>4.4.2</b> Forecast</a></li>
+<li class="chapter" data-level="4.4.3" data-path="using-tmb.html"><a href="using-tmb.html#global-decoding"><i class="fa fa-check"></i><b>4.4.3</b> Global decoding</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="using-tmb.html"><a href="using-tmb.html#appendix"><i class="fa fa-check"></i><b>4.5</b> Appendix</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#Wald-type"><i class="fa fa-check"></i><b>5.1</b> Wald-type confidence<br>intervals based on the Hessian</a></li>
+<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#likelihood-profile-based-confidence-intervals"><i class="fa fa-check"></i><b>5.2</b> Likelihood profile based<br>confidence intervals</a></li>
+<li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-based-confidence-intervals"><i class="fa fa-check"></i><b>5.3</b> Bootstrap-based<br>confidence intervals</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>5.3.1</b> Generating data</a></li>
+<li class="chapter" data-level="5.3.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>5.3.2</b> Bootstrap</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-data"><i class="fa fa-check"></i><b>6.1</b> TYT data</a></li>
+<li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>6.2</b> Lamb data</a></li>
+<li class="chapter" data-level="6.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-data"><i class="fa fa-check"></i><b>6.3</b> Simulated data</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="normal-hmm.html"><a href="normal-hmm.html"><i class="fa fa-check"></i><b>7</b> Normal HMM</a></li>
+<li class="chapter" data-level="8" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html"><i class="fa fa-check"></i><b>8</b> Multivariate Gaussian HMM</a></li>
+<li class="chapter" data-level="9" data-path="github.html"><a href="github.html"><i class="fa fa-check"></i><b>9</b> GitHub</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="github.html"><a href="github.html#directory-structure"><i class="fa fa-check"></i><b>9.1</b> Directory structure</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="github.html"><a href="github.html#code"><i class="fa fa-check"></i><b>9.1.1</b> code/</a></li>
+<li class="chapter" data-level="9.1.2" data-path="github.html"><a href="github.html#linreg.cpp"><i class="fa fa-check"></i><b>9.1.2</b> code/linreg.cpp</a></li>
+<li class="chapter" data-level="9.1.3" data-path="github.html"><a href="github.html#codelinreg.dll"><i class="fa fa-check"></i><b>9.1.3</b> code/linreg.dll</a></li>
+<li class="chapter" data-level="9.1.4" data-path="github.html"><a href="github.html#linreg.o"><i class="fa fa-check"></i><b>9.1.4</b> code/linreg.o</a></li>
+<li class="chapter" data-level="9.1.5" data-path="github.html"><a href="github.html#linreg_extended.cpp"><i class="fa fa-check"></i><b>9.1.5</b> code/linreg_extended.cpp</a></li>
+<li class="chapter" data-level="9.1.6" data-path="github.html"><a href="github.html#codelinreg_extended.dll"><i class="fa fa-check"></i><b>9.1.6</b> code/linreg_extended.dll</a></li>
+<li class="chapter" data-level="9.1.7" data-path="github.html"><a href="github.html#codelinreg_extended.o"><i class="fa fa-check"></i><b>9.1.7</b> code/linreg_extended.o</a></li>
+<li class="chapter" data-level="9.1.8" data-path="github.html"><a href="github.html#main.R"><i class="fa fa-check"></i><b>9.1.8</b> code/main.R</a></li>
+<li class="chapter" data-level="9.1.9" data-path="github.html"><a href="github.html#codepackages.r"><i class="fa fa-check"></i><b>9.1.9</b> code/packages.R</a></li>
+<li class="chapter" data-level="9.1.10" data-path="github.html"><a href="github.html#poi_hmm.cpp"><i class="fa fa-check"></i><b>9.1.10</b> code/poi_hmm.cpp</a></li>
+<li class="chapter" data-level="9.1.11" data-path="github.html"><a href="github.html#codepoi_hmm.dll"><i class="fa fa-check"></i><b>9.1.11</b> code/poi_hmm.dll</a></li>
+<li class="chapter" data-level="9.1.12" data-path="github.html"><a href="github.html#codepoi_hmm.o"><i class="fa fa-check"></i><b>9.1.12</b> code/poi_hmm.o</a></li>
+<li class="chapter" data-level="9.1.13" data-path="github.html"><a href="github.html#poi_hmm_lamb.R"><i class="fa fa-check"></i><b>9.1.13</b> code/poi_hmm_lamb.R</a></li>
+<li class="chapter" data-level="9.1.14" data-path="github.html"><a href="github.html#poi_hmm_simu1.R"><i class="fa fa-check"></i><b>9.1.14</b> code/poi_hmm_simu1.R</a></li>
+<li class="chapter" data-level="9.1.15" data-path="github.html"><a href="github.html#poi_hmm_simu2.R"><i class="fa fa-check"></i><b>9.1.15</b> code/poi_hmm_simu2.R</a></li>
+<li class="chapter" data-level="9.1.16" data-path="github.html"><a href="github.html#poi_hmm_tinn.R"><i class="fa fa-check"></i><b>9.1.16</b> code/poi_hmm_tinn.R</a></li>
+<li class="chapter" data-level="9.1.17" data-path="github.html"><a href="github.html#setup_parameters.R"><i class="fa fa-check"></i><b>9.1.17</b> code/setup_parameters.R</a></li>
+<li class="chapter" data-level="9.1.18" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>9.1.18</b> data/</a></li>
+<li class="chapter" data-level="9.1.19" data-path="github.html"><a href="github.html#fetal-lamb.RData"><i class="fa fa-check"></i><b>9.1.19</b> data/fetal-lamb.RData</a></li>
+<li class="chapter" data-level="9.1.20" data-path="github.html"><a href="github.html#dataresults_lamb.rdata"><i class="fa fa-check"></i><b>9.1.20</b> data/results_lamb.RData</a></li>
+<li class="chapter" data-level="9.1.21" data-path="github.html"><a href="github.html#dataresults_simu1.rdata"><i class="fa fa-check"></i><b>9.1.21</b> data/results_simu1.RData</a></li>
+<li class="chapter" data-level="9.1.22" data-path="github.html"><a href="github.html#dataresults_simu2.rdata"><i class="fa fa-check"></i><b>9.1.22</b> data/results_simu2.RData</a></li>
+<li class="chapter" data-level="9.1.23" data-path="github.html"><a href="github.html#dataresults_tinn.rdata"><i class="fa fa-check"></i><b>9.1.23</b> data/results_tinn.RData</a></li>
+<li class="chapter" data-level="9.1.24" data-path="github.html"><a href="github.html#tinnitus.RData"><i class="fa fa-check"></i><b>9.1.24</b> data/tinnitus.RData</a></li>
+<li class="chapter" data-level="9.1.25" data-path="github.html"><a href="github.html#functions"><i class="fa fa-check"></i><b>9.1.25</b> functions/</a></li>
+<li class="chapter" data-level="9.1.26" data-path="github.html"><a href="github.html#utils.cpp"><i class="fa fa-check"></i><b>9.1.26</b> functions/utils.cpp</a></li>
+<li class="chapter" data-level="9.1.27" data-path="github.html"><a href="github.html#utils.R"><i class="fa fa-check"></i><b>9.1.27</b> functions/utils.R</a></li>
+<li class="chapter" data-level="9.1.28" data-path="github.html"><a href="github.html#utils.R-explanation.R"><i class="fa fa-check"></i><b>9.1.28</b> functions/utils.R-explanation.R</a></li>
+<li class="chapter" data-level="9.1.29" data-path="github.html"><a href="github.html#utils_linreg_extended.cpp"><i class="fa fa-check"></i><b>9.1.29</b> functions/utils_linreg_extended.cpp</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="normal-hmm" class="section level1" number="7">
+<h1><span class="header-section-number"> 7</span> Normal HMM</h1>
+<p>Gaussian HMMs with TMB are very similar to the previous Poisson HMM.
+The main changes are the distribution parameters being changed from <span class="math inline">\({\boldsymbol\lambda}\)</span> to <span class="math inline">\({\boldsymbol\mu}\)</span> and <span class="math inline">\({\boldsymbol\sigma}\)</span>.
+In turn, these cause the density function to change from <code>dpois</code> to <code>dnorm</code> (and from <code>rpois</code> to <code>rnorm</code> for simulations).</p>
+<p>Many functions available in <em><a href="github.html#utils.R">functions/utils.R</a></em> have been adapted for the Gaussian case in <em><a href="#norm_utils.R">functions/norm_utils.R</a></em>.</p>
+<p>We detail below an example of a Gaussian HMM with TMB.
+The dataset we show in this example contains log-returns of the SP500 dataset pulled from Yahoo finances.
+These log-returns are generated with the following code.</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="normal-hmm.html#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb85-2"><a href="normal-hmm.html#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading the sp500 dataset</span></span>
+<span id="cb85-3"><a href="normal-hmm.html#cb85-3" aria-hidden="true" tabindex="-1"></a>SP500 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/S&amp;P500.csv&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb85-4"><a href="normal-hmm.html#cb85-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lag =</span> <span class="fu">lag</span>(<span class="st">`</span><span class="at">Adj Close</span><span class="st">`</span>),</span>
+<span id="cb85-5"><a href="normal-hmm.html#cb85-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">lr =</span> <span class="fu">log</span>(<span class="st">`</span><span class="at">Adj Close</span><span class="st">`</span><span class="sc">/</span>lag)) <span class="sc">%&gt;%</span></span>
+<span id="cb85-6"><a href="normal-hmm.html#cb85-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(lr) <span class="sc">%&gt;%</span></span>
+<span id="cb85-7"><a href="normal-hmm.html#cb85-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb85-8"><a href="normal-hmm.html#cb85-8" aria-hidden="true" tabindex="-1"></a>SP500 <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> SP500<span class="sc">$</span>lr</span>
+<span id="cb85-9"><a href="normal-hmm.html#cb85-9" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(SP500, <span class="at">file =</span> <span class="st">&quot;data/SP500.RData&quot;</span>)</span></code></pre></div>
+<p>The Gaussian negative log-likelihood in TMB can be coded as</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb86-1"><a href="normal-hmm.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
+<span id="cb86-2"><a href="normal-hmm.html#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/norm_utils.cpp&quot;</span></span>
+<span id="cb86-3"><a href="normal-hmm.html#cb86-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-4"><a href="normal-hmm.html#cb86-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood for a normal hidden markov model. </span></span>
+<span id="cb86-5"><a href="normal-hmm.html#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb86-6"><a href="normal-hmm.html#cb86-6" aria-hidden="true" tabindex="-1"></a>Type objective_function<span class="op">&lt;</span>Type<span class="op">&gt;::</span><span class="kw">operator</span><span class="op">()</span> <span class="op">()</span></span>
+<span id="cb86-7"><a href="normal-hmm.html#cb86-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb86-8"><a href="normal-hmm.html#cb86-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb86-9"><a href="normal-hmm.html#cb86-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Data</span></span>
+<span id="cb86-10"><a href="normal-hmm.html#cb86-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR<span class="op">(</span>x<span class="op">);</span>          <span class="co">// timeseries vector</span></span>
+<span id="cb86-11"><a href="normal-hmm.html#cb86-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER<span class="op">(</span>m<span class="op">);</span>         <span class="co">// Number of states m</span></span>
+<span id="cb86-12"><a href="normal-hmm.html#cb86-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb86-13"><a href="normal-hmm.html#cb86-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters</span></span>
+<span id="cb86-14"><a href="normal-hmm.html#cb86-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tmu<span class="op">);</span>            <span class="co">// conditional means</span></span>
+<span id="cb86-15"><a href="normal-hmm.html#cb86-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tsigma<span class="op">);</span>         <span class="co">// conditional log_sd&#39;s</span></span>
+<span id="cb86-16"><a href="normal-hmm.html#cb86-16" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tgamma<span class="op">);</span>         <span class="co">// m(m-1) working parameters of TPM</span></span>
+<span id="cb86-17"><a href="normal-hmm.html#cb86-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// PARAMETER_VECTOR(tdelta);      // m-1 working parameters of initial distribution</span></span>
+<span id="cb86-18"><a href="normal-hmm.html#cb86-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb86-19"><a href="normal-hmm.html#cb86-19" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb86-20"><a href="normal-hmm.html#cb86-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
+<span id="cb86-21"><a href="normal-hmm.html#cb86-21" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> mu <span class="op">=</span> tmu<span class="op">;</span></span>
+<span id="cb86-22"><a href="normal-hmm.html#cb86-22" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> sigma <span class="op">=</span> tsigma<span class="op">.</span>exp<span class="op">();</span></span>
+<span id="cb86-23"><a href="normal-hmm.html#cb86-23" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma <span class="op">=</span> gamma_w2n<span class="op">(</span>m<span class="op">,</span> tgamma<span class="op">);</span></span>
+<span id="cb86-24"><a href="normal-hmm.html#cb86-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// vector&lt;Type&gt; delta = delta_w2n(m, tdelta);</span></span>
+<span id="cb86-25"><a href="normal-hmm.html#cb86-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb86-26"><a href="normal-hmm.html#cb86-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution </span></span>
+<span id="cb86-27"><a href="normal-hmm.html#cb86-27" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta <span class="op">=</span> stat_dist<span class="op">(</span>m<span class="op">,</span> gamma<span class="op">);</span></span>
+<span id="cb86-28"><a href="normal-hmm.html#cb86-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb86-29"><a href="normal-hmm.html#cb86-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
+<span id="cb86-30"><a href="normal-hmm.html#cb86-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n <span class="op">=</span> x<span class="op">.</span>size<span class="op">();</span></span>
+<span id="cb86-31"><a href="normal-hmm.html#cb86-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb86-32"><a href="normal-hmm.html#cb86-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional probabilities of observed x in n times m matrix (one column for each state):</span></span>
+<span id="cb86-33"><a href="normal-hmm.html#cb86-33" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> emission_probs<span class="op">(</span>n<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb86-34"><a href="normal-hmm.html#cb86-34" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> row1vec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb86-35"><a href="normal-hmm.html#cb86-35" aria-hidden="true" tabindex="-1"></a>  row1vec<span class="op">.</span>setOnes<span class="op">();</span></span>
+<span id="cb86-36"><a href="normal-hmm.html#cb86-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb86-37"><a href="normal-hmm.html#cb86-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>x<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> x<span class="op">[</span>i<span class="op">])</span> <span class="op">{</span> <span class="co">// f != f returns true if and only if f is NaN. </span></span>
+<span id="cb86-38"><a href="normal-hmm.html#cb86-38" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
+<span id="cb86-39"><a href="normal-hmm.html#cb86-39" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> row1vec<span class="op">;</span></span>
+<span id="cb86-40"><a href="normal-hmm.html#cb86-40" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb86-41"><a href="normal-hmm.html#cb86-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb86-42"><a href="normal-hmm.html#cb86-42" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> dnorm<span class="op">(</span>x<span class="op">(</span>i<span class="op">),</span> mu<span class="op">,</span> sigma<span class="op">,</span> <span class="kw">false</span><span class="op">);</span></span>
+<span id="cb86-43"><a href="normal-hmm.html#cb86-43" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb86-44"><a href="normal-hmm.html#cb86-44" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb86-45"><a href="normal-hmm.html#cb86-45" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb86-46"><a href="normal-hmm.html#cb86-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to the book page 333</span></span>
+<span id="cb86-47"><a href="normal-hmm.html#cb86-47" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">,</span> P<span class="op">;</span></span>
+<span id="cb86-48"><a href="normal-hmm.html#cb86-48" aria-hidden="true" tabindex="-1"></a>  Type mllk<span class="op">,</span> sumfoo<span class="op">,</span> lscale<span class="op">;</span></span>
+<span id="cb86-49"><a href="normal-hmm.html#cb86-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-50"><a href="normal-hmm.html#cb86-50" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">=</span> <span class="op">(</span>delta <span class="op">*</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;(</span>emission_probs<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">))).</span>matrix<span class="op">();</span></span>
+<span id="cb86-51"><a href="normal-hmm.html#cb86-51" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
+<span id="cb86-52"><a href="normal-hmm.html#cb86-52" aria-hidden="true" tabindex="-1"></a>  lscale <span class="op">=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb86-53"><a href="normal-hmm.html#cb86-53" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>transposeInPlace<span class="op">();</span></span>
+<span id="cb86-54"><a href="normal-hmm.html#cb86-54" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb86-55"><a href="normal-hmm.html#cb86-55" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb86-56"><a href="normal-hmm.html#cb86-56" aria-hidden="true" tabindex="-1"></a>    P <span class="op">=</span> emission_probs<span class="op">.</span>row<span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb86-57"><a href="normal-hmm.html#cb86-57" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">=</span> <span class="op">((</span>foo <span class="op">*</span> gamma<span class="op">).</span>array<span class="op">()</span> <span class="op">*</span> P<span class="op">.</span>array<span class="op">()).</span>matrix<span class="op">();</span></span>
+<span id="cb86-58"><a href="normal-hmm.html#cb86-58" aria-hidden="true" tabindex="-1"></a>    sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
+<span id="cb86-59"><a href="normal-hmm.html#cb86-59" aria-hidden="true" tabindex="-1"></a>    lscale <span class="op">+=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb86-60"><a href="normal-hmm.html#cb86-60" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb86-61"><a href="normal-hmm.html#cb86-61" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb86-62"><a href="normal-hmm.html#cb86-62" aria-hidden="true" tabindex="-1"></a>  mllk <span class="op">=</span> <span class="op">-</span>lscale<span class="op">;</span></span>
+<span id="cb86-63"><a href="normal-hmm.html#cb86-63" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb86-64"><a href="normal-hmm.html#cb86-64" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
+<span id="cb86-65"><a href="normal-hmm.html#cb86-65" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>mu<span class="op">);</span></span>
+<span id="cb86-66"><a href="normal-hmm.html#cb86-66" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>sigma<span class="op">);</span></span>
+<span id="cb86-67"><a href="normal-hmm.html#cb86-67" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>gamma<span class="op">);</span></span>
+<span id="cb86-68"><a href="normal-hmm.html#cb86-68" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>delta<span class="op">);</span></span>
+<span id="cb86-69"><a href="normal-hmm.html#cb86-69" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb86-70"><a href="normal-hmm.html#cb86-70" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
+<span id="cb86-71"><a href="normal-hmm.html#cb86-71" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>mu<span class="op">);</span></span>
+<span id="cb86-72"><a href="normal-hmm.html#cb86-72" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>sigma<span class="op">);</span></span>
+<span id="cb86-73"><a href="normal-hmm.html#cb86-73" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>gamma<span class="op">);</span></span>
+<span id="cb86-74"><a href="normal-hmm.html#cb86-74" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>delta<span class="op">);</span></span>
+<span id="cb86-75"><a href="normal-hmm.html#cb86-75" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>n<span class="op">);</span></span>
+<span id="cb86-76"><a href="normal-hmm.html#cb86-76" aria-hidden="true" tabindex="-1"></a>  <span class="co">// REPORT(emission_probs);</span></span>
+<span id="cb86-77"><a href="normal-hmm.html#cb86-77" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>mllk<span class="op">);</span></span>
+<span id="cb86-78"><a href="normal-hmm.html#cb86-78" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb86-79"><a href="normal-hmm.html#cb86-79" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk<span class="op">;</span></span>
+<span id="cb86-80"><a href="normal-hmm.html#cb86-80" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>and requires the following utility functions.</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb87-1"><a href="normal-hmm.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming working parameters in initial distribution</span></span>
+<span id="cb87-2"><a href="normal-hmm.html#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="co">// to natural parameters</span></span>
+<span id="cb87-3"><a href="normal-hmm.html#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb87-4"><a href="normal-hmm.html#cb87-4" aria-hidden="true" tabindex="-1"></a>vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta_w2n<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> tdelta<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb87-5"><a href="normal-hmm.html#cb87-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-6"><a href="normal-hmm.html#cb87-6" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta<span class="op">(</span>m<span class="op">);</span></span>
+<span id="cb87-7"><a href="normal-hmm.html#cb87-7" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">(</span>m<span class="op">);</span></span>
+<span id="cb87-8"><a href="normal-hmm.html#cb87-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb87-9"><a href="normal-hmm.html#cb87-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>m <span class="op">==</span> <span class="dv">1</span><span class="op">)</span></span>
+<span id="cb87-10"><a href="normal-hmm.html#cb87-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Type<span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb87-11"><a href="normal-hmm.html#cb87-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb87-12"><a href="normal-hmm.html#cb87-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// set first element to one.</span></span>
+<span id="cb87-13"><a href="normal-hmm.html#cb87-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill in the last m - 1 elements with working parameters</span></span>
+<span id="cb87-14"><a href="normal-hmm.html#cb87-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// and take exponential</span></span>
+<span id="cb87-15"><a href="normal-hmm.html#cb87-15" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">&lt;&lt;</span> Type<span class="op">(</span><span class="dv">1</span><span class="op">),</span> tdelta<span class="op">.</span>exp<span class="op">();</span></span>
+<span id="cb87-16"><a href="normal-hmm.html#cb87-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-17"><a href="normal-hmm.html#cb87-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// normalize</span></span>
+<span id="cb87-18"><a href="normal-hmm.html#cb87-18" aria-hidden="true" tabindex="-1"></a>  delta <span class="op">=</span> foo <span class="op">/</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
+<span id="cb87-19"><a href="normal-hmm.html#cb87-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-20"><a href="normal-hmm.html#cb87-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta<span class="op">;</span></span>
+<span id="cb87-21"><a href="normal-hmm.html#cb87-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb87-22"><a href="normal-hmm.html#cb87-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-23"><a href="normal-hmm.html#cb87-23" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming the working parameters in TPM to</span></span>
+<span id="cb87-24"><a href="normal-hmm.html#cb87-24" aria-hidden="true" tabindex="-1"></a><span class="co">// natural parameters (w2n)</span></span>
+<span id="cb87-25"><a href="normal-hmm.html#cb87-25" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb87-26"><a href="normal-hmm.html#cb87-26" aria-hidden="true" tabindex="-1"></a>matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma_w2n<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> tgamma<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb87-27"><a href="normal-hmm.html#cb87-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-28"><a href="normal-hmm.html#cb87-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct m x m identity matrix</span></span>
+<span id="cb87-29"><a href="normal-hmm.html#cb87-29" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma<span class="op">(</span>m<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb87-30"><a href="normal-hmm.html#cb87-30" aria-hidden="true" tabindex="-1"></a>  gamma<span class="op">.</span>setIdentity<span class="op">();</span></span>
+<span id="cb87-31"><a href="normal-hmm.html#cb87-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb87-32"><a href="normal-hmm.html#cb87-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>m <span class="op">==</span> <span class="dv">1</span><span class="op">)</span></span>
+<span id="cb87-33"><a href="normal-hmm.html#cb87-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gamma<span class="op">;</span></span>
+<span id="cb87-34"><a href="normal-hmm.html#cb87-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-35"><a href="normal-hmm.html#cb87-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill offdiagonal elements with working parameters column-wise:</span></span>
+<span id="cb87-36"><a href="normal-hmm.html#cb87-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> idx <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb87-37"><a href="normal-hmm.html#cb87-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> m<span class="op">;</span> i<span class="op">++){</span></span>
+<span id="cb87-38"><a href="normal-hmm.html#cb87-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> m<span class="op">;</span> j<span class="op">++){</span></span>
+<span id="cb87-39"><a href="normal-hmm.html#cb87-39" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>j <span class="op">!=</span> i<span class="op">){</span></span>
+<span id="cb87-40"><a href="normal-hmm.html#cb87-40" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Fill gamma according to mapping and take exponential</span></span>
+<span id="cb87-41"><a href="normal-hmm.html#cb87-41" aria-hidden="true" tabindex="-1"></a>        gamma<span class="op">(</span>j<span class="op">,</span> i<span class="op">)</span> <span class="op">=</span> tgamma<span class="op">.</span>exp<span class="op">()(</span>idx<span class="op">);</span></span>
+<span id="cb87-42"><a href="normal-hmm.html#cb87-42" aria-hidden="true" tabindex="-1"></a>        idx<span class="op">++;</span></span>
+<span id="cb87-43"><a href="normal-hmm.html#cb87-43" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb87-44"><a href="normal-hmm.html#cb87-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb87-45"><a href="normal-hmm.html#cb87-45" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb87-46"><a href="normal-hmm.html#cb87-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Normalize each row:</span></span>
+<span id="cb87-47"><a href="normal-hmm.html#cb87-47" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> cs <span class="op">=</span> gamma<span class="op">.</span>rowwise<span class="op">().</span>sum<span class="op">();</span></span>
+<span id="cb87-48"><a href="normal-hmm.html#cb87-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> m<span class="op">;</span> i<span class="op">++)</span> gamma<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">/=</span> cs<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb87-49"><a href="normal-hmm.html#cb87-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-50"><a href="normal-hmm.html#cb87-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> gamma<span class="op">;</span></span>
+<span id="cb87-51"><a href="normal-hmm.html#cb87-51" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb87-52"><a href="normal-hmm.html#cb87-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-53"><a href="normal-hmm.html#cb87-53" aria-hidden="true" tabindex="-1"></a><span class="co">// Function computing the stationary distribution of a Markov chain</span></span>
+<span id="cb87-54"><a href="normal-hmm.html#cb87-54" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb87-55"><a href="normal-hmm.html#cb87-55" aria-hidden="true" tabindex="-1"></a>vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> stat_dist<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb87-56"><a href="normal-hmm.html#cb87-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb87-57"><a href="normal-hmm.html#cb87-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
+<span id="cb87-58"><a href="normal-hmm.html#cb87-58" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> I<span class="op">(</span>m<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb87-59"><a href="normal-hmm.html#cb87-59" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> U<span class="op">(</span>m<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb87-60"><a href="normal-hmm.html#cb87-60" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> row1vec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb87-61"><a href="normal-hmm.html#cb87-61" aria-hidden="true" tabindex="-1"></a>  U <span class="op">=</span> U<span class="op">.</span>setOnes<span class="op">();</span></span>
+<span id="cb87-62"><a href="normal-hmm.html#cb87-62" aria-hidden="true" tabindex="-1"></a>  I <span class="op">=</span> I<span class="op">.</span>setIdentity<span class="op">();</span></span>
+<span id="cb87-63"><a href="normal-hmm.html#cb87-63" aria-hidden="true" tabindex="-1"></a>  row1vec<span class="op">.</span>setOnes<span class="op">();</span></span>
+<span id="cb87-64"><a href="normal-hmm.html#cb87-64" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> A <span class="op">=</span>  I <span class="op">-</span> gamma <span class="op">+</span> U<span class="op">;</span></span>
+<span id="cb87-65"><a href="normal-hmm.html#cb87-65" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> Ainv <span class="op">=</span> A<span class="op">.</span>inverse<span class="op">();</span></span>
+<span id="cb87-66"><a href="normal-hmm.html#cb87-66" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> deltamat <span class="op">=</span> row1vec <span class="op">*</span> Ainv<span class="op">;</span></span>
+<span id="cb87-67"><a href="normal-hmm.html#cb87-67" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta <span class="op">=</span> deltamat<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb87-68"><a href="normal-hmm.html#cb87-68" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb87-69"><a href="normal-hmm.html#cb87-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta<span class="op">;</span></span>
+<span id="cb87-70"><a href="normal-hmm.html#cb87-70" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The following R code illustrates how to compute the estimates and standard errors, using the objective function written above.</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="normal-hmm.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;code/packages.R&quot;</span>)</span>
+<span id="cb88-2"><a href="normal-hmm.html#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/norm_utils.R&quot;</span>)</span>
+<span id="cb88-3"><a href="normal-hmm.html#cb88-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-4"><a href="normal-hmm.html#cb88-4" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/norm_hmm.cpp&quot;</span>)</span>
+<span id="cb88-5"><a href="normal-hmm.html#cb88-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0</span></span>
+<span id="cb88-6"><a href="normal-hmm.html#cb88-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/norm_hmm&quot;</span>))</span>
+<span id="cb88-7"><a href="normal-hmm.html#cb88-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-8"><a href="normal-hmm.html#cb88-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters and covariates</span></span>
+<span id="cb88-9"><a href="normal-hmm.html#cb88-9" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/SP500.RData&quot;</span>)</span>
+<span id="cb88-10"><a href="normal-hmm.html#cb88-10" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span> <span class="sc">*</span> <span class="fu">mean</span>(SP500), <span class="dv">2</span> <span class="sc">*</span> <span class="fu">mean</span>(SP500))</span>
+<span id="cb88-11"><a href="normal-hmm.html#cb88-11" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">sd</span>(SP500), <span class="dv">2</span> <span class="sc">*</span> <span class="fu">sd</span>(SP500))</span>
+<span id="cb88-12"><a href="normal-hmm.html#cb88-12" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.1</span>,</span>
+<span id="cb88-13"><a href="normal-hmm.html#cb88-13" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.1</span>, <span class="fl">0.9</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb88-14"><a href="normal-hmm.html#cb88-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-15"><a href="normal-hmm.html#cb88-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters &amp; covariates for TMB ------------------</span></span>
+<span id="cb88-16"><a href="normal-hmm.html#cb88-16" aria-hidden="true" tabindex="-1"></a>working_params <span class="ot">&lt;-</span> <span class="fu">norm.HMM.pn2pw</span>(<span class="at">m =</span> m, <span class="at">mu =</span> mu, <span class="at">sigma =</span> sigma, <span class="at">gamma =</span> gamma)</span>
+<span id="cb88-17"><a href="normal-hmm.html#cb88-17" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> SP500, <span class="at">m =</span> m)</span>
+<span id="cb88-18"><a href="normal-hmm.html#cb88-18" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, working_params, <span class="at">DLL =</span> <span class="st">&quot;norm_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb88-19"><a href="normal-hmm.html#cb88-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-20"><a href="normal-hmm.html#cb88-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimation</span></span>
+<span id="cb88-21"><a href="normal-hmm.html#cb88-21" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, working_params, <span class="at">DLL =</span> <span class="st">&quot;norm_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb88-22"><a href="normal-hmm.html#cb88-22" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb88-23"><a href="normal-hmm.html#cb88-23" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr, <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb88-24"><a href="normal-hmm.html#cb88-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-25"><a href="normal-hmm.html#cb88-25" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
+<span id="cb88-26"><a href="normal-hmm.html#cb88-26" aria-hidden="true" tabindex="-1"></a><span class="do">##          Estimate  Std. Error</span></span>
+<span id="cb88-27"><a href="normal-hmm.html#cb88-27" aria-hidden="true" tabindex="-1"></a><span class="do">## mu     0.06116848 0.005401313</span></span>
+<span id="cb88-28"><a href="normal-hmm.html#cb88-28" aria-hidden="true" tabindex="-1"></a><span class="do">## mu    -0.12288814 0.032944675</span></span>
+<span id="cb88-29"><a href="normal-hmm.html#cb88-29" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma  0.69860750 0.005201810</span></span>
+<span id="cb88-30"><a href="normal-hmm.html#cb88-30" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma  2.24762988 0.029916757</span></span>
+<span id="cb88-31"><a href="normal-hmm.html#cb88-31" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.98850975 0.001067611</span></span>
+<span id="cb88-32"><a href="normal-hmm.html#cb88-32" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.04374985 0.004126772</span></span>
+<span id="cb88-33"><a href="normal-hmm.html#cb88-33" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.01149025 0.001067611</span></span>
+<span id="cb88-34"><a href="normal-hmm.html#cb88-34" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.95625015 0.004126772</span></span>
+<span id="cb88-35"><a href="normal-hmm.html#cb88-35" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.79199446 0.016439163</span></span>
+<span id="cb88-36"><a href="normal-hmm.html#cb88-36" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.20800554 0.016439163</span></span></code></pre></div>
+<p>As could be expected, the low positive mean is associated with with a low variance whereas the larger mean is negative and tied to a higher variance.
+Note that the TPM is displayed column-wise.</p>
+<p>A more readable view of the estimates can be displayed with</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="normal-hmm.html#cb89-1" aria-hidden="true" tabindex="-1"></a>obj_tmb<span class="sc">$</span><span class="fu">report</span>()</span>
+<span id="cb89-2"><a href="normal-hmm.html#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="do">## $mu</span></span>
+<span id="cb89-3"><a href="normal-hmm.html#cb89-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1]  0.06116848 -0.12288814</span></span>
+<span id="cb89-4"><a href="normal-hmm.html#cb89-4" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb89-5"><a href="normal-hmm.html#cb89-5" aria-hidden="true" tabindex="-1"></a><span class="do">## $sigma</span></span>
+<span id="cb89-6"><a href="normal-hmm.html#cb89-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.6986075 2.2476299</span></span>
+<span id="cb89-7"><a href="normal-hmm.html#cb89-7" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb89-8"><a href="normal-hmm.html#cb89-8" aria-hidden="true" tabindex="-1"></a><span class="do">## $delta</span></span>
+<span id="cb89-9"><a href="normal-hmm.html#cb89-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.7921573 0.2078427</span></span>
+<span id="cb89-10"><a href="normal-hmm.html#cb89-10" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb89-11"><a href="normal-hmm.html#cb89-11" aria-hidden="true" tabindex="-1"></a><span class="do">## $n</span></span>
+<span id="cb89-12"><a href="normal-hmm.html#cb89-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 23349</span></span>
+<span id="cb89-13"><a href="normal-hmm.html#cb89-13" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb89-14"><a href="normal-hmm.html#cb89-14" aria-hidden="true" tabindex="-1"></a><span class="do">## $gamma</span></span>
+<span id="cb89-15"><a href="normal-hmm.html#cb89-15" aria-hidden="true" tabindex="-1"></a><span class="do">##            [,1]       [,2]</span></span>
+<span id="cb89-16"><a href="normal-hmm.html#cb89-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 0.98852111 0.01147889</span></span>
+<span id="cb89-17"><a href="normal-hmm.html#cb89-17" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 0.04374985 0.95625015</span></span>
+<span id="cb89-18"><a href="normal-hmm.html#cb89-18" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb89-19"><a href="normal-hmm.html#cb89-19" aria-hidden="true" tabindex="-1"></a><span class="do">## $mllk</span></span>
+<span id="cb89-20"><a href="normal-hmm.html#cb89-20" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 31516.82</span></span></code></pre></div>
+<p>In order to work on the C++ objective function, it is required to unload the DLL.
+This can be achieved with</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="normal-hmm.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.unload</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/norm_hmm&quot;</span>))</span>
+<span id="cb90-2"><a href="normal-hmm.html#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: 8 external pointers will be removed</span></span></code></pre></div>
+<p>or by restarting the R session.</p>
+<p>The warning can be suppressed if desired via</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="normal-hmm.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sink</span>(<span class="at">file =</span> <span class="fu">nullfile</span>())</span>
+<span id="cb91-2"><a href="normal-hmm.html#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.unload</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/norm_hmm&quot;</span>))</span>
+<span id="cb91-3"><a href="normal-hmm.html#cb91-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sink</span>()</span></code></pre></div>
+<p>Be careful, as the sink function will divert all messages to the <code>file</code> specified, including errors.
+<code>nullfile()</code> points to a file that cannot contain anything (<code>/dev/null</code> on Linux distributions).
+Make sure to end it with <code>sink()</code> when you are done!</p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="application-to-different-data-sets.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="multivariate-gaussian-hmm.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

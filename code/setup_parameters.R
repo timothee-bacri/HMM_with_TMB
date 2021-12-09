@@ -278,7 +278,7 @@ coverage_skips_tinn <- data.frame("m" = M_LIST_TINN,
 ctrl = list(maxit = 10000)
 
 # TMB SETUP
-TMB::precompile()
+# TMB::precompile()
 TMB::compile("code/poi_hmm.cpp")
 dyn.load(dynlib("code/poi_hmm"))
 TMB::compile("code/norm_hmm.cpp")

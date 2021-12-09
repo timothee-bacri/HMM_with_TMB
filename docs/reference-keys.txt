@@ -40,6 +40,8 @@ application-to-different-data-sets
 tyt-data
 lamb-data
 simulated-data
+normal-hmm
+multivariate-gaussian-hmm
 github
 directory-structure
 code
