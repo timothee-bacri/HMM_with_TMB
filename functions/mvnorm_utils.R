@@ -185,9 +185,9 @@ mvnorm.HMM.generate.sample  <- function(ns, mod) {
   # x <- rpois(ns, lambda = mod$lambda[state])
   x <- matrix(NA, nrow = ns, ncol = p)
   for (i in 1:ns) {
-    x[i, ] <- mvrnorm(n = 1,
-                      mu = mod$mu[state[i], ],
-                      Sigma = mod$sigma[, , state[i]])
+    x[i, ] <- rmvnorm(n = 1,
+                      mean = mod$mu[state[i], ],
+                      sigma = mod$sigma[, , state[i]])
     
   }
   names(x) <- NULL

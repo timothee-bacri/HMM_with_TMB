@@ -296,9 +296,9 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="multivariate-gaussian-hmm" class="section level1" number="8">
 <h1><span class="header-section-number"> 8</span> Multivariate Gaussian HMM</h1>
-<p>Multivariate Gaussian HMMs with TMB are very similar to the previous Poisson HMM.
+<p>Multivariate Gaussian HMMs with <code>TMB</code> are very similar to the previous Poisson HMM.
 The main changes are the distribution parameters being changed from <span class="math inline">\({\boldsymbol\lambda}\)</span> to <span class="math inline">\({\boldsymbol\mu}\)</span> and <span class="math inline">\({\boldsymbol\Sigma}\)</span>.
-In turn, these cause the density function to change from <code>dpois</code> to <code>mvdnorm</code> (and from <code>rpois</code> to <code>mvrnorm</code> for simulations).</p>
+In turn, these cause the density function to change from <code>dpois</code> to <code>dmvnorm</code> (and from <code>rpois</code> to <code>rmvnorm</code> for simulations) from the {} package.</p>
 <p>Many functions available in <em><a href="github.html#utils.R">functions/utils.R</a></em> have been adapted for the multivariate Gaussian case in <em><a href="#mvnorm_utils.R">functions/mvnorm_utils.R</a></em>.</p>
 <p>We detail below an example of a two-state trivariate Gaussian HMM with TMB.</p>
 <div id="dataset-1" class="section level2" number="8.1">
@@ -315,9 +315,9 @@ In turn, these cause the density function to change from <code>dpois</code> to <
 <span id="cb90-9"><a href="multivariate-gaussian-hmm.html#cb90-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># x &lt;- rpois(ns, lambda = mod$lambda[state])</span></span>
 <span id="cb90-10"><a href="multivariate-gaussian-hmm.html#cb90-10" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> ns, <span class="at">ncol =</span> p)</span>
 <span id="cb90-11"><a href="multivariate-gaussian-hmm.html#cb90-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ns) {</span>
-<span id="cb90-12"><a href="multivariate-gaussian-hmm.html#cb90-12" aria-hidden="true" tabindex="-1"></a>    x[i, ] <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(<span class="at">n =</span> <span class="dv">1</span>,</span>
-<span id="cb90-13"><a href="multivariate-gaussian-hmm.html#cb90-13" aria-hidden="true" tabindex="-1"></a>                      <span class="at">mu =</span> mod<span class="sc">$</span>mu[state[i], ],</span>
-<span id="cb90-14"><a href="multivariate-gaussian-hmm.html#cb90-14" aria-hidden="true" tabindex="-1"></a>                      <span class="at">Sigma =</span> mod<span class="sc">$</span>sigma[, , state[i]])</span>
+<span id="cb90-12"><a href="multivariate-gaussian-hmm.html#cb90-12" aria-hidden="true" tabindex="-1"></a>    x[i, ] <span class="ot">&lt;-</span> <span class="fu">rmvnorm</span>(<span class="at">n =</span> <span class="dv">1</span>,</span>
+<span id="cb90-13"><a href="multivariate-gaussian-hmm.html#cb90-13" aria-hidden="true" tabindex="-1"></a>                      <span class="at">mean =</span> mod<span class="sc">$</span>mu[state[i], ],</span>
+<span id="cb90-14"><a href="multivariate-gaussian-hmm.html#cb90-14" aria-hidden="true" tabindex="-1"></a>                      <span class="at">sigma =</span> mod<span class="sc">$</span>sigma[, , state[i]])</span>
 <span id="cb90-15"><a href="multivariate-gaussian-hmm.html#cb90-15" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb90-16"><a href="multivariate-gaussian-hmm.html#cb90-16" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb90-17"><a href="multivariate-gaussian-hmm.html#cb90-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(x) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
@@ -545,100 +545,100 @@ In turn, these cause the density function to change from <code>dpois</code> to <
 <h2><span class="header-section-number">8.4</span> Results</h2>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="multivariate-gaussian-hmm.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
 <span id="cb94-2"><a href="multivariate-gaussian-hmm.html#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="do">##         Estimate  Std. Error</span></span>
-<span id="cb94-3"><a href="multivariate-gaussian-hmm.html#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="do">## mu    6.04905329 0.038549390</span></span>
-<span id="cb94-4"><a href="multivariate-gaussian-hmm.html#cb94-4" aria-hidden="true" tabindex="-1"></a><span class="do">## mu    8.02325643 0.037501260</span></span>
-<span id="cb94-5"><a href="multivariate-gaussian-hmm.html#cb94-5" aria-hidden="true" tabindex="-1"></a><span class="do">## mu    8.98781083 0.037680100</span></span>
-<span id="cb94-6"><a href="multivariate-gaussian-hmm.html#cb94-6" aria-hidden="true" tabindex="-1"></a><span class="do">## mu    0.89440363 0.085317451</span></span>
-<span id="cb94-7"><a href="multivariate-gaussian-hmm.html#cb94-7" aria-hidden="true" tabindex="-1"></a><span class="do">## mu    1.91365605 0.080570583</span></span>
-<span id="cb94-8"><a href="multivariate-gaussian-hmm.html#cb94-8" aria-hidden="true" tabindex="-1"></a><span class="do">## mu    2.85900293 0.080062013</span></span>
-<span id="cb94-9"><a href="multivariate-gaussian-hmm.html#cb94-9" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.04486166 0.055741949</span></span>
-<span id="cb94-10"><a href="multivariate-gaussian-hmm.html#cb94-10" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.51982545 0.043168833</span></span>
-<span id="cb94-11"><a href="multivariate-gaussian-hmm.html#cb94-11" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.54547422 0.043863342</span></span>
-<span id="cb94-12"><a href="multivariate-gaussian-hmm.html#cb94-12" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.51982545 0.043168833</span></span>
-<span id="cb94-13"><a href="multivariate-gaussian-hmm.html#cb94-13" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.98072144 0.053337423</span></span>
-<span id="cb94-14"><a href="multivariate-gaussian-hmm.html#cb94-14" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.51247906 0.043154533</span></span>
-<span id="cb94-15"><a href="multivariate-gaussian-hmm.html#cb94-15" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.54547422 0.043863342</span></span>
-<span id="cb94-16"><a href="multivariate-gaussian-hmm.html#cb94-16" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.51247906 0.043154533</span></span>
-<span id="cb94-17"><a href="multivariate-gaussian-hmm.html#cb94-17" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.99166399 0.053799855</span></span>
-<span id="cb94-18"><a href="multivariate-gaussian-hmm.html#cb94-18" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 2.10830989 0.179432960</span></span>
-<span id="cb94-19"><a href="multivariate-gaussian-hmm.html#cb94-19" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.49224730 0.148847028</span></span>
-<span id="cb94-20"><a href="multivariate-gaussian-hmm.html#cb94-20" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.46599947 0.148980784</span></span>
-<span id="cb94-21"><a href="multivariate-gaussian-hmm.html#cb94-21" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.49224730 0.148847028</span></span>
-<span id="cb94-22"><a href="multivariate-gaussian-hmm.html#cb94-22" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.89316492 0.157653415</span></span>
-<span id="cb94-23"><a href="multivariate-gaussian-hmm.html#cb94-23" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.35575778 0.137838780</span></span>
-<span id="cb94-24"><a href="multivariate-gaussian-hmm.html#cb94-24" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.46599947 0.148980784</span></span>
-<span id="cb94-25"><a href="multivariate-gaussian-hmm.html#cb94-25" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.35575778 0.137838780</span></span>
-<span id="cb94-26"><a href="multivariate-gaussian-hmm.html#cb94-26" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.86262084 0.156942626</span></span>
-<span id="cb94-27"><a href="multivariate-gaussian-hmm.html#cb94-27" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma 0.94389927 0.008701234</span></span>
-<span id="cb94-28"><a href="multivariate-gaussian-hmm.html#cb94-28" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma 0.13539124 0.019927042</span></span>
-<span id="cb94-29"><a href="multivariate-gaussian-hmm.html#cb94-29" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma 0.05610073 0.008701234</span></span>
-<span id="cb94-30"><a href="multivariate-gaussian-hmm.html#cb94-30" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma 0.86460876 0.019927042</span></span>
-<span id="cb94-31"><a href="multivariate-gaussian-hmm.html#cb94-31" aria-hidden="true" tabindex="-1"></a><span class="do">## delta 0.70703351 0.043994752</span></span>
-<span id="cb94-32"><a href="multivariate-gaussian-hmm.html#cb94-32" aria-hidden="true" tabindex="-1"></a><span class="do">## delta 0.29296649 0.043994752</span></span>
+<span id="cb94-3"><a href="multivariate-gaussian-hmm.html#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="do">## mu    5.97933189 0.037563682</span></span>
+<span id="cb94-4"><a href="multivariate-gaussian-hmm.html#cb94-4" aria-hidden="true" tabindex="-1"></a><span class="do">## mu    7.97466265 0.036769886</span></span>
+<span id="cb94-5"><a href="multivariate-gaussian-hmm.html#cb94-5" aria-hidden="true" tabindex="-1"></a><span class="do">## mu    9.03496308 0.036893647</span></span>
+<span id="cb94-6"><a href="multivariate-gaussian-hmm.html#cb94-6" aria-hidden="true" tabindex="-1"></a><span class="do">## mu    1.10579193 0.079577526</span></span>
+<span id="cb94-7"><a href="multivariate-gaussian-hmm.html#cb94-7" aria-hidden="true" tabindex="-1"></a><span class="do">## mu    2.01696329 0.082568262</span></span>
+<span id="cb94-8"><a href="multivariate-gaussian-hmm.html#cb94-8" aria-hidden="true" tabindex="-1"></a><span class="do">## mu    3.06944256 0.081165357</span></span>
+<span id="cb94-9"><a href="multivariate-gaussian-hmm.html#cb94-9" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.98949937 0.052850720</span></span>
+<span id="cb94-10"><a href="multivariate-gaussian-hmm.html#cb94-10" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.46755142 0.040689252</span></span>
+<span id="cb94-11"><a href="multivariate-gaussian-hmm.html#cb94-11" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.45275405 0.040488620</span></span>
+<span id="cb94-12"><a href="multivariate-gaussian-hmm.html#cb94-12" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.46755142 0.040689252</span></span>
+<span id="cb94-13"><a href="multivariate-gaussian-hmm.html#cb94-13" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.94526437 0.050668944</span></span>
+<span id="cb94-14"><a href="multivariate-gaussian-hmm.html#cb94-14" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.47948079 0.040495684</span></span>
+<span id="cb94-15"><a href="multivariate-gaussian-hmm.html#cb94-15" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.45275405 0.040488620</span></span>
+<span id="cb94-16"><a href="multivariate-gaussian-hmm.html#cb94-16" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.47948079 0.040495684</span></span>
+<span id="cb94-17"><a href="multivariate-gaussian-hmm.html#cb94-17" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 0.94984027 0.051242766</span></span>
+<span id="cb94-18"><a href="multivariate-gaussian-hmm.html#cb94-18" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.84609954 0.155927347</span></span>
+<span id="cb94-19"><a href="multivariate-gaussian-hmm.html#cb94-19" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.39862795 0.143048208</span></span>
+<span id="cb94-20"><a href="multivariate-gaussian-hmm.html#cb94-20" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.32776440 0.138042910</span></span>
+<span id="cb94-21"><a href="multivariate-gaussian-hmm.html#cb94-21" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.39862795 0.143048208</span></span>
+<span id="cb94-22"><a href="multivariate-gaussian-hmm.html#cb94-22" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.98516354 0.167983567</span></span>
+<span id="cb94-23"><a href="multivariate-gaussian-hmm.html#cb94-23" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.43015056 0.145538312</span></span>
+<span id="cb94-24"><a href="multivariate-gaussian-hmm.html#cb94-24" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.32776440 0.138042910</span></span>
+<span id="cb94-25"><a href="multivariate-gaussian-hmm.html#cb94-25" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.43015056 0.145538312</span></span>
+<span id="cb94-26"><a href="multivariate-gaussian-hmm.html#cb94-26" aria-hidden="true" tabindex="-1"></a><span class="do">## sigma 1.92236070 0.161913458</span></span>
+<span id="cb94-27"><a href="multivariate-gaussian-hmm.html#cb94-27" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma 0.94337605 0.008707558</span></span>
+<span id="cb94-28"><a href="multivariate-gaussian-hmm.html#cb94-28" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma 0.13555932 0.019818312</span></span>
+<span id="cb94-29"><a href="multivariate-gaussian-hmm.html#cb94-29" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma 0.05662395 0.008707558</span></span>
+<span id="cb94-30"><a href="multivariate-gaussian-hmm.html#cb94-30" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma 0.86444068 0.019818312</span></span>
+<span id="cb94-31"><a href="multivariate-gaussian-hmm.html#cb94-31" aria-hidden="true" tabindex="-1"></a><span class="do">## delta 0.70536482 0.043981080</span></span>
+<span id="cb94-32"><a href="multivariate-gaussian-hmm.html#cb94-32" aria-hidden="true" tabindex="-1"></a><span class="do">## delta 0.29463518 0.043981080</span></span>
 <span id="cb94-33"><a href="multivariate-gaussian-hmm.html#cb94-33" aria-hidden="true" tabindex="-1"></a><span class="co"># More readable estimates</span></span>
 <span id="cb94-34"><a href="multivariate-gaussian-hmm.html#cb94-34" aria-hidden="true" tabindex="-1"></a>report <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>()</span>
 <span id="cb94-35"><a href="multivariate-gaussian-hmm.html#cb94-35" aria-hidden="true" tabindex="-1"></a>report</span>
 <span id="cb94-36"><a href="multivariate-gaussian-hmm.html#cb94-36" aria-hidden="true" tabindex="-1"></a><span class="do">## $mu</span></span>
-<span id="cb94-37"><a href="multivariate-gaussian-hmm.html#cb94-37" aria-hidden="true" tabindex="-1"></a><span class="do">##          [,1]      [,2]</span></span>
-<span id="cb94-38"><a href="multivariate-gaussian-hmm.html#cb94-38" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 6.049053 0.8944036</span></span>
-<span id="cb94-39"><a href="multivariate-gaussian-hmm.html#cb94-39" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 8.023256 1.9136560</span></span>
-<span id="cb94-40"><a href="multivariate-gaussian-hmm.html#cb94-40" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] 8.987811 2.8590029</span></span>
+<span id="cb94-37"><a href="multivariate-gaussian-hmm.html#cb94-37" aria-hidden="true" tabindex="-1"></a><span class="do">##          [,1]     [,2]</span></span>
+<span id="cb94-38"><a href="multivariate-gaussian-hmm.html#cb94-38" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 5.979332 1.105792</span></span>
+<span id="cb94-39"><a href="multivariate-gaussian-hmm.html#cb94-39" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 7.974663 2.016963</span></span>
+<span id="cb94-40"><a href="multivariate-gaussian-hmm.html#cb94-40" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] 9.034963 3.069443</span></span>
 <span id="cb94-41"><a href="multivariate-gaussian-hmm.html#cb94-41" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb94-42"><a href="multivariate-gaussian-hmm.html#cb94-42" aria-hidden="true" tabindex="-1"></a><span class="do">## $sigma</span></span>
 <span id="cb94-43"><a href="multivariate-gaussian-hmm.html#cb94-43" aria-hidden="true" tabindex="-1"></a><span class="do">## , , 1</span></span>
 <span id="cb94-44"><a href="multivariate-gaussian-hmm.html#cb94-44" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb94-45"><a href="multivariate-gaussian-hmm.html#cb94-45" aria-hidden="true" tabindex="-1"></a><span class="do">##           [,1]      [,2]      [,3]</span></span>
-<span id="cb94-46"><a href="multivariate-gaussian-hmm.html#cb94-46" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 1.0448617 0.5198254 0.5454742</span></span>
-<span id="cb94-47"><a href="multivariate-gaussian-hmm.html#cb94-47" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 0.5198254 0.9807214 0.5124791</span></span>
-<span id="cb94-48"><a href="multivariate-gaussian-hmm.html#cb94-48" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] 0.5454742 0.5124791 0.9916640</span></span>
+<span id="cb94-46"><a href="multivariate-gaussian-hmm.html#cb94-46" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 0.9894994 0.4675514 0.4527541</span></span>
+<span id="cb94-47"><a href="multivariate-gaussian-hmm.html#cb94-47" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 0.4675514 0.9452644 0.4794808</span></span>
+<span id="cb94-48"><a href="multivariate-gaussian-hmm.html#cb94-48" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] 0.4527541 0.4794808 0.9498403</span></span>
 <span id="cb94-49"><a href="multivariate-gaussian-hmm.html#cb94-49" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb94-50"><a href="multivariate-gaussian-hmm.html#cb94-50" aria-hidden="true" tabindex="-1"></a><span class="do">## , , 2</span></span>
 <span id="cb94-51"><a href="multivariate-gaussian-hmm.html#cb94-51" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb94-52"><a href="multivariate-gaussian-hmm.html#cb94-52" aria-hidden="true" tabindex="-1"></a><span class="do">##          [,1]     [,2]     [,3]</span></span>
-<span id="cb94-53"><a href="multivariate-gaussian-hmm.html#cb94-53" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 2.108310 1.492247 1.465999</span></span>
-<span id="cb94-54"><a href="multivariate-gaussian-hmm.html#cb94-54" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 1.492247 1.893165 1.355758</span></span>
-<span id="cb94-55"><a href="multivariate-gaussian-hmm.html#cb94-55" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] 1.465999 1.355758 1.862621</span></span>
+<span id="cb94-53"><a href="multivariate-gaussian-hmm.html#cb94-53" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 1.846100 1.398628 1.327764</span></span>
+<span id="cb94-54"><a href="multivariate-gaussian-hmm.html#cb94-54" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 1.398628 1.985164 1.430151</span></span>
+<span id="cb94-55"><a href="multivariate-gaussian-hmm.html#cb94-55" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] 1.327764 1.430151 1.922361</span></span>
 <span id="cb94-56"><a href="multivariate-gaussian-hmm.html#cb94-56" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb94-57"><a href="multivariate-gaussian-hmm.html#cb94-57" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb94-58"><a href="multivariate-gaussian-hmm.html#cb94-58" aria-hidden="true" tabindex="-1"></a><span class="do">## $delta</span></span>
-<span id="cb94-59"><a href="multivariate-gaussian-hmm.html#cb94-59" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.707229 0.292771</span></span>
+<span id="cb94-59"><a href="multivariate-gaussian-hmm.html#cb94-59" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.7055608 0.2944392</span></span>
 <span id="cb94-60"><a href="multivariate-gaussian-hmm.html#cb94-60" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb94-61"><a href="multivariate-gaussian-hmm.html#cb94-61" aria-hidden="true" tabindex="-1"></a><span class="do">## $n</span></span>
 <span id="cb94-62"><a href="multivariate-gaussian-hmm.html#cb94-62" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1000</span></span>
 <span id="cb94-63"><a href="multivariate-gaussian-hmm.html#cb94-63" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb94-64"><a href="multivariate-gaussian-hmm.html#cb94-64" aria-hidden="true" tabindex="-1"></a><span class="do">## $gamma</span></span>
-<span id="cb94-65"><a href="multivariate-gaussian-hmm.html#cb94-65" aria-hidden="true" tabindex="-1"></a><span class="do">##           [,1]      [,2]</span></span>
-<span id="cb94-66"><a href="multivariate-gaussian-hmm.html#cb94-66" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 0.9439522 0.0560478</span></span>
-<span id="cb94-67"><a href="multivariate-gaussian-hmm.html#cb94-67" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 0.1353912 0.8646088</span></span>
+<span id="cb94-65"><a href="multivariate-gaussian-hmm.html#cb94-65" aria-hidden="true" tabindex="-1"></a><span class="do">##           [,1]       [,2]</span></span>
+<span id="cb94-66"><a href="multivariate-gaussian-hmm.html#cb94-66" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 0.9434294 0.05657056</span></span>
+<span id="cb94-67"><a href="multivariate-gaussian-hmm.html#cb94-67" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 0.1355593 0.86444068</span></span>
 <span id="cb94-68"><a href="multivariate-gaussian-hmm.html#cb94-68" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb94-69"><a href="multivariate-gaussian-hmm.html#cb94-69" aria-hidden="true" tabindex="-1"></a><span class="do">## $mllk</span></span>
-<span id="cb94-70"><a href="multivariate-gaussian-hmm.html#cb94-70" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4296.327</span></span></code></pre></div>
+<span id="cb94-70"><a href="multivariate-gaussian-hmm.html#cb94-70" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4295.975</span></span></code></pre></div>
 </div>
 <div id="residuals" class="section level2" number="8.5">
 <h2><span class="header-section-number">8.5</span> Residuals</h2>
 <p>Since the data was simulated, the true parameters are known and the validity of the estimates cam be checked.</p>
 <div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="multivariate-gaussian-hmm.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(report<span class="sc">$</span>mu) <span class="sc">-</span> mu</span>
-<span id="cb95-2"><a href="multivariate-gaussian-hmm.html#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="do">##             [,1]        [,2]        [,3]</span></span>
-<span id="cb95-3"><a href="multivariate-gaussian-hmm.html#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,]  0.04905329  0.02325643 -0.01218917</span></span>
-<span id="cb95-4"><a href="multivariate-gaussian-hmm.html#cb95-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] -0.10559637 -0.08634395 -0.14099707</span></span>
+<span id="cb95-2"><a href="multivariate-gaussian-hmm.html#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="do">##             [,1]        [,2]       [,3]</span></span>
+<span id="cb95-3"><a href="multivariate-gaussian-hmm.html#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] -0.02066811 -0.02533735 0.03496308</span></span>
+<span id="cb95-4"><a href="multivariate-gaussian-hmm.html#cb95-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,]  0.10579193  0.01696329 0.06944256</span></span>
 <span id="cb95-5"><a href="multivariate-gaussian-hmm.html#cb95-5" aria-hidden="true" tabindex="-1"></a>report<span class="sc">$</span>sigma <span class="sc">-</span> sigma</span>
 <span id="cb95-6"><a href="multivariate-gaussian-hmm.html#cb95-6" aria-hidden="true" tabindex="-1"></a><span class="do">## , , 1</span></span>
 <span id="cb95-7"><a href="multivariate-gaussian-hmm.html#cb95-7" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb95-8"><a href="multivariate-gaussian-hmm.html#cb95-8" aria-hidden="true" tabindex="-1"></a><span class="do">##            [,1]        [,2]         [,3]</span></span>
-<span id="cb95-9"><a href="multivariate-gaussian-hmm.html#cb95-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 0.04486166  0.01982545  0.045474218</span></span>
-<span id="cb95-10"><a href="multivariate-gaussian-hmm.html#cb95-10" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 0.01982545 -0.01927856  0.012479058</span></span>
-<span id="cb95-11"><a href="multivariate-gaussian-hmm.html#cb95-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] 0.04547422  0.01247906 -0.008336013</span></span>
+<span id="cb95-8"><a href="multivariate-gaussian-hmm.html#cb95-8" aria-hidden="true" tabindex="-1"></a><span class="do">##             [,1]        [,2]        [,3]</span></span>
+<span id="cb95-9"><a href="multivariate-gaussian-hmm.html#cb95-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] -0.01050063 -0.03244858 -0.04724595</span></span>
+<span id="cb95-10"><a href="multivariate-gaussian-hmm.html#cb95-10" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] -0.03244858 -0.05473563 -0.02051921</span></span>
+<span id="cb95-11"><a href="multivariate-gaussian-hmm.html#cb95-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] -0.04724595 -0.02051921 -0.05015973</span></span>
 <span id="cb95-12"><a href="multivariate-gaussian-hmm.html#cb95-12" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb95-13"><a href="multivariate-gaussian-hmm.html#cb95-13" aria-hidden="true" tabindex="-1"></a><span class="do">## , , 2</span></span>
 <span id="cb95-14"><a href="multivariate-gaussian-hmm.html#cb95-14" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb95-15"><a href="multivariate-gaussian-hmm.html#cb95-15" aria-hidden="true" tabindex="-1"></a><span class="do">##              [,1]         [,2]        [,3]</span></span>
-<span id="cb95-16"><a href="multivariate-gaussian-hmm.html#cb95-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,]  0.108309892 -0.007752702 -0.03400053</span></span>
-<span id="cb95-17"><a href="multivariate-gaussian-hmm.html#cb95-17" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] -0.007752702 -0.106835075 -0.14424222</span></span>
-<span id="cb95-18"><a href="multivariate-gaussian-hmm.html#cb95-18" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] -0.034000530 -0.144242221 -0.13737916</span></span>
+<span id="cb95-15"><a href="multivariate-gaussian-hmm.html#cb95-15" aria-hidden="true" tabindex="-1"></a><span class="do">##            [,1]        [,2]        [,3]</span></span>
+<span id="cb95-16"><a href="multivariate-gaussian-hmm.html#cb95-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] -0.1539005 -0.10137205 -0.17223560</span></span>
+<span id="cb95-17"><a href="multivariate-gaussian-hmm.html#cb95-17" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] -0.1013720 -0.01483646 -0.06984944</span></span>
+<span id="cb95-18"><a href="multivariate-gaussian-hmm.html#cb95-18" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] -0.1722356 -0.06984944 -0.07763930</span></span>
 <span id="cb95-19"><a href="multivariate-gaussian-hmm.html#cb95-19" aria-hidden="true" tabindex="-1"></a>report<span class="sc">$</span>gamma <span class="sc">-</span> gamma</span>
 <span id="cb95-20"><a href="multivariate-gaussian-hmm.html#cb95-20" aria-hidden="true" tabindex="-1"></a><span class="do">##              [,1]        [,2]</span></span>
-<span id="cb95-21"><a href="multivariate-gaussian-hmm.html#cb95-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] -0.006047798 0.006047798</span></span>
-<span id="cb95-22"><a href="multivariate-gaussian-hmm.html#cb95-22" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] -0.014608763 0.014608763</span></span></code></pre></div>
+<span id="cb95-21"><a href="multivariate-gaussian-hmm.html#cb95-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] -0.006570559 0.006570559</span></span>
+<span id="cb95-22"><a href="multivariate-gaussian-hmm.html#cb95-22" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] -0.014440678 0.014440678</span></span></code></pre></div>
 <p>The parameter estimation was successful</p>
 
 </div>

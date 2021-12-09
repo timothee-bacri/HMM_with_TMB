@@ -1,8 +1,8 @@
 # Multivariate Gaussian HMM
 
-Multivariate Gaussian HMMs with TMB are very similar to the previous Poisson HMM.
+Multivariate Gaussian HMMs with `TMB` are very similar to the previous Poisson HMM.
 The main changes are the distribution parameters being changed from $\bs{\lambda}$ to $\bs{\mu}$ and $\bs{\Sigma}$.
-In turn, these cause the density function to change from `dpois` to `mvdnorm` (and from `rpois` to `mvrnorm` for simulations).
+In turn, these cause the density function to change from `dpois` to `dmvnorm` (and from `rpois` to `rmvnorm` for simulations) from the {\tt{mvtnorm}} package.
 
 Many functions available in *[functions/utils.R](#utils.R)* have been adapted for the multivariate Gaussian case in *[functions/mvnorm_utils.R](#mvnorm_utils.R)*.
 

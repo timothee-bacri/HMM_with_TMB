@@ -296,7 +296,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="normal-hmm" class="section level1" number="7">
 <h1><span class="header-section-number"> 7</span> Normal HMM</h1>
-<p>Gaussian HMMs with TMB are very similar to the previous Poisson HMM.
+<p>Gaussian HMMs with <code>TMB</code> are very similar to the previous Poisson HMM.
 The main changes are the distribution parameters being changed from <span class="math inline">\({\boldsymbol\lambda}\)</span> to <span class="math inline">\({\boldsymbol\mu}\)</span> and <span class="math inline">\({\boldsymbol\sigma}\)</span>.
 In turn, these cause the density function to change from <code>dpois</code> to <code>dnorm</code> (and from <code>rpois</code> to <code>rnorm</code> for simulations).</p>
 <p>Many functions available in <em><a href="github.html#utils.R">functions/utils.R</a></em> have been adapted for the Gaussian case in <em><a href="#norm_utils.R">functions/norm_utils.R</a></em>.</p>
