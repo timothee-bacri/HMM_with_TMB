@@ -52,7 +52,7 @@ knitr::opts_chunk$set(collapse = TRUE)
 ```{r 0packages_in_bib, include=FALSE}
 # automatically create a bib database for R packages
 knitr::write_bib(c(
-  'TMB', 'microbenchmark', 'foreach'
+  'TMB', 'microbenchmark', 'foreach', "mvtnorm"
 ), 'packages.bib')
 ```
 
