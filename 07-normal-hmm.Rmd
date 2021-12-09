@@ -1,4 +1,4 @@
-# Normal HMM
+# Gaussian HMM
 
 Gaussian HMMs with `TMB` are very similar to the previous Poisson HMM.
 The main changes are the distribution parameters being changed from $\bs{\lambda}$ to $\bs{\mu}$ and $\bs{\sigma}$.

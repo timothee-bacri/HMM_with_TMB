@@ -212,9 +212,9 @@ mvnorm.HMM.label.order <- function(m,
   ordered_gamma_vector_matrix <- matrix(0, nrow = m, ncol = m)
   
   # Get the indices of the sorted states
-  # according to ascending mu[1, ] (first index of the m vectors mu of size p)
+  # according to ascending mu[, 1] (first index of the m vectors mu of size p)
   # ordered_mu contains the permutations needed
-  ordered_mu_indices <- order(mu[1, ])
+  ordered_mu_indices <- order(mu[, 1])
   ordered_mu <- mu[, ordered_mu_indices]
   ordered_sigma <- sigma[, , ordered_mu_indices]
   # names(ordered_mu) <- NULL
@@ -254,7 +254,7 @@ mvnorm.HMM.label.order <- function(m,
   }
   # Reorder the standard errors
   ordered_mu_std_error <- mu_std_error[, ordered_mu_indices]
-  ordered_sigma_std_error <- sigma_std_error[, , ordered_sigma_indices]
+  ordered_sigma_std_error <- sigma_std_error[, , ordered_mu_indices]
   ordered_delta_std_error <- delta_std_error[ordered_mu_indices]
   
   # The vector is assumed filled column-wise instead of row-wise,
@@ -274,7 +274,7 @@ mvnorm.HMM.label.order <- function(m,
                  gamma_std_error = ordered_gamma_std_error,
                  delta_std_error = ordered_delta_std_error,
                  ordered_mu_indices = ordered_mu_indices,
-                 ordered_sigma_indices = ordered_sigma_indices,
+                 ordered_sigma_indices = ordered_mu_indices,
                  ordered_gamma_vector_indices = ordered_gamma_vector_matrix,
                  # delta and mu are the same size, so they are ordered the same way
                  ordered_delta_indices = ordered_mu_indices)
@@ -283,13 +283,4 @@ mvnorm.HMM.label.order <- function(m,
   result[sapply(result, is.null)] <- NULL
   
   return(result)
-}
-
-## ---- nlmfn
-# Function to use TMB's gradient and/or hessian in nlm
-nlmfn <- function(par, obj, gr = TRUE, he = TRUE) {
-  res <- as.numeric(obj$fn(par))
-  if(gr) {attr(res, "gradient") <- obj$gr(par)}
-  if(he) {attr(res, "hessian") <- obj$he(par)}
-  res
 }

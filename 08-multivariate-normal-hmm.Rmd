@@ -2,7 +2,7 @@
 
 Multivariate Gaussian HMMs with `TMB` are very similar to the previous Poisson HMM.
 The main changes are the distribution parameters being changed from $\bs{\lambda}$ to $\bs{\mu}$ and $\bs{\Sigma}$.
-In turn, these cause the density function to change from `dpois` to `dmvnorm` (and from `rpois` to `rmvnorm` for simulations) from the {\tt{mvtnorm}} package.
+In turn, these cause the density function to change from `dpois` to `dmvnorm` (and from `rpois` to `rmvnorm` for simulations) from the `mvtnorm` [@R-mvtnorm] package.
 
 Many functions available in *[functions/utils.R](#utils.R)* have been adapted for the multivariate Gaussian case in *[functions/mvnorm_utils.R](#mvnorm_utils.R)*.
 
@@ -81,6 +81,11 @@ res <- nlminb(start = obj_tmb$par,
               objective = obj_tmb$fn,
               gradient = obj_tmb$gr,
               hessian = obj_tmb$he)
+
+mvnorm.HMM.label.order(m = m,
+                       mu = mu,
+                       sigma = sigma,
+                       gamma = gamma)
 ```
 
 ## Results
