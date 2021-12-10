@@ -27,7 +27,7 @@ for (idx in 1:length(M_LIST_SIMU4)) {
                          ncol = m)
   }
   true_lambda <- seq(1,
-                     7,
+                     16,
                      length.out = m)
   true_delta <- stat.dist(true_gamma)
   
@@ -552,16 +552,20 @@ for (idx in 1:length(M_LIST_SIMU4)) {
     gamma_profile_upper <- as.numeric(gamma.w2n(m,
                                                 working_conf_int$upper[tgamma_indices]))
     
-    # If profiling doesn't yield results for all parameters, try a new coverage sample
-    if (anyNA(c(lambda_profile_lower,
-                lambda_profile_upper,
-                gamma_profile_lower,
-                gamma_profile_upper),
-              recursive = TRUE)) {
-      idx_coverage <- idx_coverage - 1
-      coverage_skips_simu4[coverage_skips_simu4$m == m, "profile"] <- coverage_skips_simu4[coverage_skips_simu4$m == m, "profile"] + 1
-      next
-    }
+    ### MAIN DIFFERENCE FROM THE OTHER DATASETS !!!
+    ### Unlike in the other datasets, we have empirically found that profile CIs diverge when lambda=seq(1, 16, length.out = m) and will diverge until lambda=seq(1, 24, length.out=m)
+    ### Therefore, forcing profile CIs to converge will cause an infinite loop since we chose lambda=seq(1, 16, length.out = m) to showcase that profile CIs sometimes diverge.
+    
+    # # If profiling doesn't yield results for all parameters, try a new coverage sample
+    # if (anyNA(c(lambda_profile_lower,
+    #             lambda_profile_upper,
+    #             gamma_profile_lower,
+    #             gamma_profile_upper),
+    #           recursive = TRUE)) {
+    #   idx_coverage <- idx_coverage - 1
+    #   coverage_skips_simu4[coverage_skips_simu4$m == m, "profile"] <- coverage_skips_simu4[coverage_skips_simu4$m == m, "profile"] + 1
+    #   next
+    # }
     # If the true value for lambda is in the CI, then increase the count
     real_lambda_profile_lower <- pmin(lambda_profile_lower,
                                       lambda_profile_upper)

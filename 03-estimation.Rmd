@@ -11,6 +11,8 @@ dnorm(x = 1, mean = 0, sd = 1) # Normal
 ```
 Other distributions are available.
 
+We let TPM denote the transition probability matrix.
+
 ## The likelihood function of an HMM
 
 The Poisson HMM negative log-likelihood function in `C++` can be written the following way using `TMB`'s template.

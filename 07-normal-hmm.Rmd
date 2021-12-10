@@ -1,6 +1,6 @@
 # Gaussian HMM
 
-Gaussian HMMs with `TMB` are very similar to the previous Poisson HMM.
+Univariate Gaussian HMMs with `TMB` are very similar to the previous Poisson HMM.
 The main changes are the distribution parameters being changed from $\bs{\lambda}$ to $\bs{\mu}$ and $\bs{\sigma}$.
 In turn, these cause the density function to change from `dpois` to `dnorm` (and from `rpois` to `rnorm` for simulations).
 
@@ -34,7 +34,7 @@ and requires the following utility functions.
 
 ## Estimation
 The following R code illustrates how to compute the estimates and standard errors, using the objective function written above.
-```{r 7example}
+```{r 7example, cache=TRUE}
 source("code/packages.R")
 source("functions/norm_utils.R")
 

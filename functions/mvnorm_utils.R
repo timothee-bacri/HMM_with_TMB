@@ -4,14 +4,14 @@
 
 ## ---- delta.n2w
 # Function to transform natural parameters to working ones
-delta.n2w <- function(m, delta){
+delta.n2w <- function(m, delta) {
   tdelta <- log(delta[- 1] / delta[1])
   return(tdelta) 
 }
 
 ## ---- delta.w2n
 # Function to transform working parameters to natural ones
-delta.w2n <- function(m, tdelta){
+delta.w2n <- function(m, tdelta) {
   if (m == 1) return(1)
   
   # set first element to one and fill in the last m - 1 elements with working parameters and take exp
@@ -25,7 +25,7 @@ delta.w2n <- function(m, tdelta){
 
 ## ---- gamma.n2w
 # Function to transform natural parameters to working ones
-gamma.n2w <- function(m, gamma){
+gamma.n2w <- function(m, gamma) {
   foo <- log(gamma / diag(gamma))
   tgamma <- as.vector(foo[!diag(m)])
   return(tgamma)
@@ -33,7 +33,7 @@ gamma.n2w <- function(m, gamma){
 
 ## ---- gamma.w2n
 # Function to transform working parameters to natural ones
-gamma.w2n <- function(m, tgamma){
+gamma.w2n <- function(m, tgamma) {
   gamma <- diag(m)
   if (m == 1) return(gamma)
   gamma[!gamma] <- exp(tgamma)
