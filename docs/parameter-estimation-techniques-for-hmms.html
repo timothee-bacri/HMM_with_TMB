@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-12-09" />
+<meta name="date" content="2021-12-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -235,11 +235,11 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="8" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html"><i class="fa fa-check"></i><b>8</b> Multivariate Gaussian HMM</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#dataset-1"><i class="fa fa-check"></i><b>8.1</b> Dataset</a></li>
+<li class="chapter" data-level="8.1" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#dataset-parameters"><i class="fa fa-check"></i><b>8.1</b> Dataset &amp; Parameters</a></li>
 <li class="chapter" data-level="8.2" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#likelihood-function-2"><i class="fa fa-check"></i><b>8.2</b> Likelihood function</a></li>
 <li class="chapter" data-level="8.3" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#estimation-1"><i class="fa fa-check"></i><b>8.3</b> Estimation</a></li>
 <li class="chapter" data-level="8.4" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#results-1"><i class="fa fa-check"></i><b>8.4</b> Results</a></li>
-<li class="chapter" data-level="8.5" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#residuals"><i class="fa fa-check"></i><b>8.5</b> Residuals</a></li>
+<li class="chapter" data-level="8.5" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#bias"><i class="fa fa-check"></i><b>8.5</b> Bias</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="github.html"><a href="github.html"><i class="fa fa-check"></i><b>9</b> GitHub</a>
 <ul>
@@ -371,52 +371,53 @@ div.csl-indent {
 <span id="cb13-49"><a href="parameter-estimation-techniques-for-hmms.html#cb13-49" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">,</span> P<span class="op">;</span></span>
 <span id="cb13-50"><a href="parameter-estimation-techniques-for-hmms.html#cb13-50" aria-hidden="true" tabindex="-1"></a>  Type mllk<span class="op">,</span> sumfoo<span class="op">,</span> lscale<span class="op">;</span></span>
 <span id="cb13-51"><a href="parameter-estimation-techniques-for-hmms.html#cb13-51" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-52"><a href="parameter-estimation-techniques-for-hmms.html#cb13-52" aria-hidden="true" tabindex="-1"></a>  <span class="co">// No need for an &quot;else&quot; statement because we return</span></span>
-<span id="cb13-53"><a href="parameter-estimation-techniques-for-hmms.html#cb13-53" aria-hidden="true" tabindex="-1"></a>  <span class="co">// the likelihood directly if m is 1, thus ending the function</span></span>
-<span id="cb13-54"><a href="parameter-estimation-techniques-for-hmms.html#cb13-54" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>m <span class="op">==</span> <span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb13-55"><a href="parameter-estimation-techniques-for-hmms.html#cb13-55" aria-hidden="true" tabindex="-1"></a>    mllk <span class="op">=</span> <span class="op">-</span> emission_probs<span class="op">.</span>col<span class="op">(</span><span class="dv">0</span><span class="op">).</span>array<span class="op">().</span>log<span class="op">().</span>sum<span class="op">();</span></span>
-<span id="cb13-56"><a href="parameter-estimation-techniques-for-hmms.html#cb13-56" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-57"><a href="parameter-estimation-techniques-for-hmms.html#cb13-57" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Use adreport on variables we are interested in:</span></span>
-<span id="cb13-58"><a href="parameter-estimation-techniques-for-hmms.html#cb13-58" aria-hidden="true" tabindex="-1"></a>    ADREPORT<span class="op">(</span>lambda<span class="op">);</span></span>
-<span id="cb13-59"><a href="parameter-estimation-techniques-for-hmms.html#cb13-59" aria-hidden="true" tabindex="-1"></a>    ADREPORT<span class="op">(</span>gamma<span class="op">);</span></span>
-<span id="cb13-60"><a href="parameter-estimation-techniques-for-hmms.html#cb13-60" aria-hidden="true" tabindex="-1"></a>    ADREPORT<span class="op">(</span>delta<span class="op">);</span></span>
-<span id="cb13-61"><a href="parameter-estimation-techniques-for-hmms.html#cb13-61" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-62"><a href="parameter-estimation-techniques-for-hmms.html#cb13-62" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Things we need for local decoding</span></span>
-<span id="cb13-63"><a href="parameter-estimation-techniques-for-hmms.html#cb13-63" aria-hidden="true" tabindex="-1"></a>    REPORT<span class="op">(</span>lambda<span class="op">);</span></span>
-<span id="cb13-64"><a href="parameter-estimation-techniques-for-hmms.html#cb13-64" aria-hidden="true" tabindex="-1"></a>    REPORT<span class="op">(</span>gamma<span class="op">);</span></span>
-<span id="cb13-65"><a href="parameter-estimation-techniques-for-hmms.html#cb13-65" aria-hidden="true" tabindex="-1"></a>    REPORT<span class="op">(</span>delta<span class="op">);</span></span>
-<span id="cb13-66"><a href="parameter-estimation-techniques-for-hmms.html#cb13-66" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-67"><a href="parameter-estimation-techniques-for-hmms.html#cb13-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mllk<span class="op">;</span></span>
-<span id="cb13-68"><a href="parameter-estimation-techniques-for-hmms.html#cb13-68" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb13-69"><a href="parameter-estimation-techniques-for-hmms.html#cb13-69" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">=</span> <span class="op">(</span>delta <span class="op">*</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;(</span>emission_probs<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">))).</span>matrix<span class="op">();</span></span>
-<span id="cb13-70"><a href="parameter-estimation-techniques-for-hmms.html#cb13-70" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
-<span id="cb13-71"><a href="parameter-estimation-techniques-for-hmms.html#cb13-71" aria-hidden="true" tabindex="-1"></a>  lscale <span class="op">=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
-<span id="cb13-72"><a href="parameter-estimation-techniques-for-hmms.html#cb13-72" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>transposeInPlace<span class="op">();</span></span>
-<span id="cb13-73"><a href="parameter-estimation-techniques-for-hmms.html#cb13-73" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
-<span id="cb13-74"><a href="parameter-estimation-techniques-for-hmms.html#cb13-74" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb13-75"><a href="parameter-estimation-techniques-for-hmms.html#cb13-75" aria-hidden="true" tabindex="-1"></a>    P <span class="op">=</span> emission_probs<span class="op">.</span>row<span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
-<span id="cb13-76"><a href="parameter-estimation-techniques-for-hmms.html#cb13-76" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">=</span> <span class="op">((</span>foo <span class="op">*</span> gamma<span class="op">).</span>array<span class="op">()</span> <span class="op">*</span> P<span class="op">.</span>array<span class="op">()).</span>matrix<span class="op">();</span></span>
-<span id="cb13-77"><a href="parameter-estimation-techniques-for-hmms.html#cb13-77" aria-hidden="true" tabindex="-1"></a>    sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
-<span id="cb13-78"><a href="parameter-estimation-techniques-for-hmms.html#cb13-78" aria-hidden="true" tabindex="-1"></a>    lscale <span class="op">+=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
-<span id="cb13-79"><a href="parameter-estimation-techniques-for-hmms.html#cb13-79" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
-<span id="cb13-80"><a href="parameter-estimation-techniques-for-hmms.html#cb13-80" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb13-81"><a href="parameter-estimation-techniques-for-hmms.html#cb13-81" aria-hidden="true" tabindex="-1"></a>  mllk <span class="op">=</span> <span class="op">-</span>lscale<span class="op">;</span></span>
-<span id="cb13-82"><a href="parameter-estimation-techniques-for-hmms.html#cb13-82" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-83"><a href="parameter-estimation-techniques-for-hmms.html#cb13-83" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
-<span id="cb13-84"><a href="parameter-estimation-techniques-for-hmms.html#cb13-84" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>lambda<span class="op">);</span></span>
-<span id="cb13-85"><a href="parameter-estimation-techniques-for-hmms.html#cb13-85" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>gamma<span class="op">);</span></span>
-<span id="cb13-86"><a href="parameter-estimation-techniques-for-hmms.html#cb13-86" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>delta<span class="op">);</span></span>
-<span id="cb13-87"><a href="parameter-estimation-techniques-for-hmms.html#cb13-87" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-88"><a href="parameter-estimation-techniques-for-hmms.html#cb13-88" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
-<span id="cb13-89"><a href="parameter-estimation-techniques-for-hmms.html#cb13-89" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>lambda<span class="op">);</span></span>
-<span id="cb13-90"><a href="parameter-estimation-techniques-for-hmms.html#cb13-90" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>gamma<span class="op">);</span></span>
-<span id="cb13-91"><a href="parameter-estimation-techniques-for-hmms.html#cb13-91" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>delta<span class="op">);</span></span>
-<span id="cb13-92"><a href="parameter-estimation-techniques-for-hmms.html#cb13-92" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>n<span class="op">);</span></span>
-<span id="cb13-93"><a href="parameter-estimation-techniques-for-hmms.html#cb13-93" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>emission_probs<span class="op">);</span></span>
-<span id="cb13-94"><a href="parameter-estimation-techniques-for-hmms.html#cb13-94" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>mllk<span class="op">);</span></span>
-<span id="cb13-95"><a href="parameter-estimation-techniques-for-hmms.html#cb13-95" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-96"><a href="parameter-estimation-techniques-for-hmms.html#cb13-96" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk<span class="op">;</span></span>
-<span id="cb13-97"><a href="parameter-estimation-techniques-for-hmms.html#cb13-97" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb13-52"><a href="parameter-estimation-techniques-for-hmms.html#cb13-52" aria-hidden="true" tabindex="-1"></a>  <span class="co">// // No need for an &quot;else&quot; statement because we return</span></span>
+<span id="cb13-53"><a href="parameter-estimation-techniques-for-hmms.html#cb13-53" aria-hidden="true" tabindex="-1"></a>  <span class="co">// // the likelihood directly if m is 1, thus ending the function</span></span>
+<span id="cb13-54"><a href="parameter-estimation-techniques-for-hmms.html#cb13-54" aria-hidden="true" tabindex="-1"></a>  <span class="co">// if (m == 1) {</span></span>
+<span id="cb13-55"><a href="parameter-estimation-techniques-for-hmms.html#cb13-55" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   mllk = - emission_probs.col(0).array().log().sum();</span></span>
+<span id="cb13-56"><a href="parameter-estimation-techniques-for-hmms.html#cb13-56" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   </span></span>
+<span id="cb13-57"><a href="parameter-estimation-techniques-for-hmms.html#cb13-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   // Use adreport on variables we are interested in:</span></span>
+<span id="cb13-58"><a href="parameter-estimation-techniques-for-hmms.html#cb13-58" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   ADREPORT(lambda);</span></span>
+<span id="cb13-59"><a href="parameter-estimation-techniques-for-hmms.html#cb13-59" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   ADREPORT(gamma);</span></span>
+<span id="cb13-60"><a href="parameter-estimation-techniques-for-hmms.html#cb13-60" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   ADREPORT(delta);</span></span>
+<span id="cb13-61"><a href="parameter-estimation-techniques-for-hmms.html#cb13-61" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   </span></span>
+<span id="cb13-62"><a href="parameter-estimation-techniques-for-hmms.html#cb13-62" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   // Things we need for local decoding</span></span>
+<span id="cb13-63"><a href="parameter-estimation-techniques-for-hmms.html#cb13-63" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   REPORT(lambda);</span></span>
+<span id="cb13-64"><a href="parameter-estimation-techniques-for-hmms.html#cb13-64" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   REPORT(gamma);</span></span>
+<span id="cb13-65"><a href="parameter-estimation-techniques-for-hmms.html#cb13-65" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   REPORT(delta);</span></span>
+<span id="cb13-66"><a href="parameter-estimation-techniques-for-hmms.html#cb13-66" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   </span></span>
+<span id="cb13-67"><a href="parameter-estimation-techniques-for-hmms.html#cb13-67" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   return mllk;</span></span>
+<span id="cb13-68"><a href="parameter-estimation-techniques-for-hmms.html#cb13-68" aria-hidden="true" tabindex="-1"></a>  <span class="co">// }</span></span>
+<span id="cb13-69"><a href="parameter-estimation-techniques-for-hmms.html#cb13-69" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-70"><a href="parameter-estimation-techniques-for-hmms.html#cb13-70" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">=</span> <span class="op">(</span>delta <span class="op">*</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;(</span>emission_probs<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">))).</span>matrix<span class="op">();</span></span>
+<span id="cb13-71"><a href="parameter-estimation-techniques-for-hmms.html#cb13-71" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
+<span id="cb13-72"><a href="parameter-estimation-techniques-for-hmms.html#cb13-72" aria-hidden="true" tabindex="-1"></a>  lscale <span class="op">=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb13-73"><a href="parameter-estimation-techniques-for-hmms.html#cb13-73" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>transposeInPlace<span class="op">();</span></span>
+<span id="cb13-74"><a href="parameter-estimation-techniques-for-hmms.html#cb13-74" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb13-75"><a href="parameter-estimation-techniques-for-hmms.html#cb13-75" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb13-76"><a href="parameter-estimation-techniques-for-hmms.html#cb13-76" aria-hidden="true" tabindex="-1"></a>    P <span class="op">=</span> emission_probs<span class="op">.</span>row<span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb13-77"><a href="parameter-estimation-techniques-for-hmms.html#cb13-77" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">=</span> <span class="op">((</span>foo <span class="op">*</span> gamma<span class="op">).</span>array<span class="op">()</span> <span class="op">*</span> P<span class="op">.</span>array<span class="op">()).</span>matrix<span class="op">();</span></span>
+<span id="cb13-78"><a href="parameter-estimation-techniques-for-hmms.html#cb13-78" aria-hidden="true" tabindex="-1"></a>    sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
+<span id="cb13-79"><a href="parameter-estimation-techniques-for-hmms.html#cb13-79" aria-hidden="true" tabindex="-1"></a>    lscale <span class="op">+=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb13-80"><a href="parameter-estimation-techniques-for-hmms.html#cb13-80" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb13-81"><a href="parameter-estimation-techniques-for-hmms.html#cb13-81" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb13-82"><a href="parameter-estimation-techniques-for-hmms.html#cb13-82" aria-hidden="true" tabindex="-1"></a>  mllk <span class="op">=</span> <span class="op">-</span>lscale<span class="op">;</span></span>
+<span id="cb13-83"><a href="parameter-estimation-techniques-for-hmms.html#cb13-83" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-84"><a href="parameter-estimation-techniques-for-hmms.html#cb13-84" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
+<span id="cb13-85"><a href="parameter-estimation-techniques-for-hmms.html#cb13-85" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>lambda<span class="op">);</span></span>
+<span id="cb13-86"><a href="parameter-estimation-techniques-for-hmms.html#cb13-86" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>gamma<span class="op">);</span></span>
+<span id="cb13-87"><a href="parameter-estimation-techniques-for-hmms.html#cb13-87" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>delta<span class="op">);</span></span>
+<span id="cb13-88"><a href="parameter-estimation-techniques-for-hmms.html#cb13-88" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-89"><a href="parameter-estimation-techniques-for-hmms.html#cb13-89" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
+<span id="cb13-90"><a href="parameter-estimation-techniques-for-hmms.html#cb13-90" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>lambda<span class="op">);</span></span>
+<span id="cb13-91"><a href="parameter-estimation-techniques-for-hmms.html#cb13-91" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>gamma<span class="op">);</span></span>
+<span id="cb13-92"><a href="parameter-estimation-techniques-for-hmms.html#cb13-92" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>delta<span class="op">);</span></span>
+<span id="cb13-93"><a href="parameter-estimation-techniques-for-hmms.html#cb13-93" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>n<span class="op">);</span></span>
+<span id="cb13-94"><a href="parameter-estimation-techniques-for-hmms.html#cb13-94" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>emission_probs<span class="op">);</span></span>
+<span id="cb13-95"><a href="parameter-estimation-techniques-for-hmms.html#cb13-95" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>mllk<span class="op">);</span></span>
+<span id="cb13-96"><a href="parameter-estimation-techniques-for-hmms.html#cb13-96" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-97"><a href="parameter-estimation-techniques-for-hmms.html#cb13-97" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk<span class="op">;</span></span>
+<span id="cb13-98"><a href="parameter-estimation-techniques-for-hmms.html#cb13-98" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>The case where <span class="math inline">\(m = 1\)</span> doesn’t involve a hidden state, and thus is a Poisson regression instead of a Poisson HMM.
 Nonetheless, <code>TMB</code> also accelerates its estimation and may be useful to the reader.</p>
 </div>

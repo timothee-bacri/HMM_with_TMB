@@ -8,8 +8,12 @@ Many functions available in *[functions/utils.R](#utils.R)* have been adapted fo
 
 We detail below an example of a two-state trivariate Gaussian HMM with TMB.
 
-## Dataset
-The data is generated with the function below (similarly to the Poisson case)
+## Dataset & Parameters
+To avoid issues regarding the choice of data, we simulate our own.
+
+The parameters chosen are as follows
+
+The data is generated with the function below (similarly to the Poisson case).
 ```{r mvnorm.HMM.generate.sample}
 ```
 
@@ -81,11 +85,6 @@ res <- nlminb(start = obj_tmb$par,
               objective = obj_tmb$fn,
               gradient = obj_tmb$gr,
               hessian = obj_tmb$he)
-
-mvnorm.HMM.label.order(m = m,
-                       mu = mu,
-                       sigma = sigma,
-                       gamma = gamma)
 ```
 
 ## Results
@@ -96,11 +95,12 @@ report <- obj_tmb$report()
 report
 ```
 
-## Residuals
+## Bias
 Since the data was simulated, the true parameters are known and the validity of the estimates cam be checked.
+To do this, we look at the maximum absolute percentage difference between estimates and true values.
 ```{r 8results-verification}
-t(report$mu) - mu
-report$sigma - sigma
-report$gamma - gamma
+(t(report$mu) - mu) / mu
+(report$sigma - sigma) / sigma
+(report$gamma - gamma) / gamma
 ```
-The parameter estimation was successful
+Differences are at most in the order of 10\% for values near 0. Parameter estimation was successful.

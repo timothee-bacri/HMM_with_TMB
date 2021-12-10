@@ -46,11 +46,11 @@ likelihood-function-1
 estimation
 results
 multivariate-gaussian-hmm
-dataset-1
+dataset-parameters
 likelihood-function-2
 estimation-1
 results-1
-residuals
+bias
 github
 directory-structure
 code
