@@ -160,7 +160,7 @@ File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/po
 File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_simu3.R
 
 ### code/poi_hmm_simu4.R {#poi_hmm_simu4.R}
-Unlike in the other simulations, the coverage samples do not ensure that profile CIs converge.
+Unlike in the other simulations, the coverage samples do not ensure that profile CIs converge. \
 File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm_simu3.R \
 File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_simu3.R
 

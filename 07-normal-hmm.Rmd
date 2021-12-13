@@ -60,6 +60,9 @@ mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn,
 ```
 
 ## Results
+Estimates can be shown here along with their standard errors, as was done previously in the Poisson case.
+As before, the matrix results are displayed in a column-wise format.
+This can be seen by comparing estimates with a more readable view.
 ```{r}
 summary(sdreport(obj_tmb), "report")
 # Readable estimates

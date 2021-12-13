@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-12-10" />
+<meta name="date" content="2021-12-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -256,7 +256,7 @@ div.csl-indent {
 <li class="chapter" data-level="9.1.9" data-path="github.html"><a href="github.html#poi_hmm_simu1.R"><i class="fa fa-check"></i><b>9.1.9</b> code/poi_hmm_simu1.R</a></li>
 <li class="chapter" data-level="9.1.10" data-path="github.html"><a href="github.html#poi_hmm_simu2.R"><i class="fa fa-check"></i><b>9.1.10</b> code/poi_hmm_simu2.R</a></li>
 <li class="chapter" data-level="9.1.11" data-path="github.html"><a href="github.html#poi_hmm_simu3.R"><i class="fa fa-check"></i><b>9.1.11</b> code/poi_hmm_simu3.R</a></li>
-<li class="chapter" data-level="9.1.12" data-path="github.html"><a href="github.html#poi_hmm_simu4.R"><i class="fa fa-check"></i><b>9.1.12</b> code/poi_hmm_simu3.R</a></li>
+<li class="chapter" data-level="9.1.12" data-path="github.html"><a href="github.html#poi_hmm_simu4.R"><i class="fa fa-check"></i><b>9.1.12</b> code/poi_hmm_simu4.R</a></li>
 <li class="chapter" data-level="9.1.13" data-path="github.html"><a href="github.html#poi_hmm_tinn.R"><i class="fa fa-check"></i><b>9.1.13</b> code/poi_hmm_tinn.R</a></li>
 <li class="chapter" data-level="9.1.14" data-path="github.html"><a href="github.html#setup_parameters.R"><i class="fa fa-check"></i><b>9.1.14</b> code/setup_parameters.R</a></li>
 <li class="chapter" data-level="9.1.15" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>9.1.15</b> data/</a></li>
@@ -297,26 +297,11 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="multivariate-gaussian-hmm" class="section level1" number="8">
 <h1><span class="header-section-number"> 8</span> Multivariate Gaussian HMM</h1>
-<p>Multivariate Gaussian HMMs with <code>TMB</code> are very similar to the previous Poisson HMM.
-The main changes are the distribution parameters being changed from <span class="math inline">\({\boldsymbol\lambda}\)</span> to <span class="math inline">\({\boldsymbol\mu}\)</span> and <span class="math inline">\({\boldsymbol\Sigma}\)</span>.
-In turn, these cause the density function to change from <code>dpois</code> to <code>dmvnorm</code> (and from <code>rpois</code> to <code>rmvnorm</code> for simulations) from the <code>mvtnorm</code> <span class="citation">(<a href="#ref-R-mvtnorm" role="doc-biblioref">Genz, Bretz, Miwa, Mi, &amp; Hothorn, 2021</a>)</span> package.</p>
-<p>Many functions available in <em><a href="github.html#utils.R">functions/utils.R</a></em> have been adapted for the multivariate Gaussian case in <em><a href="github.html#mvnorm_utils.R">functions/mvnorm_utils.R</a></em>.</p>
-<p>We detail below an example of a two-state trivariate Gaussian HMM with TMB.</p>
-<div id="dataset-parameters" class="section level2" number="8.1">
-<h2><span class="header-section-number">8.1</span> Dataset &amp; Parameters</h2>
-<p>To avoid issues regarding the choice of data, we simulate our own.</p>
-<p>The parameters chosen are as follows
-<span class="math display">\[\begin{equation*}
-{\boldsymbol\Gamma} =
-\begin{pmatrix}
-0.85 &amp; 0.05 &amp; 0.05 &amp; 0.05\\
-0.05 &amp; 0.85 &amp; 0.05 &amp; 0.05\\
-0.05 &amp; 0.10 &amp; 0.80 &amp; 0.05\\
-0.25 &amp; 0.25 &amp; 0.25 &amp; 0.25
-\end{pmatrix}, \quad
-{\boldsymbol\lambda} = (1, 6, 11, 16)
-\end{equation*}\]</span></p>
-<p>We generate 1000 data with the function below (similarly to the Poisson case).</p>
+<p>Multivariate Gaussian HMMs with <code>TMB</code> have a lot in common with the previous Poisson HMM, we focus on the main differences in this Section.
+Most notably, distribution parameters are changed from <span class="math inline">\({\boldsymbol\lambda}\)</span> to <span class="math inline">\({\boldsymbol\mu}\)</span> and <span class="math inline">\({\boldsymbol\Sigma}\)</span>.
+In turn, these cause the density function to change from <code>dpois</code> to <code>dmvnorm</code> (and the random data generation functions from <code>rpois</code> to <code>rmvnorm</code> for simulations) from the <code>mvtnorm</code> <span class="citation">(<a href="#ref-R-mvtnorm" role="doc-biblioref">Genz et al. 2021</a>)</span> package.</p>
+<p>Many functions available in <em><a href="github.html#utils.R">functions/utils.R</a></em> have been adapted with the changes described for the multivariate Gaussian case in <em><a href="github.html#mvnorm_utils.R">functions/mvnorm_utils.R</a></em>.</p>
+<p>As an example, the function to generate random data becomes</p>
 <div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="multivariate-gaussian-hmm.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a random sample from a HMM</span></span>
 <span id="cb90-2"><a href="multivariate-gaussian-hmm.html#cb90-2" aria-hidden="true" tabindex="-1"></a>mvnorm.HMM.generate.sample  <span class="ot">&lt;-</span> <span class="cf">function</span>(ns, mod) {</span>
 <span id="cb90-3"><a href="multivariate-gaussian-hmm.html#cb90-3" aria-hidden="true" tabindex="-1"></a>  mvect <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>mod<span class="sc">$</span>m</span>
@@ -336,6 +321,22 @@ In turn, these cause the density function to change from <code>dpois</code> to <
 <span id="cb90-17"><a href="multivariate-gaussian-hmm.html#cb90-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(x) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
 <span id="cb90-18"><a href="multivariate-gaussian-hmm.html#cb90-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">data =</span> x, <span class="at">state =</span> state))</span>
 <span id="cb90-19"><a href="multivariate-gaussian-hmm.html#cb90-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>We detail below an example of the estimation of a two-state trivariate Gaussian HMM with TMB.</p>
+<div id="dataset-parameters" class="section level2" number="8.1">
+<h2><span class="header-section-number">8.1</span> Dataset &amp; Parameters</h2>
+<p>To avoid issues regarding the choice of data, we simulate our own.</p>
+<p>The parameters chosen are as follows
+<span class="math display">\[\begin{equation*}
+{\boldsymbol\Gamma} =
+\begin{pmatrix}
+0.85 &amp; 0.05 &amp; 0.05 &amp; 0.05\\
+0.05 &amp; 0.85 &amp; 0.05 &amp; 0.05\\
+0.05 &amp; 0.10 &amp; 0.80 &amp; 0.05\\
+0.25 &amp; 0.25 &amp; 0.25 &amp; 0.25
+\end{pmatrix}, \quad
+{\boldsymbol\lambda} = (1, 6, 11, 16)
+\end{equation*}\]</span></p>
+<p>We generate 1000 data with the function above.</p>
 </div>
 <div id="likelihood-function-2" class="section level2" number="8.2">
 <h2><span class="header-section-number">8.2</span> Likelihood function</h2>
@@ -536,26 +537,51 @@ In turn, these cause the density function to change from <code>dpois</code> to <
 <span id="cb93-39"><a href="multivariate-gaussian-hmm.html#cb93-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Similarly to the Poisson case, we can generate data.</span></span>
 <span id="cb93-40"><a href="multivariate-gaussian-hmm.html#cb93-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Here, we generate a trivariate Gaussian sample of size 1000.</span></span>
 <span id="cb93-41"><a href="multivariate-gaussian-hmm.html#cb93-41" aria-hidden="true" tabindex="-1"></a>TMBdata <span class="ot">&lt;-</span> <span class="fu">mvnorm.HMM.generate.sample</span>(<span class="dv">1000</span>, mod)</span>
-<span id="cb93-42"><a href="multivariate-gaussian-hmm.html#cb93-42" aria-hidden="true" tabindex="-1"></a><span class="co"># TMB requires a list</span></span>
-<span id="cb93-43"><a href="multivariate-gaussian-hmm.html#cb93-43" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> TMBdata<span class="sc">$</span>data,</span>
-<span id="cb93-44"><a href="multivariate-gaussian-hmm.html#cb93-44" aria-hidden="true" tabindex="-1"></a>                 <span class="at">m =</span> m)</span>
-<span id="cb93-45"><a href="multivariate-gaussian-hmm.html#cb93-45" aria-hidden="true" tabindex="-1"></a><span class="co"># TMB requires the parameters to be either vectors, matrices, or arrays.</span></span>
-<span id="cb93-46"><a href="multivariate-gaussian-hmm.html#cb93-46" aria-hidden="true" tabindex="-1"></a><span class="co"># For simplicity, we pass the parameters as a list of vectors and matrices.</span></span>
-<span id="cb93-47"><a href="multivariate-gaussian-hmm.html#cb93-47" aria-hidden="true" tabindex="-1"></a>pw <span class="ot">&lt;-</span> <span class="fu">mvnorm.HMM.pn2pw</span>(<span class="at">m =</span> m,</span>
-<span id="cb93-48"><a href="multivariate-gaussian-hmm.html#cb93-48" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mu =</span> mu, <span class="at">sigma =</span> sigma, <span class="at">gamma =</span> gamma)</span>
-<span id="cb93-49"><a href="multivariate-gaussian-hmm.html#cb93-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-50"><a href="multivariate-gaussian-hmm.html#cb93-50" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> TMB<span class="sc">::</span><span class="fu">MakeADFun</span>(<span class="at">data =</span> TMB_data,</span>
-<span id="cb93-51"><a href="multivariate-gaussian-hmm.html#cb93-51" aria-hidden="true" tabindex="-1"></a>                          <span class="at">parameters =</span> pw,</span>
-<span id="cb93-52"><a href="multivariate-gaussian-hmm.html#cb93-52" aria-hidden="true" tabindex="-1"></a>                          <span class="at">DLL =</span> <span class="st">&quot;mvnorm_hmm&quot;</span>,</span>
-<span id="cb93-53"><a href="multivariate-gaussian-hmm.html#cb93-53" aria-hidden="true" tabindex="-1"></a>                          <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb93-54"><a href="multivariate-gaussian-hmm.html#cb93-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-55"><a href="multivariate-gaussian-hmm.html#cb93-55" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
-<span id="cb93-56"><a href="multivariate-gaussian-hmm.html#cb93-56" aria-hidden="true" tabindex="-1"></a>              <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
-<span id="cb93-57"><a href="multivariate-gaussian-hmm.html#cb93-57" aria-hidden="true" tabindex="-1"></a>              <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
-<span id="cb93-58"><a href="multivariate-gaussian-hmm.html#cb93-58" aria-hidden="true" tabindex="-1"></a>              <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span></code></pre></div>
+<span id="cb93-42"><a href="multivariate-gaussian-hmm.html#cb93-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-43"><a href="multivariate-gaussian-hmm.html#cb93-43" aria-hidden="true" tabindex="-1"></a><span class="co"># TMB requires a list</span></span>
+<span id="cb93-44"><a href="multivariate-gaussian-hmm.html#cb93-44" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> TMBdata<span class="sc">$</span>data,</span>
+<span id="cb93-45"><a href="multivariate-gaussian-hmm.html#cb93-45" aria-hidden="true" tabindex="-1"></a>                 <span class="at">m =</span> m)</span>
+<span id="cb93-46"><a href="multivariate-gaussian-hmm.html#cb93-46" aria-hidden="true" tabindex="-1"></a><span class="co"># TMB requires the parameters to be either vectors, matrices, or arrays.</span></span>
+<span id="cb93-47"><a href="multivariate-gaussian-hmm.html#cb93-47" aria-hidden="true" tabindex="-1"></a><span class="co"># For simplicity, we pass the parameters as a list of vectors and matrices.</span></span>
+<span id="cb93-48"><a href="multivariate-gaussian-hmm.html#cb93-48" aria-hidden="true" tabindex="-1"></a>pw <span class="ot">&lt;-</span> <span class="fu">mvnorm.HMM.pn2pw</span>(<span class="at">m =</span> m,</span>
+<span id="cb93-49"><a href="multivariate-gaussian-hmm.html#cb93-49" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mu =</span> mu, <span class="at">sigma =</span> sigma, <span class="at">gamma =</span> gamma)</span>
+<span id="cb93-50"><a href="multivariate-gaussian-hmm.html#cb93-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-51"><a href="multivariate-gaussian-hmm.html#cb93-51" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> TMB<span class="sc">::</span><span class="fu">MakeADFun</span>(<span class="at">data =</span> TMB_data,</span>
+<span id="cb93-52"><a href="multivariate-gaussian-hmm.html#cb93-52" aria-hidden="true" tabindex="-1"></a>                          <span class="at">parameters =</span> pw,</span>
+<span id="cb93-53"><a href="multivariate-gaussian-hmm.html#cb93-53" aria-hidden="true" tabindex="-1"></a>                          <span class="at">DLL =</span> <span class="st">&quot;mvnorm_hmm&quot;</span>,</span>
+<span id="cb93-54"><a href="multivariate-gaussian-hmm.html#cb93-54" aria-hidden="true" tabindex="-1"></a>                          <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb93-55"><a href="multivariate-gaussian-hmm.html#cb93-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-56"><a href="multivariate-gaussian-hmm.html#cb93-56" aria-hidden="true" tabindex="-1"></a><span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
+<span id="cb93-57"><a href="multivariate-gaussian-hmm.html#cb93-57" aria-hidden="true" tabindex="-1"></a>       <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb93-58"><a href="multivariate-gaussian-hmm.html#cb93-58" aria-hidden="true" tabindex="-1"></a>       <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
+<span id="cb93-59"><a href="multivariate-gaussian-hmm.html#cb93-59" aria-hidden="true" tabindex="-1"></a>       <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb93-60"><a href="multivariate-gaussian-hmm.html#cb93-60" aria-hidden="true" tabindex="-1"></a><span class="do">## $par</span></span>
+<span id="cb93-61"><a href="multivariate-gaussian-hmm.html#cb93-61" aria-hidden="true" tabindex="-1"></a><span class="do">##          tmu          tmu          tmu          tmu          tmu          tmu       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma </span></span>
+<span id="cb93-62"><a href="multivariate-gaussian-hmm.html#cb93-62" aria-hidden="true" tabindex="-1"></a><span class="do">##  5.979331886  7.974662650  9.034963083  1.105791929  2.016963286  3.069442564 -0.005278076  0.470025716 -0.161247055  0.455150038  0.312012980 -0.218999355  0.306537527  1.029377442 -0.038685928 </span></span>
+<span id="cb93-63"><a href="multivariate-gaussian-hmm.html#cb93-63" aria-hidden="true" tabindex="-1"></a><span class="do">##       tsigma       tsigma       tsigma       tgamma       tgamma </span></span>
+<span id="cb93-64"><a href="multivariate-gaussian-hmm.html#cb93-64" aria-hidden="true" tabindex="-1"></a><span class="do">##  0.977222514  0.440952661 -0.128765538 -1.852673335 -2.813032886 </span></span>
+<span id="cb93-65"><a href="multivariate-gaussian-hmm.html#cb93-65" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb93-66"><a href="multivariate-gaussian-hmm.html#cb93-66" aria-hidden="true" tabindex="-1"></a><span class="do">## $objective</span></span>
+<span id="cb93-67"><a href="multivariate-gaussian-hmm.html#cb93-67" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4295.975</span></span>
+<span id="cb93-68"><a href="multivariate-gaussian-hmm.html#cb93-68" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb93-69"><a href="multivariate-gaussian-hmm.html#cb93-69" aria-hidden="true" tabindex="-1"></a><span class="do">## $convergence</span></span>
+<span id="cb93-70"><a href="multivariate-gaussian-hmm.html#cb93-70" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0</span></span>
+<span id="cb93-71"><a href="multivariate-gaussian-hmm.html#cb93-71" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb93-72"><a href="multivariate-gaussian-hmm.html#cb93-72" aria-hidden="true" tabindex="-1"></a><span class="do">## $iterations</span></span>
+<span id="cb93-73"><a href="multivariate-gaussian-hmm.html#cb93-73" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 5</span></span>
+<span id="cb93-74"><a href="multivariate-gaussian-hmm.html#cb93-74" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb93-75"><a href="multivariate-gaussian-hmm.html#cb93-75" aria-hidden="true" tabindex="-1"></a><span class="do">## $evaluations</span></span>
+<span id="cb93-76"><a href="multivariate-gaussian-hmm.html#cb93-76" aria-hidden="true" tabindex="-1"></a><span class="do">## function gradient </span></span>
+<span id="cb93-77"><a href="multivariate-gaussian-hmm.html#cb93-77" aria-hidden="true" tabindex="-1"></a><span class="do">##        6        5 </span></span>
+<span id="cb93-78"><a href="multivariate-gaussian-hmm.html#cb93-78" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb93-79"><a href="multivariate-gaussian-hmm.html#cb93-79" aria-hidden="true" tabindex="-1"></a><span class="do">## $message</span></span>
+<span id="cb93-80"><a href="multivariate-gaussian-hmm.html#cb93-80" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] &quot;both X-convergence and relative convergence (5)&quot;</span></span></code></pre></div>
 </div>
 <div id="results-1" class="section level2" number="8.4">
 <h2><span class="header-section-number">8.4</span> Results</h2>
+<p>We show estimates and their standard errors.
+Note that the matrix results (for <span class="math inline">\(\bs{delta\)</span> <span class="math inline">\({\boldsymbol Gamma}\)</span> and <span class="math inline">\(\{Sigma\)</span>) are displayed in a column-wise format.
+This can be verified by checking the more easily readable view of these estimates.</p>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="multivariate-gaussian-hmm.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
 <span id="cb94-2"><a href="multivariate-gaussian-hmm.html#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="do">##         Estimate  Std. Error</span></span>
 <span id="cb94-3"><a href="multivariate-gaussian-hmm.html#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="do">## mu    5.97933189 0.037563682</span></span>
@@ -658,9 +684,9 @@ To do this, we look at the maximum absolute percentage difference between estima
 </div>
 </div>
 <h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-R-mvtnorm" class="csl-entry">
-Genz, A., Bretz, F., Miwa, T., Mi, X., &amp; Hothorn, T. (2021). <em>Mvtnorm: Multivariate normal and t distributions</em>. Retrieved from <a href="http://mvtnorm.R-forge.R-project.org">http://mvtnorm.R-forge.R-project.org</a>
+Genz, Alan, Frank Bretz, Tetsuhisa Miwa, Xuefei Mi, and Torsten Hothorn. 2021. <em>Mvtnorm: Multivariate Normal and t Distributions</em>. <a href="http://mvtnorm.R-forge.R-project.org">http://mvtnorm.R-forge.R-project.org</a>.
 </div>
 </div>
             </section>

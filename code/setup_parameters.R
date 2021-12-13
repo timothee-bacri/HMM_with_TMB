@@ -25,16 +25,16 @@ q95_norm <- qnorm(1 - 0.05 / 2)
 # Rvmmin and Rcgmin don't work in our case, so we don't use them
 
 # Number of benchmark runs used to time the estimation of HMM parameters (CAN = 0)
-BENCHMARK_SAMPLES <- 200
-# BENCHMARK_SAMPLES <- 2
+# BENCHMARK_SAMPLES <- 200
+BENCHMARK_SAMPLES <- 2
 
 # Number of bootstrap samples used to obtain confidence intervals (CAN = 0)
-BOOTSTRAP_SAMPLES <- 1000
-# BOOTSTRAP_SAMPLES <- 2
+# BOOTSTRAP_SAMPLES <- 1000
+BOOTSTRAP_SAMPLES <- 10
 
 # Number of confidence intervals used to obtain coverage probabilities (CAN = 0)
-COVERAGE_SAMPLES <- 1000
-# COVERAGE_SAMPLES <- 2
+# COVERAGE_SAMPLES <- 1000
+COVERAGE_SAMPLES <- 10
 
 # Number of benchmarks checking timing reliability (CAN = 0)
 CONSISTENCY_BENCHMARK_TINN <- 200

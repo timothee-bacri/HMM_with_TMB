@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-12-10" />
+<meta name="date" content="2021-12-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -256,7 +256,7 @@ div.csl-indent {
 <li class="chapter" data-level="9.1.9" data-path="github.html"><a href="github.html#poi_hmm_simu1.R"><i class="fa fa-check"></i><b>9.1.9</b> code/poi_hmm_simu1.R</a></li>
 <li class="chapter" data-level="9.1.10" data-path="github.html"><a href="github.html#poi_hmm_simu2.R"><i class="fa fa-check"></i><b>9.1.10</b> code/poi_hmm_simu2.R</a></li>
 <li class="chapter" data-level="9.1.11" data-path="github.html"><a href="github.html#poi_hmm_simu3.R"><i class="fa fa-check"></i><b>9.1.11</b> code/poi_hmm_simu3.R</a></li>
-<li class="chapter" data-level="9.1.12" data-path="github.html"><a href="github.html#poi_hmm_simu4.R"><i class="fa fa-check"></i><b>9.1.12</b> code/poi_hmm_simu3.R</a></li>
+<li class="chapter" data-level="9.1.12" data-path="github.html"><a href="github.html#poi_hmm_simu4.R"><i class="fa fa-check"></i><b>9.1.12</b> code/poi_hmm_simu4.R</a></li>
 <li class="chapter" data-level="9.1.13" data-path="github.html"><a href="github.html#poi_hmm_tinn.R"><i class="fa fa-check"></i><b>9.1.13</b> code/poi_hmm_tinn.R</a></li>
 <li class="chapter" data-level="9.1.14" data-path="github.html"><a href="github.html#setup_parameters.R"><i class="fa fa-check"></i><b>9.1.14</b> code/setup_parameters.R</a></li>
 <li class="chapter" data-level="9.1.15" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>9.1.15</b> data/</a></li>
@@ -501,6 +501,9 @@ These log-returns are generated with the following code.</p>
 </div>
 <div id="results" class="section level2" number="7.4">
 <h2><span class="header-section-number">7.4</span> Results</h2>
+<p>Estimates can be shown here along with their standard errors, as was done previously in the Poisson case.
+As before, the matrix results are displayed in a column-wise format.
+This can be seen by comparing estimates with a more readable view.</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="gaussian-hmm.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
 <span id="cb89-2"><a href="gaussian-hmm.html#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="do">##          Estimate  Std. Error</span></span>
 <span id="cb89-3"><a href="gaussian-hmm.html#cb89-3" aria-hidden="true" tabindex="-1"></a><span class="do">## mu     0.06116848 0.005401313</span></span>

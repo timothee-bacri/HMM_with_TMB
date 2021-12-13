@@ -1,12 +1,16 @@
 # Multivariate Gaussian HMM
 
-Multivariate Gaussian HMMs with `TMB` are very similar to the previous Poisson HMM.
-The main changes are the distribution parameters being changed from $\bs{\lambda}$ to $\bs{\mu}$ and $\bs{\Sigma}$.
-In turn, these cause the density function to change from `dpois` to `dmvnorm` (and from `rpois` to `rmvnorm` for simulations) from the `mvtnorm` [@R-mvtnorm] package.
+Multivariate Gaussian HMMs with `TMB` have a lot in common with the previous Poisson HMM, we focus on the main differences in this Section.
+Most notably, distribution parameters are changed from $\bs{\lambda}$ to $\bs{\mu}$ and $\bs{\Sigma}$.
+In turn, these cause the density function to change from `dpois` to `dmvnorm` (and the random data generation functions from `rpois` to `rmvnorm` for simulations) from the `mvtnorm` [@R-mvtnorm] package.
 
-Many functions available in *[functions/utils.R](#utils.R)* have been adapted for the multivariate Gaussian case in *[functions/mvnorm_utils.R](#mvnorm_utils.R)*.
+Many functions available in *[functions/utils.R](#utils.R)* have been adapted with the changes described for the multivariate Gaussian case in *[functions/mvnorm_utils.R](#mvnorm_utils.R)*.
 
-We detail below an example of a two-state trivariate Gaussian HMM with TMB.
+As an example, the function to generate random data becomes
+```{r mvnorm.HMM.generate.sample}
+```
+
+We detail below an example of the estimation of a two-state trivariate Gaussian HMM with TMB.
 
 ## Dataset & Parameters
 To avoid issues regarding the choice of data, we simulate our own.
@@ -23,9 +27,7 @@ The parameters chosen are as follows
 \bs{\lambda} = (1, 6, 11, 16)
 \end{equation*}
 
-We generate 1000 data with the function below (similarly to the Poisson case).
-```{r mvnorm.HMM.generate.sample}
-```
+We generate 1000 data with the function above.
 
 ## Likelihood function
 The Gaussian negative log-likelihood in TMB can be coded as
@@ -78,6 +80,7 @@ mod <- list(m = m,
 # Similarly to the Poisson case, we can generate data.
 # Here, we generate a trivariate Gaussian sample of size 1000.
 TMBdata <- mvnorm.HMM.generate.sample(1000, mod)
+
 # TMB requires a list
 TMB_data <- list(x = TMBdata$data,
                  m = m)
@@ -91,13 +94,16 @@ obj_tmb <- TMB::MakeADFun(data = TMB_data,
                           DLL = "mvnorm_hmm",
                           silent = TRUE)
 
-res <- nlminb(start = obj_tmb$par,
-              objective = obj_tmb$fn,
-              gradient = obj_tmb$gr,
-              hessian = obj_tmb$he)
+nlminb(start = obj_tmb$par,
+       objective = obj_tmb$fn,
+       gradient = obj_tmb$gr,
+       hessian = obj_tmb$he)
 ```
 
 ## Results
+We show estimates and their standard errors.
+Note that the matrix results (for $\bs{delta$ $\bs{Gamma}$ and $\{Sigma$) are displayed in a column-wise format.
+This can be verified by checking the more easily readable view of these estimates.
 ```{r 8obj-report}
 summary(sdreport(obj_tmb), "report")
 # More readable estimates

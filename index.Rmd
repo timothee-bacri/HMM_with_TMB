@@ -10,7 +10,7 @@ site: bookdown::bookdown_site
 documentclass: book
 bibliography: [packages.bib, paper.bib]
 biblio-style: apalike
-csl: apa.csl
+# csl: apa.csl
 link-citations: yes
 description: "This accompanies the article published at [GITHUB LINK]."
 url: "https://github.com/timothee-bacri/HMM_with_TMB"
@@ -24,6 +24,11 @@ header-includes:
   - \usepackage{listings}
   - \newcommand{\bs}[1]{{\boldsymbol#1}}
   - \DeclareMathOperator*{\argmax}{argmax}
+editor_options:
+  markdown:
+    wrap: 80
+    references: 
+      location: block
 ---
 
 # Introduction
