@@ -1,7 +1,7 @@
 # Multivariate Gaussian HMM
 
 Multivariate Gaussian HMMs with `TMB` have a lot in common with the previous Poisson HMM, we focus on the main differences in this Section.
-Most notably, distribution parameters are changed from $\bs{\lambda}$ to $\bs{\mu}$ and $\bs{\Sigma}$.
+Most notably, distribution parameters are changed from Poisson means $\bs{\lambda}$ to Normal mean vectors $\bs{\mu}$ and Normal covariance matrices $\bs{\Sigma}$.
 In turn, these cause the density function to change from `dpois` to `dmvnorm` (and the random data generation functions from `rpois` to `rmvnorm` for simulations) from the `mvtnorm` [@R-mvtnorm] package.
 
 Many functions available in *[functions/utils.R](#utils.R)* have been adapted with the changes described for the multivariate Gaussian case in *[functions/mvnorm_utils.R](#mvnorm_utils.R)*.
@@ -15,16 +15,44 @@ We detail below an example of the estimation of a two-state trivariate Gaussian 
 ## Dataset & Parameters
 To avoid issues regarding the choice of data, we simulate our own.
 
-The parameters chosen are as follows
+Let 2 Gaussian distributions $N(\bs{\mu_1}, \bs{\Sigma_1})$ and $N(\bs{\mu_2}, \bs{\Sigma_2})$ be defined with parameters as follows.
+\begin{equation*}
+\bs{\mu} =
+\begin{pmatrix}
+\bs{\mu_1}\\
+\bs{\mu_2}
+\end{pmatrix}
+=
+\begin{pmatrix}
+6 & 8 & 9\\
+1 & 2 & 3
+\end{pmatrix}
+\end{equation*}
+
+\begin{equation*}
+\bs{\Sigma} =
+\left(\bs{\Sigma_1}, \bs{\Sigma_2}\right) \text{ where  }
+\bs{\Sigma_1} =
+\begin{pmatrix}
+1.0 & 0.5 & 0.5\\
+0.5 & 1.0 & 0.5\\
+0.5 & 0.5 & 1.0
+\end{pmatrix} \text{ and }
+\bs{\Sigma_2} =
+\begin{pmatrix}
+2.0 & 1.5 & 1.5\\
+1.5 & 2.0 & 1.5\\
+1.5 & 1.5 & 2.0
+\end{pmatrix}
+\end{equation*}
+
+Let a stationary Markov chain's TPM be defined as follows.
 \begin{equation*}
 \bs{\Gamma} =
 \begin{pmatrix}
-0.85 & 0.05 & 0.05 & 0.05\\
-0.05 & 0.85 & 0.05 & 0.05\\
-0.05 & 0.10 & 0.80 & 0.05\\
-0.25 & 0.25 & 0.25 & 0.25
-\end{pmatrix}, \quad
-\bs{\lambda} = (1, 6, 11, 16)
+0.95 & 0.05\\
+0.15 & 0.85
+\end{pmatrix}
 \end{equation*}
 
 We generate 1000 data with the function above.
@@ -40,10 +68,11 @@ and requires the following utility functions.
 
 ## Estimation
 ```{r 8example, cache=TRUE}
+# Load packages and utility functions
 source("code/packages.R")
 source("functions/mvnorm_utils.R")
 
-# TMB::precompile()
+# Compile and load the objective function for TMB
 TMB::compile("code/mvnorm_hmm.cpp")
 dyn.load(TMB::dynlib("code/mvnorm_hmm"))
 
@@ -54,9 +83,9 @@ m <- 2
 # Trivariate Normal distribution
 p <- 3
 
-# One row per state, one column per dimension of the data
-mu <- matrix(c(6,8,9,
-               1,2,3), nrow = m, ncol = p, byrow = TRUE)
+# One row of means per state, one column per dimension of the data
+mu <- matrix(c(6, 8, 9,
+               1, 2, 3), nrow = m, ncol = p, byrow = TRUE)
 # Two covariance matrices
 sigma1 <- matrix(c(1.0, 0.5, 0.5,
                    0.5, 1.0, 0.5,
@@ -69,31 +98,31 @@ sigma2 <- matrix(c(2.0, 1.5, 1.5,
 # easily distinguishable at a glance when displayed
 sigma <- array(c(sigma1, sigma2), dim = c(p, p, m))
 
+# TPM
 gamma <- matrix(c(0.95, 0.05,
                   0.15, 0.85), byrow = TRUE, nrow = m, ncol = m)
 
+# Similarly to the Poisson case, we can generate data.
+# Here, we generate a trivariate Gaussian sample of size 1000.
 mod <- list(m = m,
             mu = mu,
             sigma = sigma,
             gamma = gamma)
-
-# Similarly to the Poisson case, we can generate data.
-# Here, we generate a trivariate Gaussian sample of size 1000.
 TMBdata <- mvnorm.HMM.generate.sample(1000, mod)
 
+# Parameters & covariates for TMB
 # TMB requires a list
 TMB_data <- list(x = TMBdata$data,
                  m = m)
 # TMB requires the parameters to be either vectors, matrices, or arrays.
 # For simplicity, we pass the parameters as a list of vectors and matrices.
-pw <- mvnorm.HMM.pn2pw(m = m,
-                       mu = mu, sigma = sigma, gamma = gamma)
+pw <- mvnorm.HMM.pn2pw(m = m, mu = mu, sigma = sigma, gamma = gamma)
 
-obj_tmb <- TMB::MakeADFun(data = TMB_data,
-                          parameters = pw,
-                          DLL = "mvnorm_hmm",
-                          silent = TRUE)
-
+# Estimation
+obj_tmb <- MakeADFun(data = TMB_data,
+                     parameters = pw,
+                     DLL = "mvnorm_hmm",
+                     silent = TRUE)
 nlminb(start = obj_tmb$par,
        objective = obj_tmb$fn,
        gradient = obj_tmb$gr,
@@ -102,7 +131,7 @@ nlminb(start = obj_tmb$par,
 
 ## Results
 We show estimates and their standard errors.
-Note that the matrix results (for $\bs{delta$ $\bs{Gamma}$ and $\{Sigma$) are displayed in a column-wise format.
+Note that the matrix results (for $\bs{\delta}$, $\bs{\Gamma}$, and $\bs{\Sigma}$) are displayed in a column-wise format.
 This can be verified by checking the more easily readable view of these estimates.
 ```{r 8obj-report}
 summary(sdreport(obj_tmb), "report")

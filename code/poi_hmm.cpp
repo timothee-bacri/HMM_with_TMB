@@ -49,24 +49,6 @@ Type objective_function<Type>::operator() ()
   matrix<Type> foo, P;
   Type mllk, sumfoo, lscale;
   
-  // // No need for an "else" statement because we return
-  // // the likelihood directly if m is 1, thus ending the function
-  // if (m == 1) {
-  //   mllk = - emission_probs.col(0).array().log().sum();
-  //   
-  //   // Use adreport on variables we are interested in:
-  //   ADREPORT(lambda);
-  //   ADREPORT(gamma);
-  //   ADREPORT(delta);
-  //   
-  //   // Things we need for local decoding
-  //   REPORT(lambda);
-  //   REPORT(gamma);
-  //   REPORT(delta);
-  //   
-  //   return mllk;
-  // }
-  
   foo = (delta * vector<Type>(emission_probs.row(0))).matrix();
   sumfoo = foo.sum();
   lscale = log(sumfoo);

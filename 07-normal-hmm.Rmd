@@ -35,29 +35,40 @@ and requires the following utility functions.
 ## Estimation
 The following R code illustrates how to compute the estimates and standard errors, using the objective function written above.
 ```{r 7example, cache=TRUE}
+# Load packages and utility functions
 source("code/packages.R")
 source("functions/norm_utils.R")
 
+# Compile and load the objective function for TMB
 TMB::compile("code/norm_hmm.cpp")
 dyn.load(dynlib("code/norm_hmm"))
 
 # Parameters and covariates
 load("data/SP500.RData")
+# Means
 mu <- c(-2 * mean(SP500), 2 * mean(SP500))
+# Standard deviations
 sigma <- c(0.5 * sd(SP500), 2 * sd(SP500))
+# TPM
 gamma <- matrix(c(0.9, 0.1,
                   0.1, 0.9), nrow = 2, byrow = TRUE)
 
-# Parameters & covariates for TMB ------------------
+# Parameters & covariates for TMB
 working_params <- norm.HMM.pn2pw(m = m, mu = mu, sigma = sigma, gamma = gamma)
 TMB_data <- list(x = SP500, m = m)
 obj <- MakeADFun(TMB_data, working_params, DLL = "norm_hmm", silent = TRUE)
 
 # Estimation
-obj_tmb <- MakeADFun(TMB_data, working_params, DLL = "norm_hmm", silent = TRUE)
-mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn,
-                  gradient = obj_tmb$gr, hessian = obj_tmb$he)
+obj_tmb <- MakeADFun(data = TMB_data,
+                     parameters = working_params,
+                     DLL = "norm_hmm",
+                     silent = TRUE)
+mod_tmb <- nlminb(start = obj_tmb$par,
+                  objective = obj_tmb$fn,
+                  gradient = obj_tmb$gr,
+                  hessian = obj_tmb$he)
 ```
+Note that the script above makes a simple educated guess on the true parameters in order to choose initial parameters.
 
 ## Results
 Estimates can be shown here along with their standard errors, as was done previously in the Poisson case.

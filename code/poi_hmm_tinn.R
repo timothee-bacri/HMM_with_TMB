@@ -1,6 +1,6 @@
 # Prepare the data & parameters, then estimate for different numbers of hidden states
 for (idx in 1:length(M_LIST_TINN)) {
-  set.seed(1)
+  set.seed(11)
   # Parameters and covariates --------------------------
   m <- M_LIST_TINN[idx]
   if (m == 1) {
@@ -40,19 +40,15 @@ for (idx in 1:length(M_LIST_TINN)) {
                     lambda0 = lambda_init,
                     gamma0 = gamma_init)
   tmb <- TMB.estimate(TMB_data = TMB_data,
-                      parameters = working_params_init,
-                      MakeADFun_obj = obj_init)
+                      parameters = working_params_init)
   tmb_g <- TMB.estimate(TMB_data = TMB_data,
                         parameters = working_params_init,
-                        MakeADFun_obj = obj_init,
                         gradient = TRUE)
   tmb_h <- TMB.estimate(TMB_data = TMB_data,
                         parameters = working_params_init,
-                        MakeADFun_obj = obj_init,
                         hessian = TRUE)
   tmb_gh <- TMB.estimate(TMB_data = TMB_data,
                          parameters = working_params_init,
-                         MakeADFun_obj = obj_init,
                          gradient = TRUE,
                          hessian = TRUE,
                          std_error = TRUE)
@@ -135,7 +131,7 @@ for (idx in 1:length(M_LIST_TINN)) {
   tgamma_indices <- (m + 1):(m ^ 2)
   
   # Benchmark the same dataset many times to check the benchmark durations has low variance --------------
-  set.seed(2)
+  set.seed(12)
   if (CONSISTENCY_BENCHMARK_TINN != 0) {
     # Parameters & covariates for DM and TMB are already done
     # Estimation benchmark
@@ -200,7 +196,7 @@ for (idx in 1:length(M_LIST_TINN)) {
   }
   
   # Benchmarks ------------
-  set.seed(3)
+  set.seed(13)
   if (BENCHMARK_SAMPLES != 0) {
     for (idx_counter in 1:BENCHMARK_SAMPLES) {
       # Generate data that can be estimated by TMB_GH
@@ -213,10 +209,9 @@ for (idx in 1:length(M_LIST_TINN)) {
                                                                        gamma = tmb_gh$gamma,
                                                                        delta = tmb_gh$delta),
                                                             testing_params = list(m = m,
-                                                                                  lambda = lambda_init,
-                                                                                  gamma = gamma_init,
-                                                                                  delta = delta_init),
-                                                            test_marqLevAlg = TRUE)
+                                                                                  lambda = tmb_gh$lambda,
+                                                                                  gamma = tmb_gh$gamma,
+                                                                                  delta = tmb_gh$delta))
       benchmark_data <- benchmark_model$data
       # Benchmark all different combinations of gradient and hessians with DM ----------------
       # Parameters & covariates for DM and TMB
@@ -226,14 +221,14 @@ for (idx in 1:length(M_LIST_TINN)) {
                                  working_params_init,
                                  DLL = "poi_hmm",
                                  silent = TRUE)
-      parvect_benchmark <- pois.HMM.pn2pw(m = m,
-                                          lambda = lambda_init,
-                                          gamma = gamma_init,
-                                          delta = delta_init)
+      parvect_benchmark_TMB <- pois.HMM.pn2pw(m = m,
+                                              lambda = lambda_init,
+                                              gamma = gamma_init,
+                                              delta = delta_init)
       # nlminb needs a vector, not a list
-      parvect_benchmark <- unlist(parvect_benchmark)
+      parvect_benchmark_DM <- unlist(parvect_benchmark_TMB)
       # Estimation benchmark
-      temp <- microbenchmark("DM" = nlminb(parvect_benchmark,
+      temp <- microbenchmark("DM" = nlminb(parvect_benchmark_DM,
                                            pois.HMM.mllk,
                                            x_alias = benchmark_data,
                                            m_alias = m)$convergence==0,
@@ -262,7 +257,7 @@ for (idx in 1:length(M_LIST_TINN)) {
       timeTMB_H <- times[temp$expr == "TMB_H"]
       timeTMB_GH <- times[temp$expr == "TMB_GH"]
       
-      iterDM <- nlminb(parvect_benchmark,
+      iterDM <- nlminb(parvect_benchmark_DM,
                        pois.HMM.mllk,
                        x_alias = benchmark_data,
                        m_alias = m)$iterations
@@ -296,93 +291,6 @@ for (idx in 1:length(M_LIST_TINN)) {
                                                    dataset_number = rep(idx_counter,
                                                                         length(PROCEDURES))))
       
-      # Benchmark mllk times --------------------------------------------------
-      tmb_gh_benchmark <- TMB.estimate(TMB_data = TMB_benchmark_data,
-                                       parameters = parvect_benchmark,
-                                       MakeADFun_obj = obj_benchmark,
-                                       gradient = TRUE,
-                                       hessian = TRUE)
-      
-      param_tmb_gh <- pois.HMM.pn2pw(m = m,
-                                     lambda = tmb_gh_benchmark$lambda,
-                                     gamma = tmb_gh_benchmark$gamma)
-      model4 <- MakeADFun(TMB_data,
-                          param_tmb_gh,
-                          DLL = "poi_hmm",
-                          silent = TRUE)
-      parvect_mllk <- pois.HMM.pn2pw(m,
-                                     lambda = tmb_gh_benchmark$lambda,
-                                     gamma = tmb_gh_benchmark$gamma)
-      
-      temp <- microbenchmark("DM" = pois.HMM.mllk(parvect_mllk,
-                                                  tinn_data,
-                                                  m),
-                             "TMB_GH" = model4$fn(model4$par),
-                             times = 1)
-      
-      times <- temp$time / 10^9
-      timeDM <- times[temp$expr == "DM"]
-      timeTMB_GH <- times[temp$expr == "TMB_GH"]
-      mllk_times_df_tinn <- rbind(mllk_times_df_tinn,
-                                  data.frame(time = c(timeDM,
-                                                      timeTMB_GH),
-                                             m = rep(m,
-                                                     2),
-                                             procedure = PROCEDURES[c(1, 5)],
-                                             dataset_number = rep(idx_counter,
-                                                                  2)))
-      
-      # Benchmark different optimization methods ----------------------------------------------
-      temp <- microbenchmark("BFGS" = optim(par = obj_benchmark$par,
-                                            fn = obj_benchmark$fn,
-                                            gr = obj_benchmark$gr,
-                                            method = "BFGS",
-                                            control = ctrl)$convergence==0,
-                             "L-BFGS-B" = optim(par = obj_benchmark$par,
-                                                fn = obj_benchmark$fn,
-                                                gr = obj_benchmark$gr,
-                                                method = "L-BFGS-B",
-                                                control = ctrl)$convergence==0,
-                             "nlm" = nlm(f = nlmfn,
-                                         p = obj_benchmark$par,
-                                         obj_benchmark,
-                                         iterlim = 10000)$code==1,
-                             "nlminb" = nlminb(start = obj_benchmark$par,
-                                               objective = obj_benchmark$fn,
-                                               gradient = obj_benchmark$gr,
-                                               hessian = obj_benchmark$he)$convergence==0,
-                             "hjn" = hjn(par = obj_benchmark$par,
-                                         fn = obj_benchmark$fn)$convergence==0,
-                             "marqLevAlg" = marqLevAlg(b = obj_benchmark$par,
-                                                       fn = obj_benchmark$fn,
-                                                       gr = obj_benchmark$gr,
-                                                       hess = obj_benchmark$he,
-                                                       maxiter = 10000)$istop==1,
-                             times = 1,
-                             check = "equal",
-                             setup = obj_benchmark <<- MakeADFun(TMB_benchmark_data,
-                                                                 working_params_init,
-                                                                 DLL = "poi_hmm",
-                                                                 silent = TRUE))
-      
-      times <- temp$time / 10^9
-      timeBFGS <- times[temp$expr == "BFGS"]
-      timeL_BFGS_B <- times[temp$expr == "L-BFGS-B"]
-      timenlm <- times[temp$expr == "nlm"]
-      timenlminb <- times[temp$expr == "nlminb"]
-      timehjn <- times[temp$expr == "hjn"]
-      timemarqLevAlg <- times[temp$expr == "marqLevAlg"]
-      method_comparison_df_tinn <- rbind(method_comparison_df_tinn,
-                                         data.frame(time = c(timeBFGS,
-                                                             timeL_BFGS_B,
-                                                             timenlm,
-                                                             timenlminb,
-                                                             timehjn,
-                                                             timemarqLevAlg),
-                                                    m = rep(m,
-                                                            length(PROCEDURES_METHOD)),
-                                                    procedure = PROCEDURES_METHOD,
-                                                    dataset_number = idx_counter))
     }
   }
   
@@ -424,7 +332,7 @@ for (idx in 1:length(M_LIST_TINN)) {
   }
   
   # Bootstrap ---------------------------
-  set.seed(4)
+  set.seed(14)
   bootstrap_tinn <- data.frame()
   lambda <- tmb_gh$lambda
   gamma <- tmb_gh$gamma
@@ -437,9 +345,9 @@ for (idx in 1:length(M_LIST_TINN)) {
                                                             gamma = tmb_gh$gamma,
                                                             delta = tmb_gh$delta),
                                                  testing_params = list(m = m,
-                                                                       lambda = lambda_init,
-                                                                       gamma = gamma_init,
-                                                                       delta = delta_init))$natural_parameters
+                                                                       lambda = tmb_gh$lambda,
+                                                                       gamma = tmb_gh$gamma,
+                                                                       delta = tmb_gh$delta))$natural_parameters
       # The values from gamma are taken columnwise
       natural_parameters <- temp
       natural_parameters <- unlist(natural_parameters[PARAMS_NAMES])
@@ -478,7 +386,7 @@ for (idx in 1:length(M_LIST_TINN)) {
                                                         gamma_U,
                                                         delta_U)
   # Coverage probabilities of the 3 CI methods -----------------
-  set.seed(5)
+  set.seed(15)
   parameter_names <- paste0(rep("lambda",
                                 m),
                             1:m)
@@ -511,15 +419,15 @@ for (idx in 1:length(M_LIST_TINN)) {
                                                                     gamma = tmb_gh$gamma,
                                                                     delta = tmb_gh$delta),
                                                          testing_params = list(m = m,
-                                                                               lambda = lambda_init,
-                                                                               gamma = gamma_init,
-                                                                               delta = delta_init),
+                                                                               lambda = tmb_gh$lambda,
+                                                                               gamma = tmb_gh$gamma,
+                                                                               delta = tmb_gh$delta),
                                                          std_error = TRUE)
     
     # Save the occurrences of failures to generate a sample for which parameters can be estimated
     for (reason in c("state_number", "TMB_null", "TMB_converge", "TMB_G_null",
                      "TMB_G_converge", "TMB_H_null", "TMB_H_converge", "TMG_GH_null",
-                     "TMG_GH_converge", "marqLevAlg_converge", "NA_value")) {
+                     "TMG_GH_converge", "NA_value")) {
       coverage_skips_tinn[coverage_skips_tinn$m == m, reason] <- coverage_skips_tinn[coverage_skips_tinn$m == m, reason] + coverage_model$failure[reason]
     }
     
@@ -556,11 +464,15 @@ for (idx in 1:length(M_LIST_TINN)) {
                                                 working_conf_int$upper[tgamma_indices]))
     
     # If profiling doesn't yield results for all parameters, try a new coverage sample
-    if (anyNA(c(lambda_profile_lower,
-                lambda_profile_upper,
-                gamma_profile_lower,
-                gamma_profile_upper),
-              recursive = TRUE)) {
+    estimates_coverage <- c(lambda_profile_lower,
+                            lambda_profile_upper,
+                            gamma_profile_lower,
+                            gamma_profile_upper)
+    estimates_coverage
+    test_null <- sapply(X = estimates_coverage, FUN = is.null)
+    test_finite <- sapply(X = estimates_coverage, FUN = is.finite)
+    # If some CI bounds are NULL or missing (NA) or infinite (Inf), try a new coverage sample
+    if (any(test_null == TRUE) | any(test_finite == FALSE)) {
       idx_coverage <- idx_coverage - 1
       coverage_skips_tinn[coverage_skips_tinn$m == m, "profile"] <- coverage_skips_tinn[coverage_skips_tinn$m == m, "profile"] + 1
       next

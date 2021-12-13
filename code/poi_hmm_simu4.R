@@ -1,6 +1,6 @@
 # Prepare the data & parameters, then estimate for different numbers of hidden states
 for (idx in 1:length(M_LIST_SIMU4)) {
-  set.seed(22)
+  set.seed(401)
   # Parameters and covariates --------------------------
   m <- M_LIST_SIMU4[idx]
   if (m == 2) {
@@ -93,7 +93,6 @@ for (idx in 1:length(M_LIST_SIMU4)) {
   }
   
   # Creating variables for the CIs -----------------
-  tmb_CI <- tmb_gh
   params_names_latex <- paste0(rep("$\\lambda_{",
                                    m),
                                1:m,
@@ -119,12 +118,12 @@ for (idx in 1:length(M_LIST_SIMU4)) {
   conf_int_simu4[indices, "m"] <- m
   conf_int_simu4[indices, "Parameter"] <- params_names_latex
   # Reminder, PARAMS_NAMES contains c("lambda", "gamma", "delta")
-  conf_int_simu4[indices, "Estimate"] <- unlist(tmb_CI[PARAMS_NAMES])
+  conf_int_simu4[indices, "Estimate"] <- unlist(tmb_gh[PARAMS_NAMES])
   conf_int_simu4[indices, "True.value"] <- as.numeric(c(true_lambda,
                                                         true_gamma,
                                                         true_delta))
   
-  param_tmb_CI <- pois.HMM.pn2pw(m = m,
+  param_tmb_gh <- pois.HMM.pn2pw(m = m,
                                  lambda = tmb_CI$lambda,
                                  gamma = tmb_CI$gamma)
   
@@ -146,9 +145,9 @@ for (idx in 1:length(M_LIST_SIMU4)) {
   tgamma_indices <- (m + 1):(m ^ 2)
   
   # Benchmarks ------------
-  set.seed(23)
+  set.seed(402)
   if (BENCHMARK_SAMPLES != 0) {
-    sms("Simu4 Benchmark start")
+    notif("Simu4", "Benchmark start")
     for (idx_counter in 1:BENCHMARK_SAMPLES) {
       # Generate data that can be estimated by TMB_GH
       # and is tested on the slightly off parameters from the beginning of this file
@@ -156,14 +155,13 @@ for (idx in 1:length(M_LIST_SIMU4)) {
       # when estimated with guessed initial parameters
       benchmark_model <- pois.HMM.generate.estimable.sample(ns = DATA_SIZE_SIMU4,
                                                             mod = list(m = m,
-                                                                       lambda = tmb_CI$lambda,
-                                                                       gamma = tmb_CI$gamma,
-                                                                       delta = tmb_CI$delta),
+                                                                       lambda = tmb_gh$lambda,
+                                                                       gamma = tmb_gh$gamma,
+                                                                       delta = tmb_gh$delta),
                                                             testing_params = list(m = m,
                                                                                   lambda = true_lambda,
                                                                                   gamma = true_gamma,
-                                                                                  delta = true_delta),
-                                                            test_marqLevAlg = TRUE)
+                                                                                  delta = true_delta))
       benchmark_data <- benchmark_model$data
       # Benchmark all different combinations of gradient and hessians with DM ----------------
       # Parameters & covariates for DM and TMB
@@ -243,96 +241,8 @@ for (idx in 1:length(M_LIST_SIMU4)) {
                                                     dataset_number = rep(idx_counter,
                                                                          length(PROCEDURES))))
       
-      # Benchmark mllk times --------------------------------------------------
-      tmb_gh_benchmark <- TMB.estimate(TMB_data = TMB_benchmark_data,
-                                       parameters = parvect_benchmark_TMB,
-                                       gradient = TRUE,
-                                       hessian = TRUE)
-      
-      param_tmb_gh <- pois.HMM.pn2pw(m = m,
-                                     lambda = tmb_gh_benchmark$lambda,
-                                     gamma = tmb_gh_benchmark$gamma)
-      model4 <- MakeADFun(TMB_data,
-                          param_tmb_gh,
-                          DLL = "poi_hmm",
-                          silent = TRUE)
-      parvect_mllk <- pois.HMM.pn2pw(m,
-                                     lambda = tmb_gh_benchmark$lambda,
-                                     gamma = tmb_gh_benchmark$gamma)
-      
-      temp <- microbenchmark("DM" = pois.HMM.mllk(parvect_mllk,
-                                                  simu4_data,
-                                                  m),
-                             "TMB_GH" = model4$fn(model4$par),
-                             times = 1)
-      
-      times <- temp$time / 10^9
-      timeDM <- times[temp$expr == "DM"]
-      timeTMB_GH <- times[temp$expr == "TMB_GH"]
-      mllk_times_df_simu4 <- rbind(mllk_times_df_simu4,
-                                   data.frame(time = c(timeDM,
-                                                       timeTMB_GH),
-                                              m = rep(m,
-                                                      2),
-                                              procedure = PROCEDURES[c(1, 5)],
-                                              dataset_number = rep(idx_counter,
-                                                                   2)))
-      
-      # Benchmark different optimization methods ----------------------------------------------
-      temp <- microbenchmark("BFGS" = optim(par = obj_benchmark$par,
-                                            fn = obj_benchmark$fn,
-                                            gr = obj_benchmark$gr,
-                                            method = "BFGS",
-                                            control = ctrl)$convergence==0,
-                             "L-BFGS-B" = optim(par = obj_benchmark$par,
-                                                fn = obj_benchmark$fn,
-                                                gr = obj_benchmark$gr,
-                                                method = "L-BFGS-B",
-                                                control = ctrl)$convergence==0,
-                             "nlm" = nlm(f = nlmfn,
-                                         p = obj_benchmark$par,
-                                         obj_benchmark,
-                                         iterlim = 10000)$code==1,
-                             "nlminb" = nlminb(start = obj_benchmark$par,
-                                               objective = obj_benchmark$fn,
-                                               gradient = obj_benchmark$gr,
-                                               hessian = obj_benchmark$he)$convergence==0,
-                             "hjn" = hjn(par = obj_benchmark$par,
-                                         fn = obj_benchmark$fn,
-                                         lower = HJN_LOWER_LIMIT,
-                                         upper = HJN_UPPER_LIMIT)$convergence==0,
-                             "marqLevAlg" = marqLevAlg(b = obj_benchmark$par,
-                                                       fn = obj_benchmark$fn,
-                                                       gr = obj_benchmark$gr,
-                                                       hess = obj_benchmark$he,
-                                                       maxiter = 10000)$istop==1,
-                             times = 1,
-                             check = "equal",
-                             setup = obj_benchmark <<- MakeADFun(TMB_benchmark_data,
-                                                                 working_true_params,
-                                                                 DLL = "poi_hmm",
-                                                                 silent = TRUE))
-      
-      times <- temp$time / 10^9
-      timeBFGS <- times[temp$expr == "BFGS"]
-      timeL_BFGS_B <- times[temp$expr == "L-BFGS-B"]
-      timenlm <- times[temp$expr == "nlm"]
-      timenlminb <- times[temp$expr == "nlminb"]
-      timehjn <- times[temp$expr == "hjn"]
-      timemarqLevAlg <- times[temp$expr == "marqLevAlg"]
-      method_comparison_df_simu4 <- rbind(method_comparison_df_simu4,
-                                          data.frame(time = c(timeBFGS,
-                                                              timeL_BFGS_B,
-                                                              timenlm,
-                                                              timenlminb,
-                                                              timehjn,
-                                                              timemarqLevAlg),
-                                                     m = rep(m,
-                                                             length(PROCEDURES_METHOD)),
-                                                     procedure = PROCEDURES_METHOD,
-                                                     dataset_number = idx_counter))
     }
-    sms("Simu4 Benchmark end")
+    notif("Simu4", "Benchmark end")
   }
   
   # Profiling the likelihood --------------------------
@@ -410,11 +320,12 @@ for (idx in 1:length(M_LIST_SIMU4)) {
                                           working_conf_int$upper[tgamma_indices]))
     conf_int_simu4$Profile.U[which(conf_int_simu4$m == m)][gamma_indices] <- natural_gamma
   }
+  conf_int_simu4
   
   # Bootstrap ---------------------------
-  set.seed(24)
+  set.seed(403)
   if (BOOTSTRAP_SAMPLES != 0) {
-    sms("Simu4 Bootstrap start")
+    notif("Simu4", "Bootstrap start")
     registerDoParallel(cores = CORES)
     bootstrap_simu4 <- foreach (idx_sample = 1:BOOTSTRAP_SAMPLES,
                                 .packages = "TMB",
@@ -423,9 +334,9 @@ for (idx in 1:length(M_LIST_SIMU4)) {
                                   dyn.load(dynlib("code/poi_hmm"))
                                   temp <- pois.HMM.generate.estimable.sample(ns = DATA_SIZE_SIMU4,
                                                                              mod = list(m = m,
-                                                                                        lambda = tmb_CI$lambda,
-                                                                                        gamma = tmb_CI$gamma,
-                                                                                        delta = tmb_CI$delta),
+                                                                                        lambda = tmb_gh$lambda,
+                                                                                        gamma = tmb_gh$gamma,
+                                                                                        delta = tmb_gh$delta),
                                                                              testing_params = list(m = m,
                                                                                                    lambda = true_lambda,
                                                                                                    gamma = true_gamma,
@@ -443,7 +354,7 @@ for (idx in 1:length(M_LIST_SIMU4)) {
                quantile.colwise)
     conf_int_simu4$Bootstrap.L[which(conf_int_simu4$m == m)] <- q[1, ]
     conf_int_simu4$Bootstrap.U[which(conf_int_simu4$m == m)] <- q[2, ]
-    sms("Simu4 Bootstrap end")
+    notif("Simu4", "Bootstrap end")
   }
   
   # TMB confidence intervals --------------
@@ -471,7 +382,7 @@ for (idx in 1:length(M_LIST_SIMU4)) {
                                                           gamma_U,
                                                           delta_U)
   # Coverage probabilities of the 3 CI methods -----------------
-  set.seed(25)
+  set.seed(404)
   parameter_names <- paste0(rep("lambda",
                                 m),
                             1:m)
@@ -493,7 +404,7 @@ for (idx in 1:length(M_LIST_SIMU4)) {
                                                                                          count = 0,
                                                                                          ratio = 0)
   idx_coverage <- 0
-  sms("Simu4 Coverage start")
+  notif("Simu4", "Coverage start")
   begin_coverage <- Sys.time()
   while (idx_coverage < COVERAGE_SAMPLES) {
     idx_coverage <- idx_coverage + 1
@@ -515,7 +426,7 @@ for (idx in 1:length(M_LIST_SIMU4)) {
     # Save the occurrences of failures to generate a sample for which parameters can be estimated
     for (reason in c("state_number", "TMB_null", "TMB_converge", "TMB_G_null",
                      "TMB_G_converge", "TMB_H_null", "TMB_H_converge", "TMG_GH_null",
-                     "TMG_GH_converge", "marqLevAlg_converge", "NA_value")) {
+                     "TMG_GH_converge", "NA_value")) {
       coverage_skips_simu4[coverage_skips_simu4$m == m, reason] <- coverage_skips_simu4[coverage_skips_simu4$m == m, reason] + coverage_model$failure[reason]
     }
     
@@ -556,12 +467,15 @@ for (idx in 1:length(M_LIST_SIMU4)) {
     ### Unlike in the other datasets, we have empirically found that profile CIs diverge when lambda=seq(1, 16, length.out = m) and will diverge until lambda=seq(1, 24, length.out=m)
     ### Therefore, forcing profile CIs to converge will cause an infinite loop since we chose lambda=seq(1, 16, length.out = m) to showcase that profile CIs sometimes diverge.
     
-    # # If profiling doesn't yield results for all parameters, try a new coverage sample
-    # if (anyNA(c(lambda_profile_lower,
-    #             lambda_profile_upper,
-    #             gamma_profile_lower,
-    #             gamma_profile_upper),
-    #           recursive = TRUE)) {
+    # If profiling doesn't yield results for all parameters, try a new coverage sample
+    # estimates_coverage <- c(lambda_profile_lower,
+    #                         lambda_profile_upper,
+    #                         gamma_profile_lower,
+    #                         gamma_profile_upper)
+    # test_null <- sapply(X = estimates_coverage, FUN = is.null)
+    # test_finite <- sapply(X = estimates_coverage, FUN = is.finite)
+    # # If some CI bounds are NULL or missing (NA) or infinite (Inf), try a new coverage sample
+    # if (any(test_null == TRUE) | any(test_finite == FALSE)) {
     #   idx_coverage <- idx_coverage - 1
     #   coverage_skips_simu4[coverage_skips_simu4$m == m, "profile"] <- coverage_skips_simu4[coverage_skips_simu4$m == m, "profile"] + 1
     #   next
@@ -636,7 +550,7 @@ for (idx in 1:length(M_LIST_SIMU4)) {
     coverage_count_tmb[indices, "count"] <- coverage_count_tmb[indices, "count"] + 1
     
     percent <- idx_coverage / COVERAGE_SAMPLES * 100
-    if (percent %% 20 == 0 && percent != 100) {
+    if (percent %% 10 == 0 && percent != 100) {
       now <- Sys.time()
       percentage <- idx_coverage / COVERAGE_SAMPLES
       duration <- now - begin_coverage
@@ -644,12 +558,12 @@ for (idx in 1:length(M_LIST_SIMU4)) {
       
       expected_end_time <- begin_coverage + time_to_completion
       
-      sms(paste0("Simu4 ", percent,
-                 "%\neta: ", round(expected_end_time - now, 1), " ", units(expected_end_time - now),
-                 "\nend at: ", expected_end_time))
+      notif("Simu4", paste0(percent,
+                            "%\neta: ", round(expected_end_time - now, 1), " ", units(expected_end_time - now),
+                            "\nend at: ", expected_end_time))
     }
   }
-  sms("Simu4 Coverage end")
+  notif("Simu4", "Coverage end")
   coverage_count_profile[lambda_indices, "ratio"] <- coverage_count_profile[lambda_indices, "count"] / COVERAGE_SAMPLES
   coverage_count_profile[gamma_indices, "ratio"] <- coverage_count_profile[gamma_indices, "count"] / COVERAGE_SAMPLES
   coverage_count_profile[delta_indices, "ratio"] <- NA # delta is not a parameter for us, so it has no profile CI
@@ -658,6 +572,7 @@ for (idx in 1:length(M_LIST_SIMU4)) {
   
   coverage_count_bootstrap$ratio <- coverage_count_bootstrap$count / COVERAGE_SAMPLES
   
+  # Most of the time, profile CIs for the stationary distribution is NA.
   conf_int_simu4[conf_int_simu4$m == m, ][1:(m ^ 2 + 2 * m), "Coverage.Profile"] <- coverage_count_profile$ratio * 100
   conf_int_simu4[conf_int_simu4$m == m, ][1:(m ^ 2 + 2 * m), "Coverage.Bootstrap"] <- coverage_count_bootstrap$ratio * 100
   conf_int_simu4[conf_int_simu4$m == m, ][1:(m ^ 2 + 2 * m), "Coverage.TMB"] <- coverage_count_tmb$ratio * 100

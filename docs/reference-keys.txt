@@ -72,6 +72,8 @@ fetal-lamb.RData
 dataresults_lamb.rdata
 dataresults_simu1.rdata
 dataresults_simu2.rdata
+dataresults_simu3.rdata
+dataresults_simu4.rdata
 dataresults_tinn.rdata
 tinnitus.RData
 functions

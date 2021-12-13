@@ -45,20 +45,16 @@ gamma.w2n <- function(m, tgamma){
 # Estimation using TMB
 TMB.estimate <- function(TMB_data,
                          parameters,
-                         MakeADFun_obj = NULL,
                          map = list(),
                          gradient = FALSE,
                          hessian = FALSE,
                          std_error = FALSE) {
   
-  obj <- MakeADFun_obj
-  if (is.null(MakeADFun_obj)) {
-    obj <- MakeADFun(TMB_data, parameters, DLL = "poi_hmm", silent = TRUE, map = map)
-  }
+  obj <- MakeADFun(TMB_data, parameters, DLL = "poi_hmm", silent = TRUE, map = map)
   
   # The function ifelse cannot return a NULL value, the function switch can
   # If gradient is FALSE, then gradient + 1 is 1 and the switch returns NULL
-  # If gradient is TRUE, then gradient + 1 is 2 and the switch returns mod$gr
+  # If gradient is TRUE, then gradient + 1 is 2 and the switch returns obj$gr
   gr <- switch(gradient + 1, NULL, obj$gr)
   he <- switch(hessian + 1, NULL, obj$he)
   
@@ -226,8 +222,13 @@ get.emission.probs <- function(data, lambda) {
 # Compute the stationary distribution of a Markov chain
 # with transition probability gamma
 stat.dist <- function(gamma) {
-  m <- nrow(gamma)
-  return(solve(t(diag(m) - gamma + 1), rep(1, m)))
+  # The code from Zucchini can crash when dealing with computationally small numbers.
+  # This is likely an approximation error.
+  # For some reason, the result may be a complex number with imaginary part equal to 0.
+  # We can just ignore the imaginary part because the eigenvectors of a real eigenvalue must be real.
+  # In the cases where it happened, solve(t(diag(m) - gamma + 1), rep(1, m)) produced the same result without the imaginary part.
+  first_eigen_row <- Re(eigen(t(gamma))$vectors[, 1])
+  return(first_eigen_row / sum(first_eigen_row))
 }
 
 ## ---- pois.HMM.pn2pw
@@ -258,7 +259,8 @@ pois.HMM.pw2pn <- function(m, parvect, stationary = TRUE) {
   gamma[!gamma] <- exp(parvect[(m + 1):(m * m)])
   gamma <- gamma / apply(gamma, 1, sum)
   if (stationary) {
-    delta <- solve(t(diag(m) - gamma + 1), rep(1, m))
+    # The code from Zucchini can crash when dealing with computationally small numbers.
+    delta <- stat.dist(gamma)
   } else {
     foo <- c(1, exp(parvect[(m * m + 1):(m * m + m - 1)]))
     delta <- foo / sum(foo)
@@ -285,7 +287,6 @@ pois.HMM.generate.estimable.sample <- function(ns,
                                                mod,
                                                testing_params,
                                                params_names = PARAMS_NAMES,
-                                               test_marqLevAlg = FALSE,
                                                std_error = FALSE,
                                                label_switch = FALSE) {
   if(anyNA(c(ns, mod, testing_params))) {
@@ -301,8 +302,6 @@ pois.HMM.generate.estimable.sample <- function(ns,
                "TMB_H_converge" = 0,
                "TMG_GH_null" = 0,
                "TMG_GH_converge" = 0,
-               "marqLevAlg_null" = 0,
-               "marqLevAlg_converge" = 0,
                "NA_value" = 0)
   m <- mod$m
   # Loop as long as there is an issue with nlminb
@@ -318,7 +317,7 @@ pois.HMM.generate.estimable.sample <- function(ns,
       next
     }
     
-    TMB_benchmark_data <- list(x = new_data$data, m = m)
+    TMB_new_data <- list(x = new_data$data, m = m)
     
     testing_w_params <- pois.HMM.pn2pw(m = m,
                                        lambda = testing_params$lambda,
@@ -326,7 +325,7 @@ pois.HMM.generate.estimable.sample <- function(ns,
                                        delta = testing_params$delta)
     
     # Test TMB
-    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_new_data,
                                               parameters = testing_w_params,
                                               std_error = std_error))
     # If nlminb doesn't reach any result, discard the data
@@ -341,7 +340,7 @@ pois.HMM.generate.estimable.sample <- function(ns,
     }
     
     # Test TMB_G
-    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_new_data,
                                               parameters = testing_w_params,
                                               gradient = TRUE,
                                               std_error = std_error))
@@ -357,7 +356,7 @@ pois.HMM.generate.estimable.sample <- function(ns,
     }
     
     # Test TMB_H
-    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_new_data,
                                               parameters = testing_w_params,
                                               hessian = TRUE,
                                               std_error = std_error))
@@ -373,7 +372,7 @@ pois.HMM.generate.estimable.sample <- function(ns,
     }
     
     # Test TMB_GH
-    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_new_data,
                                               parameters = testing_w_params,
                                               gradient = TRUE,
                                               hessian = TRUE,
@@ -387,32 +386,6 @@ pois.HMM.generate.estimable.sample <- function(ns,
     if (mod_temp$convergence != 0) {
       failure["TMB_GH_converge"] <- failure["TMB_GH_converge"] + 1
       next
-    }
-    
-    # Test marqLevAlg
-    # marqLevAlg sometimes doesn't converge either, discard the data in these cases
-    if (test_marqLevAlg == TRUE) {
-      testing_w_params <- unlist(testing_w_params)
-      marq <- tryCatch({
-        marqLevAlg(b = testing_w_params,
-                   fn = mod_temp$obj$fn,
-                   gr = mod_temp$obj$gr,
-                   hess = mod_temp$obj$he,
-                   maxiter = 10000)
-      },
-      error = function(e) {
-        return()
-      })
-      # If nlminb doesn't reach any result, discard the data
-      if (is.null(marq)) {
-        failure["marqLevAlg_null"] <- failure["marqLevAlg_null"] + 1
-        next
-      }
-      # If marqLevAlg doesn't converge successfully, discard the data
-      if (marq$istop != 1) {
-        failure["marqLevAlg_converge"] <- failure["marqLevAlg_converge"] + 1
-        next
-      }
     }
     
     natural_parameters <- list(m = m,
@@ -432,10 +405,10 @@ pois.HMM.generate.estimable.sample <- function(ns,
     # If everything went well, end the "repeat" loop
     break
   }
-  return(list(data = list(new_data$data),
-              natural_parameters = list(natural_parameters),
-              mod = list(mod_temp),
-              failure = list(failure)))
+  return(list(data = new_data$data,
+              natural_parameters = natural_parameters,
+              mod = mod_temp,
+              failure = failure))
 }
 
 ## ---- pois.HMM.label.order
@@ -456,8 +429,9 @@ pois.HMM.label.order <- function(m,
   # Get the indices of the sorted states
   # according to ascending lambda
   # sorted_lambda contains the permutations needed
-  ordered_lambda_indices <- sort(lambda, index.return = TRUE)$ix
+  ordered_lambda_indices <- order(lambda)
   ordered_lambda <- lambda[ordered_lambda_indices]
+  names(ordered_lambda) <- NULL
   # Reorder the TPM according to the switched states
   # in the sorted lambda
   ordered_gamma <- matrix(0, nrow = m, ncol = m)
@@ -580,11 +554,5 @@ DM.estimate <- function(x, m, lambda0, gamma0, delta0 = NULL, stationary = TRUE)
   
 }
 
-## ---- nlmfn
-# Function to use TMB's gradient and/or hessian in nlm
-nlmfn <- function(par, obj, gr = TRUE, he = TRUE) {
-  res <- as.numeric(obj$fn(par))
-  if(gr) {attr(res, "gradient") <- obj$gr(par)}
-  if(he) {attr(res, "hessian") <- obj$he(par)}
-  res
 }
+

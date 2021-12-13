@@ -1,6 +1,6 @@
 packages <- c("TMB", "markovchain", "microbenchmark", "ggplot2", "optimr",
               "ggthemes", "knitr", "xtable",
-              "R.utils", "lubridate", "readr", "tidyverse", "ggpubr", "marqLevAlg",
+              "R.utils", "lubridate", "readr", "tidyverse", "ggpubr",
               "doParallel", "foreach", "mvtnorm")
 if(!all( packages %in% (.packages()) )) {
   for(pkg in packages) {

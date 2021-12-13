@@ -3,14 +3,7 @@ rm(list = ls())
 source("code/packages.R")
 source("functions/utils.R")
 
-CORES <- 40
-
-# Exponential power limit. Numbers above exp^(power) are Inf
-# hjn may cause issues without this limit
-# HJN_LOWER_LIMIT <- ceiling(log(.Machine$double.base^(.Machine$double.min.exp + 0.1)))
-# HJN_UPPER_LIMIT <- floor(log(.Machine$double.base^(.Machine$double.max.exp - 0.1)))
-HJN_LOWER_LIMIT <- -700
-HJN_UPPER_LIMIT <- 700
+CORES <- 32
 
 # Sets the version R runs on and the seed it will use
 # The seed used can produce different random numbers depending on the version of R
@@ -19,22 +12,17 @@ RNGversion("3.6.0")
 # Used for Wald confidence intervals, approximately 1.96
 q95_norm <- qnorm(1 - 0.05 / 2)
 
-# We use nlminb because it's a fast method that works properly
-# The possible methods are BFGS, CG, Nelder-Mead, L-BFGS-B, nlm, nlminb,
-# Rcgmin, Rvmmin, hjn
-# Rvmmin and Rcgmin don't work in our case, so we don't use them
-
 # Number of benchmark runs used to time the estimation of HMM parameters (CAN = 0)
-# BENCHMARK_SAMPLES <- 200
-BENCHMARK_SAMPLES <- 2
+BENCHMARK_SAMPLES <- 200
+# BENCHMARK_SAMPLES <- 2
 
 # Number of bootstrap samples used to obtain confidence intervals (CAN = 0)
-# BOOTSTRAP_SAMPLES <- 1000
-BOOTSTRAP_SAMPLES <- 10
+BOOTSTRAP_SAMPLES <- 1000
+# BOOTSTRAP_SAMPLES <- 2
 
 # Number of confidence intervals used to obtain coverage probabilities (CAN = 0)
-# COVERAGE_SAMPLES <- 1000
-COVERAGE_SAMPLES <- 10
+COVERAGE_SAMPLES <- 1000
+# COVERAGE_SAMPLES <- 2
 
 # Number of benchmarks checking timing reliability (CAN = 0)
 CONSISTENCY_BENCHMARK_TINN <- 200
@@ -52,7 +40,6 @@ M_LIST_TINN <- 2
 PARAMS_NAMES <- c("lambda", "gamma", "delta")
 
 PROCEDURES <- c("DM", "TMB", "TMB_G", "TMB_H", "TMB_GH")
-PROCEDURES_METHOD <- c("BFGS", "L-BFGS-B", "nlm", "nlminb", "hjn", "marqLevAlg")
 
 # Loading the lamb dataset
 load("data/fetal-lamb.RData")
@@ -70,56 +57,10 @@ DATA_SIZE_SIMU3 <- 2000
 DATA_SIZE_SIMU4 <- 5000
 DATA_SIZE_TINN <- DATA_SIZE_TYT <- length(tinn_data)
 
-# Container for the time benchmarks of HMMs parameter estimation on different optimizers for each dataset
-method_comparison_df_lamb <- data.frame(time = numeric(),
-                                        m = factor(levels = M_LIST_LAMB),
-                                        procedure = factor(levels = PROCEDURES_METHOD),
-                                        dataset_number = integer())
-method_comparison_df_tinn <- data.frame(time = numeric(),
-                                        m = factor(levels = M_LIST_TINN),
-                                        procedure = factor(levels = PROCEDURES_METHOD),
-                                        dataset_number = integer())
-method_comparison_df_simu1 <- data.frame(time = numeric(),
-                                         m = factor(levels = M_LIST_SIMU1),
-                                         procedure = factor(levels = PROCEDURES_METHOD),
-                                         dataset_number = integer())
-method_comparison_df_simu2 <- data.frame(time = numeric(),
-                                         m = factor(levels = M_LIST_SIMU2),
-                                         procedure = factor(levels = PROCEDURES_METHOD),
-                                         dataset_number = integer())
-method_comparison_df_simu3 <- data.frame(time = numeric(),
-                                         m = factor(levels = M_LIST_SIMU3),
-                                         procedure = factor(levels = PROCEDURES_METHOD),
-                                         dataset_number = integer())
-method_comparison_df_simu4 <- data.frame(time = numeric(),
-                                         m = factor(levels = M_LIST_SIMU4),
-                                         procedure = factor(levels = PROCEDURES_METHOD),
-                                         dataset_number = integer())
-
-# Container for the time benchmarks of HMMs' negative likelihood function for each dataset
-mllk_times_df_lamb <- data.frame(time = numeric(),
-                                 m = factor(levels = M_LIST_LAMB),
-                                 procedure = factor(levels = PROCEDURES))
-mllk_times_df_tinn <- data.frame(time = numeric(),
-                                 m = factor(levels = M_LIST_TINN),
-                                 procedure = factor(levels = PROCEDURES))
-mllk_times_df_simu1 <- data.frame(time = numeric(),
-                                  m = factor(levels = M_LIST_SIMU1),
-                                  procedure = factor(levels = PROCEDURES))
-mllk_times_df_simu2 <- data.frame(time = numeric(),
-                                  m = factor(levels = M_LIST_SIMU2),
-                                  procedure = factor(levels = PROCEDURES))
-mllk_times_df_simu3 <- data.frame(time = numeric(),
-                                  m = factor(levels = M_LIST_SIMU3),
-                                  procedure = factor(levels = PROCEDURES))
-mllk_times_df_simu4 <- data.frame(time = numeric(),
-                                  m = factor(levels = M_LIST_SIMU4),
-                                  procedure = factor(levels = PROCEDURES))
-
 # Containers for the time benchmarks of HMMs parameter estimation for each dataset
 estim_benchmarks_df_lamb <- data.frame(time = numeric(),
                                        m = integer(),
-                                       procedure = factor(levels = PROCEDURES_METHOD),
+                                       procedure = factor(levels = PROCEDURES),
                                        iterations = integer(),
                                        dataset_number = integer())
 estim_benchmarks_df_simu1 <- estim_benchmarks_df_simu2 <- estim_benchmarks_df_lamb
@@ -148,19 +89,19 @@ conf_int_lamb <- conf_int_tinn <- data.frame(m = integer(),
 
 # For the simulation, we know the true parameter value being estimated
 conf_int_simu1 <- conf_int_simu2 <- conf_int_simu3 <- conf_int_simu4 <- data.frame(m = integer(),
-																				   Parameter = character(),
-																				   True.value = numeric(),
-																				   Estimate = numeric(),
-																				   TMB.L = numeric(),
-																				   TMB.U = numeric(),
-																				   Profile.L = numeric(),
-																				   Profile.U = numeric(),
-																				   Bootstrap.L = numeric(),
-																				   Bootstrap.U = numeric(),
-																				   Coverage.TMB = numeric(),
-																				   Coverage.Profile = numeric(),
-																				   Coverage.Bootstrap = numeric(),
-																				   stringsAsFactors = FALSE)
+                                                                                   Parameter = character(),
+                                                                                   True.value = numeric(),
+                                                                                   Estimate = numeric(),
+                                                                                   TMB.L = numeric(),
+                                                                                   TMB.U = numeric(),
+                                                                                   Profile.L = numeric(),
+                                                                                   Profile.U = numeric(),
+                                                                                   Bootstrap.L = numeric(),
+                                                                                   Bootstrap.U = numeric(),
+                                                                                   Coverage.TMB = numeric(),
+                                                                                   Coverage.Profile = numeric(),
+                                                                                   Coverage.Bootstrap = numeric(),
+                                                                                   stringsAsFactors = FALSE)
 
 # Number of datasets discarded due to an issue
 coverage_skips_lamb <- data.frame("m" = M_LIST_LAMB,
@@ -173,8 +114,6 @@ coverage_skips_lamb <- data.frame("m" = M_LIST_LAMB,
                                   "TMB_H_converge" = 0,
                                   "TMG_GH_null" = 0,
                                   "TMG_GH_converge" = 0,
-                                  "marqLevAlg_null" = 0,
-                                  "marqLevAlg_converge" = 0,
                                   "NA_value" = 0,
                                   "profile" = 0)
 coverage_skips_simu1 <- data.frame("m" = M_LIST_SIMU1,
@@ -187,8 +126,6 @@ coverage_skips_simu1 <- data.frame("m" = M_LIST_SIMU1,
                                    "TMB_H_converge" = 0,
                                    "TMG_GH_null" = 0,
                                    "TMG_GH_converge" = 0,
-                                   "marqLevAlg_null" = 0,
-                                   "marqLevAlg_converge" = 0,
                                    "NA_value" = 0,
                                    "profile" = 0)
 coverage_skips_simu2 <- data.frame("m" = M_LIST_SIMU2,
@@ -201,8 +138,6 @@ coverage_skips_simu2 <- data.frame("m" = M_LIST_SIMU2,
                                    "TMB_H_converge" = 0,
                                    "TMG_GH_null" = 0,
                                    "TMG_GH_converge" = 0,
-                                   "marqLevAlg_null" = 0,
-                                   "marqLevAlg_converge" = 0,
                                    "NA_value" = 0,
                                    "profile" = 0)
 coverage_skips_simu3 <- data.frame("m" = M_LIST_SIMU3,
@@ -215,8 +150,6 @@ coverage_skips_simu3 <- data.frame("m" = M_LIST_SIMU3,
                                    "TMB_H_converge" = 0,
                                    "TMG_GH_null" = 0,
                                    "TMG_GH_converge" = 0,
-                                   "marqLevAlg_null" = 0,
-                                   "marqLevAlg_converge" = 0,
                                    "NA_value" = 0,
                                    "profile" = 0)
 coverage_skips_simu4 <- data.frame("m" = M_LIST_SIMU4,
@@ -229,8 +162,6 @@ coverage_skips_simu4 <- data.frame("m" = M_LIST_SIMU4,
                                    "TMB_H_converge" = 0,
                                    "TMG_GH_null" = 0,
                                    "TMG_GH_converge" = 0,
-                                   "marqLevAlg_null" = 0,
-                                   "marqLevAlg_converge" = 0,
                                    "NA_value" = 0,
                                    "profile" = 0)
 coverage_skips_tinn <- data.frame("m" = M_LIST_TINN,
@@ -243,14 +174,9 @@ coverage_skips_tinn <- data.frame("m" = M_LIST_TINN,
                                   "TMB_H_converge" = 0,
                                   "TMG_GH_null" = 0,
                                   "TMG_GH_converge" = 0,
-                                  "marqLevAlg_null" = 0,
-                                  "marqLevAlg_converge" = 0,
                                   "NA_value" = 0,
                                   "profile" = 0)
 
-
-# Ensure that the algorithms BFGS and L-BFGS-B don't stop simply because of a low iteration limit
-ctrl = list(maxit = 10000)
 
 # TMB SETUP
 # TMB::precompile()
@@ -262,7 +188,5 @@ TMB::compile("code/mvnorm_hmm.cpp")
 dyn.load(dynlib("code/mvnorm_hmm"))
 TMB::compile("code/linreg.cpp")
 dyn.load(dynlib("code/linreg"))
-TMB::compile("code/linreg_extended.cpp")
-dyn.load(dynlib("code/linreg_extended"))
 # Optional debug feature for TMB, requires manual input immediately after being run
 # TMB:::setupRStudio()

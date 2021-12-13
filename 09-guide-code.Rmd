@@ -238,6 +238,14 @@ File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/data/results_simu1
 File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/data/results_simu2.RData \
 File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/data/results_simu2.RData
 
+### data/results_simu3.RData
+File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/data/results_simu3.RData \
+File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/data/results_simu3.RData
+
+### data/results_simu4.RData
+File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/data/results_simu4.RData \
+File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/data/results_simu4.RData
+
 ### data/results_tinn.RData
 Contains results from computations and timings run in *[code/main.R](#main.R)*.
 
