@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-12-13" />
+<meta name="date" content="2021-12-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -301,7 +301,7 @@ div.csl-indent {
 <h1><span class="header-section-number"> 8</span> Multivariate Gaussian HMM</h1>
 <p>Multivariate Gaussian HMMs with <code>TMB</code> have a lot in common with the previous Poisson HMM, we focus on the main differences in this Section.
 Most notably, distribution parameters are changed from Poisson means <span class="math inline">\({\boldsymbol\lambda}\)</span> to Normal mean vectors <span class="math inline">\({\boldsymbol\mu}\)</span> and Normal covariance matrices <span class="math inline">\({\boldsymbol\Sigma}\)</span>.
-In turn, these cause the density function to change from <code>dpois</code> to <code>dmvnorm</code> (and the random data generation functions from <code>rpois</code> to <code>rmvnorm</code> for simulations) from the <code>mvtnorm</code> <span class="citation">(<a href="#ref-R-mvtnorm" role="doc-biblioref">Genz et al. 2021</a>)</span> package.</p>
+In turn, these cause the density function to change from <code>dpois</code> to <code>dmvnorm</code> (and the random data generation functions from <code>rpois</code> to <code>rmvnorm</code> for simulations) from the <code>mvtnorm</code> <span class="citation">(<a href="references.html#ref-R-mvtnorm" role="doc-biblioref">Genz et al. 2021</a>)</span> package.</p>
 <p>Many functions available in <em><a href="github.html#utils.R">functions/utils.R</a></em> have been adapted with the changes described for the multivariate Gaussian case in <em><a href="github.html#mvnorm_utils.R">functions/mvnorm_utils.R</a></em>.</p>
 <p>As an example, the function to generate random data becomes</p>
 <div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="multivariate-gaussian-hmm.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a random sample from a HMM</span></span>
@@ -524,6 +524,7 @@ In turn, these cause the density function to change from <code>dpois</code> to <
 </div>
 <div id="estimation-1" class="section level2" number="8.3">
 <h2><span class="header-section-number">8.3</span> Estimation</h2>
+<p>The estimation procedure is similar to before.</p>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="multivariate-gaussian-hmm.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages and utility functions</span></span>
 <span id="cb93-2"><a href="multivariate-gaussian-hmm.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;code/packages.R&quot;</span>)</span>
 <span id="cb93-3"><a href="multivariate-gaussian-hmm.html#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/mvnorm_utils.R&quot;</span>)</span>
@@ -585,10 +586,10 @@ In turn, these cause the density function to change from <code>dpois</code> to <
 <span id="cb93-59"><a href="multivariate-gaussian-hmm.html#cb93-59" aria-hidden="true" tabindex="-1"></a>       <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
 <span id="cb93-60"><a href="multivariate-gaussian-hmm.html#cb93-60" aria-hidden="true" tabindex="-1"></a>       <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
 <span id="cb93-61"><a href="multivariate-gaussian-hmm.html#cb93-61" aria-hidden="true" tabindex="-1"></a><span class="do">## $par</span></span>
-<span id="cb93-62"><a href="multivariate-gaussian-hmm.html#cb93-62" aria-hidden="true" tabindex="-1"></a><span class="do">##          tmu          tmu          tmu          tmu          tmu          tmu       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma </span></span>
-<span id="cb93-63"><a href="multivariate-gaussian-hmm.html#cb93-63" aria-hidden="true" tabindex="-1"></a><span class="do">##  5.979331886  7.974662650  9.034963083  1.105791929  2.016963286  3.069442564 -0.005278076  0.470025716 -0.161247055  0.455150038  0.312012980 -0.218999355  0.306537527  1.029377442 -0.038685928 </span></span>
-<span id="cb93-64"><a href="multivariate-gaussian-hmm.html#cb93-64" aria-hidden="true" tabindex="-1"></a><span class="do">##       tsigma       tsigma       tsigma       tgamma       tgamma </span></span>
-<span id="cb93-65"><a href="multivariate-gaussian-hmm.html#cb93-65" aria-hidden="true" tabindex="-1"></a><span class="do">##  0.977222514  0.440952661 -0.128765538 -1.852673335 -2.813032886 </span></span>
+<span id="cb93-62"><a href="multivariate-gaussian-hmm.html#cb93-62" aria-hidden="true" tabindex="-1"></a><span class="do">##          tmu          tmu          tmu          tmu          tmu          tmu       tsigma       tsigma       tsigma       tsigma </span></span>
+<span id="cb93-63"><a href="multivariate-gaussian-hmm.html#cb93-63" aria-hidden="true" tabindex="-1"></a><span class="do">##  5.979331886  7.974662650  9.034963083  1.105791929  2.016963286  3.069442564 -0.005278076  0.470025716 -0.161247055  0.455150038 </span></span>
+<span id="cb93-64"><a href="multivariate-gaussian-hmm.html#cb93-64" aria-hidden="true" tabindex="-1"></a><span class="do">##       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma       tgamma       tgamma </span></span>
+<span id="cb93-65"><a href="multivariate-gaussian-hmm.html#cb93-65" aria-hidden="true" tabindex="-1"></a><span class="do">##  0.312012980 -0.218999355  0.306537527  1.029377442 -0.038685928  0.977222514  0.440952661 -0.128765538 -1.852673335 -2.813032886 </span></span>
 <span id="cb93-66"><a href="multivariate-gaussian-hmm.html#cb93-66" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb93-67"><a href="multivariate-gaussian-hmm.html#cb93-67" aria-hidden="true" tabindex="-1"></a><span class="do">## $objective</span></span>
 <span id="cb93-68"><a href="multivariate-gaussian-hmm.html#cb93-68" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4295.975</span></span>
@@ -710,12 +711,6 @@ To do this, we look at the maximum absolute percentage difference between estima
 <span id="cb95-22"><a href="multivariate-gaussian-hmm.html#cb95-22" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] -0.096271185 0.01698903</span></span></code></pre></div>
 <p>Differences are at most in the order of 10% for values near 0. Parameter estimation was successful.</p>
 
-</div>
-</div>
-<h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-R-mvtnorm" class="csl-entry">
-Genz, Alan, Frank Bretz, Tetsuhisa Miwa, Xuefei Mi, and Torsten Hothorn. 2021. <em>Mvtnorm: Multivariate Normal and t Distributions</em>. <a href="http://mvtnorm.R-forge.R-project.org">http://mvtnorm.R-forge.R-project.org</a>.
 </div>
 </div>
             </section>

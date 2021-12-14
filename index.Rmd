@@ -19,6 +19,7 @@ output:
   bookdown::gitbook:
     toc_depth: 4
     css: width.css
+    split_bib: no
 header-includes:
   - \usepackage{amsthm,amsmath,amssymb,amsfonts,amssymb}
   - \usepackage{listings}
@@ -27,8 +28,6 @@ header-includes:
 editor_options:
   markdown:
     wrap: 80
-    references: 
-      location: block
 ---
 
 # Introduction

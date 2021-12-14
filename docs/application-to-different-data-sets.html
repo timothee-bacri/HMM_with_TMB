@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-12-13" />
+<meta name="date" content="2021-12-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -368,7 +368,7 @@ div.csl-indent {
 <span id="cb74-3"><a href="application-to-different-data-sets.html#cb74-3" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span>
 <span id="cb74-4"><a href="application-to-different-data-sets.html#cb74-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0</span></span>
 <span id="cb74-5"><a href="application-to-different-data-sets.html#cb74-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span>
-<span id="cb74-6"><a href="application-to-different-data-sets.html#cb74-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: 3 external pointers will be removed</span></span>
+<span id="cb74-6"><a href="application-to-different-data-sets.html#cb74-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: 6 external pointers will be removed</span></span>
 <span id="cb74-7"><a href="application-to-different-data-sets.html#cb74-7" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
 <span id="cb74-8"><a href="application-to-different-data-sets.html#cb74-8" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/fetal-lamb.RData&quot;</span>)</span>
 <span id="cb74-9"><a href="application-to-different-data-sets.html#cb74-9" aria-hidden="true" tabindex="-1"></a>lamb_data <span class="ot">&lt;-</span> lamb</span>
@@ -416,10 +416,10 @@ div.csl-indent {
 <span id="cb77-24"><a href="application-to-different-data-sets.html#cb77-24" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.96493123 0.03181445</span></span>
 <span id="cb77-25"><a href="application-to-different-data-sets.html#cb77-25" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.03506877 0.03181445</span></span></code></pre></div>
 <p>For the code used to generate coverage probabilities and acceleration results, please take a look at <em><a href="#poi_hmm_lamb.R">code/poi_hmm_lamb.R</a></em>.</p>
-<p>On a minor note, when comparing our estimation results to those reported by <span class="citation"><a href="#ref-leroux" role="doc-biblioref">Leroux and Puterman</a> (<a href="#ref-leroux" role="doc-biblioref">1992</a>)</span>, some non-negligible differences can be noted.
+<p>On a minor note, when comparing our estimation results to those reported by <span class="citation"><a href="references.html#ref-leroux" role="doc-biblioref">Leroux and Puterman</a> (<a href="references.html#ref-leroux" role="doc-biblioref">1992</a>)</span>, some non-negligible differences can be noted.
 The reasons for this are difficult to determine, but some likely explanations are given in the following.
 First, differences in the parameter estimates may result e.g. from the optimizing algorithms used and related setting (e.g. convergence criterion, number of steps, optimization routines used in 1992, etc).
-Moreover, <span class="citation"><a href="#ref-leroux" role="doc-biblioref">Leroux and Puterman</a> (<a href="#ref-leroux" role="doc-biblioref">1992</a>)</span> seem to base their calculations on an altered likelihood, which is reduced by removing the constant term <span class="math inline">\(\sum_{i=1}^{T} \log(x_{i}!)\)</span> from the log-likelihood.
+Moreover, <span class="citation"><a href="references.html#ref-leroux" role="doc-biblioref">Leroux and Puterman</a> (<a href="references.html#ref-leroux" role="doc-biblioref">1992</a>)</span> seem to base their calculations on an altered likelihood, which is reduced by removing the constant term <span class="math inline">\(\sum_{i=1}^{T} \log(x_{i}!)\)</span> from the log-likelihood.
 This modification may also possess an impact on the behavior of the optimization algorithm, as e.g. relative convergence criteria and step size could be affected.</p>
 <p>The altered likelihood becomes apparent when computing it on a one-state HMM.
 A one-state Poisson HMM is a Poisson regression model, for which the log-likelihood has the expression
@@ -510,12 +510,6 @@ Then, using the same procedure as above, we estimate a model using different ini
 <span id="cb84-25"><a href="application-to-different-data-sets.html#cb84-25" aria-hidden="true" tabindex="-1"></a><span class="do">## delta   0.5523685 0.05201103</span></span></code></pre></div>
 <p>For the code used to generate coverage probabilities and acceleration results, please take a look at <em><a href="github.html#poi_hmm_simu1.R">code/poi_hmm_simu1.R</a></em>, <em><a href="github.html#poi_hmm_simu2.R">code/poi_hmm_simu2.R</a></em> and <em><a href="github.html#poi_hmm_simu3.R">code/poi_hmm_simu3.R</a></em>.</p>
 
-</div>
-</div>
-<h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-leroux" class="csl-entry">
-Leroux, Brian G., and Martin L. Puterman. 1992. <span>“Maximum-<span>Penalized</span>-<span>Likelihood Estimation</span> for <span>Independent</span> and <span>Markov</span>- <span>Dependent Mixture Models</span>.”</span> <em>Biometrics</em> 48 (2): 545–58. <a href="https://doi.org/10.2307/2532308">https://doi.org/10.2307/2532308</a>.
 </div>
 </div>
             </section>

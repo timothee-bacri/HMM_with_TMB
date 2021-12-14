@@ -67,6 +67,7 @@ and requires the following utility functions.
 ```
 
 ## Estimation
+The estimation procedure is similar to before.
 ```{r 8example, cache=TRUE}
 # Load packages and utility functions
 source("code/packages.R")

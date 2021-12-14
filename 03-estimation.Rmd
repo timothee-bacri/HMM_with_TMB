@@ -11,7 +11,7 @@ dnorm(x = 1, mean = 0, sd = 1) # Normal
 ```
 Other distributions are available.
 
-We let TPM denote the transition probability matrix.
+We let TPM denote the transition probability matrix, and reference it with the variable $\bs{\Gamma}$.
 
 ## The likelihood function of an HMM
 
