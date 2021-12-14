@@ -174,8 +174,6 @@ Most of their code is common:
 * `Benchmarks` uses the `microbenchmark` [@R-microbenchmark] package to accurately time:
 
     * the $TMB_0$ $TMB_G$ $TMB_H$ and $TMB_{GH}$ procedures. Their times are stored in the data-frames `estim_benchmarks_df_*`
-    * the negative log-likelihood computation with and without `TMB`. Their times are stored in the data-frames `mllk_times_df_*`.
-    * multiple estimation procedures: `r PROCEDURES_METHOD` and `TMB`. Their times are stored in the data-frames `method_comparison_df_*`.
 
 * `Profiling the likelihood` uses the `TMB` package's `tmbprofile` function to determine a profile of the likelihood, then determines a CI based on it for the corresponding working parameter. Eventually, CIs are derived when possible for the natural parameters $\hat{\bs{\lambda}}$ and $\hat{\bs{\Gamma}}$. The CIs are stored in the data-frames `conf_int_*`.
 * `Bootstrap` derives a parametric bootstrap CI from the dataset, while checking that the generated data can be estimated without errors, after which we apply our label switching function to ensure that estimates of a parameter are only aggregated with estimates of the same parameter. The CIs are stored in the data-frames `conf_int_*`.

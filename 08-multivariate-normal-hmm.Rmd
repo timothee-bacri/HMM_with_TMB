@@ -15,7 +15,7 @@ We detail below an example of the estimation of a two-state trivariate Gaussian 
 ## Dataset & Parameters
 To avoid issues regarding the choice of data, we simulate our own.
 
-Let 2 Gaussian distributions $N(\bs{\mu_1}, \bs{\Sigma_1})$ and $N(\bs{\mu_2}, \bs{\Sigma_2})$ be defined with parameters as follows.
+Let two multivariate Gaussian distributions $N(\bs{\mu_1}, \bs{\Sigma_1})$ and $N(\bs{\mu_2}, \bs{\Sigma_2})$ be defined with (rather arbitrary) parameters as follows.
 \begin{equation*}
 \bs{\mu} =
 \begin{pmatrix}
@@ -46,7 +46,7 @@ Let 2 Gaussian distributions $N(\bs{\mu_1}, \bs{\Sigma_1})$ and $N(\bs{\mu_2}, \
 \end{pmatrix}
 \end{equation*}
 
-Let a stationary Markov chain's TPM be defined as follows.
+Let us consider a stationary Markov chain with the following (also fairly random) TPM.
 \begin{equation*}
 \bs{\Gamma} =
 \begin{pmatrix}

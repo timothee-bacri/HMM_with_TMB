@@ -27,7 +27,7 @@ for (idx in 1:length(M_LIST_SIMU3)) {
                          ncol = m)
   }
   true_lambda <- seq(1,
-                     16,
+                     19,
                      length.out = m)
   true_delta <- stat.dist(true_gamma)
   

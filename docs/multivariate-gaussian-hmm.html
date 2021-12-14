@@ -327,7 +327,7 @@ In turn, these cause the density function to change from <code>dpois</code> to <
 <div id="dataset-parameters" class="section level2" number="8.1">
 <h2><span class="header-section-number">8.1</span> Dataset &amp; Parameters</h2>
 <p>To avoid issues regarding the choice of data, we simulate our own.</p>
-<p>Let 2 Gaussian distributions <span class="math inline">\(N({\boldsymbol\mu_1}, {\boldsymbol\Sigma_1})\)</span> and <span class="math inline">\(N({\boldsymbol\mu_2}, {\boldsymbol\Sigma_2})\)</span> be defined with parameters as follows.
+<p>Let two multivariate Gaussian distributions <span class="math inline">\(N({\boldsymbol\mu_1}, {\boldsymbol\Sigma_1})\)</span> and <span class="math inline">\(N({\boldsymbol\mu_2}, {\boldsymbol\Sigma_2})\)</span> be defined with (rather arbitrary) parameters as follows.
 <span class="math display">\[\begin{equation*}
 {\boldsymbol\mu} =
 \begin{pmatrix}
@@ -356,7 +356,7 @@ In turn, these cause the density function to change from <code>dpois</code> to <
 1.5 &amp; 1.5 &amp; 2.0
 \end{pmatrix}
 \end{equation*}\]</span></p>
-<p>Let a stationary Markov chain’s TPM be defined as follows.
+<p>Let us consider a stationary Markov chain with the following (also fairly random) TPM.
 <span class="math display">\[\begin{equation*}
 {\boldsymbol\Gamma} =
 \begin{pmatrix}

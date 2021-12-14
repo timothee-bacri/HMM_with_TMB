@@ -27,7 +27,7 @@ for (idx in 1:length(M_LIST_SIMU4)) {
                          ncol = m)
   }
   true_lambda <- seq(1,
-                     16,
+                     19,
                      length.out = m)
   true_delta <- stat.dist(true_gamma)
   
@@ -464,8 +464,8 @@ for (idx in 1:length(M_LIST_SIMU4)) {
                                                 working_conf_int$upper[tgamma_indices]))
     
     ### MAIN DIFFERENCE FROM THE OTHER DATASETS !!!
-    ### Unlike in the other datasets, we have empirically found that profile CIs diverge when lambda=seq(1, 16, length.out = m) and will diverge until lambda=seq(1, 24, length.out=m)
-    ### Therefore, forcing profile CIs to converge will cause an infinite loop since we chose lambda=seq(1, 16, length.out = m) to showcase that profile CIs sometimes diverge.
+    ### Unlike in the other datasets, we have empirically found that profile CIs diverge when lambda=seq(1, 19, length.out = m) and will diverge until lambda=seq(1, 24, length.out=m)
+    ### Therefore, forcing profile CIs to converge will cause an infinite loop since we chose lambda=seq(1, 19, length.out = m) to showcase that profile CIs sometimes diverge.
     
     # If profiling doesn't yield results for all parameters, try a new coverage sample
     # estimates_coverage <- c(lambda_profile_lower,
