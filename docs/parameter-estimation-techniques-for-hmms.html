@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-12-14" />
+<meta name="date" content="2021-12-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -36,7 +36,7 @@
   
 <link rel="prev" href="principles-of-using-tmb-for-mle.html"/>
 <link rel="next" href="using-tmb.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -308,7 +308,7 @@ div.csl-indent {
 <span id="cb12-3"><a href="parameter-estimation-techniques-for-hmms.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dnorm</span>(<span class="at">x =</span> <span class="dv">1</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>) <span class="co"># Normal</span></span>
 <span id="cb12-4"><a href="parameter-estimation-techniques-for-hmms.html#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.2419707</span></span></code></pre></div>
 <p>Other distributions are available.</p>
-<p>We let TPM denote the transition probability matrix, and will reference it with the variable <span class="math inline">\({\boldsymbol\Gamma}\)</span>.</p>
+<p>We let TPM denote the transition probability matrix, and reference it with the variable <span class="math inline">\({\boldsymbol\Gamma}\)</span>.</p>
 </div>
 <div id="the-likelihood-function-of-an-hmm" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> The likelihood function of an HMM</h2>
@@ -317,82 +317,82 @@ div.csl-indent {
 <span id="cb13-2"><a href="parameter-estimation-techniques-for-hmms.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
 <span id="cb13-3"><a href="parameter-estimation-techniques-for-hmms.html#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="parameter-estimation-techniques-for-hmms.html#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood for a poisson hidden markov model. </span></span>
-<span id="cb13-5"><a href="parameter-estimation-techniques-for-hmms.html#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
-<span id="cb13-6"><a href="parameter-estimation-techniques-for-hmms.html#cb13-6" aria-hidden="true" tabindex="-1"></a>Type objective_function<span class="op">&lt;</span>Type<span class="op">&gt;::</span><span class="kw">operator</span><span class="op">()</span> <span class="op">()</span></span>
-<span id="cb13-7"><a href="parameter-estimation-techniques-for-hmms.html#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb13-5"><a href="parameter-estimation-techniques-for-hmms.html#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb13-6"><a href="parameter-estimation-techniques-for-hmms.html#cb13-6" aria-hidden="true" tabindex="-1"></a>Type objective_function&lt;Type&gt;::<span class="kw">operator</span>() ()</span>
+<span id="cb13-7"><a href="parameter-estimation-techniques-for-hmms.html#cb13-7" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb13-8"><a href="parameter-estimation-techniques-for-hmms.html#cb13-8" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-9"><a href="parameter-estimation-techniques-for-hmms.html#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Data</span></span>
-<span id="cb13-10"><a href="parameter-estimation-techniques-for-hmms.html#cb13-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR<span class="op">(</span>x<span class="op">);</span>          <span class="co">// timeseries vector</span></span>
-<span id="cb13-11"><a href="parameter-estimation-techniques-for-hmms.html#cb13-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER<span class="op">(</span>m<span class="op">);</span>         <span class="co">// Number of states m</span></span>
+<span id="cb13-10"><a href="parameter-estimation-techniques-for-hmms.html#cb13-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR(x);          <span class="co">// timeseries vector</span></span>
+<span id="cb13-11"><a href="parameter-estimation-techniques-for-hmms.html#cb13-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER(m);         <span class="co">// Number of states m</span></span>
 <span id="cb13-12"><a href="parameter-estimation-techniques-for-hmms.html#cb13-12" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-13"><a href="parameter-estimation-techniques-for-hmms.html#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters</span></span>
-<span id="cb13-14"><a href="parameter-estimation-techniques-for-hmms.html#cb13-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tlambda<span class="op">);</span>     <span class="co">// conditional log_lambdas&#39;s</span></span>
-<span id="cb13-15"><a href="parameter-estimation-techniques-for-hmms.html#cb13-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tgamma<span class="op">);</span>      <span class="co">// m(m-1) working parameters of TPM</span></span>
+<span id="cb13-14"><a href="parameter-estimation-techniques-for-hmms.html#cb13-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tlambda);     <span class="co">// conditional log_lambdas&#39;s</span></span>
+<span id="cb13-15"><a href="parameter-estimation-techniques-for-hmms.html#cb13-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tgamma);      <span class="co">// m(m-1) working parameters of TPM</span></span>
 <span id="cb13-16"><a href="parameter-estimation-techniques-for-hmms.html#cb13-16" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-17"><a href="parameter-estimation-techniques-for-hmms.html#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Uncomment only when using a non-stationary distribution</span></span>
 <span id="cb13-18"><a href="parameter-estimation-techniques-for-hmms.html#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">//PARAMETER_VECTOR(tdelta);    // transformed stationary distribution,</span></span>
 <span id="cb13-19"><a href="parameter-estimation-techniques-for-hmms.html#cb13-19" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-20"><a href="parameter-estimation-techniques-for-hmms.html#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
-<span id="cb13-21"><a href="parameter-estimation-techniques-for-hmms.html#cb13-21" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> lambda <span class="op">=</span> tlambda<span class="op">.</span>exp<span class="op">();</span></span>
-<span id="cb13-22"><a href="parameter-estimation-techniques-for-hmms.html#cb13-22" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma <span class="op">=</span> gamma_w2n<span class="op">(</span>m<span class="op">,</span> tgamma<span class="op">);</span></span>
+<span id="cb13-21"><a href="parameter-estimation-techniques-for-hmms.html#cb13-21" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; lambda = tlambda.exp();</span>
+<span id="cb13-22"><a href="parameter-estimation-techniques-for-hmms.html#cb13-22" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma = gamma_w2n(m, tgamma);</span>
 <span id="cb13-23"><a href="parameter-estimation-techniques-for-hmms.html#cb13-23" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-24"><a href="parameter-estimation-techniques-for-hmms.html#cb13-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
-<span id="cb13-25"><a href="parameter-estimation-techniques-for-hmms.html#cb13-25" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta <span class="op">=</span> stat_dist<span class="op">(</span>m<span class="op">,</span> gamma<span class="op">);</span></span>
+<span id="cb13-25"><a href="parameter-estimation-techniques-for-hmms.html#cb13-25" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = stat_dist(m, gamma);</span>
 <span id="cb13-26"><a href="parameter-estimation-techniques-for-hmms.html#cb13-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If using a non-stationary distribution, use this instead</span></span>
 <span id="cb13-27"><a href="parameter-estimation-techniques-for-hmms.html#cb13-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">//vector&lt;Type&gt; delta = delta_w2n(m, tdelta);</span></span>
 <span id="cb13-28"><a href="parameter-estimation-techniques-for-hmms.html#cb13-28" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-29"><a href="parameter-estimation-techniques-for-hmms.html#cb13-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
-<span id="cb13-30"><a href="parameter-estimation-techniques-for-hmms.html#cb13-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n <span class="op">=</span> x<span class="op">.</span>size<span class="op">();</span></span>
+<span id="cb13-30"><a href="parameter-estimation-techniques-for-hmms.html#cb13-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n = x.size();</span>
 <span id="cb13-31"><a href="parameter-estimation-techniques-for-hmms.html#cb13-31" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-32"><a href="parameter-estimation-techniques-for-hmms.html#cb13-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
 <span id="cb13-33"><a href="parameter-estimation-techniques-for-hmms.html#cb13-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
 <span id="cb13-34"><a href="parameter-estimation-techniques-for-hmms.html#cb13-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
-<span id="cb13-35"><a href="parameter-estimation-techniques-for-hmms.html#cb13-35" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> emission_probs<span class="op">(</span>n<span class="op">,</span> m<span class="op">);</span></span>
-<span id="cb13-36"><a href="parameter-estimation-techniques-for-hmms.html#cb13-36" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> row1vec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> m<span class="op">);</span></span>
-<span id="cb13-37"><a href="parameter-estimation-techniques-for-hmms.html#cb13-37" aria-hidden="true" tabindex="-1"></a>  row1vec<span class="op">.</span>setOnes<span class="op">();</span></span>
-<span id="cb13-38"><a href="parameter-estimation-techniques-for-hmms.html#cb13-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb13-39"><a href="parameter-estimation-techniques-for-hmms.html#cb13-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>x<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> x<span class="op">[</span>i<span class="op">])</span> <span class="op">{</span> <span class="co">// f != f returns true if and only if f is NaN. </span></span>
+<span id="cb13-35"><a href="parameter-estimation-techniques-for-hmms.html#cb13-35" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; emission_probs(n, m);</span>
+<span id="cb13-36"><a href="parameter-estimation-techniques-for-hmms.html#cb13-36" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
+<span id="cb13-37"><a href="parameter-estimation-techniques-for-hmms.html#cb13-37" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
+<span id="cb13-38"><a href="parameter-estimation-techniques-for-hmms.html#cb13-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
+<span id="cb13-39"><a href="parameter-estimation-techniques-for-hmms.html#cb13-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (x[i] != x[i]) { <span class="co">// f != f returns true if and only if f is NaN. </span></span>
 <span id="cb13-40"><a href="parameter-estimation-techniques-for-hmms.html#cb13-40" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
-<span id="cb13-41"><a href="parameter-estimation-techniques-for-hmms.html#cb13-41" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> row1vec<span class="op">;</span></span>
-<span id="cb13-42"><a href="parameter-estimation-techniques-for-hmms.html#cb13-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb13-43"><a href="parameter-estimation-techniques-for-hmms.html#cb13-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb13-44"><a href="parameter-estimation-techniques-for-hmms.html#cb13-44" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> dpois<span class="op">(</span>x<span class="op">[</span>i<span class="op">],</span> lambda<span class="op">,</span> <span class="kw">false</span><span class="op">);</span></span>
-<span id="cb13-45"><a href="parameter-estimation-techniques-for-hmms.html#cb13-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb13-46"><a href="parameter-estimation-techniques-for-hmms.html#cb13-46" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb13-41"><a href="parameter-estimation-techniques-for-hmms.html#cb13-41" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = row1vec;</span>
+<span id="cb13-42"><a href="parameter-estimation-techniques-for-hmms.html#cb13-42" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb13-43"><a href="parameter-estimation-techniques-for-hmms.html#cb13-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
+<span id="cb13-44"><a href="parameter-estimation-techniques-for-hmms.html#cb13-44" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = dpois(x[i], lambda, <span class="kw">false</span>);</span>
+<span id="cb13-45"><a href="parameter-estimation-techniques-for-hmms.html#cb13-45" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb13-46"><a href="parameter-estimation-techniques-for-hmms.html#cb13-46" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb13-47"><a href="parameter-estimation-techniques-for-hmms.html#cb13-47" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-48"><a href="parameter-estimation-techniques-for-hmms.html#cb13-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to Zucchini&#39;s book page 333</span></span>
-<span id="cb13-49"><a href="parameter-estimation-techniques-for-hmms.html#cb13-49" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">,</span> P<span class="op">;</span></span>
-<span id="cb13-50"><a href="parameter-estimation-techniques-for-hmms.html#cb13-50" aria-hidden="true" tabindex="-1"></a>  Type mllk<span class="op">,</span> sumfoo<span class="op">,</span> lscale<span class="op">;</span></span>
+<span id="cb13-49"><a href="parameter-estimation-techniques-for-hmms.html#cb13-49" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; foo, P;</span>
+<span id="cb13-50"><a href="parameter-estimation-techniques-for-hmms.html#cb13-50" aria-hidden="true" tabindex="-1"></a>  Type mllk, sumfoo, lscale;</span>
 <span id="cb13-51"><a href="parameter-estimation-techniques-for-hmms.html#cb13-51" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-52"><a href="parameter-estimation-techniques-for-hmms.html#cb13-52" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">=</span> <span class="op">(</span>delta <span class="op">*</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;(</span>emission_probs<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">))).</span>matrix<span class="op">();</span></span>
-<span id="cb13-53"><a href="parameter-estimation-techniques-for-hmms.html#cb13-53" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
-<span id="cb13-54"><a href="parameter-estimation-techniques-for-hmms.html#cb13-54" aria-hidden="true" tabindex="-1"></a>  lscale <span class="op">=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
-<span id="cb13-55"><a href="parameter-estimation-techniques-for-hmms.html#cb13-55" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>transposeInPlace<span class="op">();</span></span>
-<span id="cb13-56"><a href="parameter-estimation-techniques-for-hmms.html#cb13-56" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
-<span id="cb13-57"><a href="parameter-estimation-techniques-for-hmms.html#cb13-57" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb13-58"><a href="parameter-estimation-techniques-for-hmms.html#cb13-58" aria-hidden="true" tabindex="-1"></a>    P <span class="op">=</span> emission_probs<span class="op">.</span>row<span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
-<span id="cb13-59"><a href="parameter-estimation-techniques-for-hmms.html#cb13-59" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">=</span> <span class="op">((</span>foo <span class="op">*</span> gamma<span class="op">).</span>array<span class="op">()</span> <span class="op">*</span> P<span class="op">.</span>array<span class="op">()).</span>matrix<span class="op">();</span></span>
-<span id="cb13-60"><a href="parameter-estimation-techniques-for-hmms.html#cb13-60" aria-hidden="true" tabindex="-1"></a>    sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
-<span id="cb13-61"><a href="parameter-estimation-techniques-for-hmms.html#cb13-61" aria-hidden="true" tabindex="-1"></a>    lscale <span class="op">+=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
-<span id="cb13-62"><a href="parameter-estimation-techniques-for-hmms.html#cb13-62" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
-<span id="cb13-63"><a href="parameter-estimation-techniques-for-hmms.html#cb13-63" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb13-64"><a href="parameter-estimation-techniques-for-hmms.html#cb13-64" aria-hidden="true" tabindex="-1"></a>  mllk <span class="op">=</span> <span class="op">-</span>lscale<span class="op">;</span></span>
+<span id="cb13-52"><a href="parameter-estimation-techniques-for-hmms.html#cb13-52" aria-hidden="true" tabindex="-1"></a>  foo = (delta * vector&lt;Type&gt;(emission_probs.row(<span class="dv">0</span>))).matrix();</span>
+<span id="cb13-53"><a href="parameter-estimation-techniques-for-hmms.html#cb13-53" aria-hidden="true" tabindex="-1"></a>  sumfoo = foo.sum();</span>
+<span id="cb13-54"><a href="parameter-estimation-techniques-for-hmms.html#cb13-54" aria-hidden="true" tabindex="-1"></a>  lscale = log(sumfoo);</span>
+<span id="cb13-55"><a href="parameter-estimation-techniques-for-hmms.html#cb13-55" aria-hidden="true" tabindex="-1"></a>  foo.transposeInPlace();</span>
+<span id="cb13-56"><a href="parameter-estimation-techniques-for-hmms.html#cb13-56" aria-hidden="true" tabindex="-1"></a>  foo /= sumfoo;</span>
+<span id="cb13-57"><a href="parameter-estimation-techniques-for-hmms.html#cb13-57" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">2</span>; i &lt;= n; i++) {</span>
+<span id="cb13-58"><a href="parameter-estimation-techniques-for-hmms.html#cb13-58" aria-hidden="true" tabindex="-1"></a>    P = emission_probs.row(i - <span class="dv">1</span>);</span>
+<span id="cb13-59"><a href="parameter-estimation-techniques-for-hmms.html#cb13-59" aria-hidden="true" tabindex="-1"></a>    foo = ((foo * gamma).array() * P.array()).matrix();</span>
+<span id="cb13-60"><a href="parameter-estimation-techniques-for-hmms.html#cb13-60" aria-hidden="true" tabindex="-1"></a>    sumfoo = foo.sum();</span>
+<span id="cb13-61"><a href="parameter-estimation-techniques-for-hmms.html#cb13-61" aria-hidden="true" tabindex="-1"></a>    lscale += log(sumfoo);</span>
+<span id="cb13-62"><a href="parameter-estimation-techniques-for-hmms.html#cb13-62" aria-hidden="true" tabindex="-1"></a>    foo /= sumfoo;</span>
+<span id="cb13-63"><a href="parameter-estimation-techniques-for-hmms.html#cb13-63" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-64"><a href="parameter-estimation-techniques-for-hmms.html#cb13-64" aria-hidden="true" tabindex="-1"></a>  mllk = -lscale;</span>
 <span id="cb13-65"><a href="parameter-estimation-techniques-for-hmms.html#cb13-65" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-66"><a href="parameter-estimation-techniques-for-hmms.html#cb13-66" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
-<span id="cb13-67"><a href="parameter-estimation-techniques-for-hmms.html#cb13-67" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>lambda<span class="op">);</span></span>
-<span id="cb13-68"><a href="parameter-estimation-techniques-for-hmms.html#cb13-68" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>gamma<span class="op">);</span></span>
-<span id="cb13-69"><a href="parameter-estimation-techniques-for-hmms.html#cb13-69" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>delta<span class="op">);</span></span>
+<span id="cb13-67"><a href="parameter-estimation-techniques-for-hmms.html#cb13-67" aria-hidden="true" tabindex="-1"></a>  ADREPORT(lambda);</span>
+<span id="cb13-68"><a href="parameter-estimation-techniques-for-hmms.html#cb13-68" aria-hidden="true" tabindex="-1"></a>  ADREPORT(gamma);</span>
+<span id="cb13-69"><a href="parameter-estimation-techniques-for-hmms.html#cb13-69" aria-hidden="true" tabindex="-1"></a>  ADREPORT(delta);</span>
 <span id="cb13-70"><a href="parameter-estimation-techniques-for-hmms.html#cb13-70" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-71"><a href="parameter-estimation-techniques-for-hmms.html#cb13-71" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
-<span id="cb13-72"><a href="parameter-estimation-techniques-for-hmms.html#cb13-72" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>lambda<span class="op">);</span></span>
-<span id="cb13-73"><a href="parameter-estimation-techniques-for-hmms.html#cb13-73" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>gamma<span class="op">);</span></span>
-<span id="cb13-74"><a href="parameter-estimation-techniques-for-hmms.html#cb13-74" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>delta<span class="op">);</span></span>
-<span id="cb13-75"><a href="parameter-estimation-techniques-for-hmms.html#cb13-75" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>n<span class="op">);</span></span>
-<span id="cb13-76"><a href="parameter-estimation-techniques-for-hmms.html#cb13-76" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>emission_probs<span class="op">);</span></span>
-<span id="cb13-77"><a href="parameter-estimation-techniques-for-hmms.html#cb13-77" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>mllk<span class="op">);</span></span>
+<span id="cb13-72"><a href="parameter-estimation-techniques-for-hmms.html#cb13-72" aria-hidden="true" tabindex="-1"></a>  REPORT(lambda);</span>
+<span id="cb13-73"><a href="parameter-estimation-techniques-for-hmms.html#cb13-73" aria-hidden="true" tabindex="-1"></a>  REPORT(gamma);</span>
+<span id="cb13-74"><a href="parameter-estimation-techniques-for-hmms.html#cb13-74" aria-hidden="true" tabindex="-1"></a>  REPORT(delta);</span>
+<span id="cb13-75"><a href="parameter-estimation-techniques-for-hmms.html#cb13-75" aria-hidden="true" tabindex="-1"></a>  REPORT(n);</span>
+<span id="cb13-76"><a href="parameter-estimation-techniques-for-hmms.html#cb13-76" aria-hidden="true" tabindex="-1"></a>  REPORT(emission_probs);</span>
+<span id="cb13-77"><a href="parameter-estimation-techniques-for-hmms.html#cb13-77" aria-hidden="true" tabindex="-1"></a>  REPORT(mllk);</span>
 <span id="cb13-78"><a href="parameter-estimation-techniques-for-hmms.html#cb13-78" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-79"><a href="parameter-estimation-techniques-for-hmms.html#cb13-79" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk<span class="op">;</span></span>
-<span id="cb13-80"><a href="parameter-estimation-techniques-for-hmms.html#cb13-80" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb13-79"><a href="parameter-estimation-techniques-for-hmms.html#cb13-79" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk;</span>
+<span id="cb13-80"><a href="parameter-estimation-techniques-for-hmms.html#cb13-80" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>The case where <span class="math inline">\(m = 1\)</span> doesn’t involve a hidden state, and thus is a Poisson regression instead of a Poisson HMM.
 Nonetheless, <code>TMB</code> also accelerates its estimation and may be useful to the reader.</p>
 </div>
@@ -444,18 +444,18 @@ the emission probability matrix.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb16-1"><a href="parameter-estimation-techniques-for-hmms.html#cb16-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
 <span id="cb16-2"><a href="parameter-estimation-techniques-for-hmms.html#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
 <span id="cb16-3"><a href="parameter-estimation-techniques-for-hmms.html#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
-<span id="cb16-4"><a href="parameter-estimation-techniques-for-hmms.html#cb16-4" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> emission_probs<span class="op">(</span>n<span class="op">,</span> m<span class="op">);</span></span>
-<span id="cb16-5"><a href="parameter-estimation-techniques-for-hmms.html#cb16-5" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> row1vec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> m<span class="op">);</span></span>
-<span id="cb16-6"><a href="parameter-estimation-techniques-for-hmms.html#cb16-6" aria-hidden="true" tabindex="-1"></a>  row1vec<span class="op">.</span>setOnes<span class="op">();</span></span>
-<span id="cb16-7"><a href="parameter-estimation-techniques-for-hmms.html#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb16-8"><a href="parameter-estimation-techniques-for-hmms.html#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>x<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> x<span class="op">[</span>i<span class="op">])</span> <span class="op">{</span> <span class="co">// f != f returns true if and only if f is NaN. </span></span>
+<span id="cb16-4"><a href="parameter-estimation-techniques-for-hmms.html#cb16-4" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; emission_probs(n, m);</span>
+<span id="cb16-5"><a href="parameter-estimation-techniques-for-hmms.html#cb16-5" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
+<span id="cb16-6"><a href="parameter-estimation-techniques-for-hmms.html#cb16-6" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
+<span id="cb16-7"><a href="parameter-estimation-techniques-for-hmms.html#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
+<span id="cb16-8"><a href="parameter-estimation-techniques-for-hmms.html#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (x[i] != x[i]) { <span class="co">// f != f returns true if and only if f is NaN. </span></span>
 <span id="cb16-9"><a href="parameter-estimation-techniques-for-hmms.html#cb16-9" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
-<span id="cb16-10"><a href="parameter-estimation-techniques-for-hmms.html#cb16-10" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> row1vec<span class="op">;</span></span>
-<span id="cb16-11"><a href="parameter-estimation-techniques-for-hmms.html#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb16-12"><a href="parameter-estimation-techniques-for-hmms.html#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb16-13"><a href="parameter-estimation-techniques-for-hmms.html#cb16-13" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> dpois<span class="op">(</span>x<span class="op">[</span>i<span class="op">],</span> lambda<span class="op">,</span> <span class="kw">false</span><span class="op">);</span></span>
-<span id="cb16-14"><a href="parameter-estimation-techniques-for-hmms.html#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb16-15"><a href="parameter-estimation-techniques-for-hmms.html#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span></code></pre></div>
+<span id="cb16-10"><a href="parameter-estimation-techniques-for-hmms.html#cb16-10" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = row1vec;</span>
+<span id="cb16-11"><a href="parameter-estimation-techniques-for-hmms.html#cb16-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb16-12"><a href="parameter-estimation-techniques-for-hmms.html#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
+<span id="cb16-13"><a href="parameter-estimation-techniques-for-hmms.html#cb16-13" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = dpois(x[i], lambda, <span class="kw">false</span>);</span>
+<span id="cb16-14"><a href="parameter-estimation-techniques-for-hmms.html#cb16-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb16-15"><a href="parameter-estimation-techniques-for-hmms.html#cb16-15" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
 <p>Nevertheless, we also need to compute them in <code>R</code> to <a href="using-tmb.html#forecast">Forecast</a></p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="parameter-estimation-techniques-for-hmms.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate emission probabilities</span></span>
 <span id="cb17-2"><a href="parameter-estimation-techniques-for-hmms.html#cb17-2" aria-hidden="true" tabindex="-1"></a>get.emission.probs <span class="ot">&lt;-</span> <span class="cf">function</span>(data, lambda) {</span>
@@ -529,74 +529,74 @@ We define the function <code>gamma.w2n</code> to perform this transformation.</p
 <p>They are defined in <em><a href="functions/utils.cpp">functions/utils.cpp</a></em></p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb20-1"><a href="parameter-estimation-techniques-for-hmms.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming working parameters in initial distribution</span></span>
 <span id="cb20-2"><a href="parameter-estimation-techniques-for-hmms.html#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">// to natural parameters</span></span>
-<span id="cb20-3"><a href="parameter-estimation-techniques-for-hmms.html#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
-<span id="cb20-4"><a href="parameter-estimation-techniques-for-hmms.html#cb20-4" aria-hidden="true" tabindex="-1"></a>vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta_w2n<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> tdelta<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-3"><a href="parameter-estimation-techniques-for-hmms.html#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb20-4"><a href="parameter-estimation-techniques-for-hmms.html#cb20-4" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; delta_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tdelta) {</span>
 <span id="cb20-5"><a href="parameter-estimation-techniques-for-hmms.html#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-6"><a href="parameter-estimation-techniques-for-hmms.html#cb20-6" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta<span class="op">(</span>m<span class="op">);</span></span>
-<span id="cb20-7"><a href="parameter-estimation-techniques-for-hmms.html#cb20-7" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">(</span>m<span class="op">);</span></span>
+<span id="cb20-6"><a href="parameter-estimation-techniques-for-hmms.html#cb20-6" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta(m);</span>
+<span id="cb20-7"><a href="parameter-estimation-techniques-for-hmms.html#cb20-7" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; foo(m);</span>
 <span id="cb20-8"><a href="parameter-estimation-techniques-for-hmms.html#cb20-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-9"><a href="parameter-estimation-techniques-for-hmms.html#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>m <span class="op">==</span> <span class="dv">1</span><span class="op">)</span></span>
-<span id="cb20-10"><a href="parameter-estimation-techniques-for-hmms.html#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Type<span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb20-9"><a href="parameter-estimation-techniques-for-hmms.html#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>)</span>
+<span id="cb20-10"><a href="parameter-estimation-techniques-for-hmms.html#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Type(<span class="dv">1</span>);</span>
 <span id="cb20-11"><a href="parameter-estimation-techniques-for-hmms.html#cb20-11" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb20-12"><a href="parameter-estimation-techniques-for-hmms.html#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// set first element to one.</span></span>
 <span id="cb20-13"><a href="parameter-estimation-techniques-for-hmms.html#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill in the last m - 1 elements with working parameters</span></span>
 <span id="cb20-14"><a href="parameter-estimation-techniques-for-hmms.html#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// and take exponential</span></span>
-<span id="cb20-15"><a href="parameter-estimation-techniques-for-hmms.html#cb20-15" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">&lt;&lt;</span> Type<span class="op">(</span><span class="dv">1</span><span class="op">),</span> tdelta<span class="op">.</span>exp<span class="op">();</span></span>
+<span id="cb20-15"><a href="parameter-estimation-techniques-for-hmms.html#cb20-15" aria-hidden="true" tabindex="-1"></a>  foo &lt;&lt; Type(<span class="dv">1</span>), tdelta.exp();</span>
 <span id="cb20-16"><a href="parameter-estimation-techniques-for-hmms.html#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-17"><a href="parameter-estimation-techniques-for-hmms.html#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// normalize</span></span>
-<span id="cb20-18"><a href="parameter-estimation-techniques-for-hmms.html#cb20-18" aria-hidden="true" tabindex="-1"></a>  delta <span class="op">=</span> foo <span class="op">/</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
+<span id="cb20-18"><a href="parameter-estimation-techniques-for-hmms.html#cb20-18" aria-hidden="true" tabindex="-1"></a>  delta = foo / foo.sum();</span>
 <span id="cb20-19"><a href="parameter-estimation-techniques-for-hmms.html#cb20-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-20"><a href="parameter-estimation-techniques-for-hmms.html#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta<span class="op">;</span></span>
-<span id="cb20-21"><a href="parameter-estimation-techniques-for-hmms.html#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb20-20"><a href="parameter-estimation-techniques-for-hmms.html#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta;</span>
+<span id="cb20-21"><a href="parameter-estimation-techniques-for-hmms.html#cb20-21" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb20-22"><a href="parameter-estimation-techniques-for-hmms.html#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-23"><a href="parameter-estimation-techniques-for-hmms.html#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming the working parameters in TPM to</span></span>
 <span id="cb20-24"><a href="parameter-estimation-techniques-for-hmms.html#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="co">// natural parameters (w2n)</span></span>
-<span id="cb20-25"><a href="parameter-estimation-techniques-for-hmms.html#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
-<span id="cb20-26"><a href="parameter-estimation-techniques-for-hmms.html#cb20-26" aria-hidden="true" tabindex="-1"></a>matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma_w2n<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> tgamma<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-25"><a href="parameter-estimation-techniques-for-hmms.html#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb20-26"><a href="parameter-estimation-techniques-for-hmms.html#cb20-26" aria-hidden="true" tabindex="-1"></a>matrix&lt;Type&gt; gamma_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tgamma) {</span>
 <span id="cb20-27"><a href="parameter-estimation-techniques-for-hmms.html#cb20-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-28"><a href="parameter-estimation-techniques-for-hmms.html#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct m x m identity matrix</span></span>
-<span id="cb20-29"><a href="parameter-estimation-techniques-for-hmms.html#cb20-29" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma<span class="op">(</span>m<span class="op">,</span> m<span class="op">);</span></span>
-<span id="cb20-30"><a href="parameter-estimation-techniques-for-hmms.html#cb20-30" aria-hidden="true" tabindex="-1"></a>  gamma<span class="op">.</span>setIdentity<span class="op">();</span></span>
+<span id="cb20-29"><a href="parameter-estimation-techniques-for-hmms.html#cb20-29" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma(m, m);</span>
+<span id="cb20-30"><a href="parameter-estimation-techniques-for-hmms.html#cb20-30" aria-hidden="true" tabindex="-1"></a>  gamma.setIdentity();</span>
 <span id="cb20-31"><a href="parameter-estimation-techniques-for-hmms.html#cb20-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-32"><a href="parameter-estimation-techniques-for-hmms.html#cb20-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>m <span class="op">==</span> <span class="dv">1</span><span class="op">)</span></span>
-<span id="cb20-33"><a href="parameter-estimation-techniques-for-hmms.html#cb20-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gamma<span class="op">;</span></span>
+<span id="cb20-32"><a href="parameter-estimation-techniques-for-hmms.html#cb20-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>)</span>
+<span id="cb20-33"><a href="parameter-estimation-techniques-for-hmms.html#cb20-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gamma;</span>
 <span id="cb20-34"><a href="parameter-estimation-techniques-for-hmms.html#cb20-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-35"><a href="parameter-estimation-techniques-for-hmms.html#cb20-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill offdiagonal elements with working parameters column-wise:</span></span>
-<span id="cb20-36"><a href="parameter-estimation-techniques-for-hmms.html#cb20-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> idx <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb20-37"><a href="parameter-estimation-techniques-for-hmms.html#cb20-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> m<span class="op">;</span> i<span class="op">++){</span></span>
-<span id="cb20-38"><a href="parameter-estimation-techniques-for-hmms.html#cb20-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> m<span class="op">;</span> j<span class="op">++){</span></span>
-<span id="cb20-39"><a href="parameter-estimation-techniques-for-hmms.html#cb20-39" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>j <span class="op">!=</span> i<span class="op">){</span></span>
+<span id="cb20-36"><a href="parameter-estimation-techniques-for-hmms.html#cb20-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> idx = <span class="dv">0</span>;</span>
+<span id="cb20-37"><a href="parameter-estimation-techniques-for-hmms.html#cb20-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; m; i++){</span>
+<span id="cb20-38"><a href="parameter-estimation-techniques-for-hmms.html#cb20-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; m; j++){</span>
+<span id="cb20-39"><a href="parameter-estimation-techniques-for-hmms.html#cb20-39" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (j != i){</span>
 <span id="cb20-40"><a href="parameter-estimation-techniques-for-hmms.html#cb20-40" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Fill gamma according to mapping and take exponential</span></span>
-<span id="cb20-41"><a href="parameter-estimation-techniques-for-hmms.html#cb20-41" aria-hidden="true" tabindex="-1"></a>        gamma<span class="op">(</span>j<span class="op">,</span> i<span class="op">)</span> <span class="op">=</span> tgamma<span class="op">.</span>exp<span class="op">()(</span>idx<span class="op">);</span></span>
-<span id="cb20-42"><a href="parameter-estimation-techniques-for-hmms.html#cb20-42" aria-hidden="true" tabindex="-1"></a>        idx<span class="op">++;</span></span>
-<span id="cb20-43"><a href="parameter-estimation-techniques-for-hmms.html#cb20-43" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb20-44"><a href="parameter-estimation-techniques-for-hmms.html#cb20-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb20-45"><a href="parameter-estimation-techniques-for-hmms.html#cb20-45" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb20-41"><a href="parameter-estimation-techniques-for-hmms.html#cb20-41" aria-hidden="true" tabindex="-1"></a>        gamma(j, i) = tgamma.exp()(idx);</span>
+<span id="cb20-42"><a href="parameter-estimation-techniques-for-hmms.html#cb20-42" aria-hidden="true" tabindex="-1"></a>        idx++;</span>
+<span id="cb20-43"><a href="parameter-estimation-techniques-for-hmms.html#cb20-43" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb20-44"><a href="parameter-estimation-techniques-for-hmms.html#cb20-44" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb20-45"><a href="parameter-estimation-techniques-for-hmms.html#cb20-45" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb20-46"><a href="parameter-estimation-techniques-for-hmms.html#cb20-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Normalize each row:</span></span>
-<span id="cb20-47"><a href="parameter-estimation-techniques-for-hmms.html#cb20-47" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> cs <span class="op">=</span> gamma<span class="op">.</span>rowwise<span class="op">().</span>sum<span class="op">();</span></span>
-<span id="cb20-48"><a href="parameter-estimation-techniques-for-hmms.html#cb20-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> m<span class="op">;</span> i<span class="op">++)</span> gamma<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">/=</span> cs<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb20-47"><a href="parameter-estimation-techniques-for-hmms.html#cb20-47" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; cs = gamma.rowwise().sum();</span>
+<span id="cb20-48"><a href="parameter-estimation-techniques-for-hmms.html#cb20-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; m; i++) gamma.row(i) /= cs[i];</span>
 <span id="cb20-49"><a href="parameter-estimation-techniques-for-hmms.html#cb20-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-50"><a href="parameter-estimation-techniques-for-hmms.html#cb20-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> gamma<span class="op">;</span></span>
-<span id="cb20-51"><a href="parameter-estimation-techniques-for-hmms.html#cb20-51" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb20-50"><a href="parameter-estimation-techniques-for-hmms.html#cb20-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> gamma;</span>
+<span id="cb20-51"><a href="parameter-estimation-techniques-for-hmms.html#cb20-51" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb20-52"><a href="parameter-estimation-techniques-for-hmms.html#cb20-52" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-53"><a href="parameter-estimation-techniques-for-hmms.html#cb20-53" aria-hidden="true" tabindex="-1"></a><span class="co">// Function computing the stationary distribution of a Markov chain</span></span>
-<span id="cb20-54"><a href="parameter-estimation-techniques-for-hmms.html#cb20-54" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
-<span id="cb20-55"><a href="parameter-estimation-techniques-for-hmms.html#cb20-55" aria-hidden="true" tabindex="-1"></a>vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> stat_dist<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-54"><a href="parameter-estimation-techniques-for-hmms.html#cb20-54" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
+<span id="cb20-55"><a href="parameter-estimation-techniques-for-hmms.html#cb20-55" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; stat_dist(<span class="dt">int</span> m, matrix&lt;Type&gt; gamma) {</span>
 <span id="cb20-56"><a href="parameter-estimation-techniques-for-hmms.html#cb20-56" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb20-57"><a href="parameter-estimation-techniques-for-hmms.html#cb20-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
-<span id="cb20-58"><a href="parameter-estimation-techniques-for-hmms.html#cb20-58" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> I<span class="op">(</span>m<span class="op">,</span> m<span class="op">);</span></span>
-<span id="cb20-59"><a href="parameter-estimation-techniques-for-hmms.html#cb20-59" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> U<span class="op">(</span>m<span class="op">,</span> m<span class="op">);</span></span>
-<span id="cb20-60"><a href="parameter-estimation-techniques-for-hmms.html#cb20-60" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> row1vec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> m<span class="op">);</span></span>
-<span id="cb20-61"><a href="parameter-estimation-techniques-for-hmms.html#cb20-61" aria-hidden="true" tabindex="-1"></a>  U <span class="op">=</span> U<span class="op">.</span>setOnes<span class="op">();</span></span>
-<span id="cb20-62"><a href="parameter-estimation-techniques-for-hmms.html#cb20-62" aria-hidden="true" tabindex="-1"></a>  I <span class="op">=</span> I<span class="op">.</span>setIdentity<span class="op">();</span></span>
-<span id="cb20-63"><a href="parameter-estimation-techniques-for-hmms.html#cb20-63" aria-hidden="true" tabindex="-1"></a>  row1vec<span class="op">.</span>setOnes<span class="op">();</span></span>
-<span id="cb20-64"><a href="parameter-estimation-techniques-for-hmms.html#cb20-64" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> A <span class="op">=</span>  I <span class="op">-</span> gamma <span class="op">+</span> U<span class="op">;</span></span>
-<span id="cb20-65"><a href="parameter-estimation-techniques-for-hmms.html#cb20-65" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> Ainv <span class="op">=</span> A<span class="op">.</span>inverse<span class="op">();</span></span>
-<span id="cb20-66"><a href="parameter-estimation-techniques-for-hmms.html#cb20-66" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> deltamat <span class="op">=</span> row1vec <span class="op">*</span> Ainv<span class="op">;</span></span>
-<span id="cb20-67"><a href="parameter-estimation-techniques-for-hmms.html#cb20-67" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta <span class="op">=</span> deltamat<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb20-58"><a href="parameter-estimation-techniques-for-hmms.html#cb20-58" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; I(m, m);</span>
+<span id="cb20-59"><a href="parameter-estimation-techniques-for-hmms.html#cb20-59" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; U(m, m);</span>
+<span id="cb20-60"><a href="parameter-estimation-techniques-for-hmms.html#cb20-60" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
+<span id="cb20-61"><a href="parameter-estimation-techniques-for-hmms.html#cb20-61" aria-hidden="true" tabindex="-1"></a>  U = U.setOnes();</span>
+<span id="cb20-62"><a href="parameter-estimation-techniques-for-hmms.html#cb20-62" aria-hidden="true" tabindex="-1"></a>  I = I.setIdentity();</span>
+<span id="cb20-63"><a href="parameter-estimation-techniques-for-hmms.html#cb20-63" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
+<span id="cb20-64"><a href="parameter-estimation-techniques-for-hmms.html#cb20-64" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; A =  I - gamma + U;</span>
+<span id="cb20-65"><a href="parameter-estimation-techniques-for-hmms.html#cb20-65" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; Ainv = A.inverse();</span>
+<span id="cb20-66"><a href="parameter-estimation-techniques-for-hmms.html#cb20-66" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; deltamat = row1vec * Ainv;</span>
+<span id="cb20-67"><a href="parameter-estimation-techniques-for-hmms.html#cb20-67" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = deltamat.row(<span class="dv">0</span>);</span>
 <span id="cb20-68"><a href="parameter-estimation-techniques-for-hmms.html#cb20-68" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-69"><a href="parameter-estimation-techniques-for-hmms.html#cb20-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta<span class="op">;</span></span>
-<span id="cb20-70"><a href="parameter-estimation-techniques-for-hmms.html#cb20-70" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb20-69"><a href="parameter-estimation-techniques-for-hmms.html#cb20-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta;</span>
+<span id="cb20-70"><a href="parameter-estimation-techniques-for-hmms.html#cb20-70" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Transforming the Poisson means into their natural form can be done simply with the <code>exp</code> function and doesn’t require a dedicated function.</p>
 </div>
 <div id="utility-functions-in-r" class="section level3" number="3.4.2">
@@ -766,8 +766,8 @@ For readability, the TPM is filled with standard row and column indices instead 
 <span id="cb26-24"><a href="parameter-estimation-techniques-for-hmms.html#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="do">## $ordered_delta_indices</span></span>
 <span id="cb26-25"><a href="parameter-estimation-techniques-for-hmms.html#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2 3 1</span></span></code></pre></div>
 <p>State 1 has been relabeled state 3, state 3 became state 2, and state 2 became state 1.</p>
-<p>Another way to address this issue is by parameterizing in terms of non-negative increments <span class="math inline">\(\lambda_j - \lambda_{j-1}\)</span> with <span class="math inline">\(\lambda_0 \equiv 0\)</span>, as explained by <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, sec. 7.1.1</a> p. 112)</span>.
-However, <span class="citation"><a href="references.html#ref-bulla" role="doc-biblioref">Bulla and Berzel</a> (<a href="references.html#ref-bulla" role="doc-biblioref">2008, sec. 3.2</a> p. 7)</span> shows this can impose optimization issues: “over all series, the simplest parameterization, i.e., the use of log-transformed state-dependent parameters, leads to the best results as regards the number of failures and the convergence to the global maximum.”</p>
+<p>Another way to address this issue is by parameterizing in terms of non-negative increments <span class="math inline">\(\lambda_j - \lambda_{j-1}\)</span> with <span class="math inline">\(\lambda_0 \equiv 0\)</span>, as explained by <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016</a> Section 7.1.1 p. 112)</span>.
+However, <span class="citation"><a href="references.html#ref-bulla" role="doc-biblioref">Bulla and Berzel</a> (<a href="references.html#ref-bulla" role="doc-biblioref">2008</a> Section 3.2 p. 7)</span> shows this can impose optimization issues: “over all series, the simplest parameterization, i.e., the use of log-transformed state-dependent parameters, leads to the best results as regards the number of failures and the convergence to the global maximum.”</p>
 <p>These utility functions or subroutines are not complicated, but as you can see, they would cloud up your main code.
 Therefore, we put them in functions we can call from our main program.</p>
 

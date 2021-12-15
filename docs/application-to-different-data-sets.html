@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2021-12-14" />
+<meta name="date" content="2021-12-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -36,7 +36,7 @@
   
 <link rel="prev" href="confidence-intervals.html"/>
 <link rel="next" href="gaussian-hmm.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -343,18 +343,17 @@ div.csl-indent {
 <span id="cb73-11"><a href="application-to-different-data-sets.html#cb73-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Check convergence</span></span>
 <span id="cb73-12"><a href="application-to-different-data-sets.html#cb73-12" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
 <span id="cb73-13"><a href="application-to-different-data-sets.html#cb73-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span>
-<span id="cb73-14"><a href="application-to-different-data-sets.html#cb73-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb73-15"><a href="application-to-different-data-sets.html#cb73-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
-<span id="cb73-16"><a href="application-to-different-data-sets.html#cb73-16" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
-<span id="cb73-17"><a href="application-to-different-data-sets.html#cb73-17" aria-hidden="true" tabindex="-1"></a><span class="do">##          Estimate Std. Error</span></span>
-<span id="cb73-18"><a href="application-to-different-data-sets.html#cb73-18" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 1.63641100 0.27758296</span></span>
-<span id="cb73-19"><a href="application-to-different-data-sets.html#cb73-19" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 5.53309576 0.31876147</span></span>
-<span id="cb73-20"><a href="application-to-different-data-sets.html#cb73-20" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.94980209 0.04374676</span></span>
-<span id="cb73-21"><a href="application-to-different-data-sets.html#cb73-21" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.02592204 0.02088688</span></span>
-<span id="cb73-22"><a href="application-to-different-data-sets.html#cb73-22" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.05019791 0.04374676</span></span>
-<span id="cb73-23"><a href="application-to-different-data-sets.html#cb73-23" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.97407796 0.02088688</span></span>
-<span id="cb73-24"><a href="application-to-different-data-sets.html#cb73-24" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.34054200 0.23056437</span></span>
-<span id="cb73-25"><a href="application-to-different-data-sets.html#cb73-25" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.65945800 0.23056437</span></span></code></pre></div>
+<span id="cb73-14"><a href="application-to-different-data-sets.html#cb73-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
+<span id="cb73-15"><a href="application-to-different-data-sets.html#cb73-15" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
+<span id="cb73-16"><a href="application-to-different-data-sets.html#cb73-16" aria-hidden="true" tabindex="-1"></a><span class="do">##          Estimate Std. Error</span></span>
+<span id="cb73-17"><a href="application-to-different-data-sets.html#cb73-17" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 1.63641100 0.27758296</span></span>
+<span id="cb73-18"><a href="application-to-different-data-sets.html#cb73-18" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 5.53309576 0.31876147</span></span>
+<span id="cb73-19"><a href="application-to-different-data-sets.html#cb73-19" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.94980209 0.04374676</span></span>
+<span id="cb73-20"><a href="application-to-different-data-sets.html#cb73-20" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.02592204 0.02088688</span></span>
+<span id="cb73-21"><a href="application-to-different-data-sets.html#cb73-21" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.05019791 0.04374676</span></span>
+<span id="cb73-22"><a href="application-to-different-data-sets.html#cb73-22" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.97407796 0.02088688</span></span>
+<span id="cb73-23"><a href="application-to-different-data-sets.html#cb73-23" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.34054200 0.23056437</span></span>
+<span id="cb73-24"><a href="application-to-different-data-sets.html#cb73-24" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.65945800 0.23056437</span></span></code></pre></div>
 <p>For the code used to generate coverage probabilities and acceleration results, please take a look at <em><a href="github.html#poi_hmm_tinn.R">code/poi_hmm_tinn.R</a></em>.</p>
 </div>
 <div id="lamb-data" class="section level2" number="6.2">
@@ -403,18 +402,17 @@ div.csl-indent {
 <span id="cb77-11"><a href="application-to-different-data-sets.html#cb77-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Check convergence</span></span>
 <span id="cb77-12"><a href="application-to-different-data-sets.html#cb77-12" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
 <span id="cb77-13"><a href="application-to-different-data-sets.html#cb77-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span>
-<span id="cb77-14"><a href="application-to-different-data-sets.html#cb77-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb77-15"><a href="application-to-different-data-sets.html#cb77-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
-<span id="cb77-16"><a href="application-to-different-data-sets.html#cb77-16" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
-<span id="cb77-17"><a href="application-to-different-data-sets.html#cb77-17" aria-hidden="true" tabindex="-1"></a><span class="do">##          Estimate Std. Error</span></span>
-<span id="cb77-18"><a href="application-to-different-data-sets.html#cb77-18" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 0.25636541 0.04016445</span></span>
-<span id="cb77-19"><a href="application-to-different-data-sets.html#cb77-19" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 3.11475432 1.02131182</span></span>
-<span id="cb77-20"><a href="application-to-different-data-sets.html#cb77-20" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.98872128 0.01063571</span></span>
-<span id="cb77-21"><a href="application-to-different-data-sets.html#cb77-21" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.31033853 0.18468648</span></span>
-<span id="cb77-22"><a href="application-to-different-data-sets.html#cb77-22" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.01127872 0.01063571</span></span>
-<span id="cb77-23"><a href="application-to-different-data-sets.html#cb77-23" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.68966147 0.18468648</span></span>
-<span id="cb77-24"><a href="application-to-different-data-sets.html#cb77-24" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.96493123 0.03181445</span></span>
-<span id="cb77-25"><a href="application-to-different-data-sets.html#cb77-25" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.03506877 0.03181445</span></span></code></pre></div>
+<span id="cb77-14"><a href="application-to-different-data-sets.html#cb77-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
+<span id="cb77-15"><a href="application-to-different-data-sets.html#cb77-15" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
+<span id="cb77-16"><a href="application-to-different-data-sets.html#cb77-16" aria-hidden="true" tabindex="-1"></a><span class="do">##          Estimate Std. Error</span></span>
+<span id="cb77-17"><a href="application-to-different-data-sets.html#cb77-17" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 0.25636541 0.04016445</span></span>
+<span id="cb77-18"><a href="application-to-different-data-sets.html#cb77-18" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 3.11475432 1.02131182</span></span>
+<span id="cb77-19"><a href="application-to-different-data-sets.html#cb77-19" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.98872128 0.01063571</span></span>
+<span id="cb77-20"><a href="application-to-different-data-sets.html#cb77-20" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.31033853 0.18468648</span></span>
+<span id="cb77-21"><a href="application-to-different-data-sets.html#cb77-21" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.01127872 0.01063571</span></span>
+<span id="cb77-22"><a href="application-to-different-data-sets.html#cb77-22" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.68966147 0.18468648</span></span>
+<span id="cb77-23"><a href="application-to-different-data-sets.html#cb77-23" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.96493123 0.03181445</span></span>
+<span id="cb77-24"><a href="application-to-different-data-sets.html#cb77-24" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.03506877 0.03181445</span></span></code></pre></div>
 <p>For the code used to generate coverage probabilities and acceleration results, please take a look at <em><a href="#poi_hmm_lamb.R">code/poi_hmm_lamb.R</a></em>.</p>
 <p>On a minor note, when comparing our estimation results to those reported by <span class="citation"><a href="references.html#ref-leroux" role="doc-biblioref">Leroux and Puterman</a> (<a href="references.html#ref-leroux" role="doc-biblioref">1992</a>)</span>, some non-negligible differences can be noted.
 The reasons for this are difficult to determine, but some likely explanations are given in the following.
@@ -496,18 +494,17 @@ Then, using the same procedure as above, we estimate a model using different ini
 <span id="cb84-11"><a href="application-to-different-data-sets.html#cb84-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Check convergence</span></span>
 <span id="cb84-12"><a href="application-to-different-data-sets.html#cb84-12" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
 <span id="cb84-13"><a href="application-to-different-data-sets.html#cb84-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span>
-<span id="cb84-14"><a href="application-to-different-data-sets.html#cb84-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb84-15"><a href="application-to-different-data-sets.html#cb84-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
-<span id="cb84-16"><a href="application-to-different-data-sets.html#cb84-16" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
-<span id="cb84-17"><a href="application-to-different-data-sets.html#cb84-17" aria-hidden="true" tabindex="-1"></a><span class="do">##          Estimate Std. Error</span></span>
-<span id="cb84-18"><a href="application-to-different-data-sets.html#cb84-18" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda  9.7345726 0.23644285</span></span>
-<span id="cb84-19"><a href="application-to-different-data-sets.html#cb84-19" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 13.8098676 0.22273984</span></span>
-<span id="cb84-20"><a href="application-to-different-data-sets.html#cb84-20" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma   0.8068975 0.03331223</span></span>
-<span id="cb84-21"><a href="application-to-different-data-sets.html#cb84-21" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma   0.1564875 0.02671332</span></span>
-<span id="cb84-22"><a href="application-to-different-data-sets.html#cb84-22" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma   0.1931025 0.03331223</span></span>
-<span id="cb84-23"><a href="application-to-different-data-sets.html#cb84-23" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma   0.8435125 0.02671332</span></span>
-<span id="cb84-24"><a href="application-to-different-data-sets.html#cb84-24" aria-hidden="true" tabindex="-1"></a><span class="do">## delta   0.4476315 0.05201103</span></span>
-<span id="cb84-25"><a href="application-to-different-data-sets.html#cb84-25" aria-hidden="true" tabindex="-1"></a><span class="do">## delta   0.5523685 0.05201103</span></span></code></pre></div>
+<span id="cb84-14"><a href="application-to-different-data-sets.html#cb84-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
+<span id="cb84-15"><a href="application-to-different-data-sets.html#cb84-15" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
+<span id="cb84-16"><a href="application-to-different-data-sets.html#cb84-16" aria-hidden="true" tabindex="-1"></a><span class="do">##          Estimate Std. Error</span></span>
+<span id="cb84-17"><a href="application-to-different-data-sets.html#cb84-17" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda  9.7345726 0.23644285</span></span>
+<span id="cb84-18"><a href="application-to-different-data-sets.html#cb84-18" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 13.8098676 0.22273984</span></span>
+<span id="cb84-19"><a href="application-to-different-data-sets.html#cb84-19" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma   0.8068975 0.03331223</span></span>
+<span id="cb84-20"><a href="application-to-different-data-sets.html#cb84-20" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma   0.1564875 0.02671332</span></span>
+<span id="cb84-21"><a href="application-to-different-data-sets.html#cb84-21" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma   0.1931025 0.03331223</span></span>
+<span id="cb84-22"><a href="application-to-different-data-sets.html#cb84-22" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma   0.8435125 0.02671332</span></span>
+<span id="cb84-23"><a href="application-to-different-data-sets.html#cb84-23" aria-hidden="true" tabindex="-1"></a><span class="do">## delta   0.4476315 0.05201103</span></span>
+<span id="cb84-24"><a href="application-to-different-data-sets.html#cb84-24" aria-hidden="true" tabindex="-1"></a><span class="do">## delta   0.5523685 0.05201103</span></span></code></pre></div>
 <p>For the code used to generate coverage probabilities and acceleration results, please take a look at <em><a href="github.html#poi_hmm_simu1.R">code/poi_hmm_simu1.R</a></em>, <em><a href="github.html#poi_hmm_simu2.R">code/poi_hmm_simu2.R</a></em> and <em><a href="github.html#poi_hmm_simu3.R">code/poi_hmm_simu3.R</a></em>.</p>
 
 </div>

@@ -1,8 +1,8 @@
 # Multivariate Gaussian HMM
 
-Multivariate Gaussian HMMs with `TMB` have a lot in common with the previous Poisson HMM, we focus on the main differences in this Section.
-Most notably, distribution parameters are changed from Poisson means $\bs{\lambda}$ to Normal mean vectors $\bs{\mu}$ and Normal covariance matrices $\bs{\Sigma}$.
-In turn, these cause the density function to change from `dpois` to `dmvnorm` (and the random data generation functions from `rpois` to `rmvnorm` for simulations) from the `mvtnorm` [@R-mvtnorm] package.
+Multivariate Gaussian HMMs with `TMB` is a direct generalization of the univariate case from the previous section. We focus on the main differences.
+Most notably, distribution parameters are changed from Normal mean vectors to matrices and we now have one covariance matrix for each state.
+For the implementation, the main change is for the density function to go from `dnorm` to `dmvnorm` (and the random data generation functions from `rnorm` to `rmvnorm` for simulations) from the `mvtnorm` [@R-mvtnorm] package.
 
 Many functions available in *[functions/utils.R](#utils.R)* have been adapted with the changes described for the multivariate Gaussian case in *[functions/mvnorm_utils.R](#mvnorm_utils.R)*.
 
@@ -142,11 +142,11 @@ report
 ```
 
 ## Bias
-Since the data was simulated, the true parameters are known and the validity of the estimates cam be checked.
+Since the data was simulated, the true parameters are known and the validity of the estimates can be checked.
 To do this, we look at the maximum absolute percentage difference between estimates and true values.
 ```{r 8results-verification}
 (t(report$mu) - mu) / mu
 (report$sigma - sigma) / sigma
 (report$gamma - gamma) / gamma
 ```
-Differences are at most in the order of 10\% for values near 0. Parameter estimation was successful.
+Differences are at most in the order of 10\% for values near 0. This is acceptable.

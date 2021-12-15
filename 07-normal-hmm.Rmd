@@ -9,7 +9,7 @@ Many functions available in *[functions/utils.R](#utils.R)* have been adapted fo
 We detail below an example of a Gaussian HMM with TMB.
 
 ## Dataset
-The dataset we show in this example contains log-returns of the SP500 dataset pulled from Yahoo finances.
+The dataset we show in this example contains log-returns of the SP500 dataset pulled from Yahoo finance.
 These log-returns are generated with the following code.
 ```{r 7sp500-generate, eval = FALSE}
 library(dplyr)
@@ -80,6 +80,6 @@ summary(sdreport(obj_tmb), "report")
 obj_tmb$report()
 ```
 
-As could be expected, the low positive mean is associated with with a low variance whereas the larger mean is negative and tied to a higher variance.
+As could be expected, the low positive mean is associated with a low variance whereas the larger mean is negative and tied to a higher variance.
 Note that the TPM is displayed column-wise.
 
