@@ -17,42 +17,32 @@ To avoid issues regarding the choice of data, we simulate our own.
 
 Let two multivariate Gaussian distributions $N(\bs{\mu_1}, \bs{\Sigma_1})$ and $N(\bs{\mu_2}, \bs{\Sigma_2})$ be defined with (rather arbitrary) parameters as follows.
 \begin{equation*}
-\bs{\mu} =
-\begin{pmatrix}
-\bs{\mu_1}\\
-\bs{\mu_2}
-\end{pmatrix}
-=
-\begin{pmatrix}
-6 & 8 & 9\\
-1 & 2 & 3
-\end{pmatrix}
+\bs{\mu_1} = (6, 8, 9) \quad \text{and }
+\bs{\mu_2} = (1, 2, 3)
 \end{equation*}
 
 \begin{equation*}
-\bs{\Sigma} =
-\left(\bs{\Sigma_1}, \bs{\Sigma_2}\right) \text{ where  }
 \bs{\Sigma_1} =
 \begin{pmatrix}
 1.0 & 0.5 & 0.5\\
 0.5 & 1.0 & 0.5\\
 0.5 & 0.5 & 1.0
-\end{pmatrix} \text{ and }
+\end{pmatrix} \quad \text{ and }
 \bs{\Sigma_2} =
 \begin{pmatrix}
 2.0 & 1.5 & 1.5\\
 1.5 & 2.0 & 1.5\\
 1.5 & 1.5 & 2.0
-\end{pmatrix}
+\end{pmatrix}.
 \end{equation*}
 
-Let us consider a stationary Markov chain with the following (also fairly random) TPM.
+Let us consider a stationary Markov chain with the following (also fairly random) TPM
 \begin{equation*}
 \bs{\Gamma} =
 \begin{pmatrix}
 0.95 & 0.05\\
 0.15 & 0.85
-\end{pmatrix}
+\end{pmatrix}.
 \end{equation*}
 
 We generate 1000 data with the function above.

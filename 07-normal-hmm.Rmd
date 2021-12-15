@@ -80,6 +80,6 @@ summary(sdreport(obj_tmb), "report")
 obj_tmb$report()
 ```
 
-As could be expected, the low positive mean is associated with a low variance whereas the larger mean is negative and tied to a higher variance.
-Note that the TPM is displayed column-wise.
+An intuitive interpretation of these results is that on average, market prices either grow slowly (positive low mean) but surely (low variance) as people invest carefully, or the market prices decrease (negative larger mean) as people sell in panic for fear of losing too much (higher variance).
 
+Note that the TPM is displayed column-wise.

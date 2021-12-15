@@ -36,7 +36,7 @@
   
 <link rel="prev" href="using-tmb.html"/>
 <link rel="next" href="application-to-different-data-sets.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -312,7 +312,7 @@ From that list of new estimates we can get the 2.5th and 97.5th percentiles and 
 <span id="cb56-6"><a href="confidence-intervals.html#cb56-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0</span></span>
 <span id="cb56-7"><a href="confidence-intervals.html#cb56-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Load it</span></span>
 <span id="cb56-8"><a href="confidence-intervals.html#cb56-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span>
-<span id="cb56-9"><a href="confidence-intervals.html#cb56-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: 2 external pointers will be removed</span></span>
+<span id="cb56-9"><a href="confidence-intervals.html#cb56-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: 15 external pointers will be removed</span></span>
 <span id="cb56-10"><a href="confidence-intervals.html#cb56-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the parameter transformation function</span></span>
 <span id="cb56-11"><a href="confidence-intervals.html#cb56-11" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
 <span id="cb56-12"><a href="confidence-intervals.html#cb56-12" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span>
@@ -448,9 +448,10 @@ However, since individual natural TPM parameters cannot be deduced from single w
 <span id="cb64-25"><a href="confidence-intervals.html#cb64-25" aria-hidden="true" tabindex="-1"></a><span class="do">##            [,1]      [,2]</span></span>
 <span id="cb64-26"><a href="confidence-intervals.html#cb64-26" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 0.81653046 0.1834695</span></span>
 <span id="cb64-27"><a href="confidence-intervals.html#cb64-27" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 0.08801416 0.9119858</span></span>
-<span id="cb64-28"><a href="confidence-intervals.html#cb64-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Sorted confidence interval for gamma_11</span></span>
-<span id="cb64-29"><a href="confidence-intervals.html#cb64-29" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">c</span>(gamma_1[<span class="dv">1</span>, <span class="dv">1</span>], gamma_2[<span class="dv">1</span>, <span class="dv">1</span>]))</span>
-<span id="cb64-30"><a href="confidence-intervals.html#cb64-30" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.8165305 0.9980029</span></span></code></pre></div>
+<span id="cb64-28"><a href="confidence-intervals.html#cb64-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-29"><a href="confidence-intervals.html#cb64-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Sorted confidence interval for gamma_11</span></span>
+<span id="cb64-30"><a href="confidence-intervals.html#cb64-30" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">c</span>(gamma_1[<span class="dv">1</span>, <span class="dv">1</span>], gamma_2[<span class="dv">1</span>, <span class="dv">1</span>]))</span>
+<span id="cb64-31"><a href="confidence-intervals.html#cb64-31" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.8165305 0.9980029</span></span></code></pre></div>
 <p>It is noteworthy that <code>gamma_1</code> is not necessarily lower than <code>gamma_2</code>, because only the working confidence intervals are automatically sorted.</p>
 <p>Also note that linear combinations of parameters can be profiled by passing the <code>lincomb</code> argument.
 More details are available by executing <code>??TMB::tmbprofile</code> to access the <code>tmbprofile</code>’s help.</p>
@@ -466,7 +467,7 @@ While the function’s help mentions it can be a parameter’s name, the first t
 <h3><span class="header-section-number">5.3.1</span> Generating data</h3>
 <p>In order to perform a parametric bootstrap, we need to be able to generate data from a set of parameters.</p>
 <p>For readability and code maintenance, it is conventional to store procedures that will be used more than once into functions.</p>
-<p>The data-generating function is defined in <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016</a>, Section A.1.5 p.333)</span>.</p>
+<p>The data-generating function is defined in <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, secs. A.1.5 p.333</a>)</span>.</p>
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="confidence-intervals.html#cb66-1" aria-hidden="true" tabindex="-1"></a>pois.HMM.generate.sample <span class="ot">&lt;-</span> <span class="cf">function</span>(ns,mod) {</span>
 <span id="cb66-2"><a href="confidence-intervals.html#cb66-2" aria-hidden="true" tabindex="-1"></a>  mvect <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>mod<span class="sc">$</span>m</span>
 <span id="cb66-3"><a href="confidence-intervals.html#cb66-3" aria-hidden="true" tabindex="-1"></a>  state <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ns)</span>

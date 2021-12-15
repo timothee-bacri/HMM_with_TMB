@@ -36,7 +36,7 @@
   
 <link rel="prev" href="application-to-different-data-sets.html"/>
 <link rel="next" href="multivariate-gaussian-hmm.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -325,154 +325,154 @@ These log-returns are generated with the following code.</p>
 <span id="cb86-2"><a href="gaussian-hmm.html#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/norm_utils.cpp&quot;</span></span>
 <span id="cb86-3"><a href="gaussian-hmm.html#cb86-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb86-4"><a href="gaussian-hmm.html#cb86-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood for a normal hidden markov model. </span></span>
-<span id="cb86-5"><a href="gaussian-hmm.html#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb86-6"><a href="gaussian-hmm.html#cb86-6" aria-hidden="true" tabindex="-1"></a>Type objective_function&lt;Type&gt;::<span class="kw">operator</span>() ()</span>
-<span id="cb86-7"><a href="gaussian-hmm.html#cb86-7" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb86-5"><a href="gaussian-hmm.html#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb86-6"><a href="gaussian-hmm.html#cb86-6" aria-hidden="true" tabindex="-1"></a>Type objective_function<span class="op">&lt;</span>Type<span class="op">&gt;::</span><span class="kw">operator</span><span class="op">()</span> <span class="op">()</span></span>
+<span id="cb86-7"><a href="gaussian-hmm.html#cb86-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb86-8"><a href="gaussian-hmm.html#cb86-8" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb86-9"><a href="gaussian-hmm.html#cb86-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Data</span></span>
-<span id="cb86-10"><a href="gaussian-hmm.html#cb86-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR(x);          <span class="co">// timeseries vector</span></span>
-<span id="cb86-11"><a href="gaussian-hmm.html#cb86-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER(m);         <span class="co">// Number of states m</span></span>
+<span id="cb86-10"><a href="gaussian-hmm.html#cb86-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR<span class="op">(</span>x<span class="op">);</span>          <span class="co">// timeseries vector</span></span>
+<span id="cb86-11"><a href="gaussian-hmm.html#cb86-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER<span class="op">(</span>m<span class="op">);</span>         <span class="co">// Number of states m</span></span>
 <span id="cb86-12"><a href="gaussian-hmm.html#cb86-12" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb86-13"><a href="gaussian-hmm.html#cb86-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters</span></span>
-<span id="cb86-14"><a href="gaussian-hmm.html#cb86-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tmu);            <span class="co">// conditional means</span></span>
-<span id="cb86-15"><a href="gaussian-hmm.html#cb86-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tsigma);         <span class="co">// conditional log_sd&#39;s</span></span>
-<span id="cb86-16"><a href="gaussian-hmm.html#cb86-16" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tgamma);         <span class="co">// m(m-1) working parameters of TPM</span></span>
+<span id="cb86-14"><a href="gaussian-hmm.html#cb86-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tmu<span class="op">);</span>            <span class="co">// conditional means</span></span>
+<span id="cb86-15"><a href="gaussian-hmm.html#cb86-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tsigma<span class="op">);</span>         <span class="co">// conditional log_sd&#39;s</span></span>
+<span id="cb86-16"><a href="gaussian-hmm.html#cb86-16" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tgamma<span class="op">);</span>         <span class="co">// m(m-1) working parameters of TPM</span></span>
 <span id="cb86-17"><a href="gaussian-hmm.html#cb86-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// PARAMETER_VECTOR(tdelta);      // m-1 working parameters of initial distribution</span></span>
 <span id="cb86-18"><a href="gaussian-hmm.html#cb86-18" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb86-19"><a href="gaussian-hmm.html#cb86-19" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb86-20"><a href="gaussian-hmm.html#cb86-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
-<span id="cb86-21"><a href="gaussian-hmm.html#cb86-21" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; mu = tmu;</span>
-<span id="cb86-22"><a href="gaussian-hmm.html#cb86-22" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; sigma = tsigma.exp();</span>
-<span id="cb86-23"><a href="gaussian-hmm.html#cb86-23" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma = gamma_w2n(m, tgamma);</span>
+<span id="cb86-21"><a href="gaussian-hmm.html#cb86-21" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> mu <span class="op">=</span> tmu<span class="op">;</span></span>
+<span id="cb86-22"><a href="gaussian-hmm.html#cb86-22" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> sigma <span class="op">=</span> tsigma<span class="op">.</span>exp<span class="op">();</span></span>
+<span id="cb86-23"><a href="gaussian-hmm.html#cb86-23" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma <span class="op">=</span> gamma_w2n<span class="op">(</span>m<span class="op">,</span> tgamma<span class="op">);</span></span>
 <span id="cb86-24"><a href="gaussian-hmm.html#cb86-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// vector&lt;Type&gt; delta = delta_w2n(m, tdelta);</span></span>
 <span id="cb86-25"><a href="gaussian-hmm.html#cb86-25" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb86-26"><a href="gaussian-hmm.html#cb86-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution </span></span>
-<span id="cb86-27"><a href="gaussian-hmm.html#cb86-27" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = stat_dist(m, gamma);</span>
+<span id="cb86-27"><a href="gaussian-hmm.html#cb86-27" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta <span class="op">=</span> stat_dist<span class="op">(</span>m<span class="op">,</span> gamma<span class="op">);</span></span>
 <span id="cb86-28"><a href="gaussian-hmm.html#cb86-28" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb86-29"><a href="gaussian-hmm.html#cb86-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
-<span id="cb86-30"><a href="gaussian-hmm.html#cb86-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n = x.size();</span>
+<span id="cb86-30"><a href="gaussian-hmm.html#cb86-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n <span class="op">=</span> x<span class="op">.</span>size<span class="op">();</span></span>
 <span id="cb86-31"><a href="gaussian-hmm.html#cb86-31" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb86-32"><a href="gaussian-hmm.html#cb86-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional probabilities</span></span>
 <span id="cb86-33"><a href="gaussian-hmm.html#cb86-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// of observed x in n times m matrix (one column for each state)</span></span>
-<span id="cb86-34"><a href="gaussian-hmm.html#cb86-34" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; emission_probs(n, m);</span>
-<span id="cb86-35"><a href="gaussian-hmm.html#cb86-35" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
-<span id="cb86-36"><a href="gaussian-hmm.html#cb86-36" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
-<span id="cb86-37"><a href="gaussian-hmm.html#cb86-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
-<span id="cb86-38"><a href="gaussian-hmm.html#cb86-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (x[i] != x[i]) { <span class="co">// f != f returns true if and only if f is NaN. </span></span>
+<span id="cb86-34"><a href="gaussian-hmm.html#cb86-34" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> emission_probs<span class="op">(</span>n<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb86-35"><a href="gaussian-hmm.html#cb86-35" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> row1vec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb86-36"><a href="gaussian-hmm.html#cb86-36" aria-hidden="true" tabindex="-1"></a>  row1vec<span class="op">.</span>setOnes<span class="op">();</span></span>
+<span id="cb86-37"><a href="gaussian-hmm.html#cb86-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb86-38"><a href="gaussian-hmm.html#cb86-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>x<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> x<span class="op">[</span>i<span class="op">])</span> <span class="op">{</span> <span class="co">// f != f returns true if and only if f is NaN. </span></span>
 <span id="cb86-39"><a href="gaussian-hmm.html#cb86-39" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
-<span id="cb86-40"><a href="gaussian-hmm.html#cb86-40" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = row1vec;</span>
-<span id="cb86-41"><a href="gaussian-hmm.html#cb86-41" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb86-42"><a href="gaussian-hmm.html#cb86-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
-<span id="cb86-43"><a href="gaussian-hmm.html#cb86-43" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = dnorm(x(i), mu, sigma, <span class="kw">false</span>);</span>
-<span id="cb86-44"><a href="gaussian-hmm.html#cb86-44" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb86-45"><a href="gaussian-hmm.html#cb86-45" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb86-40"><a href="gaussian-hmm.html#cb86-40" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> row1vec<span class="op">;</span></span>
+<span id="cb86-41"><a href="gaussian-hmm.html#cb86-41" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb86-42"><a href="gaussian-hmm.html#cb86-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb86-43"><a href="gaussian-hmm.html#cb86-43" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> dnorm<span class="op">(</span>x<span class="op">(</span>i<span class="op">),</span> mu<span class="op">,</span> sigma<span class="op">,</span> <span class="kw">false</span><span class="op">);</span></span>
+<span id="cb86-44"><a href="gaussian-hmm.html#cb86-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb86-45"><a href="gaussian-hmm.html#cb86-45" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb86-46"><a href="gaussian-hmm.html#cb86-46" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb86-47"><a href="gaussian-hmm.html#cb86-47" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to the book page 333</span></span>
-<span id="cb86-48"><a href="gaussian-hmm.html#cb86-48" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; foo, P;</span>
-<span id="cb86-49"><a href="gaussian-hmm.html#cb86-49" aria-hidden="true" tabindex="-1"></a>  Type mllk, sumfoo, lscale;</span>
+<span id="cb86-48"><a href="gaussian-hmm.html#cb86-48" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">,</span> P<span class="op">;</span></span>
+<span id="cb86-49"><a href="gaussian-hmm.html#cb86-49" aria-hidden="true" tabindex="-1"></a>  Type mllk<span class="op">,</span> sumfoo<span class="op">,</span> lscale<span class="op">;</span></span>
 <span id="cb86-50"><a href="gaussian-hmm.html#cb86-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-51"><a href="gaussian-hmm.html#cb86-51" aria-hidden="true" tabindex="-1"></a>  foo = (delta * vector&lt;Type&gt;(emission_probs.row(<span class="dv">0</span>))).matrix();</span>
-<span id="cb86-52"><a href="gaussian-hmm.html#cb86-52" aria-hidden="true" tabindex="-1"></a>  sumfoo = foo.sum();</span>
-<span id="cb86-53"><a href="gaussian-hmm.html#cb86-53" aria-hidden="true" tabindex="-1"></a>  lscale = log(sumfoo);</span>
-<span id="cb86-54"><a href="gaussian-hmm.html#cb86-54" aria-hidden="true" tabindex="-1"></a>  foo.transposeInPlace();</span>
-<span id="cb86-55"><a href="gaussian-hmm.html#cb86-55" aria-hidden="true" tabindex="-1"></a>  foo /= sumfoo;</span>
-<span id="cb86-56"><a href="gaussian-hmm.html#cb86-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">2</span>; i &lt;= n; i++) {</span>
-<span id="cb86-57"><a href="gaussian-hmm.html#cb86-57" aria-hidden="true" tabindex="-1"></a>    P = emission_probs.row(i - <span class="dv">1</span>);</span>
-<span id="cb86-58"><a href="gaussian-hmm.html#cb86-58" aria-hidden="true" tabindex="-1"></a>    foo = ((foo * gamma).array() * P.array()).matrix();</span>
-<span id="cb86-59"><a href="gaussian-hmm.html#cb86-59" aria-hidden="true" tabindex="-1"></a>    sumfoo = foo.sum();</span>
-<span id="cb86-60"><a href="gaussian-hmm.html#cb86-60" aria-hidden="true" tabindex="-1"></a>    lscale += log(sumfoo);</span>
-<span id="cb86-61"><a href="gaussian-hmm.html#cb86-61" aria-hidden="true" tabindex="-1"></a>    foo /= sumfoo;</span>
-<span id="cb86-62"><a href="gaussian-hmm.html#cb86-62" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb86-63"><a href="gaussian-hmm.html#cb86-63" aria-hidden="true" tabindex="-1"></a>  mllk = -lscale;</span>
+<span id="cb86-51"><a href="gaussian-hmm.html#cb86-51" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">=</span> <span class="op">(</span>delta <span class="op">*</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;(</span>emission_probs<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">))).</span>matrix<span class="op">();</span></span>
+<span id="cb86-52"><a href="gaussian-hmm.html#cb86-52" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
+<span id="cb86-53"><a href="gaussian-hmm.html#cb86-53" aria-hidden="true" tabindex="-1"></a>  lscale <span class="op">=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb86-54"><a href="gaussian-hmm.html#cb86-54" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>transposeInPlace<span class="op">();</span></span>
+<span id="cb86-55"><a href="gaussian-hmm.html#cb86-55" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb86-56"><a href="gaussian-hmm.html#cb86-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb86-57"><a href="gaussian-hmm.html#cb86-57" aria-hidden="true" tabindex="-1"></a>    P <span class="op">=</span> emission_probs<span class="op">.</span>row<span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb86-58"><a href="gaussian-hmm.html#cb86-58" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">=</span> <span class="op">((</span>foo <span class="op">*</span> gamma<span class="op">).</span>array<span class="op">()</span> <span class="op">*</span> P<span class="op">.</span>array<span class="op">()).</span>matrix<span class="op">();</span></span>
+<span id="cb86-59"><a href="gaussian-hmm.html#cb86-59" aria-hidden="true" tabindex="-1"></a>    sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
+<span id="cb86-60"><a href="gaussian-hmm.html#cb86-60" aria-hidden="true" tabindex="-1"></a>    lscale <span class="op">+=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb86-61"><a href="gaussian-hmm.html#cb86-61" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb86-62"><a href="gaussian-hmm.html#cb86-62" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb86-63"><a href="gaussian-hmm.html#cb86-63" aria-hidden="true" tabindex="-1"></a>  mllk <span class="op">=</span> <span class="op">-</span>lscale<span class="op">;</span></span>
 <span id="cb86-64"><a href="gaussian-hmm.html#cb86-64" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb86-65"><a href="gaussian-hmm.html#cb86-65" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
-<span id="cb86-66"><a href="gaussian-hmm.html#cb86-66" aria-hidden="true" tabindex="-1"></a>  ADREPORT(mu);</span>
-<span id="cb86-67"><a href="gaussian-hmm.html#cb86-67" aria-hidden="true" tabindex="-1"></a>  ADREPORT(sigma);</span>
-<span id="cb86-68"><a href="gaussian-hmm.html#cb86-68" aria-hidden="true" tabindex="-1"></a>  ADREPORT(gamma);</span>
-<span id="cb86-69"><a href="gaussian-hmm.html#cb86-69" aria-hidden="true" tabindex="-1"></a>  ADREPORT(delta);</span>
+<span id="cb86-66"><a href="gaussian-hmm.html#cb86-66" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>mu<span class="op">);</span></span>
+<span id="cb86-67"><a href="gaussian-hmm.html#cb86-67" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>sigma<span class="op">);</span></span>
+<span id="cb86-68"><a href="gaussian-hmm.html#cb86-68" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>gamma<span class="op">);</span></span>
+<span id="cb86-69"><a href="gaussian-hmm.html#cb86-69" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>delta<span class="op">);</span></span>
 <span id="cb86-70"><a href="gaussian-hmm.html#cb86-70" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb86-71"><a href="gaussian-hmm.html#cb86-71" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
-<span id="cb86-72"><a href="gaussian-hmm.html#cb86-72" aria-hidden="true" tabindex="-1"></a>  REPORT(mu);</span>
-<span id="cb86-73"><a href="gaussian-hmm.html#cb86-73" aria-hidden="true" tabindex="-1"></a>  REPORT(sigma);</span>
-<span id="cb86-74"><a href="gaussian-hmm.html#cb86-74" aria-hidden="true" tabindex="-1"></a>  REPORT(gamma);</span>
-<span id="cb86-75"><a href="gaussian-hmm.html#cb86-75" aria-hidden="true" tabindex="-1"></a>  REPORT(delta);</span>
-<span id="cb86-76"><a href="gaussian-hmm.html#cb86-76" aria-hidden="true" tabindex="-1"></a>  REPORT(n);</span>
+<span id="cb86-72"><a href="gaussian-hmm.html#cb86-72" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>mu<span class="op">);</span></span>
+<span id="cb86-73"><a href="gaussian-hmm.html#cb86-73" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>sigma<span class="op">);</span></span>
+<span id="cb86-74"><a href="gaussian-hmm.html#cb86-74" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>gamma<span class="op">);</span></span>
+<span id="cb86-75"><a href="gaussian-hmm.html#cb86-75" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>delta<span class="op">);</span></span>
+<span id="cb86-76"><a href="gaussian-hmm.html#cb86-76" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>n<span class="op">);</span></span>
 <span id="cb86-77"><a href="gaussian-hmm.html#cb86-77" aria-hidden="true" tabindex="-1"></a>  <span class="co">// REPORT(emission_probs);</span></span>
-<span id="cb86-78"><a href="gaussian-hmm.html#cb86-78" aria-hidden="true" tabindex="-1"></a>  REPORT(mllk);</span>
+<span id="cb86-78"><a href="gaussian-hmm.html#cb86-78" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>mllk<span class="op">);</span></span>
 <span id="cb86-79"><a href="gaussian-hmm.html#cb86-79" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb86-80"><a href="gaussian-hmm.html#cb86-80" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk;</span>
-<span id="cb86-81"><a href="gaussian-hmm.html#cb86-81" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb86-80"><a href="gaussian-hmm.html#cb86-80" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk<span class="op">;</span></span>
+<span id="cb86-81"><a href="gaussian-hmm.html#cb86-81" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>and requires the following utility functions.</p>
 <div class="sourceCode" id="cb87"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb87-1"><a href="gaussian-hmm.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming working parameters in initial distribution</span></span>
 <span id="cb87-2"><a href="gaussian-hmm.html#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="co">// to natural parameters</span></span>
-<span id="cb87-3"><a href="gaussian-hmm.html#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb87-4"><a href="gaussian-hmm.html#cb87-4" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; delta_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tdelta) {</span>
+<span id="cb87-3"><a href="gaussian-hmm.html#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb87-4"><a href="gaussian-hmm.html#cb87-4" aria-hidden="true" tabindex="-1"></a>vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta_w2n<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> tdelta<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb87-5"><a href="gaussian-hmm.html#cb87-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-6"><a href="gaussian-hmm.html#cb87-6" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta(m);</span>
-<span id="cb87-7"><a href="gaussian-hmm.html#cb87-7" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; foo(m);</span>
+<span id="cb87-6"><a href="gaussian-hmm.html#cb87-6" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta<span class="op">(</span>m<span class="op">);</span></span>
+<span id="cb87-7"><a href="gaussian-hmm.html#cb87-7" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">(</span>m<span class="op">);</span></span>
 <span id="cb87-8"><a href="gaussian-hmm.html#cb87-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb87-9"><a href="gaussian-hmm.html#cb87-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>)</span>
-<span id="cb87-10"><a href="gaussian-hmm.html#cb87-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Type(<span class="dv">1</span>);</span>
+<span id="cb87-9"><a href="gaussian-hmm.html#cb87-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>m <span class="op">==</span> <span class="dv">1</span><span class="op">)</span></span>
+<span id="cb87-10"><a href="gaussian-hmm.html#cb87-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Type<span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
 <span id="cb87-11"><a href="gaussian-hmm.html#cb87-11" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb87-12"><a href="gaussian-hmm.html#cb87-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// set first element to one.</span></span>
 <span id="cb87-13"><a href="gaussian-hmm.html#cb87-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill in the last m - 1 elements with working parameters</span></span>
 <span id="cb87-14"><a href="gaussian-hmm.html#cb87-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// and take exponential</span></span>
-<span id="cb87-15"><a href="gaussian-hmm.html#cb87-15" aria-hidden="true" tabindex="-1"></a>  foo &lt;&lt; Type(<span class="dv">1</span>), tdelta.exp();</span>
+<span id="cb87-15"><a href="gaussian-hmm.html#cb87-15" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">&lt;&lt;</span> Type<span class="op">(</span><span class="dv">1</span><span class="op">),</span> tdelta<span class="op">.</span>exp<span class="op">();</span></span>
 <span id="cb87-16"><a href="gaussian-hmm.html#cb87-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb87-17"><a href="gaussian-hmm.html#cb87-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// normalize</span></span>
-<span id="cb87-18"><a href="gaussian-hmm.html#cb87-18" aria-hidden="true" tabindex="-1"></a>  delta = foo / foo.sum();</span>
+<span id="cb87-18"><a href="gaussian-hmm.html#cb87-18" aria-hidden="true" tabindex="-1"></a>  delta <span class="op">=</span> foo <span class="op">/</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
 <span id="cb87-19"><a href="gaussian-hmm.html#cb87-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-20"><a href="gaussian-hmm.html#cb87-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta;</span>
-<span id="cb87-21"><a href="gaussian-hmm.html#cb87-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb87-20"><a href="gaussian-hmm.html#cb87-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta<span class="op">;</span></span>
+<span id="cb87-21"><a href="gaussian-hmm.html#cb87-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb87-22"><a href="gaussian-hmm.html#cb87-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb87-23"><a href="gaussian-hmm.html#cb87-23" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming the working parameters in TPM to</span></span>
 <span id="cb87-24"><a href="gaussian-hmm.html#cb87-24" aria-hidden="true" tabindex="-1"></a><span class="co">// natural parameters (w2n)</span></span>
-<span id="cb87-25"><a href="gaussian-hmm.html#cb87-25" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb87-26"><a href="gaussian-hmm.html#cb87-26" aria-hidden="true" tabindex="-1"></a>matrix&lt;Type&gt; gamma_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tgamma) {</span>
+<span id="cb87-25"><a href="gaussian-hmm.html#cb87-25" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb87-26"><a href="gaussian-hmm.html#cb87-26" aria-hidden="true" tabindex="-1"></a>matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma_w2n<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> tgamma<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb87-27"><a href="gaussian-hmm.html#cb87-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb87-28"><a href="gaussian-hmm.html#cb87-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct m x m identity matrix</span></span>
-<span id="cb87-29"><a href="gaussian-hmm.html#cb87-29" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma(m, m);</span>
-<span id="cb87-30"><a href="gaussian-hmm.html#cb87-30" aria-hidden="true" tabindex="-1"></a>  gamma.setIdentity();</span>
+<span id="cb87-29"><a href="gaussian-hmm.html#cb87-29" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma<span class="op">(</span>m<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb87-30"><a href="gaussian-hmm.html#cb87-30" aria-hidden="true" tabindex="-1"></a>  gamma<span class="op">.</span>setIdentity<span class="op">();</span></span>
 <span id="cb87-31"><a href="gaussian-hmm.html#cb87-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb87-32"><a href="gaussian-hmm.html#cb87-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>)</span>
-<span id="cb87-33"><a href="gaussian-hmm.html#cb87-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gamma;</span>
+<span id="cb87-32"><a href="gaussian-hmm.html#cb87-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>m <span class="op">==</span> <span class="dv">1</span><span class="op">)</span></span>
+<span id="cb87-33"><a href="gaussian-hmm.html#cb87-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gamma<span class="op">;</span></span>
 <span id="cb87-34"><a href="gaussian-hmm.html#cb87-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb87-35"><a href="gaussian-hmm.html#cb87-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill offdiagonal elements with working parameters column-wise:</span></span>
-<span id="cb87-36"><a href="gaussian-hmm.html#cb87-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> idx = <span class="dv">0</span>;</span>
-<span id="cb87-37"><a href="gaussian-hmm.html#cb87-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; m; i++){</span>
-<span id="cb87-38"><a href="gaussian-hmm.html#cb87-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; m; j++){</span>
-<span id="cb87-39"><a href="gaussian-hmm.html#cb87-39" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (j != i){</span>
+<span id="cb87-36"><a href="gaussian-hmm.html#cb87-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> idx <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb87-37"><a href="gaussian-hmm.html#cb87-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> m<span class="op">;</span> i<span class="op">++){</span></span>
+<span id="cb87-38"><a href="gaussian-hmm.html#cb87-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> m<span class="op">;</span> j<span class="op">++){</span></span>
+<span id="cb87-39"><a href="gaussian-hmm.html#cb87-39" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>j <span class="op">!=</span> i<span class="op">){</span></span>
 <span id="cb87-40"><a href="gaussian-hmm.html#cb87-40" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Fill gamma according to mapping and take exponential</span></span>
-<span id="cb87-41"><a href="gaussian-hmm.html#cb87-41" aria-hidden="true" tabindex="-1"></a>        gamma(j, i) = tgamma.exp()(idx);</span>
-<span id="cb87-42"><a href="gaussian-hmm.html#cb87-42" aria-hidden="true" tabindex="-1"></a>        idx++;</span>
-<span id="cb87-43"><a href="gaussian-hmm.html#cb87-43" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb87-44"><a href="gaussian-hmm.html#cb87-44" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb87-45"><a href="gaussian-hmm.html#cb87-45" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb87-41"><a href="gaussian-hmm.html#cb87-41" aria-hidden="true" tabindex="-1"></a>        gamma<span class="op">(</span>j<span class="op">,</span> i<span class="op">)</span> <span class="op">=</span> tgamma<span class="op">.</span>exp<span class="op">()(</span>idx<span class="op">);</span></span>
+<span id="cb87-42"><a href="gaussian-hmm.html#cb87-42" aria-hidden="true" tabindex="-1"></a>        idx<span class="op">++;</span></span>
+<span id="cb87-43"><a href="gaussian-hmm.html#cb87-43" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb87-44"><a href="gaussian-hmm.html#cb87-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb87-45"><a href="gaussian-hmm.html#cb87-45" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb87-46"><a href="gaussian-hmm.html#cb87-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Normalize each row:</span></span>
-<span id="cb87-47"><a href="gaussian-hmm.html#cb87-47" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; cs = gamma.rowwise().sum();</span>
-<span id="cb87-48"><a href="gaussian-hmm.html#cb87-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; m; i++) gamma.row(i) /= cs[i];</span>
+<span id="cb87-47"><a href="gaussian-hmm.html#cb87-47" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> cs <span class="op">=</span> gamma<span class="op">.</span>rowwise<span class="op">().</span>sum<span class="op">();</span></span>
+<span id="cb87-48"><a href="gaussian-hmm.html#cb87-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> m<span class="op">;</span> i<span class="op">++)</span> gamma<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">/=</span> cs<span class="op">[</span>i<span class="op">];</span></span>
 <span id="cb87-49"><a href="gaussian-hmm.html#cb87-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-50"><a href="gaussian-hmm.html#cb87-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> gamma;</span>
-<span id="cb87-51"><a href="gaussian-hmm.html#cb87-51" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb87-50"><a href="gaussian-hmm.html#cb87-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> gamma<span class="op">;</span></span>
+<span id="cb87-51"><a href="gaussian-hmm.html#cb87-51" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb87-52"><a href="gaussian-hmm.html#cb87-52" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb87-53"><a href="gaussian-hmm.html#cb87-53" aria-hidden="true" tabindex="-1"></a><span class="co">// Function computing the stationary distribution of a Markov chain</span></span>
-<span id="cb87-54"><a href="gaussian-hmm.html#cb87-54" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb87-55"><a href="gaussian-hmm.html#cb87-55" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; stat_dist(<span class="dt">int</span> m, matrix&lt;Type&gt; gamma) {</span>
+<span id="cb87-54"><a href="gaussian-hmm.html#cb87-54" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb87-55"><a href="gaussian-hmm.html#cb87-55" aria-hidden="true" tabindex="-1"></a>vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> stat_dist<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb87-56"><a href="gaussian-hmm.html#cb87-56" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb87-57"><a href="gaussian-hmm.html#cb87-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
-<span id="cb87-58"><a href="gaussian-hmm.html#cb87-58" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; I(m, m);</span>
-<span id="cb87-59"><a href="gaussian-hmm.html#cb87-59" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; U(m, m);</span>
-<span id="cb87-60"><a href="gaussian-hmm.html#cb87-60" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
-<span id="cb87-61"><a href="gaussian-hmm.html#cb87-61" aria-hidden="true" tabindex="-1"></a>  U = U.setOnes();</span>
-<span id="cb87-62"><a href="gaussian-hmm.html#cb87-62" aria-hidden="true" tabindex="-1"></a>  I = I.setIdentity();</span>
-<span id="cb87-63"><a href="gaussian-hmm.html#cb87-63" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
-<span id="cb87-64"><a href="gaussian-hmm.html#cb87-64" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; A =  I - gamma + U;</span>
-<span id="cb87-65"><a href="gaussian-hmm.html#cb87-65" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; Ainv = A.inverse();</span>
-<span id="cb87-66"><a href="gaussian-hmm.html#cb87-66" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; deltamat = row1vec * Ainv;</span>
-<span id="cb87-67"><a href="gaussian-hmm.html#cb87-67" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = deltamat.row(<span class="dv">0</span>);</span>
+<span id="cb87-58"><a href="gaussian-hmm.html#cb87-58" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> I<span class="op">(</span>m<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb87-59"><a href="gaussian-hmm.html#cb87-59" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> U<span class="op">(</span>m<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb87-60"><a href="gaussian-hmm.html#cb87-60" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> row1vec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb87-61"><a href="gaussian-hmm.html#cb87-61" aria-hidden="true" tabindex="-1"></a>  U <span class="op">=</span> U<span class="op">.</span>setOnes<span class="op">();</span></span>
+<span id="cb87-62"><a href="gaussian-hmm.html#cb87-62" aria-hidden="true" tabindex="-1"></a>  I <span class="op">=</span> I<span class="op">.</span>setIdentity<span class="op">();</span></span>
+<span id="cb87-63"><a href="gaussian-hmm.html#cb87-63" aria-hidden="true" tabindex="-1"></a>  row1vec<span class="op">.</span>setOnes<span class="op">();</span></span>
+<span id="cb87-64"><a href="gaussian-hmm.html#cb87-64" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> A <span class="op">=</span>  I <span class="op">-</span> gamma <span class="op">+</span> U<span class="op">;</span></span>
+<span id="cb87-65"><a href="gaussian-hmm.html#cb87-65" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> Ainv <span class="op">=</span> A<span class="op">.</span>inverse<span class="op">();</span></span>
+<span id="cb87-66"><a href="gaussian-hmm.html#cb87-66" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> deltamat <span class="op">=</span> row1vec <span class="op">*</span> Ainv<span class="op">;</span></span>
+<span id="cb87-67"><a href="gaussian-hmm.html#cb87-67" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta <span class="op">=</span> deltamat<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
 <span id="cb87-68"><a href="gaussian-hmm.html#cb87-68" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb87-69"><a href="gaussian-hmm.html#cb87-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta;</span>
-<span id="cb87-70"><a href="gaussian-hmm.html#cb87-70" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb87-69"><a href="gaussian-hmm.html#cb87-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta<span class="op">;</span></span>
+<span id="cb87-70"><a href="gaussian-hmm.html#cb87-70" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 </div>
 <div id="estimation" class="section level2" number="7.3">
 <h2><span class="header-section-number">7.3</span> Estimation</h2>
@@ -550,8 +550,8 @@ This can be seen by comparing estimates with a more readable view.</p>
 <span id="cb89-31"><a href="gaussian-hmm.html#cb89-31" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb89-32"><a href="gaussian-hmm.html#cb89-32" aria-hidden="true" tabindex="-1"></a><span class="do">## $mllk</span></span>
 <span id="cb89-33"><a href="gaussian-hmm.html#cb89-33" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 31516.82</span></span></code></pre></div>
-<p>As could be expected, the low positive mean is associated with a low variance whereas the larger mean is negative and tied to a higher variance.
-Note that the TPM is displayed column-wise.</p>
+<p>An intuitive interpretation of these results is that on average, market prices either grow slowly (positive low mean) but surely (low variance) as people invest carefully, or the market prices decrease (negative larger mean) as people sell in panic for fear of losing too much (higher variance).</p>
+<p>Note that the TPM is displayed column-wise.</p>
 
 </div>
 </div>

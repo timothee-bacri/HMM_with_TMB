@@ -36,7 +36,7 @@
   
 <link rel="prev" href="gaussian-hmm.html"/>
 <link rel="next" href="github.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -329,40 +329,30 @@ For the implementation, the main change is for the density function to go from <
 <p>To avoid issues regarding the choice of data, we simulate our own.</p>
 <p>Let two multivariate Gaussian distributions <span class="math inline">\(N({\boldsymbol\mu_1}, {\boldsymbol\Sigma_1})\)</span> and <span class="math inline">\(N({\boldsymbol\mu_2}, {\boldsymbol\Sigma_2})\)</span> be defined with (rather arbitrary) parameters as follows.
 <span class="math display">\[\begin{equation*}
-{\boldsymbol\mu} =
-\begin{pmatrix}
-{\boldsymbol\mu_1}\\
-{\boldsymbol\mu_2}
-\end{pmatrix}
-=
-\begin{pmatrix}
-6 &amp; 8 &amp; 9\\
-1 &amp; 2 &amp; 3
-\end{pmatrix}
+{\boldsymbol\mu_1} = (6, 8, 9) \quad \text{and }
+{\boldsymbol\mu_2} = (1, 2, 3)
 \end{equation*}\]</span></p>
 <p><span class="math display">\[\begin{equation*}
-{\boldsymbol\Sigma} =
-\left({\boldsymbol\Sigma_1}, {\boldsymbol\Sigma_2}\right) \text{ where  }
 {\boldsymbol\Sigma_1} =
 \begin{pmatrix}
 1.0 &amp; 0.5 &amp; 0.5\\
 0.5 &amp; 1.0 &amp; 0.5\\
 0.5 &amp; 0.5 &amp; 1.0
-\end{pmatrix} \text{ and }
+\end{pmatrix} \quad \text{ and }
 {\boldsymbol\Sigma_2} =
 \begin{pmatrix}
 2.0 &amp; 1.5 &amp; 1.5\\
 1.5 &amp; 2.0 &amp; 1.5\\
 1.5 &amp; 1.5 &amp; 2.0
-\end{pmatrix}
+\end{pmatrix}.
 \end{equation*}\]</span></p>
-<p>Let us consider a stationary Markov chain with the following (also fairly random) TPM.
+<p>Let us consider a stationary Markov chain with the following (also fairly random) TPM
 <span class="math display">\[\begin{equation*}
 {\boldsymbol\Gamma} =
 \begin{pmatrix}
 0.95 &amp; 0.05\\
 0.15 &amp; 0.85
-\end{pmatrix}
+\end{pmatrix}.
 \end{equation*}\]</span></p>
 <p>We generate 1000 data with the function above.</p>
 </div>
@@ -373,154 +363,154 @@ For the implementation, the main change is for the density function to go from <
 <span id="cb91-2"><a href="multivariate-gaussian-hmm.html#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/norm_utils.cpp&quot;</span></span>
 <span id="cb91-3"><a href="multivariate-gaussian-hmm.html#cb91-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb91-4"><a href="multivariate-gaussian-hmm.html#cb91-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood for a normal hidden markov model. </span></span>
-<span id="cb91-5"><a href="multivariate-gaussian-hmm.html#cb91-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb91-6"><a href="multivariate-gaussian-hmm.html#cb91-6" aria-hidden="true" tabindex="-1"></a>Type objective_function&lt;Type&gt;::<span class="kw">operator</span>() ()</span>
-<span id="cb91-7"><a href="multivariate-gaussian-hmm.html#cb91-7" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb91-5"><a href="multivariate-gaussian-hmm.html#cb91-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb91-6"><a href="multivariate-gaussian-hmm.html#cb91-6" aria-hidden="true" tabindex="-1"></a>Type objective_function<span class="op">&lt;</span>Type<span class="op">&gt;::</span><span class="kw">operator</span><span class="op">()</span> <span class="op">()</span></span>
+<span id="cb91-7"><a href="multivariate-gaussian-hmm.html#cb91-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb91-8"><a href="multivariate-gaussian-hmm.html#cb91-8" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb91-9"><a href="multivariate-gaussian-hmm.html#cb91-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Data</span></span>
-<span id="cb91-10"><a href="multivariate-gaussian-hmm.html#cb91-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR(x);          <span class="co">// timeseries vector</span></span>
-<span id="cb91-11"><a href="multivariate-gaussian-hmm.html#cb91-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER(m);         <span class="co">// Number of states m</span></span>
+<span id="cb91-10"><a href="multivariate-gaussian-hmm.html#cb91-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR<span class="op">(</span>x<span class="op">);</span>          <span class="co">// timeseries vector</span></span>
+<span id="cb91-11"><a href="multivariate-gaussian-hmm.html#cb91-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER<span class="op">(</span>m<span class="op">);</span>         <span class="co">// Number of states m</span></span>
 <span id="cb91-12"><a href="multivariate-gaussian-hmm.html#cb91-12" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb91-13"><a href="multivariate-gaussian-hmm.html#cb91-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters</span></span>
-<span id="cb91-14"><a href="multivariate-gaussian-hmm.html#cb91-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tmu);            <span class="co">// conditional means</span></span>
-<span id="cb91-15"><a href="multivariate-gaussian-hmm.html#cb91-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tsigma);         <span class="co">// conditional log_sd&#39;s</span></span>
-<span id="cb91-16"><a href="multivariate-gaussian-hmm.html#cb91-16" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR(tgamma);         <span class="co">// m(m-1) working parameters of TPM</span></span>
+<span id="cb91-14"><a href="multivariate-gaussian-hmm.html#cb91-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tmu<span class="op">);</span>            <span class="co">// conditional means</span></span>
+<span id="cb91-15"><a href="multivariate-gaussian-hmm.html#cb91-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tsigma<span class="op">);</span>         <span class="co">// conditional log_sd&#39;s</span></span>
+<span id="cb91-16"><a href="multivariate-gaussian-hmm.html#cb91-16" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tgamma<span class="op">);</span>         <span class="co">// m(m-1) working parameters of TPM</span></span>
 <span id="cb91-17"><a href="multivariate-gaussian-hmm.html#cb91-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// PARAMETER_VECTOR(tdelta);      // m-1 working parameters of initial distribution</span></span>
 <span id="cb91-18"><a href="multivariate-gaussian-hmm.html#cb91-18" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb91-19"><a href="multivariate-gaussian-hmm.html#cb91-19" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb91-20"><a href="multivariate-gaussian-hmm.html#cb91-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
-<span id="cb91-21"><a href="multivariate-gaussian-hmm.html#cb91-21" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; mu = tmu;</span>
-<span id="cb91-22"><a href="multivariate-gaussian-hmm.html#cb91-22" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; sigma = tsigma.exp();</span>
-<span id="cb91-23"><a href="multivariate-gaussian-hmm.html#cb91-23" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma = gamma_w2n(m, tgamma);</span>
+<span id="cb91-21"><a href="multivariate-gaussian-hmm.html#cb91-21" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> mu <span class="op">=</span> tmu<span class="op">;</span></span>
+<span id="cb91-22"><a href="multivariate-gaussian-hmm.html#cb91-22" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> sigma <span class="op">=</span> tsigma<span class="op">.</span>exp<span class="op">();</span></span>
+<span id="cb91-23"><a href="multivariate-gaussian-hmm.html#cb91-23" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma <span class="op">=</span> gamma_w2n<span class="op">(</span>m<span class="op">,</span> tgamma<span class="op">);</span></span>
 <span id="cb91-24"><a href="multivariate-gaussian-hmm.html#cb91-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// vector&lt;Type&gt; delta = delta_w2n(m, tdelta);</span></span>
 <span id="cb91-25"><a href="multivariate-gaussian-hmm.html#cb91-25" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb91-26"><a href="multivariate-gaussian-hmm.html#cb91-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution </span></span>
-<span id="cb91-27"><a href="multivariate-gaussian-hmm.html#cb91-27" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = stat_dist(m, gamma);</span>
+<span id="cb91-27"><a href="multivariate-gaussian-hmm.html#cb91-27" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta <span class="op">=</span> stat_dist<span class="op">(</span>m<span class="op">,</span> gamma<span class="op">);</span></span>
 <span id="cb91-28"><a href="multivariate-gaussian-hmm.html#cb91-28" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb91-29"><a href="multivariate-gaussian-hmm.html#cb91-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
-<span id="cb91-30"><a href="multivariate-gaussian-hmm.html#cb91-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n = x.size();</span>
+<span id="cb91-30"><a href="multivariate-gaussian-hmm.html#cb91-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n <span class="op">=</span> x<span class="op">.</span>size<span class="op">();</span></span>
 <span id="cb91-31"><a href="multivariate-gaussian-hmm.html#cb91-31" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb91-32"><a href="multivariate-gaussian-hmm.html#cb91-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional probabilities</span></span>
 <span id="cb91-33"><a href="multivariate-gaussian-hmm.html#cb91-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// of observed x in n times m matrix (one column for each state)</span></span>
-<span id="cb91-34"><a href="multivariate-gaussian-hmm.html#cb91-34" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; emission_probs(n, m);</span>
-<span id="cb91-35"><a href="multivariate-gaussian-hmm.html#cb91-35" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
-<span id="cb91-36"><a href="multivariate-gaussian-hmm.html#cb91-36" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
-<span id="cb91-37"><a href="multivariate-gaussian-hmm.html#cb91-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; n; i++) {</span>
-<span id="cb91-38"><a href="multivariate-gaussian-hmm.html#cb91-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (x[i] != x[i]) { <span class="co">// f != f returns true if and only if f is NaN. </span></span>
+<span id="cb91-34"><a href="multivariate-gaussian-hmm.html#cb91-34" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> emission_probs<span class="op">(</span>n<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb91-35"><a href="multivariate-gaussian-hmm.html#cb91-35" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> row1vec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb91-36"><a href="multivariate-gaussian-hmm.html#cb91-36" aria-hidden="true" tabindex="-1"></a>  row1vec<span class="op">.</span>setOnes<span class="op">();</span></span>
+<span id="cb91-37"><a href="multivariate-gaussian-hmm.html#cb91-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb91-38"><a href="multivariate-gaussian-hmm.html#cb91-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>x<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> x<span class="op">[</span>i<span class="op">])</span> <span class="op">{</span> <span class="co">// f != f returns true if and only if f is NaN. </span></span>
 <span id="cb91-39"><a href="multivariate-gaussian-hmm.html#cb91-39" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
-<span id="cb91-40"><a href="multivariate-gaussian-hmm.html#cb91-40" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = row1vec;</span>
-<span id="cb91-41"><a href="multivariate-gaussian-hmm.html#cb91-41" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb91-42"><a href="multivariate-gaussian-hmm.html#cb91-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
-<span id="cb91-43"><a href="multivariate-gaussian-hmm.html#cb91-43" aria-hidden="true" tabindex="-1"></a>      emission_probs.row(i) = dnorm(x(i), mu, sigma, <span class="kw">false</span>);</span>
-<span id="cb91-44"><a href="multivariate-gaussian-hmm.html#cb91-44" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb91-45"><a href="multivariate-gaussian-hmm.html#cb91-45" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb91-40"><a href="multivariate-gaussian-hmm.html#cb91-40" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> row1vec<span class="op">;</span></span>
+<span id="cb91-41"><a href="multivariate-gaussian-hmm.html#cb91-41" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb91-42"><a href="multivariate-gaussian-hmm.html#cb91-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb91-43"><a href="multivariate-gaussian-hmm.html#cb91-43" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> dnorm<span class="op">(</span>x<span class="op">(</span>i<span class="op">),</span> mu<span class="op">,</span> sigma<span class="op">,</span> <span class="kw">false</span><span class="op">);</span></span>
+<span id="cb91-44"><a href="multivariate-gaussian-hmm.html#cb91-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb91-45"><a href="multivariate-gaussian-hmm.html#cb91-45" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb91-46"><a href="multivariate-gaussian-hmm.html#cb91-46" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb91-47"><a href="multivariate-gaussian-hmm.html#cb91-47" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to the book page 333</span></span>
-<span id="cb91-48"><a href="multivariate-gaussian-hmm.html#cb91-48" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; foo, P;</span>
-<span id="cb91-49"><a href="multivariate-gaussian-hmm.html#cb91-49" aria-hidden="true" tabindex="-1"></a>  Type mllk, sumfoo, lscale;</span>
+<span id="cb91-48"><a href="multivariate-gaussian-hmm.html#cb91-48" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">,</span> P<span class="op">;</span></span>
+<span id="cb91-49"><a href="multivariate-gaussian-hmm.html#cb91-49" aria-hidden="true" tabindex="-1"></a>  Type mllk<span class="op">,</span> sumfoo<span class="op">,</span> lscale<span class="op">;</span></span>
 <span id="cb91-50"><a href="multivariate-gaussian-hmm.html#cb91-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb91-51"><a href="multivariate-gaussian-hmm.html#cb91-51" aria-hidden="true" tabindex="-1"></a>  foo = (delta * vector&lt;Type&gt;(emission_probs.row(<span class="dv">0</span>))).matrix();</span>
-<span id="cb91-52"><a href="multivariate-gaussian-hmm.html#cb91-52" aria-hidden="true" tabindex="-1"></a>  sumfoo = foo.sum();</span>
-<span id="cb91-53"><a href="multivariate-gaussian-hmm.html#cb91-53" aria-hidden="true" tabindex="-1"></a>  lscale = log(sumfoo);</span>
-<span id="cb91-54"><a href="multivariate-gaussian-hmm.html#cb91-54" aria-hidden="true" tabindex="-1"></a>  foo.transposeInPlace();</span>
-<span id="cb91-55"><a href="multivariate-gaussian-hmm.html#cb91-55" aria-hidden="true" tabindex="-1"></a>  foo /= sumfoo;</span>
-<span id="cb91-56"><a href="multivariate-gaussian-hmm.html#cb91-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">2</span>; i &lt;= n; i++) {</span>
-<span id="cb91-57"><a href="multivariate-gaussian-hmm.html#cb91-57" aria-hidden="true" tabindex="-1"></a>    P = emission_probs.row(i - <span class="dv">1</span>);</span>
-<span id="cb91-58"><a href="multivariate-gaussian-hmm.html#cb91-58" aria-hidden="true" tabindex="-1"></a>    foo = ((foo * gamma).array() * P.array()).matrix();</span>
-<span id="cb91-59"><a href="multivariate-gaussian-hmm.html#cb91-59" aria-hidden="true" tabindex="-1"></a>    sumfoo = foo.sum();</span>
-<span id="cb91-60"><a href="multivariate-gaussian-hmm.html#cb91-60" aria-hidden="true" tabindex="-1"></a>    lscale += log(sumfoo);</span>
-<span id="cb91-61"><a href="multivariate-gaussian-hmm.html#cb91-61" aria-hidden="true" tabindex="-1"></a>    foo /= sumfoo;</span>
-<span id="cb91-62"><a href="multivariate-gaussian-hmm.html#cb91-62" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb91-63"><a href="multivariate-gaussian-hmm.html#cb91-63" aria-hidden="true" tabindex="-1"></a>  mllk = -lscale;</span>
+<span id="cb91-51"><a href="multivariate-gaussian-hmm.html#cb91-51" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">=</span> <span class="op">(</span>delta <span class="op">*</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;(</span>emission_probs<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">))).</span>matrix<span class="op">();</span></span>
+<span id="cb91-52"><a href="multivariate-gaussian-hmm.html#cb91-52" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
+<span id="cb91-53"><a href="multivariate-gaussian-hmm.html#cb91-53" aria-hidden="true" tabindex="-1"></a>  lscale <span class="op">=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb91-54"><a href="multivariate-gaussian-hmm.html#cb91-54" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>transposeInPlace<span class="op">();</span></span>
+<span id="cb91-55"><a href="multivariate-gaussian-hmm.html#cb91-55" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb91-56"><a href="multivariate-gaussian-hmm.html#cb91-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb91-57"><a href="multivariate-gaussian-hmm.html#cb91-57" aria-hidden="true" tabindex="-1"></a>    P <span class="op">=</span> emission_probs<span class="op">.</span>row<span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb91-58"><a href="multivariate-gaussian-hmm.html#cb91-58" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">=</span> <span class="op">((</span>foo <span class="op">*</span> gamma<span class="op">).</span>array<span class="op">()</span> <span class="op">*</span> P<span class="op">.</span>array<span class="op">()).</span>matrix<span class="op">();</span></span>
+<span id="cb91-59"><a href="multivariate-gaussian-hmm.html#cb91-59" aria-hidden="true" tabindex="-1"></a>    sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
+<span id="cb91-60"><a href="multivariate-gaussian-hmm.html#cb91-60" aria-hidden="true" tabindex="-1"></a>    lscale <span class="op">+=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb91-61"><a href="multivariate-gaussian-hmm.html#cb91-61" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb91-62"><a href="multivariate-gaussian-hmm.html#cb91-62" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb91-63"><a href="multivariate-gaussian-hmm.html#cb91-63" aria-hidden="true" tabindex="-1"></a>  mllk <span class="op">=</span> <span class="op">-</span>lscale<span class="op">;</span></span>
 <span id="cb91-64"><a href="multivariate-gaussian-hmm.html#cb91-64" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb91-65"><a href="multivariate-gaussian-hmm.html#cb91-65" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
-<span id="cb91-66"><a href="multivariate-gaussian-hmm.html#cb91-66" aria-hidden="true" tabindex="-1"></a>  ADREPORT(mu);</span>
-<span id="cb91-67"><a href="multivariate-gaussian-hmm.html#cb91-67" aria-hidden="true" tabindex="-1"></a>  ADREPORT(sigma);</span>
-<span id="cb91-68"><a href="multivariate-gaussian-hmm.html#cb91-68" aria-hidden="true" tabindex="-1"></a>  ADREPORT(gamma);</span>
-<span id="cb91-69"><a href="multivariate-gaussian-hmm.html#cb91-69" aria-hidden="true" tabindex="-1"></a>  ADREPORT(delta);</span>
+<span id="cb91-66"><a href="multivariate-gaussian-hmm.html#cb91-66" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>mu<span class="op">);</span></span>
+<span id="cb91-67"><a href="multivariate-gaussian-hmm.html#cb91-67" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>sigma<span class="op">);</span></span>
+<span id="cb91-68"><a href="multivariate-gaussian-hmm.html#cb91-68" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>gamma<span class="op">);</span></span>
+<span id="cb91-69"><a href="multivariate-gaussian-hmm.html#cb91-69" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>delta<span class="op">);</span></span>
 <span id="cb91-70"><a href="multivariate-gaussian-hmm.html#cb91-70" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb91-71"><a href="multivariate-gaussian-hmm.html#cb91-71" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
-<span id="cb91-72"><a href="multivariate-gaussian-hmm.html#cb91-72" aria-hidden="true" tabindex="-1"></a>  REPORT(mu);</span>
-<span id="cb91-73"><a href="multivariate-gaussian-hmm.html#cb91-73" aria-hidden="true" tabindex="-1"></a>  REPORT(sigma);</span>
-<span id="cb91-74"><a href="multivariate-gaussian-hmm.html#cb91-74" aria-hidden="true" tabindex="-1"></a>  REPORT(gamma);</span>
-<span id="cb91-75"><a href="multivariate-gaussian-hmm.html#cb91-75" aria-hidden="true" tabindex="-1"></a>  REPORT(delta);</span>
-<span id="cb91-76"><a href="multivariate-gaussian-hmm.html#cb91-76" aria-hidden="true" tabindex="-1"></a>  REPORT(n);</span>
+<span id="cb91-72"><a href="multivariate-gaussian-hmm.html#cb91-72" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>mu<span class="op">);</span></span>
+<span id="cb91-73"><a href="multivariate-gaussian-hmm.html#cb91-73" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>sigma<span class="op">);</span></span>
+<span id="cb91-74"><a href="multivariate-gaussian-hmm.html#cb91-74" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>gamma<span class="op">);</span></span>
+<span id="cb91-75"><a href="multivariate-gaussian-hmm.html#cb91-75" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>delta<span class="op">);</span></span>
+<span id="cb91-76"><a href="multivariate-gaussian-hmm.html#cb91-76" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>n<span class="op">);</span></span>
 <span id="cb91-77"><a href="multivariate-gaussian-hmm.html#cb91-77" aria-hidden="true" tabindex="-1"></a>  <span class="co">// REPORT(emission_probs);</span></span>
-<span id="cb91-78"><a href="multivariate-gaussian-hmm.html#cb91-78" aria-hidden="true" tabindex="-1"></a>  REPORT(mllk);</span>
+<span id="cb91-78"><a href="multivariate-gaussian-hmm.html#cb91-78" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>mllk<span class="op">);</span></span>
 <span id="cb91-79"><a href="multivariate-gaussian-hmm.html#cb91-79" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb91-80"><a href="multivariate-gaussian-hmm.html#cb91-80" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk;</span>
-<span id="cb91-81"><a href="multivariate-gaussian-hmm.html#cb91-81" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb91-80"><a href="multivariate-gaussian-hmm.html#cb91-80" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk<span class="op">;</span></span>
+<span id="cb91-81"><a href="multivariate-gaussian-hmm.html#cb91-81" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>and requires the following utility functions.</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb92-1"><a href="multivariate-gaussian-hmm.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming working parameters in initial distribution</span></span>
 <span id="cb92-2"><a href="multivariate-gaussian-hmm.html#cb92-2" aria-hidden="true" tabindex="-1"></a><span class="co">// to natural parameters</span></span>
-<span id="cb92-3"><a href="multivariate-gaussian-hmm.html#cb92-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb92-4"><a href="multivariate-gaussian-hmm.html#cb92-4" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; delta_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tdelta) {</span>
+<span id="cb92-3"><a href="multivariate-gaussian-hmm.html#cb92-3" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb92-4"><a href="multivariate-gaussian-hmm.html#cb92-4" aria-hidden="true" tabindex="-1"></a>vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta_w2n<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> tdelta<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb92-5"><a href="multivariate-gaussian-hmm.html#cb92-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-6"><a href="multivariate-gaussian-hmm.html#cb92-6" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta(m);</span>
-<span id="cb92-7"><a href="multivariate-gaussian-hmm.html#cb92-7" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; foo(m);</span>
+<span id="cb92-6"><a href="multivariate-gaussian-hmm.html#cb92-6" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta<span class="op">(</span>m<span class="op">);</span></span>
+<span id="cb92-7"><a href="multivariate-gaussian-hmm.html#cb92-7" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">(</span>m<span class="op">);</span></span>
 <span id="cb92-8"><a href="multivariate-gaussian-hmm.html#cb92-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb92-9"><a href="multivariate-gaussian-hmm.html#cb92-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>)</span>
-<span id="cb92-10"><a href="multivariate-gaussian-hmm.html#cb92-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Type(<span class="dv">1</span>);</span>
+<span id="cb92-9"><a href="multivariate-gaussian-hmm.html#cb92-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>m <span class="op">==</span> <span class="dv">1</span><span class="op">)</span></span>
+<span id="cb92-10"><a href="multivariate-gaussian-hmm.html#cb92-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Type<span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
 <span id="cb92-11"><a href="multivariate-gaussian-hmm.html#cb92-11" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb92-12"><a href="multivariate-gaussian-hmm.html#cb92-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// set first element to one.</span></span>
 <span id="cb92-13"><a href="multivariate-gaussian-hmm.html#cb92-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill in the last m - 1 elements with working parameters</span></span>
 <span id="cb92-14"><a href="multivariate-gaussian-hmm.html#cb92-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// and take exponential</span></span>
-<span id="cb92-15"><a href="multivariate-gaussian-hmm.html#cb92-15" aria-hidden="true" tabindex="-1"></a>  foo &lt;&lt; Type(<span class="dv">1</span>), tdelta.exp();</span>
+<span id="cb92-15"><a href="multivariate-gaussian-hmm.html#cb92-15" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">&lt;&lt;</span> Type<span class="op">(</span><span class="dv">1</span><span class="op">),</span> tdelta<span class="op">.</span>exp<span class="op">();</span></span>
 <span id="cb92-16"><a href="multivariate-gaussian-hmm.html#cb92-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb92-17"><a href="multivariate-gaussian-hmm.html#cb92-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// normalize</span></span>
-<span id="cb92-18"><a href="multivariate-gaussian-hmm.html#cb92-18" aria-hidden="true" tabindex="-1"></a>  delta = foo / foo.sum();</span>
+<span id="cb92-18"><a href="multivariate-gaussian-hmm.html#cb92-18" aria-hidden="true" tabindex="-1"></a>  delta <span class="op">=</span> foo <span class="op">/</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
 <span id="cb92-19"><a href="multivariate-gaussian-hmm.html#cb92-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-20"><a href="multivariate-gaussian-hmm.html#cb92-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta;</span>
-<span id="cb92-21"><a href="multivariate-gaussian-hmm.html#cb92-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb92-20"><a href="multivariate-gaussian-hmm.html#cb92-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta<span class="op">;</span></span>
+<span id="cb92-21"><a href="multivariate-gaussian-hmm.html#cb92-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb92-22"><a href="multivariate-gaussian-hmm.html#cb92-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb92-23"><a href="multivariate-gaussian-hmm.html#cb92-23" aria-hidden="true" tabindex="-1"></a><span class="co">// Function transforming the working parameters in TPM to</span></span>
 <span id="cb92-24"><a href="multivariate-gaussian-hmm.html#cb92-24" aria-hidden="true" tabindex="-1"></a><span class="co">// natural parameters (w2n)</span></span>
-<span id="cb92-25"><a href="multivariate-gaussian-hmm.html#cb92-25" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb92-26"><a href="multivariate-gaussian-hmm.html#cb92-26" aria-hidden="true" tabindex="-1"></a>matrix&lt;Type&gt; gamma_w2n(<span class="dt">int</span> m, vector&lt;Type&gt; tgamma) {</span>
+<span id="cb92-25"><a href="multivariate-gaussian-hmm.html#cb92-25" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb92-26"><a href="multivariate-gaussian-hmm.html#cb92-26" aria-hidden="true" tabindex="-1"></a>matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma_w2n<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> tgamma<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb92-27"><a href="multivariate-gaussian-hmm.html#cb92-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb92-28"><a href="multivariate-gaussian-hmm.html#cb92-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct m x m identity matrix</span></span>
-<span id="cb92-29"><a href="multivariate-gaussian-hmm.html#cb92-29" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; gamma(m, m);</span>
-<span id="cb92-30"><a href="multivariate-gaussian-hmm.html#cb92-30" aria-hidden="true" tabindex="-1"></a>  gamma.setIdentity();</span>
+<span id="cb92-29"><a href="multivariate-gaussian-hmm.html#cb92-29" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma<span class="op">(</span>m<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb92-30"><a href="multivariate-gaussian-hmm.html#cb92-30" aria-hidden="true" tabindex="-1"></a>  gamma<span class="op">.</span>setIdentity<span class="op">();</span></span>
 <span id="cb92-31"><a href="multivariate-gaussian-hmm.html#cb92-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb92-32"><a href="multivariate-gaussian-hmm.html#cb92-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (m == <span class="dv">1</span>)</span>
-<span id="cb92-33"><a href="multivariate-gaussian-hmm.html#cb92-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gamma;</span>
+<span id="cb92-32"><a href="multivariate-gaussian-hmm.html#cb92-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>m <span class="op">==</span> <span class="dv">1</span><span class="op">)</span></span>
+<span id="cb92-33"><a href="multivariate-gaussian-hmm.html#cb92-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gamma<span class="op">;</span></span>
 <span id="cb92-34"><a href="multivariate-gaussian-hmm.html#cb92-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb92-35"><a href="multivariate-gaussian-hmm.html#cb92-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Fill offdiagonal elements with working parameters column-wise:</span></span>
-<span id="cb92-36"><a href="multivariate-gaussian-hmm.html#cb92-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> idx = <span class="dv">0</span>;</span>
-<span id="cb92-37"><a href="multivariate-gaussian-hmm.html#cb92-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; m; i++){</span>
-<span id="cb92-38"><a href="multivariate-gaussian-hmm.html#cb92-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="dt">int</span> j = <span class="dv">0</span>; j &lt; m; j++){</span>
-<span id="cb92-39"><a href="multivariate-gaussian-hmm.html#cb92-39" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (j != i){</span>
+<span id="cb92-36"><a href="multivariate-gaussian-hmm.html#cb92-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> idx <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb92-37"><a href="multivariate-gaussian-hmm.html#cb92-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> m<span class="op">;</span> i<span class="op">++){</span></span>
+<span id="cb92-38"><a href="multivariate-gaussian-hmm.html#cb92-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> m<span class="op">;</span> j<span class="op">++){</span></span>
+<span id="cb92-39"><a href="multivariate-gaussian-hmm.html#cb92-39" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>j <span class="op">!=</span> i<span class="op">){</span></span>
 <span id="cb92-40"><a href="multivariate-gaussian-hmm.html#cb92-40" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Fill gamma according to mapping and take exponential</span></span>
-<span id="cb92-41"><a href="multivariate-gaussian-hmm.html#cb92-41" aria-hidden="true" tabindex="-1"></a>        gamma(j, i) = tgamma.exp()(idx);</span>
-<span id="cb92-42"><a href="multivariate-gaussian-hmm.html#cb92-42" aria-hidden="true" tabindex="-1"></a>        idx++;</span>
-<span id="cb92-43"><a href="multivariate-gaussian-hmm.html#cb92-43" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb92-44"><a href="multivariate-gaussian-hmm.html#cb92-44" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb92-45"><a href="multivariate-gaussian-hmm.html#cb92-45" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb92-41"><a href="multivariate-gaussian-hmm.html#cb92-41" aria-hidden="true" tabindex="-1"></a>        gamma<span class="op">(</span>j<span class="op">,</span> i<span class="op">)</span> <span class="op">=</span> tgamma<span class="op">.</span>exp<span class="op">()(</span>idx<span class="op">);</span></span>
+<span id="cb92-42"><a href="multivariate-gaussian-hmm.html#cb92-42" aria-hidden="true" tabindex="-1"></a>        idx<span class="op">++;</span></span>
+<span id="cb92-43"><a href="multivariate-gaussian-hmm.html#cb92-43" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb92-44"><a href="multivariate-gaussian-hmm.html#cb92-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb92-45"><a href="multivariate-gaussian-hmm.html#cb92-45" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb92-46"><a href="multivariate-gaussian-hmm.html#cb92-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Normalize each row:</span></span>
-<span id="cb92-47"><a href="multivariate-gaussian-hmm.html#cb92-47" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; cs = gamma.rowwise().sum();</span>
-<span id="cb92-48"><a href="multivariate-gaussian-hmm.html#cb92-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; m; i++) gamma.row(i) /= cs[i];</span>
+<span id="cb92-47"><a href="multivariate-gaussian-hmm.html#cb92-47" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> cs <span class="op">=</span> gamma<span class="op">.</span>rowwise<span class="op">().</span>sum<span class="op">();</span></span>
+<span id="cb92-48"><a href="multivariate-gaussian-hmm.html#cb92-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> m<span class="op">;</span> i<span class="op">++)</span> gamma<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">/=</span> cs<span class="op">[</span>i<span class="op">];</span></span>
 <span id="cb92-49"><a href="multivariate-gaussian-hmm.html#cb92-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-50"><a href="multivariate-gaussian-hmm.html#cb92-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> gamma;</span>
-<span id="cb92-51"><a href="multivariate-gaussian-hmm.html#cb92-51" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb92-50"><a href="multivariate-gaussian-hmm.html#cb92-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> gamma<span class="op">;</span></span>
+<span id="cb92-51"><a href="multivariate-gaussian-hmm.html#cb92-51" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb92-52"><a href="multivariate-gaussian-hmm.html#cb92-52" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb92-53"><a href="multivariate-gaussian-hmm.html#cb92-53" aria-hidden="true" tabindex="-1"></a><span class="co">// Function computing the stationary distribution of a Markov chain</span></span>
-<span id="cb92-54"><a href="multivariate-gaussian-hmm.html#cb92-54" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;</span>
-<span id="cb92-55"><a href="multivariate-gaussian-hmm.html#cb92-55" aria-hidden="true" tabindex="-1"></a>vector&lt;Type&gt; stat_dist(<span class="dt">int</span> m, matrix&lt;Type&gt; gamma) {</span>
+<span id="cb92-54"><a href="multivariate-gaussian-hmm.html#cb92-54" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb92-55"><a href="multivariate-gaussian-hmm.html#cb92-55" aria-hidden="true" tabindex="-1"></a>vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> stat_dist<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb92-56"><a href="multivariate-gaussian-hmm.html#cb92-56" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb92-57"><a href="multivariate-gaussian-hmm.html#cb92-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
-<span id="cb92-58"><a href="multivariate-gaussian-hmm.html#cb92-58" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; I(m, m);</span>
-<span id="cb92-59"><a href="multivariate-gaussian-hmm.html#cb92-59" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; U(m, m);</span>
-<span id="cb92-60"><a href="multivariate-gaussian-hmm.html#cb92-60" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; row1vec(<span class="dv">1</span>, m);</span>
-<span id="cb92-61"><a href="multivariate-gaussian-hmm.html#cb92-61" aria-hidden="true" tabindex="-1"></a>  U = U.setOnes();</span>
-<span id="cb92-62"><a href="multivariate-gaussian-hmm.html#cb92-62" aria-hidden="true" tabindex="-1"></a>  I = I.setIdentity();</span>
-<span id="cb92-63"><a href="multivariate-gaussian-hmm.html#cb92-63" aria-hidden="true" tabindex="-1"></a>  row1vec.setOnes();</span>
-<span id="cb92-64"><a href="multivariate-gaussian-hmm.html#cb92-64" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; A =  I - gamma + U;</span>
-<span id="cb92-65"><a href="multivariate-gaussian-hmm.html#cb92-65" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; Ainv = A.inverse();</span>
-<span id="cb92-66"><a href="multivariate-gaussian-hmm.html#cb92-66" aria-hidden="true" tabindex="-1"></a>  matrix&lt;Type&gt; deltamat = row1vec * Ainv;</span>
-<span id="cb92-67"><a href="multivariate-gaussian-hmm.html#cb92-67" aria-hidden="true" tabindex="-1"></a>  vector&lt;Type&gt; delta = deltamat.row(<span class="dv">0</span>);</span>
+<span id="cb92-58"><a href="multivariate-gaussian-hmm.html#cb92-58" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> I<span class="op">(</span>m<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb92-59"><a href="multivariate-gaussian-hmm.html#cb92-59" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> U<span class="op">(</span>m<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb92-60"><a href="multivariate-gaussian-hmm.html#cb92-60" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> row1vec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb92-61"><a href="multivariate-gaussian-hmm.html#cb92-61" aria-hidden="true" tabindex="-1"></a>  U <span class="op">=</span> U<span class="op">.</span>setOnes<span class="op">();</span></span>
+<span id="cb92-62"><a href="multivariate-gaussian-hmm.html#cb92-62" aria-hidden="true" tabindex="-1"></a>  I <span class="op">=</span> I<span class="op">.</span>setIdentity<span class="op">();</span></span>
+<span id="cb92-63"><a href="multivariate-gaussian-hmm.html#cb92-63" aria-hidden="true" tabindex="-1"></a>  row1vec<span class="op">.</span>setOnes<span class="op">();</span></span>
+<span id="cb92-64"><a href="multivariate-gaussian-hmm.html#cb92-64" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> A <span class="op">=</span>  I <span class="op">-</span> gamma <span class="op">+</span> U<span class="op">;</span></span>
+<span id="cb92-65"><a href="multivariate-gaussian-hmm.html#cb92-65" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> Ainv <span class="op">=</span> A<span class="op">.</span>inverse<span class="op">();</span></span>
+<span id="cb92-66"><a href="multivariate-gaussian-hmm.html#cb92-66" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> deltamat <span class="op">=</span> row1vec <span class="op">*</span> Ainv<span class="op">;</span></span>
+<span id="cb92-67"><a href="multivariate-gaussian-hmm.html#cb92-67" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta <span class="op">=</span> deltamat<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
 <span id="cb92-68"><a href="multivariate-gaussian-hmm.html#cb92-68" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb92-69"><a href="multivariate-gaussian-hmm.html#cb92-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta;</span>
-<span id="cb92-70"><a href="multivariate-gaussian-hmm.html#cb92-70" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb92-69"><a href="multivariate-gaussian-hmm.html#cb92-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> delta<span class="op">;</span></span>
+<span id="cb92-70"><a href="multivariate-gaussian-hmm.html#cb92-70" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 </div>
 <div id="estimation-1" class="section level2" number="8.3">
 <h2><span class="header-section-number">8.3</span> Estimation</h2>
@@ -586,28 +576,26 @@ For the implementation, the main change is for the density function to go from <
 <span id="cb93-59"><a href="multivariate-gaussian-hmm.html#cb93-59" aria-hidden="true" tabindex="-1"></a>       <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
 <span id="cb93-60"><a href="multivariate-gaussian-hmm.html#cb93-60" aria-hidden="true" tabindex="-1"></a>       <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
 <span id="cb93-61"><a href="multivariate-gaussian-hmm.html#cb93-61" aria-hidden="true" tabindex="-1"></a><span class="do">## $par</span></span>
-<span id="cb93-62"><a href="multivariate-gaussian-hmm.html#cb93-62" aria-hidden="true" tabindex="-1"></a><span class="do">##          tmu          tmu          tmu          tmu          tmu          tmu       tsigma       tsigma </span></span>
-<span id="cb93-63"><a href="multivariate-gaussian-hmm.html#cb93-63" aria-hidden="true" tabindex="-1"></a><span class="do">##  5.979331886  7.974662650  9.034963083  1.105791929  2.016963286  3.069442564 -0.005278076  0.470025716 </span></span>
-<span id="cb93-64"><a href="multivariate-gaussian-hmm.html#cb93-64" aria-hidden="true" tabindex="-1"></a><span class="do">##       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma </span></span>
-<span id="cb93-65"><a href="multivariate-gaussian-hmm.html#cb93-65" aria-hidden="true" tabindex="-1"></a><span class="do">## -0.161247055  0.455150038  0.312012980 -0.218999355  0.306537527  1.029377442 -0.038685928  0.977222514 </span></span>
-<span id="cb93-66"><a href="multivariate-gaussian-hmm.html#cb93-66" aria-hidden="true" tabindex="-1"></a><span class="do">##       tsigma       tsigma       tgamma       tgamma </span></span>
-<span id="cb93-67"><a href="multivariate-gaussian-hmm.html#cb93-67" aria-hidden="true" tabindex="-1"></a><span class="do">##  0.440952661 -0.128765538 -1.852673335 -2.813032886 </span></span>
-<span id="cb93-68"><a href="multivariate-gaussian-hmm.html#cb93-68" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb93-69"><a href="multivariate-gaussian-hmm.html#cb93-69" aria-hidden="true" tabindex="-1"></a><span class="do">## $objective</span></span>
-<span id="cb93-70"><a href="multivariate-gaussian-hmm.html#cb93-70" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4295.975</span></span>
-<span id="cb93-71"><a href="multivariate-gaussian-hmm.html#cb93-71" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb93-72"><a href="multivariate-gaussian-hmm.html#cb93-72" aria-hidden="true" tabindex="-1"></a><span class="do">## $convergence</span></span>
-<span id="cb93-73"><a href="multivariate-gaussian-hmm.html#cb93-73" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0</span></span>
-<span id="cb93-74"><a href="multivariate-gaussian-hmm.html#cb93-74" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb93-75"><a href="multivariate-gaussian-hmm.html#cb93-75" aria-hidden="true" tabindex="-1"></a><span class="do">## $iterations</span></span>
-<span id="cb93-76"><a href="multivariate-gaussian-hmm.html#cb93-76" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 6</span></span>
-<span id="cb93-77"><a href="multivariate-gaussian-hmm.html#cb93-77" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb93-78"><a href="multivariate-gaussian-hmm.html#cb93-78" aria-hidden="true" tabindex="-1"></a><span class="do">## $evaluations</span></span>
-<span id="cb93-79"><a href="multivariate-gaussian-hmm.html#cb93-79" aria-hidden="true" tabindex="-1"></a><span class="do">## function gradient </span></span>
-<span id="cb93-80"><a href="multivariate-gaussian-hmm.html#cb93-80" aria-hidden="true" tabindex="-1"></a><span class="do">##        7        6 </span></span>
-<span id="cb93-81"><a href="multivariate-gaussian-hmm.html#cb93-81" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb93-82"><a href="multivariate-gaussian-hmm.html#cb93-82" aria-hidden="true" tabindex="-1"></a><span class="do">## $message</span></span>
-<span id="cb93-83"><a href="multivariate-gaussian-hmm.html#cb93-83" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] &quot;both X-convergence and relative convergence (5)&quot;</span></span></code></pre></div>
+<span id="cb93-62"><a href="multivariate-gaussian-hmm.html#cb93-62" aria-hidden="true" tabindex="-1"></a><span class="do">##          tmu          tmu          tmu          tmu          tmu          tmu       tsigma       tsigma       tsigma       tsigma </span></span>
+<span id="cb93-63"><a href="multivariate-gaussian-hmm.html#cb93-63" aria-hidden="true" tabindex="-1"></a><span class="do">##  5.979331886  7.974662650  9.034963083  1.105791929  2.016963286  3.069442564 -0.005278076  0.470025716 -0.161247055  0.455150038 </span></span>
+<span id="cb93-64"><a href="multivariate-gaussian-hmm.html#cb93-64" aria-hidden="true" tabindex="-1"></a><span class="do">##       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma       tsigma       tgamma       tgamma </span></span>
+<span id="cb93-65"><a href="multivariate-gaussian-hmm.html#cb93-65" aria-hidden="true" tabindex="-1"></a><span class="do">##  0.312012980 -0.218999355  0.306537527  1.029377442 -0.038685928  0.977222514  0.440952661 -0.128765538 -1.852673335 -2.813032886 </span></span>
+<span id="cb93-66"><a href="multivariate-gaussian-hmm.html#cb93-66" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb93-67"><a href="multivariate-gaussian-hmm.html#cb93-67" aria-hidden="true" tabindex="-1"></a><span class="do">## $objective</span></span>
+<span id="cb93-68"><a href="multivariate-gaussian-hmm.html#cb93-68" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4295.975</span></span>
+<span id="cb93-69"><a href="multivariate-gaussian-hmm.html#cb93-69" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb93-70"><a href="multivariate-gaussian-hmm.html#cb93-70" aria-hidden="true" tabindex="-1"></a><span class="do">## $convergence</span></span>
+<span id="cb93-71"><a href="multivariate-gaussian-hmm.html#cb93-71" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0</span></span>
+<span id="cb93-72"><a href="multivariate-gaussian-hmm.html#cb93-72" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb93-73"><a href="multivariate-gaussian-hmm.html#cb93-73" aria-hidden="true" tabindex="-1"></a><span class="do">## $iterations</span></span>
+<span id="cb93-74"><a href="multivariate-gaussian-hmm.html#cb93-74" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 5</span></span>
+<span id="cb93-75"><a href="multivariate-gaussian-hmm.html#cb93-75" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb93-76"><a href="multivariate-gaussian-hmm.html#cb93-76" aria-hidden="true" tabindex="-1"></a><span class="do">## $evaluations</span></span>
+<span id="cb93-77"><a href="multivariate-gaussian-hmm.html#cb93-77" aria-hidden="true" tabindex="-1"></a><span class="do">## function gradient </span></span>
+<span id="cb93-78"><a href="multivariate-gaussian-hmm.html#cb93-78" aria-hidden="true" tabindex="-1"></a><span class="do">##        6        5 </span></span>
+<span id="cb93-79"><a href="multivariate-gaussian-hmm.html#cb93-79" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb93-80"><a href="multivariate-gaussian-hmm.html#cb93-80" aria-hidden="true" tabindex="-1"></a><span class="do">## $message</span></span>
+<span id="cb93-81"><a href="multivariate-gaussian-hmm.html#cb93-81" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] &quot;both X-convergence and relative convergence (5)&quot;</span></span></code></pre></div>
 </div>
 <div id="results-1" class="section level2" number="8.4">
 <h2><span class="header-section-number">8.4</span> Results</h2>
