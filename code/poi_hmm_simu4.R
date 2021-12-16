@@ -124,8 +124,8 @@ for (idx in 1:length(M_LIST_SIMU4)) {
                                                         true_delta))
   
   param_tmb_gh <- pois.HMM.pn2pw(m = m,
-                                 lambda = tmb_CI$lambda,
-                                 gamma = tmb_CI$gamma)
+                                 lambda = tmb_gh$lambda,
+                                 gamma = tmb_gh$gamma)
   
   if (m == 1) {
     w_params_names <- c("tlambda1")
@@ -255,7 +255,7 @@ for (idx in 1:length(M_LIST_SIMU4)) {
   #                                            len_w_par),
   #                                stringsAsFactors = FALSE)
   # for (idx_param in 1:len_w_par) {
-  #   profile <- tmbprofile(obj = tmb_CI$obj,
+  #   profile <- tmbprofile(obj = tmb_gh$obj,
   #                         name = idx_param,
   #                         trace = FALSE)
   #   
@@ -281,7 +281,7 @@ for (idx in 1:length(M_LIST_SIMU4)) {
                                .combine = rbind) %dopar% {
                                  # TMB::compile("code/poi_hmm.cpp")
                                  dyn.load(dynlib("code/poi_hmm"))
-                                 profile <- tmbprofile(obj = tmb_CI$obj,
+                                 profile <- tmbprofile(obj = tmb_gh$obj,
                                                        name = idx_param,
                                                        trace = FALSE)
                                  
