@@ -61,6 +61,7 @@ mvnorm_hmm.cpp
 norm_hmm.cpp
 codepackages.r
 poi_hmm.cpp
+poi_hmm_lamb.R
 poi_hmm_simu1.R
 poi_hmm_simu2.R
 poi_hmm_simu3.R

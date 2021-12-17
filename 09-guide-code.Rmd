@@ -67,8 +67,7 @@ The first chunk of code it runs can be found in the file *[code/setup_parameters
 Afterwards, either computations are run and their results are stored in data/, or results are loaded to the current environment.
 The computations are written in *[code/poi_hmm_tinn.R](#poi_hmm_tinn.R)*, *[code/poi_hmm_lamb.R](#poi_hmm_lamb.R)*, *[code/poi_hmm_simu1.R](#poi_hmm_simu1.R)*, *[code/poi_hmm_simu2.R](#poi_hmm_simu2.R)*, and *[code/poi_hmm_simu3.R](#poi_hmm_simu3.R)*.
 
-**NOTE**: on an Intel(R) Core(TM) i7-8700 processor running under Windows 10 Enterprise
-version 1809, the entire computation took 6 days and 7 hours.
+**NOTE**: Our scripts were tested on a workstation with 32 Intel(R) Xeon(R) Gold 6134 processors (3.7 GHz) running under the Linux distribution Ubuntu 18.04.6 LTS (Bionic Beaver) with 384 GB.
 More details at individual files.
 
 File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/main.R \
@@ -143,26 +142,36 @@ File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm.cpp
 <!-- File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm.o \ -->
 <!-- File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm.o -->
 
-<!-- ### code/poi_hmm_lamb.R {#poi_hmm_lamb.R} -->
-<!-- File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm_lamb.R \ -->
-<!-- File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_lamb.R -->
+### code/poi_hmm_lamb.R {#poi_hmm_lamb.R}
+File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm_lamb.R \
+File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_lamb.R
+
+On our machine, this file took approximately 2h to compute.
 
 ### code/poi_hmm_simu1.R {#poi_hmm_simu1.R}
 File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm_simu1.R \
 File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_simu1.R
 
+On our machine, this file took approximately 3h30 to compute.
+
 ### code/poi_hmm_simu2.R {#poi_hmm_simu2.R}
 File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm_simu2.R \
 File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_simu2.R
+
+On our machine, this file took approximately 23h to compute.
 
 ### code/poi_hmm_simu3.R {#poi_hmm_simu3.R}
 File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm_simu3.R \
 File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_simu3.R
 
+On our machine, this file took approximately 26h30 to compute.
+
 ### code/poi_hmm_simu4.R {#poi_hmm_simu4.R}
 Unlike in the other simulations, the coverage samples do not ensure that profile CIs converge. \
 File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm_simu3.R \
 File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_simu3.R
+
+On our machine, this file took approximately 63h to compute.
 
 ### code/poi_hmm_tinn.R {#poi_hmm_tinn.R}
 Most of their code is common:
@@ -171,9 +180,7 @@ Most of their code is common:
 * `Parameters & covariates for TMB` transforms parameters and covariates to their working form.
 * `Estimation` computes estimates with and without TMB for further comparison. The estimates are stored in the data-frames `conf_int_*`.
 * `Creating variables for the CIs` creates necessary variables for to compute confidence intervals (CIs).
-* `Benchmarks` uses the `microbenchmark` [@R-microbenchmark] package to accurately time:
-
-    * the $TMB_0$ $TMB_G$ $TMB_H$ and $TMB_{GH}$ procedures. Their times are stored in the data-frames `estim_benchmarks_df_*`
+* `Benchmarks` uses the `microbenchmark` [@R-microbenchmark] package to accurately time the $TMB_0$ $TMB_G$ $TMB_H$ and $TMB_{GH}$ procedures. Their times are stored in the data-frames `estim_benchmarks_df_*`
 
 * `Profiling the likelihood` uses the `TMB` package's `tmbprofile` function to determine a profile of the likelihood, then determines a CI based on it for the corresponding working parameter. Eventually, CIs are derived when possible for the natural parameters $\hat{\bs{\lambda}}$ and $\hat{\bs{\Gamma}}$. The CIs are stored in the data-frames `conf_int_*`.
 * `Bootstrap` derives a parametric bootstrap CI from the dataset, while checking that the generated data can be estimated without errors, after which we apply our label switching function to ensure that estimates of a parameter are only aggregated with estimates of the same parameter. The CIs are stored in the data-frames `conf_int_*`.
@@ -193,11 +200,11 @@ This allows us to check if normal background activity on the computer (e.g. the 
 If it affects estimation noticeably, then we would have to apply much stricter control on background processes in order to reliably compare estimation speeds with different optimizers.
 Luckily, a low variance was observed, making the acceleration evidenced in this project significant.
 
-**NOTE**: to avoid wasting time, some code is accelerated via parallelization:
+**NOTE**: to be faster, some code is parallelized:
 
 * In *[code/poi_hmm_simu1.R](#poi_hmm_simu1.R)*, bootstrapping is parallelized both in `Bootstrap` (accelerated from 83 seconds per sample to 29 seconds) and in `Coverage probabilities of the 3 CI methods` (likelihood profiling was slower with parallelization, likely due to loading `TMB` each time and the procedure being already fairly quick: from 2.8 seconds in total without to 3.5 seconds in total with).
 * In *[code/poi_hmm_simu2.R](#poi_hmm_simu2.R)*, bootstrapping and likelihood profiling are both parallelized in `Bootstrap` (accelerated from 64 seconds per bootstrap sample to 21), `Profiling the likelihood`, and in `Coverage probabilities of the 3 CI methods`.
-* *[code/poi_hmm_simu3.R](#poi_hmm_simu3.R)* benefits from the same parallelization as *[code/poi_hmm_simu2.R](#poi_hmm_simu2.R)*.
+* *[code/poi_hmm_simu3.R](#poi_hmm_simu3.R)* and *[code/poi_hmm_simu4.R](#poi_hmm_simu4.R)* benefit from the same parallelization as *[code/poi_hmm_simu2.R](#poi_hmm_simu2.R)*.
 
 Parallelization is handled with the `foreach` [@R-foreach] package.
 
