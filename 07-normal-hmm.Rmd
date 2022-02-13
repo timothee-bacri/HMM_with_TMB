@@ -81,5 +81,6 @@ obj_tmb$report()
 ```
 
 An intuitive interpretation of these results is that on average, market prices either grow slowly (positive low mean) but surely (low variance) as people invest carefully, or the market prices decrease (negative larger mean) as people sell in panic for fear of losing too much (higher variance).
+For more details on this, see e.g. \citet{bullaa} and get some information on bull and bear markets.
 
 Note that the TPM is displayed column-wise.
