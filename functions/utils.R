@@ -37,12 +37,12 @@ gamma.w2n <- function(m, tgamma){
   gamma <- diag(m)
   if (m == 1) return(gamma)
   gamma[!gamma] <- exp(tgamma)
-  gamma <- gamma/apply(gamma, 1, sum)
+  gamma <- gamma / apply(gamma, 1, sum)
   return(gamma)
 }
 
 ## ---- TMB.estimate
-# Estimation using TMB
+# Estimation using TMB, wrapper of stats::nlminb capable of moderate error handling
 TMB.estimate <- function(TMB_data,
                          parameters,
                          map = list(),
@@ -52,11 +52,8 @@ TMB.estimate <- function(TMB_data,
   
   obj <- MakeADFun(TMB_data, parameters, DLL = "poi_hmm", silent = TRUE, map = map)
   
-  # The function ifelse cannot return a NULL value, the function switch can
-  # If gradient is FALSE, then gradient + 1 is 1 and the switch returns NULL
-  # If gradient is TRUE, then gradient + 1 is 2 and the switch returns obj$gr
-  gr <- switch(gradient + 1, NULL, obj$gr)
-  he <- switch(hessian + 1, NULL, obj$he)
+  gr <- if (gradient) obj$gr else NULL
+  he <- if (hessian) obj$he else NULL
   
   m <- TMB_data$m
   
@@ -129,9 +126,8 @@ TMB.estimate <- function(TMB_data,
 
 ## ---- HMM.decode
 # Computes log-forward, log-backward and conditional probabilities
-# and decoding based on (optimized) MakeADFun object,
+# and decoding based on an optimized TMB::MakeADFun object
 HMM.decode <- function(obj) {
-  
   # Setup
   # Retrieve the objects at ML value
   adrep <- obj$report(obj$env$last.par.best)
@@ -189,12 +185,13 @@ HMM.decode <- function(obj) {
 }
 
 ## ---- quantile.colwise
-# 2.5% and 97.5% quantiles
+# Computes the 2.5% and 97.5% quantiles
 quantile.colwise <- function(data) {
   return(quantile(data, probs = c(0.05 / 2, 1 - 0.05 / 2)))
 }
 
 # Transform tpm with column wise idx to row and column indices
+# When a matrix is passed where a vector is expected (for example in a column of a data.frame), the matrix is read column-wise.
 matrix.col.idx.to.rowcol <- function(idx, m) {
   # The indices are 1:m in the 1st column, then (m+1):(2*m) in the 2nd, etc...
   row <- (idx - 1) %% m + 1
@@ -226,7 +223,8 @@ stat.dist <- function(gamma) {
   # This is likely an approximation error.
   # For some reason, the result may be a complex number with imaginary part equal to 0.
   # We can just ignore the imaginary part because the eigenvectors of a real eigenvalue must be real.
-  # In the cases where it happened, solve(t(diag(m) - gamma + 1), rep(1, m)) produced the same result without the imaginary part.
+  # In the cases where it happened, solve(t(diag(m) - gamma + 1), rep(1, m)) produced the same result
+  # without the imaginary part.
   first_eigen_row <- Re(eigen(t(gamma))$vectors[, 1])
   return(first_eigen_row / sum(first_eigen_row))
 }
@@ -287,8 +285,7 @@ pois.HMM.generate.estimable.sample <- function(ns,
                                                mod,
                                                testing_params,
                                                params_names = PARAMS_NAMES,
-                                               std_error = FALSE,
-                                               label_switch = FALSE) {
+                                               std_error = FALSE) {
   if(anyNA(c(ns, mod, testing_params))) {
     stop("Some parameters are missing in pois.HMM.generate.estimable.sample")
   }
@@ -406,6 +403,7 @@ pois.HMM.generate.estimable.sample <- function(ns,
     break
   }
   return(list(data = new_data$data,
+              states = new_data$state,
               natural_parameters = natural_parameters,
               mod = mod_temp,
               failure = failure))
@@ -554,7 +552,7 @@ DM.estimate <- function(x, m, lambda0, gamma0, delta0 = NULL, stationary = TRUE)
   
 }
 
-# Nice publication-worthy theme
+# Nice publication-worthy theme for ggplot
 ## ---- theme
 theme_Publication <- function(base_size = 10) {
   library(grid)

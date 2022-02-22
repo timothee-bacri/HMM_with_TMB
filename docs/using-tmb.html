@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2022-02-13" />
+<meta name="date" content="2022-02-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -351,7 +351,7 @@ div.csl-indent {
 <span id="cb27-45"><a href="using-tmb.html#cb27-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb27-46"><a href="using-tmb.html#cb27-46" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb27-47"><a href="using-tmb.html#cb27-47" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb27-48"><a href="using-tmb.html#cb27-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to Zucchini&#39;s book page 333</span></span>
+<span id="cb27-48"><a href="using-tmb.html#cb27-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to (Zucchini et al., 2016, p 333)</span></span>
 <span id="cb27-49"><a href="using-tmb.html#cb27-49" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">,</span> P<span class="op">;</span></span>
 <span id="cb27-50"><a href="using-tmb.html#cb27-50" aria-hidden="true" tabindex="-1"></a>  Type mllk<span class="op">,</span> sumfoo<span class="op">,</span> lscale<span class="op">;</span></span>
 <span id="cb27-51"><a href="using-tmb.html#cb27-51" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -394,24 +394,23 @@ div.csl-indent {
 </ol>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="using-tmb.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load TMB and optimization packages</span></span>
 <span id="cb28-2"><a href="using-tmb.html#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
-<span id="cb28-3"><a href="using-tmb.html#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(optimr)</span>
-<span id="cb28-4"><a href="using-tmb.html#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the C++ file containing the TMB code</span></span>
-<span id="cb28-5"><a href="using-tmb.html#cb28-5" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span>
-<span id="cb28-6"><a href="using-tmb.html#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load it</span></span>
-<span id="cb28-7"><a href="using-tmb.html#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span></code></pre></div>
+<span id="cb28-3"><a href="using-tmb.html#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the C++ file containing the TMB code</span></span>
+<span id="cb28-4"><a href="using-tmb.html#cb28-4" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span>
+<span id="cb28-5"><a href="using-tmb.html#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Load it</span></span>
+<span id="cb28-6"><a href="using-tmb.html#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span></code></pre></div>
 <p>Next, we need to load the necessary packages and the utility <code>R</code> functions.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="using-tmb.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the parameter transformation function</span></span>
 <span id="cb29-2"><a href="using-tmb.html#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span></code></pre></div>
 <ol start="2" style="list-style-type: lower-roman">
-<li>The data are part of a large data set collected with the “Track Your Tinnitus” (TYT) mobile application, a detailed description of which is presented in <span class="citation"><a href="references.html#ref-pryss" role="doc-biblioref">Pryss, Reichert, Langguth, et al.</a> (<a href="references.html#ref-pryss" role="doc-biblioref">2015</a>)</span> and <span class="citation"><a href="references.html#ref-pryssa" role="doc-biblioref">Pryss, Reichert, Herrmann, et al.</a> (<a href="references.html#ref-pryssa" role="doc-biblioref">2015</a>)</span>.
+<li>The data are part of a large data set collected with the “Track Your Tinnitus” (TYT) mobile application, a detailed description of which is presented in <span class="citation">Pryss, Reichert, Langguth, et al. (<a href="references.html#ref-pryss" role="doc-biblioref">2015</a>)</span> and <span class="citation">Pryss, Reichert, Herrmann, et al. (<a href="references.html#ref-pryssa" role="doc-biblioref">2015</a>)</span>.
 We analyze 87 successive days of the “arousal” variable, which is measured on a discrete scale.
 Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state <span class="citation">(for details, see <a href="references.html#ref-probst" role="doc-biblioref">Probst et al. 2016</a>)</span>.
 The data can be loaded by a simple call.</li>
 </ol>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="using-tmb.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span></code></pre></div>
 <p>Figure <a href="using-tmb.html#fig:4tinnitus-fig">4.1</a> presents the raw data in the <a href="#table:tinnitus_data">Table</a> below, which are also available for download at <em><a href="github.html#tinnitus.RData">data/tinnitus.RData</a></em>.</p>
-<!-- html table generated in R 4.1.1 by xtable 1.8-4 package -->
-<!-- Sun Feb 13 19:32:08 2022 -->
+<!-- html table generated in R 4.1.2 by xtable 1.8-4 package -->
+<!-- Tue Feb 22 19:44:00 2022 -->
 <table border="1">
 <caption align="bottom">
 TYT data. Observations collected by the TYT app on 87 successive days (from left to right).
@@ -432,7 +431,7 @@ Figure 4.1: Plot of observations from TYT app data for 87 succesive days.
 <ol start="3" style="list-style-type: lower-roman">
 <li>Initialization of the number of states and starting (or initial) values for the optimization.</li>
 </ol>
-<p>First, the number of states needs to be determined. As explained by <span class="citation"><a href="references.html#ref-pohlea" role="doc-biblioref">Pohle et al.</a> (<a href="references.html#ref-pohlea" role="doc-biblioref">2017a</a>)</span>, <span class="citation"><a href="references.html#ref-pohle" role="doc-biblioref">Pohle et al.</a> (<a href="references.html#ref-pohle" role="doc-biblioref">2017b</a>)</span>, and <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, sec. 6</a>)</span> (to name only a few), usually one would first fit models with a different number of states. Then, these models are evaluated e.g. by means of model selection criteria <span class="citation">(as carried out by <a href="references.html#ref-leroux" role="doc-biblioref">Leroux and Puterman 1992</a>)</span> or prediction performance <span class="citation">(<a href="references.html#ref-celeux" role="doc-biblioref">Celeux and Durand 2008</a>)</span>.
+<p>First, the number of states needs to be determined. As explained by <span class="citation">Pohle et al. (<a href="references.html#ref-pohlea" role="doc-biblioref">2017a</a>)</span>, <span class="citation">Pohle et al. (<a href="references.html#ref-pohle" role="doc-biblioref">2017b</a>)</span>, and <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, sec. 6</a>)</span> (to name only a few), usually one would first fit models with a different number of states. Then, these models are evaluated e.g. by means of model selection criteria <span class="citation">(as carried out by <a href="references.html#ref-leroux" role="doc-biblioref">Leroux and Puterman 1992</a>)</span> or prediction performance <span class="citation">(<a href="references.html#ref-celeux" role="doc-biblioref">Celeux and Durand 2008</a>)</span>.
 As shown in <a href="using-tmb.html#appendix">the appendix</a>, the model selection procedure shows that both AIC and BIC prefer a two-state model over a Poisson regression and over a model with three or four states. Consequently, we focus on the two-state model in the following.<br />
 The list object <code>TMB_data</code> contains the data and the number of states.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="using-tmb.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model with 2 states</span></span>
@@ -528,7 +527,7 @@ However, it doesn’t always behave as expected.</p>
 <span id="cb40-4"><a href="using-tmb.html#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1</span></span>
 <span id="cb40-5"><a href="using-tmb.html#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(estimate_delta) <span class="sc">==</span> <span class="dv">1</span> <span class="co"># The sum is displayed as 1 but is not 1</span></span>
 <span id="cb40-6"><a href="using-tmb.html#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] FALSE</span></span></code></pre></div>
-<p>As noted on <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 159–60</a>)</span>, ``the row sums of <span class="math inline">\({\boldsymbol\Gamma}\)</span> will only approximately equal 1, and the components of the vector <span class="math inline">\({\boldsymbol\delta}\)</span> will only approximately total 1. This can be remedied by scaling the vector <span class="math inline">\({\boldsymbol\delta}\)</span> and each row of <span class="math inline">\({\boldsymbol\Gamma}\)</span> to total 1’’.
+<p>As noted on <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 159–60</a>)</span>, ``the row sums of <span class="math inline">\({\boldsymbol\Gamma}\)</span> will only approximately equal 1, and the components of the vector <span class="math inline">\({\boldsymbol\delta}\)</span> will only approximately total 1. This can be remedied by scaling the vector <span class="math inline">\({\boldsymbol\delta}\)</span> and each row of <span class="math inline">\({\boldsymbol\Gamma}\)</span> to total 1’’.
 We do not remedy this issue because it provides no benefit to us, but this may lead to surprising results when checking equality.</p>
 <p>This is likely due to machine approximations when numbers far apart from each other interact together.
 In R, a small number is not 0 but is treated as 0 when added to a much larger number.</p>
@@ -708,7 +707,7 @@ Therefore, the constraint needs to be placed on the <span class="math inline">\(
 <p>The following code requires executing the code presented in the Section <a href="parameter-estimation-techniques-for-hmms.html#forward-backward">Forward algorithm and backward algorithm</a>, as the log-forward and log-backward probabilities are needed.</p>
 <div id="local-decoding" class="section level3" number="4.4.1">
 <h3><span class="header-section-number">4.4.1</span> Local decoding</h3>
-<p>The smoothing probabilities are defined in <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 87</a> and p.336)</span> as
+<p>The smoothing probabilities are defined in <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 87</a> and p.336)</span> as
 <span class="math display">\[
 \text{P}(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
 \]</span></p>
@@ -725,13 +724,14 @@ Therefore, the constraint needs to be placed on the <span class="math inline">\(
 <span id="cb49-4"><a href="using-tmb.html#cb49-4" aria-hidden="true" tabindex="-1"></a>  ldecode[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(stateprobs[, i])</span>
 <span id="cb49-5"><a href="using-tmb.html#cb49-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb49-6"><a href="using-tmb.html#cb49-6" aria-hidden="true" tabindex="-1"></a>ldecode</span>
-<span id="cb49-7"><a href="using-tmb.html#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</span></span>
-<span id="cb49-8"><a href="using-tmb.html#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [151] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</span></span></code></pre></div>
+<span id="cb49-7"><a href="using-tmb.html#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2</span></span>
+<span id="cb49-8"><a href="using-tmb.html#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  [87] 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</span></span>
+<span id="cb49-9"><a href="using-tmb.html#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [173] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</span></span></code></pre></div>
 </div>
 <div id="forecast" class="section level3" number="4.4.2">
 <h3><span class="header-section-number">4.4.2</span> Forecast</h3>
 <p>The forecast distribution or h-step-ahead-probabilities as well as its
-implementation in R is detailed in <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 83</a> and p.337)</span></p>
+implementation in R is detailed in <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 83</a> and p.337)</span></p>
 <p>Then,
 <span class="math display">\[
 \text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{{\boldsymbol\alpha}_n {\boldsymbol\Gamma}^h \textbf{P}(x) {\boldsymbol 1}&#39;}{{\boldsymbol\alpha}_n {\boldsymbol 1}&#39;} = {\boldsymbol\Phi}_n {\boldsymbol\Gamma}^h \textbf{P}(x) {\boldsymbol 1}&#39;
@@ -767,7 +767,7 @@ An implementation of this using a scaling scheme is</p>
 </div>
 <div id="global-decoding" class="section level3" number="4.4.3">
 <h3><span class="header-section-number">4.4.3</span> Global decoding</h3>
-<p>The Viterbi algorithm is detailed in <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 88</a> and p.334)</span>.
+<p>The Viterbi algorithm is detailed in <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 88</a> and p.334)</span>.
 It calculates the sequence of states <span class="math inline">\((i_1^*, \ldots, i_T^*)\)</span> which
 maximizes the conditional probability of all states simultaneously, i.e.
 <span class="math display">\[
@@ -787,13 +787,14 @@ An implementation of it is</p>
 <span id="cb51-11"><a href="using-tmb.html#cb51-11" aria-hidden="true" tabindex="-1"></a>  iv[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(gamma[, iv[i <span class="sc">+</span> <span class="dv">1</span>]] <span class="sc">*</span> xi[i, ])</span>
 <span id="cb51-12"><a href="using-tmb.html#cb51-12" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb51-13"><a href="using-tmb.html#cb51-13" aria-hidden="true" tabindex="-1"></a>iv</span>
-<span id="cb51-14"><a href="using-tmb.html#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="do">##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</span></span>
-<span id="cb51-15"><a href="using-tmb.html#cb51-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [151] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</span></span></code></pre></div>
+<span id="cb51-14"><a href="using-tmb.html#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="do">##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2</span></span>
+<span id="cb51-15"><a href="using-tmb.html#cb51-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  [87] 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</span></span>
+<span id="cb51-16"><a href="using-tmb.html#cb51-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [173] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</span></span></code></pre></div>
 </div>
 </div>
 <div id="appendix" class="section level2" number="4.5">
 <h2><span class="header-section-number">4.5</span> Appendix</h2>
-<p>Model selection tinnitus via AIC and BIC (calculation defined in <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016</a>)</span>).</p>
+<p>Model selection tinnitus via AIC and BIC (calculation defined in <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016</a>)</span>).</p>
 <ul>
 <li>AIC and BIC of a Poisson regression</li>
 </ul>

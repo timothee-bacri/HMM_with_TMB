@@ -17,7 +17,6 @@ Before we can fit the model, we need to load some necessary packages and data fi
 ```{r 4init-example1, message = FALSE, warning = FALSE, results = FALSE}
 # Load TMB and optimization packages
 library(TMB)
-library(optimr)
 # Run the C++ file containing the TMB code
 TMB::compile("code/poi_hmm.cpp")
 # Load it

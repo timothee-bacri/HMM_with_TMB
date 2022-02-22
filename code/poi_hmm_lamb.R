@@ -247,20 +247,20 @@ for (idx_param in 1:len_w_par) {
 
 # Transform the working parameters into natural ones
 # Lambda (m values)
-conf_int_lamb$Profile.L[which(conf_int_lamb$m == m)][lambda_indices] <- exp(working_conf_int$lower[lambda_indices])
+conf_int_lamb$Profile.L[lambda_indices] <- exp(working_conf_int$lower[lambda_indices])
 # Gamma (m^2-m working parameters, m^2 natural ones)
 if (!anyNA(working_conf_int$lower[tgamma_indices])) {
   natural_gamma <- as.numeric(gamma.w2n(m,
                                         working_conf_int$lower[tgamma_indices]))
-  conf_int_lamb$Profile.L[which(conf_int_lamb$m == m)][gamma_indices] <- natural_gamma
+  conf_int_lamb$Profile.L[gamma_indices] <- natural_gamma
 }
 # Lambda (m values)
-conf_int_lamb$Profile.U[which(conf_int_lamb$m == m)][lambda_indices] <- exp(working_conf_int$upper[lambda_indices])
+conf_int_lamb$Profile.U[lambda_indices] <- exp(working_conf_int$upper[lambda_indices])
 # Gamma (m^2-m working parameters, m^2 natural ones)
 if (!anyNA(working_conf_int$upper[tgamma_indices])) {
   natural_gamma <- as.numeric(gamma.w2n(m,
                                         working_conf_int$upper[tgamma_indices]))
-  conf_int_lamb$Profile.U[which(conf_int_lamb$m == m)][gamma_indices] <- natural_gamma
+  conf_int_lamb$Profile.U[gamma_indices] <- natural_gamma
 }
 
 # Bootstrap ---------------------------
@@ -276,9 +276,9 @@ if (BOOTSTRAP_SAMPLES != 0) {
                                                testing_params = list(m = m,
                                                                      lambda = tmb_gh$lambda,
                                                                      gamma = tmb_gh$gamma,
-                                                                     delta = tmb_gh$delta))$natural_parameters
+                                                                     delta = tmb_gh$delta))
     # The values from gamma are taken columnwise
-    natural_parameters <- temp
+    natural_parameters <- temp$natural_parameters
     natural_parameters <- unlist(natural_parameters[PARAMS_NAMES])
     bootstrap_lamb[idx_sample,
                    1:len_par] <- natural_parameters
@@ -291,8 +291,8 @@ if (BOOTSTRAP_SAMPLES != 0) {
   q <- apply(bootstrap_lamb,
              2,
              quantile.colwise)
-  conf_int_lamb$Bootstrap.L[which(conf_int_lamb$m == m)] <- q[1, ]
-  conf_int_lamb$Bootstrap.U[which(conf_int_lamb$m == m)] <- q[2, ]
+  conf_int_lamb$Bootstrap.L <- q[1, ]
+  conf_int_lamb$Bootstrap.U <- q[2, ]
 }
 
 # TMB confidence intervals --------------
@@ -306,9 +306,9 @@ gamma_L <- pmax(0,
 # delta must be 0 or above
 delta_L <- pmax(0,
                 tmb_gh$delta - q95_norm * tmb_gh$delta_std_error)
-conf_int_lamb$TMB.L[which(conf_int_lamb$m == m)] <- c(lambda_L,
-                                                      gamma_L,
-                                                      delta_L)
+conf_int_lamb$TMB.L <- c(lambda_L,
+                         gamma_L,
+                         delta_L)
 # no upper bound on lambda
 # gamma must be 1 or less
 gamma_U <- pmin(1,
@@ -316,9 +316,9 @@ gamma_U <- pmin(1,
 # delta must be 1 or less
 delta_U <- pmin(1,
                 tmb_gh$delta + q95_norm * tmb_gh$delta_std_error)
-conf_int_lamb$TMB.U[which(conf_int_lamb$m == m)] <- c(tmb_gh$lambda + q95_norm * tmb_gh$lambda_std_error,
-                                                      gamma_U,
-                                                      delta_U)
+conf_int_lamb$TMB.U <- c(tmb_gh$lambda + q95_norm * tmb_gh$lambda_std_error,
+                         gamma_U,
+                         delta_U)
 # Coverage probabilities of the 3 CI methods -----------------
 set.seed(FIRST_SEED + 3)
 parameter_names <- paste0(rep("lambda",
@@ -339,9 +339,13 @@ parameter_names <- c(parameter_names,
                      paste0(rep("delta",
                                 m),
                             1:m))
-coverage_count_profile <- coverage_count_bootstrap <- coverage_count_tmb <- data.frame(parameter = parameter_names,
-                                                                                       count = 0,
-                                                                                       ratio = 0)
+# Record the times where the profile CI of a parameter successfully contains the parameter's true value
+coverage_count_profile <-
+  coverage_count_bootstrap <-
+  coverage_count_tmb <-
+  data.frame(parameter = parameter_names,
+             count = 0,
+             ratio = 0)
 idx_coverage <- 0
 while (idx_coverage < COVERAGE_SAMPLES) {
   idx_coverage <- idx_coverage + 1
@@ -363,9 +367,9 @@ while (idx_coverage < COVERAGE_SAMPLES) {
   for (reason in c("state_number", "TMB_null", "TMB_converge", "TMB_G_null",
                    "TMB_G_converge", "TMB_H_null", "TMB_H_converge", "TMG_GH_null",
                    "TMG_GH_converge", "NA_value")) {
-    coverage_skips_lamb[coverage_skips_lamb$m == m,
-                        reason] <- coverage_skips_lamb[coverage_skips_lamb$m == m,
-                                                       reason] + coverage_model$failure[reason]
+    coverage_skips_lamb[coverage_skips_lamb$m == m, reason] <-
+      coverage_skips_lamb[coverage_skips_lamb$m == m, reason] +
+      coverage_model$failure[reason]
   }
   
   # Confidence interval profiling -------------------------------------
@@ -405,13 +409,13 @@ while (idx_coverage < COVERAGE_SAMPLES) {
                           lambda_profile_upper,
                           gamma_profile_lower,
                           gamma_profile_upper)
-  estimates_coverage
   test_null <- sapply(X = estimates_coverage, FUN = is.null)
   test_finite <- sapply(X = estimates_coverage, FUN = is.finite)
   # If some CI bounds are NULL or missing (NA) or infinite (Inf), try a new coverage sample
   if (any(test_null == TRUE) | any(test_finite == FALSE)) {
     idx_coverage <- idx_coverage - 1
-    coverage_skips_lamb[coverage_skips_lamb$m == m, "profile"] <- coverage_skips_lamb[coverage_skips_lamb$m == m, "profile"] + 1
+    temp <- coverage_skips_lamb[coverage_skips_lamb$m == m, "profile"]
+    coverage_skips_lamb[coverage_skips_lamb$m == m, "profile"] <- temp + 1
     next
   }
   # If the "true" value for lambda is in the CI, then increase the count
@@ -427,7 +431,8 @@ while (idx_coverage < COVERAGE_SAMPLES) {
                                    gamma_profile_upper)
   real_gamma_profile_upper <- pmax(gamma_profile_lower,
                                    gamma_profile_upper)
-  indices <- which(as.vector(tmb_gh$gamma) >= real_gamma_profile_lower & as.vector(tmb_gh$gamma) <= real_gamma_profile_upper)
+  indices <- which(as.vector(tmb_gh$gamma) >= real_gamma_profile_lower &
+                     as.vector(tmb_gh$gamma) <= real_gamma_profile_upper)
   indices <- indices + m
   coverage_count_profile[indices, "count"] <- coverage_count_profile[indices, "count"] + 1
   
@@ -435,60 +440,71 @@ while (idx_coverage < COVERAGE_SAMPLES) {
   bootstrap_lamb <- data.frame()
   if (BOOTSTRAP_SAMPLES != 0) {
     for (idx_sample in 1:BOOTSTRAP_SAMPLES) {
-      temp <- pois.HMM.generate.estimable.sample(ns = DATA_SIZE_LAMB,
-                                                 mod = list(m = m,
-                                                            lambda = coverage_model$natural_parameters$lambda,
-                                                            gamma = coverage_model$natural_parameters$gamma,
-                                                            delta = coverage_model$natural_parameters$delta),
-                                                 testing_params = list(m = m,
-                                                                       lambda = tmb_gh$lambda,
-                                                                       gamma = tmb_gh$gamma,
-                                                                       delta = tmb_gh$delta))$natural_parameters
+      temp <- pois.HMM.generate.estimable.sample(
+        ns = DATA_SIZE_LAMB,
+        mod = list(m = m,
+                   lambda = coverage_model$natural_parameters$lambda,
+                   gamma = coverage_model$natural_parameters$gamma,
+                   delta = coverage_model$natural_parameters$delta),
+        testing_params = list(m = m,
+                              lambda = tmb_gh$lambda,
+                              gamma = tmb_gh$gamma,
+                              delta = tmb_gh$delta))
       # The values from gamma are taken columnwise
-      natural_parameters <- temp
+      natural_parameters <- temp$natural_parameters
       natural_parameters <- unlist(natural_parameters[PARAMS_NAMES])
       bootstrap_lamb[idx_sample, 1:len_par] <- natural_parameters
     }
     q <- apply(bootstrap_lamb,
                2,
                quantile.colwise)
-    indices <- which(as.vector(tmb_gh$lambda) >= q[1, lambda_indices] & as.vector(tmb_gh$lambda) <= q[2, lambda_indices])
+    indices <- which(as.vector(tmb_gh$lambda) >= q[1, lambda_indices] &
+                       as.vector(tmb_gh$lambda) <= q[2, lambda_indices])
     coverage_count_bootstrap[indices, "count"] <- coverage_count_bootstrap[indices, "count"] + 1
-    indices <- which(as.vector(tmb_gh$gamma) >= q[1, gamma_indices] & as.vector(tmb_gh$gamma) <= q[2, gamma_indices]) + m
+    indices <- which(as.vector(tmb_gh$gamma) >= q[1, gamma_indices] &
+                       as.vector(tmb_gh$gamma) <= q[2, gamma_indices]) + m
     coverage_count_bootstrap[indices, "count"] <- coverage_count_bootstrap[indices, "count"] + 1
-    indices <- which(as.vector(tmb_gh$delta) >= q[1, delta_indices] & as.vector(tmb_gh$delta) <= q[2, delta_indices]) + m + m ^ 2
+    indices <- which(as.vector(tmb_gh$delta) >= q[1, delta_indices] &
+                       as.vector(tmb_gh$delta) <= q[2, delta_indices]) + m + m ^ 2
     coverage_count_bootstrap[indices, "count"] <- coverage_count_bootstrap[indices, "count"] + 1
   }
   
   # Confidence interval TMB -----------------------------------------
-  lambda_tmb_lower <- coverage_model$natural_parameters$lambda - q95_norm * coverage_model$natural_parameters$lambda_std_error
-  lambda_tmb_upper <- coverage_model$natural_parameters$lambda + q95_norm * coverage_model$natural_parameters$lambda_std_error
-  gamma_tmb_lower <- coverage_model$natural_parameters$gamma - q95_norm * coverage_model$natural_parameters$gamma_std_error
-  gamma_tmb_upper <- coverage_model$natural_parameters$gamma + q95_norm * coverage_model$natural_parameters$gamma_std_error
-  delta_tmb_lower <- coverage_model$natural_parameters$delta - q95_norm * coverage_model$natural_parameters$delta_std_error
-  delta_tmb_upper <- coverage_model$natural_parameters$delta + q95_norm * coverage_model$natural_parameters$delta_std_error
+  nat_par <- coverage_model$natural_parameters
+  lambda_tmb_lower <- nat_par$lambda - q95_norm * nat_par$lambda_std_error
+  lambda_tmb_upper <- nat_par$lambda + q95_norm * nat_par$lambda_std_error
+  gamma_tmb_lower <- nat_par$gamma - q95_norm * nat_par$gamma_std_error
+  gamma_tmb_upper <- nat_par$gamma + q95_norm * nat_par$gamma_std_error
+  delta_tmb_lower <- nat_par$delta - q95_norm * nat_par$delta_std_error
+  delta_tmb_upper <- nat_par$delta + q95_norm * nat_par$delta_std_error
   
-  indices <- which(as.vector(tmb_gh$lambda) >= lambda_tmb_lower & as.vector(tmb_gh$lambda) <= lambda_tmb_upper)
+  indices <- which(as.vector(tmb_gh$lambda) >= lambda_tmb_lower &
+                     as.vector(tmb_gh$lambda) <= lambda_tmb_upper)
   coverage_count_tmb[indices, "count"] <- coverage_count_tmb[indices, "count"] + 1
-  indices <- which(as.vector(tmb_gh$gamma) >= gamma_tmb_lower & as.vector(tmb_gh$gamma) <= gamma_tmb_upper)
+  indices <- which(as.vector(tmb_gh$gamma) >= gamma_tmb_lower &
+                     as.vector(tmb_gh$gamma) <= gamma_tmb_upper)
   indices <- indices + m
   coverage_count_tmb[indices, "count"] <- coverage_count_tmb[indices, "count"] + 1
-  indices <- which(as.vector(tmb_gh$delta) >= delta_tmb_lower & as.vector(tmb_gh$delta) <= delta_tmb_upper)
+  indices <- which(as.vector(tmb_gh$delta) >= delta_tmb_lower &
+                     as.vector(tmb_gh$delta) <= delta_tmb_upper)
   indices <- indices + m + m ^ 2
   coverage_count_tmb[indices, "count"] <- coverage_count_tmb[indices, "count"] + 1
   
 }
-coverage_count_profile[lambda_indices, "ratio"] <- coverage_count_profile[lambda_indices, "count"] / COVERAGE_SAMPLES
-coverage_count_profile[gamma_indices, "ratio"] <- coverage_count_profile[gamma_indices, "count"] / COVERAGE_SAMPLES
+coverage_count_profile[lambda_indices, "ratio"] <- coverage_count_profile[lambda_indices, "count"] /
+  COVERAGE_SAMPLES
+coverage_count_profile[gamma_indices, "ratio"] <- coverage_count_profile[gamma_indices, "count"] /
+  COVERAGE_SAMPLES
+# delta is not a parameter for us, so it has no profile CI
 coverage_count_profile[delta_indices, "ratio"] <- NA # delta is not a parameter for us, so it has no profile CI
 
 coverage_count_tmb$ratio <- coverage_count_tmb$count / COVERAGE_SAMPLES
 
 coverage_count_bootstrap$ratio <- coverage_count_bootstrap$count / COVERAGE_SAMPLES
 
-conf_int_lamb[conf_int_lamb$m == m, ][1:(m ^ 2 + 2 * m), "Coverage.Profile"] <- coverage_count_profile$ratio * 100
-conf_int_lamb[conf_int_lamb$m == m, ][1:(m ^ 2 + 2 * m), "Coverage.Bootstrap"] <- coverage_count_bootstrap$ratio * 100
-conf_int_lamb[conf_int_lamb$m == m, ][1:(m ^ 2 + 2 * m), "Coverage.TMB"] <- coverage_count_tmb$ratio * 100
+conf_int_lamb[1:(m ^ 2 + 2 * m), "Coverage.Profile"] <- coverage_count_profile$ratio * 100
+conf_int_lamb[1:(m ^ 2 + 2 * m), "Coverage.Bootstrap"] <- coverage_count_bootstrap$ratio * 100
+conf_int_lamb[1:(m ^ 2 + 2 * m), "Coverage.TMB"] <- coverage_count_tmb$ratio * 100
 
 # Fixes -------------------------
 # Fix label switching in conf_int_lamb
@@ -501,15 +517,15 @@ new_lambda_indices <- ordered_params$ordered_lambda_indices
 new_gamma_indices <- ordered_params$ordered_gamma_vector_indices
 new_delta_indices <- ordered_params$ordered_delta_indices
 
-conf_int_lamb[conf_int_lamb$m == m, - 2][lambda_indices, ] <- conf_int_lamb[conf_int_lamb$m == m, - 2][lambda_indices, ][new_lambda_indices, ]
-conf_int_lamb[conf_int_lamb$m == m, - 2][gamma_indices, ] <- conf_int_lamb[conf_int_lamb$m == m, - 2][gamma_indices, ][new_gamma_indices, ]
-conf_int_lamb[conf_int_lamb$m == m, - 2][delta_indices, ] <- conf_int_lamb[conf_int_lamb$m == m, - 2][delta_indices, ][new_delta_indices, ]
+conf_int_lamb[lambda_indices, - 2] <- conf_int_lamb[lambda_indices, - 2][new_lambda_indices, ]
+conf_int_lamb[gamma_indices, - 2] <- conf_int_lamb[gamma_indices, - 2][new_gamma_indices, ]
+conf_int_lamb[delta_indices, - 2] <- conf_int_lamb[delta_indices, - 2][new_delta_indices, ]
 
 # Reorder the TPM row-wise instead of column-wise
 # Lexicographical parameter sort for gamma (sort on the parameter name)
-new_gamma_indices_truncated_table <- order(conf_int_lamb[conf_int_lamb$m == m, ][gamma_indices, "Parameter"])
+new_gamma_indices_truncated_table <- order(conf_int_lamb[gamma_indices, "Parameter"])
 # Replace rows by sorted rows
-conf_int_lamb[conf_int_lamb$m == m, ][gamma_indices, ] <- conf_int_lamb[conf_int_lamb$m == m, ][gamma_indices, ][new_gamma_indices_truncated_table, ]
+conf_int_lamb[gamma_indices, ] <- conf_int_lamb[gamma_indices, ][new_gamma_indices_truncated_table, ]
 
 # The profile CIs may not be sorted, so we sort them manually
 for (i in 1:length(conf_int_lamb[, 1])) {

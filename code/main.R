@@ -1,8 +1,5 @@
 source("code/setup_parameters.R")
 
-# To produce the pdf, run the command:
-# knitr::knit2pdf("paper.rnw")
-
 # Which dataset are tests run on
 RUN_LAMB <- FALSE
 RUN_SIMULATION1 <- FALSE
@@ -20,6 +17,7 @@ if (RUN_LAMB) {
 } else {
   load("data/results_lamb.RData")
 }
+
 # ---- Simulation
 if (RUN_SIMULATION1) {
   source("code/poi_hmm_simu1.R")
@@ -29,6 +27,7 @@ if (RUN_SIMULATION1) {
 } else {
   load("data/results_simu1.RData")
 }
+
 if (RUN_SIMULATION2) {
   source("code/poi_hmm_simu2.R")
   save(M_LIST_SIMU2, estim_benchmarks_df_simu2, coverage_skips_simu2,
@@ -37,14 +36,16 @@ if (RUN_SIMULATION2) {
 } else {
   load("data/results_simu2.RData")
 }
+
 if (RUN_SIMULATION3) {
   source("code/poi_hmm_simu3.R")
   save(M_LIST_SIMU3, estim_benchmarks_df_simu3, coverage_skips_simu3,
-       conf_int_simu3,
+       conf_int_simu3, coverage_count_profile_simu3,
        file = "data/results_simu3.RData")
 } else {
   load("data/results_simu3.RData")
 }
+
 if (RUN_SIMULATION4) {
   source("code/poi_hmm_simu4.R")
   save(M_LIST_SIMU4, estim_benchmarks_df_simu4, coverage_skips_simu4,
@@ -53,6 +54,7 @@ if (RUN_SIMULATION4) {
 } else {
   load("data/results_simu4.RData")
 }
+
 ## ---- Tinnitus
 if (RUN_TINNITUS) {
   source("code/poi_hmm_tinn.R")

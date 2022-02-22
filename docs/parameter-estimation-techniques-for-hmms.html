@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2022-02-13" />
+<meta name="date" content="2022-02-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -300,7 +300,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="parameter-estimation-techniques-for-hmms" class="section level1" number="3">
 <h1><span class="header-section-number"> 3</span> Parameter estimation techniques<br>for HMMs</h1>
-<p>In this section we recall basic concepts underlying parameter estimation for HMMs via direct numerical optimization of the likelihood. In terms of notation, we stay as close as possible to <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016</a>)</span>, where a more detailed presentation is available.</p>
+<p>In this section we recall basic concepts underlying parameter estimation for HMMs via direct numerical optimization of the likelihood. In terms of notation, we stay as close as possible to <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016</a>)</span>, where a more detailed presentation is available.</p>
 <div id="basic-notation-and-model-setup" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Basic notation and model setup</h2>
 <p>The conditional distribution densities can be called in <code>R</code> as well as in <code>C++</code> (provided that the <code>TMB</code> template is respected) via</p>
@@ -361,7 +361,7 @@ div.csl-indent {
 <span id="cb13-45"><a href="parameter-estimation-techniques-for-hmms.html#cb13-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb13-46"><a href="parameter-estimation-techniques-for-hmms.html#cb13-46" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb13-47"><a href="parameter-estimation-techniques-for-hmms.html#cb13-47" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-48"><a href="parameter-estimation-techniques-for-hmms.html#cb13-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to Zucchini&#39;s book page 333</span></span>
+<span id="cb13-48"><a href="parameter-estimation-techniques-for-hmms.html#cb13-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to (Zucchini et al., 2016, p 333)</span></span>
 <span id="cb13-49"><a href="parameter-estimation-techniques-for-hmms.html#cb13-49" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">,</span> P<span class="op">;</span></span>
 <span id="cb13-50"><a href="parameter-estimation-techniques-for-hmms.html#cb13-50" aria-hidden="true" tabindex="-1"></a>  Type mllk<span class="op">,</span> sumfoo<span class="op">,</span> lscale<span class="op">;</span></span>
 <span id="cb13-51"><a href="parameter-estimation-techniques-for-hmms.html#cb13-51" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -476,7 +476,7 @@ the emission probability matrix.</p>
 </div>
 <div id="log-forward" class="section level3" number="3.3.2">
 <h3><span class="header-section-number">3.3.2</span> Log-forward probabilities</h3>
-<p>We show here a way to compute the log of the forward probabilities, using a scaling scheme defined by <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 66</a> and p.334)</span>.</p>
+<p>We show here a way to compute the log of the forward probabilities, using a scaling scheme defined by <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 66</a> and p.334)</span>.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="parameter-estimation-techniques-for-hmms.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-forward probabilities (scaling used)</span></span>
 <span id="cb18-2"><a href="parameter-estimation-techniques-for-hmms.html#cb18-2" aria-hidden="true" tabindex="-1"></a>lalpha <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
 <span id="cb18-3"><a href="parameter-estimation-techniques-for-hmms.html#cb18-3" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
@@ -499,7 +499,7 @@ the emission probability matrix.</p>
 </div>
 <div id="log-backward" class="section level3" number="3.3.3">
 <h3><span class="header-section-number">3.3.3</span> Log-backward probabilities</h3>
-<p>We show here a way to compute the log of the backward probabilities with a scaling scheme defined by <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 67</a> and p.334)</span>.</p>
+<p>We show here a way to compute the log of the backward probabilities with a scaling scheme defined by <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 67</a> and p.334)</span>.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="parameter-estimation-techniques-for-hmms.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-backwards probabilities (scaling used)</span></span>
 <span id="cb19-2"><a href="parameter-estimation-techniques-for-hmms.html#cb19-2" aria-hidden="true" tabindex="-1"></a>lbeta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
 <span id="cb19-3"><a href="parameter-estimation-techniques-for-hmms.html#cb19-3" aria-hidden="true" tabindex="-1"></a>lbeta[, n] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, m)</span>
@@ -603,7 +603,7 @@ We define the function <code>gamma.w2n</code> to perform this transformation.</p
 <div id="utility-functions-in-r" class="section level3" number="3.4.2">
 <h3><span class="header-section-number">3.4.2</span> Utility functions in <code>R</code></h3>
 <p>While <code>TMB</code> requires functions to transform working parameters to their natural form, pre-processing in <code>R</code> requires the inverse transformation.</p>
-<p>Functions to achieve this are available in <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 51</a>)</span> and are displayed here with explaining comments for convenience.</p>
+<p>Functions to achieve this are available in <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 51</a>)</span> and are displayed here with explaining comments for convenience.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="parameter-estimation-techniques-for-hmms.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform Poisson natural parameters to working parameters</span></span>
 <span id="cb21-2"><a href="parameter-estimation-techniques-for-hmms.html#cb21-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.pn2pw <span class="ot">&lt;-</span> <span class="cf">function</span>(m, lambda, gamma, <span class="at">delta =</span> <span class="cn">NULL</span>,</span>
 <span id="cb21-3"><a href="parameter-estimation-techniques-for-hmms.html#cb21-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">stationary =</span> <span class="cn">TRUE</span>) {</span>
@@ -645,7 +645,7 @@ We define the function <code>gamma.w2n</code> to perform this transformation.</p
 <span id="cb24-9"><a href="parameter-estimation-techniques-for-hmms.html#cb24-9" aria-hidden="true" tabindex="-1"></a>  first_eigen_row <span class="ot">&lt;-</span> <span class="fu">Re</span>(<span class="fu">eigen</span>(<span class="fu">t</span>(gamma))<span class="sc">$</span>vectors[, <span class="dv">1</span>])</span>
 <span id="cb24-10"><a href="parameter-estimation-techniques-for-hmms.html#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(first_eigen_row <span class="sc">/</span> <span class="fu">sum</span>(first_eigen_row))</span>
 <span id="cb24-11"><a href="parameter-estimation-techniques-for-hmms.html#cb24-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p><span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 51</a>)</span> shows that calculating the stationary distribution can be achieved by solving the equation below for <span class="math inline">\({\boldsymbol\delta}\)</span>, where <span class="math inline">\({\boldsymbol I}_m\)</span> is the <span class="math inline">\(m*m\)</span> identity matrix, <span class="math inline">\({\boldsymbol U}\)</span> is a <span class="math inline">\(m*m\)</span> matrix of ones, and <span class="math inline">\({\boldsymbol 1}\)</span> is a row vector of ones.
+<p><span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 51</a>)</span> shows that calculating the stationary distribution can be achieved by solving the equation below for <span class="math inline">\({\boldsymbol\delta}\)</span>, where <span class="math inline">\({\boldsymbol I}_m\)</span> is the <span class="math inline">\(m*m\)</span> identity matrix, <span class="math inline">\({\boldsymbol U}\)</span> is a <span class="math inline">\(m*m\)</span> matrix of ones, and <span class="math inline">\({\boldsymbol 1}\)</span> is a row vector of ones.
 <span class="math display">\[
 {\boldsymbol\delta}({\boldsymbol I}_m - {\boldsymbol\Gamma} + {\boldsymbol U}) = {\boldsymbol 1}
 \]</span></p>
@@ -767,8 +767,8 @@ For readability, the TPM is filled with standard row and column indices instead 
 <span id="cb26-24"><a href="parameter-estimation-techniques-for-hmms.html#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="do">## $ordered_delta_indices</span></span>
 <span id="cb26-25"><a href="parameter-estimation-techniques-for-hmms.html#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2 3 1</span></span></code></pre></div>
 <p>State 1 has been relabeled state 3, state 3 became state 2, and state 2 became state 1.</p>
-<p>Another way to address this issue is by parameterizing in terms of non-negative increments <span class="math inline">\(\lambda_j - \lambda_{j-1}\)</span> with <span class="math inline">\(\lambda_0 \equiv 0\)</span>, as explained by <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, sec. 7.1.1</a> p. 112)</span>.
-However, <span class="citation"><a href="references.html#ref-bulla" role="doc-biblioref">Bulla and Berzel</a> (<a href="references.html#ref-bulla" role="doc-biblioref">2008, sec. 3.2</a> p. 7)</span> shows this can impose optimization issues: “over all series, the simplest parameterization, i.e., the use of log-transformed state-dependent parameters, leads to the best results as regards the number of failures and the convergence to the global maximum.”</p>
+<p>Another way to address this issue is by parameterizing in terms of non-negative increments <span class="math inline">\(\lambda_j - \lambda_{j-1}\)</span> with <span class="math inline">\(\lambda_0 \equiv 0\)</span>, as explained by <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, sec. 7.1.1</a> p. 112)</span>.
+However, <span class="citation">Bulla and Berzel (<a href="references.html#ref-bulla" role="doc-biblioref">2008, sec. 3.2</a> p. 7)</span> shows this can impose optimization issues: “over all series, the simplest parameterization, i.e., the use of log-transformed state-dependent parameters, leads to the best results as regards the number of failures and the convergence to the global maximum”.</p>
 <p>These utility functions or subroutines are not complicated, but as you can see, they would cloud up your main code.
 Therefore, we put them in functions we can call from our main program.</p>
 

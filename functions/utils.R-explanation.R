@@ -2,24 +2,24 @@
 
 
 # Function to transform natural parameters to working ones
-# PARAM m - integer
-#     Number of states
-# PARAM delta - numeric vector
-#     Natural form of the stationary distribution
-# RETURN - numeric vector
-#     Working form of the stationary distribution. Has the benefit of being unconstrained, making optimization easier to configure
+# 	PARAM m - integer
+# 		Number of states
+# 	PARAM delta - numeric vector
+# 		Natural form of the stationary distribution
+# 	RETURN - numeric vector
+# 		Working form of the stationary distribution. Has the benefit of being unconstrained, making optimization easier to configure
 delta.n2w <- function(m, delta){
   tdelta <- log(delta[- 1] / delta[1])
   return(tdelta) 
 }
 
 # Function to transform working parameters to natural ones
-# PARAM m - integer
-#     Number of hidden states
-# PARAM tdelta - numeric vector
-#     Working form of the stationary distribution
-# RETURN - numeric vector
-#     Natural form of the stationary distribution. Has the benefit of being interpretable
+# 	PARAM m - integer
+# 		Number of hidden states
+# 	PARAM tdelta - numeric vector
+# 		Working form of the stationary distribution
+# 	RETURN - numeric vector
+# 		Natural form of the stationary distribution. Has the benefit of being interpretable
 delta.w2n <- function(m, tdelta){
   if (m == 1) return(1)
   
@@ -33,12 +33,12 @@ delta.w2n <- function(m, tdelta){
 }
 
 # Function to transform natural parameters to working ones
-# PARAM m - integer
-#     Number of hidden states
-# PARAM gamma - matrix
-#     Natural form of the transition probability matrix
-# RETURN - matrix
-#     Working form of the transition probability matrix. Has the benefit of being unconstrained, making optimization easier to configure
+# 	PARAM m - integer
+# 		Number of hidden states
+# 	PARAM gamma - matrix
+# 		Natural form of the transition probability matrix
+# 	RETURN - matrix
+# 		Working form of the transition probability matrix. Has the benefit of being unconstrained, making optimization easier to configure
 gamma.n2w <- function(m, gamma){
   foo <- log(gamma / diag(gamma))
   tgamma <- as.vector(foo[!diag(m)])
@@ -46,37 +46,44 @@ gamma.n2w <- function(m, gamma){
 }
 
 # Function to transform working parameters to natural ones
-# PARAM m - integer
-#     Number of hidden states
-# PARAM tgamma - matrix
-#     Working form of the stationary distribution
-# RETURN - matrix
-#     Working form of the transition probability matrix. Has the benefit of being interpretable
+# 	PARAM m - integer
+# 		Number of hidden states
+# 	PARAM tgamma - matrix
+# 		Working form of the stationary distribution
+# 	RETURN - matrix
+# 		Working form of the transition probability matrix. Has the benefit of being interpretable
 gamma.w2n <- function(m, tgamma){
   gamma <- diag(m)
   if (m == 1) return(gamma)
   gamma[!gamma] <- exp(tgamma)
-  gamma <- gamma/apply(gamma, 1, sum)
+  gamma <- gamma / apply(gamma, 1, sum)
   return(gamma)
 }
 
 # Estimation using TMB, wrapper of stats::nlminb capable of moderate error handling
-# PARAM TMB_data - list
-#     Contains a dataset as x and the number of states as m
-# PARAM parameters - list
-#     Contains the working parameters for likelihood computation.
-#     Typically is the object returned by pois.HMM.pn2pw
-# PARAM map - list
-#     Optional parameter necessary for nested models
-# PARAM gradient - boolean
-#     Optional parameter indicating whether optimization should make use of TMB's exact gradient
-# PARAM hessian - boolean
-#     Optional parameter indicating whether optimization should make use of TMB's exact hessian    
-# PARAM std_error - boolean
-#     Optional parameter indicating whether standard errors should be returned
-# RETURN - list
-#     Contains in order: the number of states, natural parameter estimates, nlminb's convergence code, the minimum negative log-likelihood,
-#     the AIC and BIC fitnessgoodness-of-fit scores, the nlminb object, and the MakeADFun_obj
+# 	PARAM TMB_data - list
+# 		Contains a dataset as x and the number of states as m
+# 	PARAM parameters - list
+# 		Contains the working parameters for likelihood computation.
+# 		Typically is the object returned by pois.HMM.pn2pw
+# 	PARAM map - list
+# 		Optional parameter necessary for nested models
+# 	PARAM gradient - boolean
+# 		Optional parameter indicating whether optimization should make use of TMB's exact gradient
+# 	PARAM hessian - boolean
+# 		Optional parameter indicating whether optimization should make use of TMB's exact hessian    
+# 	PARAM std_error - boolean
+# 		Optional parameter indicating whether standard errors should be returned
+# 	RETURN - list
+# 		Contains in order: 
+# 			m:						number of states
+# 			lambda, gamma, delta:	natural parameter estimates
+# 			convergence:			nlminb's convergence code
+# 			mllk:					minimum negative log-likelihood
+# 			AIC:					AIC score
+# 			BIC:					BIC score
+# 			mod:					nlminb object
+# 			obj:					MakeADFun object
 TMB.estimate <- function(TMB_data,
                          parameters,
                          map = list(),
@@ -86,11 +93,8 @@ TMB.estimate <- function(TMB_data,
   
   obj <- MakeADFun(TMB_data, parameters, DLL = "poi_hmm", silent = TRUE, map = map)
   
-  # The function ifelse cannot return a NULL value, the function switch can
-  # If gradient is FALSE, then gradient + 1 is 1 and the switch returns NULL
-  # If gradient is TRUE, then gradient + 1 is 2 and the switch returns mod$gr
-  gr <- switch(gradient + 1, NULL, obj$gr)
-  he <- switch(hessian + 1, NULL, obj$he)
+  gr <- if (gradient) obj$gr else NULL
+  he <- if (hessian) obj$he else NULL
   
   m <- TMB_data$m
   
@@ -163,12 +167,15 @@ TMB.estimate <- function(TMB_data,
 
 # Computes log-forward, log-backward and conditional probabilities
 # and decoding based on an optimized TMB::MakeADFun object
-# PARAM obj - list
-#     Optional parameter that may take some time to compute. Used to avoid timing unnecessary code when comparing approaches and datasets.
-#     Typically is the object returned by TMB::MakeADFun
-# RETURN - list
-#     Contains in order: the log-forward probabilities, the log backward ones,
-#     the conditional state probabilities (smoothing probabilities) and the resulting most probable states
+# 	PARAM obj - list
+# 		Optional parameter that may take some time to compute. Used to avoid timing unnecessary code when comparing approaches and datasets.
+# 		Typically is the object returned by TMB::MakeADFun
+# 	RETURN - list
+# 		Contains in order
+#			lalpha:			log-forward probabilities
+# 			lbeta:			log backward probabilities
+# 			stateprobs:		conditional state probabilities (smoothing probabilities)
+# 			ldecode:		resulting most probable states
 HMM.decode <- function(obj) {
   # Setup
   # Retrieve the objects at ML value
@@ -227,10 +234,10 @@ HMM.decode <- function(obj) {
 }
 
 # Computes the 2.5% and 97.5% quantiles
-# PARAM data - numeric vector
-#     The quantiles will be computed on this data vector
-# RETURN - numeric vector
-#     Contains the 2.5 and 97.5 percentiles of the data
+# 	PARAM data - numeric vector
+# 		The quantiles will be computed on this data vector
+# 	RETURN - numeric vector
+# 		Contains the 2.5 and 97.5 percentiles of the data
 quantile.colwise <- function(data) {
   return(quantile(data, probs = c(0.05 / 2, 1 - 0.05 / 2)))
 }
@@ -245,14 +252,14 @@ matrix.col.idx.to.rowcol <- function(idx, m) {
 }
 
 # Calculate emission probabilities
-# PARAM data - numeric vector
-#     The emission/output probabilities will be computed on this data vector
-# PARAM lambda - numeric vector
-#     Natural form of the Poisson means
-# RETURN - matrix
-#     Matrix of n rows (one per data point) and m columns (one per HMM state).
-#     Each row contains densities of m Poisson means evaluated on a data point
-#     Probabilities are set to 1 in the case of missing data.
+# 	PARAM data - numeric vector
+# 		The emission/output probabilities will be computed on this data vector
+# 	PARAM lambda - numeric vector
+# 		Natural form of the Poisson means
+# 	RETURN - matrix
+# 		Matrix of n rows (one per data point) and m columns (one per HMM state).
+# 		Each row contains densities of m Poisson means evaluated on a data point
+# 		Probabilities are set to 1 in the case of missing data.
 get.emission.probs <- function(data, lambda) {
   n <- length(data)
   m <- length(lambda)
@@ -269,33 +276,41 @@ get.emission.probs <- function(data, lambda) {
 
 # Compute the stationary distribution of a Markov chain
 # with transition probability gamma
-# PARAM gamma - matrix
-#     Natural form of the transition probability matrix
-# RETURN - numeric vector
-#     Stationary distribution of the transition probability matrix
+# 	PARAM gamma - matrix
+# 		Natural form of the transition probability matrix
+# 	RETURN - numeric vector
+# 		Stationary distribution of the transition probability matrix
 stat.dist <- function(gamma) {
-  m <- nrow(gamma)
-  return(solve(t(diag(m) - gamma + 1), rep(1, m)))
+  # The code from Zucchini can crash when dealing with computationally small numbers.
+  # This is likely an approximation error.
+  # For some reason, the result may be a complex number with imaginary part equal to 0.
+  # We can just ignore the imaginary part because the eigenvectors of a real eigenvalue must be real.
+  # In the cases where it happened, solve(t(diag(m) - gamma + 1), rep(1, m)) produced the same result
+  # without the imaginary part.
+  first_eigen_row <- Re(eigen(t(gamma))$vectors[, 1])
+  return(first_eigen_row / sum(first_eigen_row))
 }
 
 # Transform Poisson natural parameters to working parameters
-# PARAM m - integer
-#     Number of hidden states
-# PARAM lambda - numeric vector
-#     Natural form of the transition probability matrix
-# PARAM gamma - matrix
-#     Natural form of the transition probability matrix
-# PARAM delta - numeric vector
-#     Optional. Natural form of the stationary distribution.
-#     This parameter needs to be provided if FALSE is passed to the argument stationary
-# PARAM stationary - boolean
-#     Optional. Indicates whether the Markov chain is assumed stationary.
-#     This parameter needs to be passed the value FALSE if the Markov chain is assumed not stationary,
-#     in which case the parameter delta is also required.
-# RETURN - list
-#     Zucchini (2016) returns a numeric vector, but TMB requires a list for as argument for the parameters.
-#     The list contains the working form of: the Poisson means, the transition probability matrix, and the stationary
-#     distribution (if the Markov chain is assumed not stationary)
+# 	PARAM m - integer
+# 		Number of hidden states
+# 	PARAM lambda - numeric vector
+# 		Natural form of the transition probability matrix
+# 	PARAM gamma - matrix
+# 		Natural form of the transition probability matrix
+# 	PARAM delta - numeric vector
+# 		Optional. Natural form of the stationary distribution.
+# 		This parameter needs to be provided if FALSE is passed to the argument stationary
+# 	PARAM stationary - boolean
+# 		Optional. Indicates whether the Markov chain is assumed stationary.
+# 		This parameter needs to be passed the value FALSE if the Markov chain is assumed not stationary,
+# 		in which case the parameter delta is also required.
+# 	RETURN - list
+# 		Zucchini (2016) returns a numeric vector, but TMB requires a list for as argument for the parameters.
+# 		Contains the working form of:
+# 			lambda: 	Poisson means
+# 			gamma:		transition probability matrix
+# 			delta:		stationary distribution (if the Markov chain is assumed not stationary)
 pois.HMM.pn2pw <- function(m, lambda, gamma, delta = NULL,
                            stationary = TRUE) {
   tlambda <- log(lambda)
@@ -313,17 +328,19 @@ pois.HMM.pn2pw <- function(m, lambda, gamma, delta = NULL,
 }
 
 # Transform Poisson working parameters to natural parameters
-# PARAM m - integer
-#     Number of hidden states
-# PARAM parvect - list
-#     List containing in order: the Poisson means (lambda), the tpm (gamma), and the stationary distribution (delta) optionally
-# PARAM stationary - boolean
-#     Optional. Indicates whether the Markov chain is assumed stationary.
-#     This parameter needs to be passed the value FALSE if the Markov chain is assumed not stationary,
-#     in which case the parameter delta is also required.
-# RETURN - list
-#     The list contains the natural form of: the Poisson means, the transition probability matrix, and the stationary
-#     distribution (if the Markov chain is assumed not stationary)
+# 	PARAM m - integer
+# 		Number of hidden states
+# 	PARAM parvect - list
+# 		List containing in order: the Poisson means (lambda), the tpm (gamma), and the stationary distribution (delta) optionally
+# 	PARAM stationary - boolean
+# 		Optional. Indicates whether the Markov chain is assumed stationary.
+# 		This parameter needs to be passed the value FALSE if the Markov chain is assumed not stationary,
+# 		in which case the parameter delta is also required.
+# 	RETURN - list
+# 		Contains the natural form of:
+# 			lambda: 	Poisson means
+# 			gamma:		transition probability matrix
+# 			delta:		stationary distribution (if the Markov chain is assumed not stationary)
 pois.HMM.pw2pn <- function(m, parvect, stationary = TRUE) {
   parvect <- unlist(parvect)
   lambda <- exp(parvect[1:m])
@@ -332,7 +349,8 @@ pois.HMM.pw2pn <- function(m, parvect, stationary = TRUE) {
   gamma[!gamma] <- exp(parvect[(m + 1):(m * m)])
   gamma <- gamma / apply(gamma, 1, sum)
   if (stationary) {
-    delta <- solve(t(diag(m) - gamma + 1), rep(1, m))
+    # The code from Zucchini can crash when dealing with computationally small numbers.
+    delta <- stat.dist(gamma)
   } else {
     foo <- c(1, exp(parvect[(m * m + 1):(m * m + m - 1)]))
     delta <- foo / sum(foo)
@@ -341,12 +359,14 @@ pois.HMM.pw2pn <- function(m, parvect, stationary = TRUE) {
 }
 
 # Generate a random sample from a HMM
-# PARAM ns - integer
-#     Number of data (must be strictly greater than 2) in the sample to generate
-# PARAM mod - list
-#     Contains the number of states (m), the Poisson means (lambda), the tpm (gamma), and the initial distribution (delta) (typically stationary, but not necessarily)
-# RETURN - list
-#     Contains named objects: data contains the generated data sample, and state contains the state sequence used to generate data
+# 	PARAM ns - integer
+# 		Number of data (must be strictly greater than 2) in the sample to generate
+# 	PARAM mod - list
+# 		Contains the number of states (m), the Poisson means (lambda), the tpm (gamma), and the initial distribution (delta) (typically stationary, but not necessarily)
+# 	RETURN - list
+# 		Contains named objects:
+# 			data:	generated data sample
+# 			state:	state sequence used to generate data
 pois.HMM.generate.sample  <- function(ns, mod) {
   mvect <- 1:mod$m
   state <- numeric(ns)
@@ -362,20 +382,23 @@ pois.HMM.generate.sample  <- function(ns, mod) {
 # A loop ensures that the generated sample can be passed to a Poisson HMM and not suffer from issues.
 # In more detail, it checks that the sample was generated with m states as wanted, that estimation with TMB
 # converges to a solution whether an exact gradient and/or Hessian gets passed to TMB or not, that no unknown error resulting in missing parameters happens.
-# PARAM ns - integer
-#     Number of data (must be strictly greater than 2) in the sample to generate
-# PARAM mod - list
-#     Contains the number of states (m), the Poisson means (lambda), the tpm (gamma), and the initial distribution (delta) (typically stationary, but not necessarily)
-# PARAM testing_params - list
-#     Contains the number of states (m), the Poisson means (lambda), the tpm (gamma), and optionally the initial distribution (delta) (typically stationary, but not necessarily)
-# PARAM params_names - character vector
-#     Contains the names of the natural parameters (lambda, gamma, delta)
-# PARAM std_error - boolean
-#     Indicates whether or not the standard errors (generated by TMB) are passed in the result
-# RESULT - list
-#     Contains named objects: data contains the generated data sample, natural_parameters contains the natural parameters lambda gamma and delta,
-#     mod contains the output from the function TMB.estimate (with exact gradient and Hessian passed), and failure contains a count of
-#     different reasons why the loop didn't succeed in generating a satisfying sample
+# 	PARAM ns - integer
+# 		Number of data (must be strictly greater than 2) in the sample to generate
+# 	PARAM mod - list
+# 		Contains the number of states (m), the Poisson means (lambda), the tpm (gamma), and the initial distribution (delta) (typically stationary, but not necessarily)
+# 	PARAM testing_params - list
+# 		Contains the number of states (m), the Poisson means (lambda), the tpm (gamma), and optionally the initial distribution (delta) (typically stationary, but not necessarily)
+# 	PARAM params_names - character vector
+# 		Contains the names of the natural parameters (lambda, gamma, delta)
+# 	PARAM std_error - boolean
+# 		Indicates whether or not the standard errors (generated by TMB) are passed in the result
+# 	RETURN - list
+#		Contains named objects:
+# 			data:					generated data sample
+# 			states:					Markov chain states associated with the data sample
+# 			natural_parameters:		natural parameters lambda gamma and delta,
+# 			mod:					output from the function TMB.estimate (with exact gradient and Hessian passed)
+# 			failure:				count of different reasons why the loop didn't succeed in generating a satisfying sample
 pois.HMM.generate.estimable.sample <- function(ns,
                                                mod,
                                                testing_params,
@@ -409,7 +432,7 @@ pois.HMM.generate.estimable.sample <- function(ns,
       next
     }
     
-    TMB_benchmark_data <- list(x = new_data$data, m = m)
+    TMB_new_data <- list(x = new_data$data, m = m)
     
     testing_w_params <- pois.HMM.pn2pw(m = m,
                                        lambda = testing_params$lambda,
@@ -417,7 +440,7 @@ pois.HMM.generate.estimable.sample <- function(ns,
                                        delta = testing_params$delta)
     
     # Test TMB
-    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_new_data,
                                               parameters = testing_w_params,
                                               std_error = std_error))
     # If nlminb doesn't reach any result, discard the data
@@ -432,7 +455,7 @@ pois.HMM.generate.estimable.sample <- function(ns,
     }
     
     # Test TMB_G
-    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_new_data,
                                               parameters = testing_w_params,
                                               gradient = TRUE,
                                               std_error = std_error))
@@ -448,7 +471,7 @@ pois.HMM.generate.estimable.sample <- function(ns,
     }
     
     # Test TMB_H
-    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_new_data,
                                               parameters = testing_w_params,
                                               hessian = TRUE,
                                               std_error = std_error))
@@ -464,7 +487,7 @@ pois.HMM.generate.estimable.sample <- function(ns,
     }
     
     # Test TMB_GH
-    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_benchmark_data,
+    suppressWarnings(mod_temp <- TMB.estimate(TMB_data = TMB_new_data,
                                               parameters = testing_w_params,
                                               gradient = TRUE,
                                               hessian = TRUE,
@@ -497,33 +520,40 @@ pois.HMM.generate.estimable.sample <- function(ns,
     # If everything went well, end the "repeat" loop
     break
   }
-  return(list(data = list(new_data$data),
-              natural_parameters = list(natural_parameters),
-              mod = list(mod_temp),
-              failure = list(failure)))
+  return(list(data = new_data$data,
+              states = new_data$state,
+              natural_parameters = natural_parameters,
+              mod = mod_temp,
+              failure = failure))
 }
 
 # Relabel states by increasing Poisson means. A solution to the label switching problem that is encountered when
 # aggregating parameters during bootstrapping.
 # The new labels are applied cell by cell. There are likely more optimal solutions, but this doesn't matter much in
 # the context of HMMs because of the low number of states.
-# PARAM m - integer
-#     Number of hidden states
-# PARAM lambda - numeric vector
-#     Natural form of the transition probability matrix
-# PARAM gamma - matrix
-#     Natural form of the transition probability matrix
-# PARAM delta - numeric vector
-#     Optional. Natural form of the stationary distribution.
-#     This parameter needs to be provided if FALSE is passed to the argument stationary
-# PARAM lambda_std_error - numeric vector
-#     Poisson means standard errors (optional)
-# PARAM gamma_std_error - matrix
-#     tpm standard errors (optional)
-# PARAM delta_std_error - numeric vector
-#     initial (usually stationary) distribution standard errors (optional)
-# RETURN - list
-#     Contains the label-switched parameters, their standard errors (when provided), and the indices of the new positions
+# 	PARAM m - integer
+# 		Number of hidden states
+# 	PARAM lambda - numeric vector
+# 		Natural form of the transition probability matrix
+# 	PARAM gamma - matrix
+# 		Natural form of the transition probability matrix
+# 	PARAM delta - numeric vector
+# 		Optional. Natural form of the stationary distribution.
+# 		This parameter needs to be provided if FALSE is passed to the argument stationary
+# 	PARAM lambda_std_error - numeric vector
+# 		Poisson means standard errors (optional)
+# 	PARAM gamma_std_error - matrix
+# 		tpm standard errors (optional)
+# 	PARAM delta_std_error - numeric vector
+# 		initial (usually stationary) distribution standard errors (optional)
+# 	RETURN - list
+# 		Contains:
+# 			m: 														number of states
+# 			lambda, gamma, delta:									label-switched parameters
+# 			lambda_std_error, gamma_std_error, delta_std_error: 	parameters standard errors (when asked)
+# 			ordered_lambda_indices:									indices of the new positions of lambda relative to the original parameters
+# 			ordered_gamma_vector_indices:							indices of the new positions of gamma relative to the original parameters
+# 			ordered_delta_indices:									indices of the new positions of delta relative to the original parameters
 pois.HMM.label.order <- function(m,
                                  lambda,
                                  gamma,
@@ -540,8 +570,9 @@ pois.HMM.label.order <- function(m,
   # Get the indices of the sorted states
   # according to ascending lambda
   # sorted_lambda contains the permutations needed
-  ordered_lambda_indices <- sort(lambda, index.return = TRUE)$ix
+  ordered_lambda_indices <- order(lambda)
   ordered_lambda <- lambda[ordered_lambda_indices]
+  names(ordered_lambda) <- NULL
   # Reorder the TPM according to the switched states
   # in the sorted lambda
   ordered_gamma <- matrix(0, nrow = m, ncol = m)
@@ -605,18 +636,18 @@ pois.HMM.label.order <- function(m,
 }
 
 # Calculate the negative log-likelihood, based on the book by Zucchini
-# PARAM parvect - list
-#     List containing in order: the Poisson means (lambda), the tpm (gamma), and the stationary distribution (delta) optionally
-# PARAM x_alias - vector
-#     This serves as a replacement for the more traditional variable name x. This function is mostly used by DM.estimate (see below)
-#     which uses its own Hessian derivation function internally, and it seems to be using the variable x already, thus using x raises errors.
-#     It contains the data on which the negative log-likelihood is computed by this function.
-# PARAM m_alias - integer
-#     Number of hidden states
-# PARAM stationary - boolean
-#     Optional. Indicates whether the Markov chain is assumed stationary.
-# RETURN - numeric
-#     Negative log-likelihood
+# 	PARAM parvect - list
+# 		List containing in order: the Poisson means (lambda), the tpm (gamma), and the stationary distribution (delta) optionally
+# 	PARAM x_alias - vector
+# 		This serves as a replacement for the more traditional variable name x. This function is mostly used by DM.estimate (see below)
+# 		which uses its own Hessian derivation function internally, and it seems to be using the variable x already, thus using x raises errors.
+# 		It contains the data on which the negative log-likelihood is computed by this function.
+# 	PARAM m_alias - integer
+# 		Number of hidden states
+# 	PARAM stationary - boolean
+# 		Optional. Indicates whether the Markov chain is assumed stationary.
+# 	RETURN - numeric
+# 		Negative log-likelihood
 pois.HMM.mllk <- function(parvect, x_alias, m_alias, stationary = TRUE) {
   # The variable names m and x are already used as parameters for the hessian
   # m_alias and x_alias are only replacement names
@@ -649,20 +680,25 @@ pois.HMM.mllk <- function(parvect, x_alias, m_alias, stationary = TRUE) {
 }
 
 # Compute the ML estimates without using TMB. Bases on pois.HMM.mle in the book by Zucchini.
-# PARAM x - numeric vector
-#     contains the data on which the m-state HMM parameters are estimated by direct maximization
-# PARAM m - integer
-#     Number of hidden states
-# PARAM lambda0 - numeric vector
-#     Initial values of Poisson means
-# PARAM gamma0 - matrix
-#     Initial values of tpm
-# PARAM delta0 - numeric vector
-#     Initial values of initial (typically stationary) distribution. Optional. Must be set to FALSE when delta0 is set.
-# RETURN - list
-#     Contains in order: the number of hidden states (m), the estimated natural parameters (lambda gamma and delta),
-#     the convergence code from the optimizer nlminb (convergence), the negative log-likelihood (mllk), the goodness-of-fit AIC and BIC scores,
-#     and the object returned by nlminb (mod)
+# 	PARAM x - numeric vector
+# 		contains the data on which the m-state HMM parameters are estimated by direct maximization
+# 	PARAM m - integer
+# 		Number of hidden states
+# 	PARAM lambda0 - numeric vector
+# 		Initial values of Poisson means
+# 	PARAM gamma0 - matrix
+# 		Initial values of tpm
+# 	PARAM delta0 - numeric vector
+# 		Initial values of initial (typically stationary) distribution. Optional. Must be set to FALSE when delta0 is set.
+# 	RETURN - list
+# 		Contains:
+# 			m:						number of hidden states
+# 			lambda, gamma, delta:	estimated natural parameters
+# 			convergence:			convergence code from the optimizer nlminb
+# 			mllk:					negative log-likelihood
+# 			AIC:					AIC score
+# 			BIC:					BIC score
+# 			mod:					object returned by nlminb
 DM.estimate <- function(x, m, lambda0, gamma0, delta0 = NULL, stationary = TRUE) {
   parvect0 <- pois.HMM.pn2pw(m = m, lambda = lambda0, gamma = gamma0,
                              delta = delta0, stationary = stationary)
@@ -688,7 +724,7 @@ DM.estimate <- function(x, m, lambda0, gamma0, delta0 = NULL, stationary = TRUE)
   
 }
 
-# Nice publication-worthy theme
+# Nice publication-worthy theme for ggplot
 theme_Publication <- function(base_size = 10) {
   library(grid)
   library(ggthemes)

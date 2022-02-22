@@ -67,7 +67,7 @@ The first chunk of code it runs can be found in the file *[code/setup_parameters
 Afterwards, either computations are run and their results are stored in data/, or results are loaded to the current environment.
 The computations are written in *[code/poi_hmm_tinn.R](#poi_hmm_tinn.R)*, *[code/poi_hmm_lamb.R](#poi_hmm_lamb.R)*, *[code/poi_hmm_simu1.R](#poi_hmm_simu1.R)*, *[code/poi_hmm_simu2.R](#poi_hmm_simu2.R)*, and *[code/poi_hmm_simu3.R](#poi_hmm_simu3.R)*.
 
-**NOTE**: Our scripts were tested on a workstation with 32 Intel(R) Xeon(R) Gold 6134 processors (3.7 GHz) running under the Linux distribution Ubuntu 18.04.6 LTS (Bionic Beaver) with 384 GB.
+**NOTE**: Our scripts were tested on a workstation with 4 Intel(R) Xeon(R) Gold 6134 processors (3.7 GHz) running under the Linux distribution Ubuntu 18.04.6 LTS (Bionic Beaver) with 384 GB, and took about a week of computing time.
 More details at individual files.
 
 File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/main.R \
@@ -206,7 +206,7 @@ Luckily, a low variance was observed, making the acceleration evidenced in this 
 * In *[code/poi_hmm_simu2.R](#poi_hmm_simu2.R)*, bootstrapping and likelihood profiling are both parallelized in `Bootstrap` (accelerated from 64 seconds per bootstrap sample to 21), `Profiling the likelihood`, and in `Coverage probabilities of the 3 CI methods`.
 * *[code/poi_hmm_simu3.R](#poi_hmm_simu3.R)* and *[code/poi_hmm_simu4.R](#poi_hmm_simu4.R)* benefit from the same parallelization as *[code/poi_hmm_simu2.R](#poi_hmm_simu2.R)*.
 
-Parallelization is handled with the `foreach` [@R-foreach] package.
+Parallelization is handled with the `foreach` [@R-foreach] package and the `doParallel` [@R-doParallel] package as a backend.
 
 File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm_tinn.R \
 File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_tinn.R

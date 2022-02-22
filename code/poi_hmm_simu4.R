@@ -146,21 +146,22 @@ tgamma_indices <- (m + 1):(m ^ 2)
 # Benchmarks ------------
 set.seed(FIRST_SEED + 1)
 if (BENCHMARK_SAMPLES != 0) {
-  notif("Simu4, Benchmark start")
   for (idx_counter in 1:BENCHMARK_SAMPLES) {
     # Generate data that can be estimated by TMB_GH
     # and is tested on the slightly off parameters from the beginning of this file
     # The goal is to have a dataset that poses no estimation problem,
     # when estimated with guessed initial parameters
-    benchmark_model <- pois.HMM.generate.estimable.sample(ns = DATA_SIZE_SIMU4,
-                                                          mod = list(m = m,
-                                                                     lambda = tmb_gh$lambda,
-                                                                     gamma = tmb_gh$gamma,
-                                                                     delta = tmb_gh$delta),
-                                                          testing_params = list(m = m,
-                                                                                lambda = true_lambda,
-                                                                                gamma = true_gamma,
-                                                                                delta = true_delta))
+    benchmark_model <- pois.HMM.generate.estimable.sample(
+      ns = DATA_SIZE_SIMU4,
+      mod = list(m = m,
+                 lambda = tmb_gh$lambda,
+                 gamma = tmb_gh$gamma,
+                 delta = tmb_gh$delta),
+      testing_params = list(m = m,
+                            lambda = true_lambda,
+                            gamma = true_gamma,
+                            delta = true_delta)
+    )
     benchmark_data <- benchmark_model$data
     # Benchmark all different combinations of gradient and hessians with DM ----------------
     # Parameters & covariates for DM and TMB
@@ -241,7 +242,6 @@ if (BENCHMARK_SAMPLES != 0) {
                                                                        length(PROCEDURES))))
     
   }
-  notif("Simu4, Benchmark end")
 }
 
 # Profiling the likelihood --------------------------
@@ -264,9 +264,6 @@ working_conf_int <- foreach (idx_param = 1:len_w_par,
                                             2))
                                })
                                
-                               # w_param_name <- w_params_names[idx_param]
-                               # working_conf_int$lower[working_conf_int$w_parameter == w_param_name] <- ci[1]
-                               # working_conf_int$upper[working_conf_int$w_parameter == w_param_name] <- ci[2]
                                dyn.unload(dynlib("code/poi_hmm"))
                                return(ci)
                              }
@@ -276,43 +273,44 @@ rownames(working_conf_int) <- w_params_names
 
 # Transform the working parameters into natural ones
 # Lambda (m values)
-conf_int_simu4$Profile.L[which(conf_int_simu4$m == m)][lambda_indices] <- exp(working_conf_int$lower[lambda_indices])
+conf_int_simu4$Profile.L[lambda_indices] <- exp(working_conf_int$lower[lambda_indices])
 # Gamma (m^2-m working parameters, m^2 natural ones)
 if (!anyNA(working_conf_int$lower[tgamma_indices])) {
   natural_gamma <- as.numeric(gamma.w2n(m,
                                         working_conf_int$lower[tgamma_indices]))
-  conf_int_simu4$Profile.L[which(conf_int_simu4$m == m)][gamma_indices] <- natural_gamma
+  conf_int_simu4$Profile.L[gamma_indices] <- natural_gamma
 }
 # Lambda (m values)
-conf_int_simu4$Profile.U[which(conf_int_simu4$m == m)][lambda_indices] <- exp(working_conf_int$upper[lambda_indices])
+conf_int_simu4$Profile.U[lambda_indices] <- exp(working_conf_int$upper[lambda_indices])
 # Gamma (m^2-m working parameters, m^2 natural ones)
 if (!anyNA(working_conf_int$upper[tgamma_indices])) {
   natural_gamma <- as.numeric(gamma.w2n(m,
                                         working_conf_int$upper[tgamma_indices]))
-  conf_int_simu4$Profile.U[which(conf_int_simu4$m == m)][gamma_indices] <- natural_gamma
+  conf_int_simu4$Profile.U[gamma_indices] <- natural_gamma
 }
 
 # Bootstrap ---------------------------
 set.seed(FIRST_SEED + 2)
 if (BOOTSTRAP_SAMPLES != 0) {
-  notif("Simu4, Bootstrap start")
   registerDoParallel(cores = CORES)
   bootstrap_simu4 <- foreach (idx_sample = 1:BOOTSTRAP_SAMPLES,
                               .packages = "TMB",
                               .combine = rbind) %dopar% {
                                 # TMB::compile("code/poi_hmm.cpp")
                                 dyn.load(dynlib("code/poi_hmm"))
-                                temp <- pois.HMM.generate.estimable.sample(ns = DATA_SIZE_SIMU4,
-                                                                           mod = list(m = m,
-                                                                                      lambda = tmb_gh$lambda,
-                                                                                      gamma = tmb_gh$gamma,
-                                                                                      delta = tmb_gh$delta),
-                                                                           testing_params = list(m = m,
-                                                                                                 lambda = true_lambda,
-                                                                                                 gamma = true_gamma,
-                                                                                                 delta = true_delta))$natural_parameters
+                                temp <- pois.HMM.generate.estimable.sample(
+                                  ns = DATA_SIZE_SIMU4,
+                                  mod = list(m = m,
+                                             lambda = tmb_gh$lambda,
+                                             gamma = tmb_gh$gamma,
+                                             delta = tmb_gh$delta),
+                                  testing_params = list(m = m,
+                                                        lambda = true_lambda,
+                                                        gamma = true_gamma,
+                                                        delta = true_delta)
+                                )
                                 # The values from gamma are taken columnwise
-                                natural_parameters <- temp
+                                natural_parameters <- temp$natural_parameters
                                 natural_parameters <- unlist(natural_parameters[PARAMS_NAMES])
                                 dyn.unload(dynlib("code/poi_hmm"))
                                 return(natural_parameters)
@@ -326,9 +324,8 @@ if (BOOTSTRAP_SAMPLES != 0) {
   q <- apply(bootstrap_simu4,
              2,
              quantile.colwise)
-  conf_int_simu4$Bootstrap.L[which(conf_int_simu4$m == m)] <- q[1, ]
-  conf_int_simu4$Bootstrap.U[which(conf_int_simu4$m == m)] <- q[2, ]
-  notif("Simu4, Bootstrap end")
+  conf_int_simu4$Bootstrap.L <- q[1, ]
+  conf_int_simu4$Bootstrap.U <- q[2, ]
 }
 
 # TMB confidence intervals --------------
@@ -342,9 +339,9 @@ gamma_L <- pmax(0,
 # delta must be 0 or above
 delta_L <- pmax(0,
                 tmb_gh$delta - q95_norm * tmb_gh$delta_std_error)
-conf_int_simu4$TMB.L[which(conf_int_simu4$m == m)] <- c(lambda_L,
-                                                        gamma_L,
-                                                        delta_L)
+conf_int_simu4$TMB.L <- c(lambda_L,
+                          gamma_L,
+                          delta_L)
 # no upper bound on lambda
 # gamma must be 1 or less
 gamma_U <- pmin(1,
@@ -352,14 +349,12 @@ gamma_U <- pmin(1,
 # delta must be 1 or less
 delta_U <- pmin(1,
                 tmb_gh$delta + q95_norm * tmb_gh$delta_std_error)
-conf_int_simu4$TMB.U[which(conf_int_simu4$m == m)] <- c(tmb_gh$lambda + q95_norm * tmb_gh$lambda_std_error,
-                                                        gamma_U,
-                                                        delta_U)
+conf_int_simu4$TMB.U <- c(tmb_gh$lambda + q95_norm * tmb_gh$lambda_std_error,
+                          gamma_U,
+                          delta_U)
 # Coverage probabilities of the 3 CI methods -----------------
 set.seed(FIRST_SEED + 3)
-parameter_names <- paste0(rep("lambda",
-                              m),
-                          1:m)
+parameter_names <- paste0(rep("lambda", m), 1:m)
 for (col in 1:m) {
   # Get row and column indices for gamma instead of the default
   # columnwise index: the default indices are 1:m for the 1st column,
@@ -374,12 +369,14 @@ parameter_names <- c(parameter_names,
                      paste0(rep("delta",
                                 m),
                             1:m))
-coverage_count_profile_simu4 <- coverage_count_bootstrap <- coverage_count_tmb <- data.frame(parameter = parameter_names,
-                                                                                             count = 0,
-                                                                                             ratio = 0)
+# Record the times where the profile CI of a parameter successfully contains the parameter's true value
+coverage_count_profile_simu4 <-
+  coverage_count_bootstrap <-
+  coverage_count_tmb <-
+  data.frame(parameter = parameter_names,
+             count = 0,
+             ratio = 0)
 idx_coverage <- 0
-notif("Simu4, Coverage start")
-begin_coverage <- Sys.time()
 while (idx_coverage < COVERAGE_SAMPLES) {
   idx_coverage <- idx_coverage + 1
   # Generate a data sample where nlminb converges
@@ -401,9 +398,11 @@ while (idx_coverage < COVERAGE_SAMPLES) {
   for (reason in c("state_number", "TMB_null", "TMB_converge", "TMB_G_null",
                    "TMB_G_converge", "TMB_H_null", "TMB_H_converge", "TMG_GH_null",
                    "TMG_GH_converge", "NA_value")) {
-    coverage_skips_simu4[coverage_skips_simu4$m == m, reason] <- coverage_skips_simu4[coverage_skips_simu4$m == m, reason] + coverage_model$failure[reason]
+    coverage_skips_simu4[coverage_skips_simu4$m == m, reason] <-
+      coverage_skips_simu4[coverage_skips_simu4$m == m, reason] +
+      coverage_model$failure[reason]
   }
-
+  
   # Confidence interval profiling -------------------------------------
   registerDoParallel(cores = CORES)
   working_conf_int <- foreach (idx_param = 1:len_w_par,
@@ -448,7 +447,8 @@ while (idx_coverage < COVERAGE_SAMPLES) {
   # If some CI bounds are NULL or missing (NA) or infinite (Inf), try a new coverage sample
   if (any(test_null == TRUE) | any(test_finite == FALSE)) {
     idx_coverage <- idx_coverage - 1
-    coverage_skips_simu4[coverage_skips_simu4$m == m, "profile"] <- coverage_skips_simu4[coverage_skips_simu4$m == m, "profile"] + 1
+    temp <- coverage_skips_simu4[coverage_skips_simu4$m == m, "profile"]
+    coverage_skips_simu4[coverage_skips_simu4$m == m, "profile"] <- temp + 1
     next
   }
   
@@ -457,7 +457,8 @@ while (idx_coverage < COVERAGE_SAMPLES) {
                                     lambda_profile_upper)
   real_lambda_profile_upper <- pmax(lambda_profile_lower,
                                     lambda_profile_upper)
-  indices <- which(true_lambda >= real_lambda_profile_lower & true_lambda <= real_lambda_profile_upper)
+  indices <- which(true_lambda >= real_lambda_profile_lower &
+                     true_lambda <= real_lambda_profile_upper)
   coverage_count_profile_simu4[indices, "count"] <- coverage_count_profile_simu4[indices, "count"] + 1
   
   # Same for gamma
@@ -465,7 +466,8 @@ while (idx_coverage < COVERAGE_SAMPLES) {
                                    gamma_profile_upper)
   real_gamma_profile_upper <- pmax(gamma_profile_lower,
                                    gamma_profile_upper)
-  indices <- which(as.vector(true_gamma) >= real_gamma_profile_lower & as.vector(true_gamma) <= real_gamma_profile_upper)
+  indices <- which(as.vector(true_gamma) >= real_gamma_profile_lower &
+                     as.vector(true_gamma) <= real_gamma_profile_upper)
   indices <- indices + m
   coverage_count_profile_simu4[indices, "count"] <- coverage_count_profile_simu4[indices, "count"] + 1
   
@@ -481,17 +483,18 @@ while (idx_coverage < COVERAGE_SAMPLES) {
                                 .combine = rbind) %dopar% {
                                   # TMB::compile("code/poi_hmm.cpp")
                                   dyn.load(dynlib("code/poi_hmm"))
-                                  temp <- pois.HMM.generate.estimable.sample(ns = DATA_SIZE_SIMU4,
-                                                                             mod = list(m = m,
-                                                                                        lambda = coverage_model$natural_parameters$lambda,
-                                                                                        gamma = coverage_model$natural_parameters$gamma,
-                                                                                        delta = coverage_model$natural_parameters$delta),
-                                                                             testing_params = list(m = m,
-                                                                                                   lambda = true_lambda,
-                                                                                                   gamma = true_gamma,
-                                                                                                   delta = true_delta))$natural_parameters
+                                  temp <- pois.HMM.generate.estimable.sample(
+                                    ns = DATA_SIZE_SIMU4,
+                                    mod = list(m = m,
+                                               lambda = coverage_model$natural_parameters$lambda,
+                                               gamma = coverage_model$natural_parameters$gamma,
+                                               delta = coverage_model$natural_parameters$delta),
+                                    testing_params = list(m = m,
+                                                          lambda = true_lambda,
+                                                          gamma = true_gamma,
+                                                          delta = true_delta))
                                   # The values from gamma are taken columnwise
-                                  natural_parameters <- temp
+                                  natural_parameters <- temp$natural_parameters
                                   natural_parameters <- unlist(natural_parameters[PARAMS_NAMES])
                                   dyn.unload(dynlib("code/poi_hmm"))
                                   return(natural_parameters)
@@ -500,61 +503,54 @@ while (idx_coverage < COVERAGE_SAMPLES) {
     q <- apply(bootstrap_simu4,
                2,
                quantile.colwise)
-    indices <- which(as.vector(true_lambda) >= q[1, lambda_indices] & as.vector(true_lambda) <= q[2, lambda_indices])
+    indices <- which(as.vector(true_lambda) >= q[1, lambda_indices] &
+                       as.vector(true_lambda) <= q[2, lambda_indices])
     coverage_count_bootstrap[indices, "count"] <- coverage_count_bootstrap[indices, "count"] + 1
-    indices <- which(as.vector(true_gamma) >= q[1, gamma_indices] & as.vector(true_gamma) <= q[2, gamma_indices]) + m
+    indices <- which(as.vector(true_gamma) >= q[1, gamma_indices] &
+                       as.vector(true_gamma) <= q[2, gamma_indices]) + m
     coverage_count_bootstrap[indices, "count"] <- coverage_count_bootstrap[indices, "count"] + 1
-    indices <- which(as.vector(true_delta) >= q[1, delta_indices] & as.vector(true_delta) <= q[2, delta_indices]) + m + m ^ 2
+    indices <- which(as.vector(true_delta) >= q[1, delta_indices] &
+                       as.vector(true_delta) <= q[2, delta_indices]) + m + m ^ 2
     coverage_count_bootstrap[indices, "count"] <- coverage_count_bootstrap[indices, "count"] + 1
   }
   
   # Confidence interval TMB -----------------------------------------
-  lambda_tmb_lower <- coverage_model$natural_parameters$lambda - q95_norm * coverage_model$natural_parameters$lambda_std_error
-  lambda_tmb_upper <- coverage_model$natural_parameters$lambda + q95_norm * coverage_model$natural_parameters$lambda_std_error
-  gamma_tmb_lower <- coverage_model$natural_parameters$gamma - q95_norm * coverage_model$natural_parameters$gamma_std_error
-  gamma_tmb_upper <- coverage_model$natural_parameters$gamma + q95_norm * coverage_model$natural_parameters$gamma_std_error
-  delta_tmb_lower <- coverage_model$natural_parameters$delta - q95_norm * coverage_model$natural_parameters$delta_std_error
-  delta_tmb_upper <- coverage_model$natural_parameters$delta + q95_norm * coverage_model$natural_parameters$delta_std_error
+  nat_par <- coverage_model$natural_parameters
+  lambda_tmb_lower <- nat_par$lambda - q95_norm * nat_par$lambda_std_error
+  lambda_tmb_upper <- nat_par$lambda + q95_norm * nat_par$lambda_std_error
+  gamma_tmb_lower <- nat_par$gamma - q95_norm * nat_par$gamma_std_error
+  gamma_tmb_upper <- nat_par$gamma + q95_norm * nat_par$gamma_std_error
+  delta_tmb_lower <- nat_par$delta - q95_norm * nat_par$delta_std_error
+  delta_tmb_upper <- nat_par$delta + q95_norm * nat_par$delta_std_error
   
-  indices <- which(as.vector(true_lambda) >= lambda_tmb_lower & as.vector(true_lambda) <= lambda_tmb_upper)
+  indices <- which(as.vector(true_lambda) >= lambda_tmb_lower &
+                     as.vector(true_lambda) <= lambda_tmb_upper)
   coverage_count_tmb[indices, "count"] <- coverage_count_tmb[indices, "count"] + 1
-  indices <- which(as.vector(true_gamma) >= gamma_tmb_lower & as.vector(true_gamma) <= gamma_tmb_upper)
+  indices <- which(as.vector(true_gamma) >= gamma_tmb_lower &
+                     as.vector(true_gamma) <= gamma_tmb_upper)
   indices <- indices + m
   coverage_count_tmb[indices, "count"] <- coverage_count_tmb[indices, "count"] + 1
-  indices <- which(as.vector(true_delta) >= delta_tmb_lower & as.vector(true_delta) <= delta_tmb_upper)
+  indices <- which(as.vector(true_delta) >= delta_tmb_lower &
+                     as.vector(true_delta) <= delta_tmb_upper)
   indices <- indices + m + m ^ 2
   coverage_count_tmb[indices, "count"] <- coverage_count_tmb[indices, "count"] + 1
-  
-  percent <- idx_coverage / COVERAGE_SAMPLES * 100
-  if (percent %% 20 == 0 && percent != 100) {
-    now <- Sys.time()
-    percentage <- idx_coverage / COVERAGE_SAMPLES
-    duration <- now - begin_coverage
-    time_to_completion <- duration / percentage
-    
-    expected_end_time <- begin_coverage + time_to_completion
-    
-    notif(paste0("Simu4\n",
-                 percent,
-                 "%\neta: ", round(expected_end_time - now, 1), " ", units(expected_end_time - now),
-                 "\nend at: ", expected_end_time,
-                 "\nm: ", m,
-                 "\nSize: ", DATA_SIZE_SIMU4))
-  }
 }
-notif("Simu4, Coverage end")
-coverage_count_profile_simu4[lambda_indices, "ratio"] <- coverage_count_profile_simu4[lambda_indices, "count"] / COVERAGE_SAMPLES
-coverage_count_profile_simu4[gamma_indices, "ratio"] <- coverage_count_profile_simu4[gamma_indices, "count"] / COVERAGE_SAMPLES
-coverage_count_profile_simu4[delta_indices, "ratio"] <- NA # delta is not a parameter for us, so it has no profile CI
+temp <- coverage_count_profile_simu4[lambda_indices, "count"]
+coverage_count_profile_simu4[lambda_indices, "ratio"] <- temp /
+  COVERAGE_SAMPLES
+coverage_count_profile_simu4[gamma_indices, "ratio"] <- temp /
+  COVERAGE_SAMPLES
+# delta is not a parameter for us, so it has no profile CI
+coverage_count_profile_simu4[delta_indices, "ratio"] <- NA
 
 coverage_count_tmb$ratio <- coverage_count_tmb$count / COVERAGE_SAMPLES
 
 coverage_count_bootstrap$ratio <- coverage_count_bootstrap$count / COVERAGE_SAMPLES
 
 # Most of the time, profile CIs for the stationary distribution is NA.
-conf_int_simu4[conf_int_simu4$m == m, ][1:(m ^ 2 + 2 * m), "Coverage.Profile"] <- coverage_count_profile_simu4$ratio * 100
-conf_int_simu4[conf_int_simu4$m == m, ][1:(m ^ 2 + 2 * m), "Coverage.Bootstrap"] <- coverage_count_bootstrap$ratio * 100
-conf_int_simu4[conf_int_simu4$m == m, ][1:(m ^ 2 + 2 * m), "Coverage.TMB"] <- coverage_count_tmb$ratio * 100
+conf_int_simu4[1:(m ^ 2 + 2 * m), "Coverage.Profile"] <- coverage_count_profile_simu4$ratio * 100
+conf_int_simu4[1:(m ^ 2 + 2 * m), "Coverage.Bootstrap"] <- coverage_count_bootstrap$ratio * 100
+conf_int_simu4[1:(m ^ 2 + 2 * m), "Coverage.TMB"] <- coverage_count_tmb$ratio * 100
 
 # Fixes -------------------------
 # Fix label switching in conf_int_simu4
@@ -567,15 +563,15 @@ new_lambda_indices <- ordered_params$ordered_lambda_indices
 new_gamma_indices <- ordered_params$ordered_gamma_vector_indices
 new_delta_indices <- ordered_params$ordered_delta_indices
 
-conf_int_simu4[conf_int_simu4$m == m, - 2][lambda_indices, ] <- conf_int_simu4[conf_int_simu4$m == m, - 2][lambda_indices, ][new_lambda_indices, ]
-conf_int_simu4[conf_int_simu4$m == m, - 2][gamma_indices, ] <- conf_int_simu4[conf_int_simu4$m == m, - 2][gamma_indices, ][new_gamma_indices, ]
-conf_int_simu4[conf_int_simu4$m == m, - 2][delta_indices, ] <- conf_int_simu4[conf_int_simu4$m == m, - 2][delta_indices, ][new_delta_indices, ]
+conf_int_simu4[lambda_indices, - 2] <- conf_int_simu4[lambda_indices, - 2][new_lambda_indices, ]
+conf_int_simu4[gamma_indices, - 2] <- conf_int_simu4[gamma_indices, - 2][new_gamma_indices, ]
+conf_int_simu4[delta_indices, - 2] <- conf_int_simu4[delta_indices, - 2][new_delta_indices, ]
 
 # Reorder the TPM row-wise instead of column-wise
 # Lexicographical parameter sort for gamma (sort on the parameter name)
-new_gamma_indices_truncated_table <- order(conf_int_simu4[conf_int_simu4$m == m, ][gamma_indices, "Parameter"])
+new_gamma_indices_truncated_table <- order(conf_int_simu4[gamma_indices, "Parameter"])
 # Replace rows by sorted rows
-conf_int_simu4[conf_int_simu4$m == m, ][gamma_indices, ] <- conf_int_simu4[conf_int_simu4$m == m, ][gamma_indices, ][new_gamma_indices_truncated_table, ]
+conf_int_simu4[gamma_indices, ] <- conf_int_simu4[gamma_indices, ][new_gamma_indices_truncated_table, ]
 
 # The profile CIs may not be sorted, so we sort them manually
 for (i in 1:length(conf_int_simu4[, 1])) {
