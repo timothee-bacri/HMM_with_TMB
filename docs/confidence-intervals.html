@@ -27,7 +27,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2022-02-22" />
+<meta name="date" content="2022-02-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -392,7 +392,7 @@ However, it is usually more interesting to access the standard errors of the nat
 <p>Our nll function is parametrized in terms of and optimized with respect to the working parameters.
 In practice, this aspect is easy to deal with.
 Once a profile CI for the working parameter (here <span class="math inline">\(\eta_2\)</span>) has been obtained following the procedure above, the corresponding CI for the natural parameter <span class="math inline">\(\lambda_2\)</span> results directly from transforming the upper and lower boundary of the CI for <span class="math inline">\(\eta_2\)</span> by the one-to-one transformation <span class="math inline">\(\lambda_2 = \exp(\eta_2)\)</span>.
-For further details on the invariance of likelihood-based CIs to parameter transformations, we refer to <span class="citation">Meeker and Escobar (<a href="references.html#ref-meeker" role="doc-biblioref">1995</a>)</span>.</p>
+For further details on the invariance of likelihood-based CIs to parameter transformations, we refer to <span class="citation"><a href="references.html#ref-meeker" role="doc-biblioref">Meeker and Escobar</a> (<a href="references.html#ref-meeker" role="doc-biblioref">1995</a>)</span>.</p>
 <p>Profiling <span class="math inline">\(\eta_2\)</span> (the working parameter corresponding to <span class="math inline">\(\lambda_2\)</span>) with <code>TMB</code> can be done with</p>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="confidence-intervals.html#cb61-1" aria-hidden="true" tabindex="-1"></a>profile <span class="ot">&lt;-</span> <span class="fu">tmbprofile</span>(<span class="at">obj =</span> obj_tmb,</span>
 <span id="cb61-2"><a href="confidence-intervals.html#cb61-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="dv">2</span>,</span>
@@ -467,7 +467,7 @@ While the function’s help mentions it can be a parameter’s name, the first t
 <h3><span class="header-section-number">5.3.1</span> Generating data</h3>
 <p>In order to perform a parametric bootstrap, we need to be able to generate data from a set of parameters.</p>
 <p>For readability and code maintenance, it is conventional to store procedures that will be used more than once into functions.</p>
-<p>The data-generating function is defined in <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, secs. A.1.5 p.333</a>)</span>.</p>
+<p>The data-generating function is defined in <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, secs. A.1.5 p.333</a>)</span>.</p>
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="confidence-intervals.html#cb66-1" aria-hidden="true" tabindex="-1"></a>pois.HMM.generate.sample <span class="ot">&lt;-</span> <span class="cf">function</span>(ns,mod) {</span>
 <span id="cb66-2"><a href="confidence-intervals.html#cb66-2" aria-hidden="true" tabindex="-1"></a>  mvect <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>mod<span class="sc">$</span>m</span>
 <span id="cb66-3"><a href="confidence-intervals.html#cb66-3" aria-hidden="true" tabindex="-1"></a>  state <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ns)</span>

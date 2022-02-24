@@ -41,9 +41,6 @@ Type objective_function<Type>::operator() ()
   // probabilities of observed x in n times m matrix
   // (one column for each state, one row for each datapoint):
   matrix<Type> emission_probs(n, m);
-  // emission_probs.setOnes();
-  // matrix<Type> row1vec(1, m * p);
-  // row1vec.setOnes();
   matrix<Type> sigma_m(p, p);
   vector<Type> residual_vec(p);
   Type nll = 0;

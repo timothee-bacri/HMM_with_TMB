@@ -65,10 +65,10 @@ By default, it will load results instead.
 
 The first chunk of code it runs can be found in the file *[code/setup_parameters.R](#setup_parameters.R)*.\
 Afterwards, either computations are run and their results are stored in data/, or results are loaded to the current environment.
-The computations are written in *[code/poi_hmm_tinn.R](#poi_hmm_tinn.R)*, *[code/poi_hmm_lamb.R](#poi_hmm_lamb.R)*, *[code/poi_hmm_simu1.R](#poi_hmm_simu1.R)*, *[code/poi_hmm_simu2.R](#poi_hmm_simu2.R)*, and *[code/poi_hmm_simu3.R](#poi_hmm_simu3.R)*.
+The computations are written in *[code/poi_hmm_tinn.R](#poi_hmm_tinn.R)*, *[code/poi_hmm_lamb.R](#poi_hmm_lamb.R)*, *[code/poi_hmm_simu1.R](#poi_hmm_simu1.R)*, *[code/poi_hmm_simu2.R](#poi_hmm_simu2.R)*, *[code/poi_hmm_simu3.R](#poi_hmm_simu3.R)*, and *[code/poi_hmm_simu4.R](#poi_hmm_simu4.R)*.
 
 **NOTE**: Our scripts were tested on a workstation with 4 Intel(R) Xeon(R) Gold 6134 processors (3.7 GHz) running under the Linux distribution Ubuntu 18.04.6 LTS (Bionic Beaver) with 384 GB, and took about a week of computing time.
-More details at individual files.
+More details are available at individual files.
 
 File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/main.R \
 File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/main.R
@@ -161,13 +161,14 @@ File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_simu2
 On our machine, this file took approximately 23h to compute.
 
 ### code/poi_hmm_simu3.R {#poi_hmm_simu3.R}
+Unlike in the other simulations, the coverage probabilities computation code does not ensure that profile CIs converge.
+This is solved in the fourth simulation with a larger dataset size, and shows that care must be taken when dealing with profile CIs because they can fail to produce results. \
 File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm_simu3.R \
 File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_simu3.R
 
 On our machine, this file took approximately 26h30 to compute.
 
 ### code/poi_hmm_simu4.R {#poi_hmm_simu4.R}
-Unlike in the other simulations, the coverage samples do not ensure that profile CIs converge. \
 File on GitHub: https://github.com/timothee-bacri/HMM_with_TMB/blob/main/code/poi_hmm_simu3.R \
 File: https://github.com/timothee-bacri/HMM_with_TMB/raw/main/code/poi_hmm_simu3.R
 

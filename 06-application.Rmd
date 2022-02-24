@@ -193,4 +193,4 @@ mod_tmb$convergence == 0
 summary(sdreport(obj_tmb), "report")
 ```
 
-For the code used to generate coverage probabilities and acceleration results, please take a look at *[code/poi_hmm_simu1.R](#poi_hmm_simu1.R)*, *[code/poi_hmm_simu2.R](#poi_hmm_simu2.R)* and *[code/poi_hmm_simu3.R](#poi_hmm_simu3.R)*.
+For the code used to generate coverage probabilities and acceleration results, please take a look at *[code/poi_hmm_simu1.R](#poi_hmm_simu1.R)*, *[code/poi_hmm_simu2.R](#poi_hmm_simu2.R)*, *[code/poi_hmm_simu3.R](#poi_hmm_simu3.R)* and *[code/poi_hmm_simu4.R](#poi_hmm_simu4.R)*.

@@ -4,7 +4,7 @@ Multivariate Gaussian HMMs with `TMB` is a direct generalization of the univaria
 Most notably, distribution parameters are changed from Normal mean vectors to matrices and we now have one covariance matrix for each state.
 For the implementation, the main change is for the density function to go from `dnorm` to `dmvnorm` (and the random data generation functions from `rnorm` to `rmvnorm` for simulations) from the `mvtnorm` [@R-mvtnorm] package.
 
-Many functions available in *[functions/utils.R](#utils.R)* have been adapted with the changes described for the multivariate Gaussian case in *[functions/mvnorm_utils.R](#mvnorm_utils.R)*.
+Many functions available in *[functions/norm_utils.R](#norm_utils)* have been adapted with the changes described for the multivariate Gaussian case in *[functions/mvnorm_utils.R](#mvnorm_utils.R)*.
 
 As an example, the function to generate random data becomes
 ```{r mvnorm.HMM.generate.sample}
@@ -49,11 +49,11 @@ We generate 1000 data with the function above.
 
 ## Likelihood function
 The Gaussian negative log-likelihood in TMB can be coded as
-```{Rcpp 7norm_hmm.cpp, code=readLines("code/norm_hmm.cpp"), eval=FALSE}
+```{Rcpp 8mvnorm_hmm.cpp, code=readLines("code/mvnorm_hmm.cpp"), eval=FALSE}
 ```
 
 and requires the following utility functions.
-```{Rcpp 7norm_utils.cpp, code=readLines("functions/norm_utils.cpp"), eval=FALSE}
+```{Rcpp 8mvnorm_utils.cpp, code=readLines("functions/mvnorm_utils.cpp"), eval=FALSE}
 ```
 
 ## Estimation
