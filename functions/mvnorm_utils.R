@@ -182,7 +182,6 @@ mvnorm.HMM.generate.sample  <- function(ns, mod) {
   for (i in 2:ns) {
     state[i] <- sample(mvect, 1, prob = mod$gamma[state[i - 1], ])
   }
-  # x <- rpois(ns, lambda = mod$lambda[state])
   x <- matrix(NA, nrow = ns, ncol = p)
   for (i in 1:ns) {
     x[i, ] <- rmvnorm(n = 1,

@@ -1,19 +1,18 @@
 #include <TMB.hpp>
 #include "../functions/mvnorm_utils.cpp"
 
-
-// Likelihood for a poisson hidden markov model. 
+// Likelihood for a multivariate normal hidden markov model. 
 template<class Type>
 Type objective_function<Type>::operator() ()
 {
   // Data
-  DATA_MATRIX(x);         // timeseries array (n rows * p cols)
+  DATA_MATRIX(x);         // timeseries matrix (n rows * p cols)
   DATA_INTEGER(m);        // Number of states m
   
   // Parameters
   PARAMETER_MATRIX(tmu);         // mp conditional mu's (matrix: p rows, m columns)
   PARAMETER_MATRIX(tsigma);      // mp(p+1)/2 working parameters of covariance matrices (matrix: p(p+1)/2 rows, m columns)
-  PARAMETER_VECTOR(tgamma);     // m(m-1) working parameters of TPM (vector: m*m-m columns)
+  PARAMETER_VECTOR(tgamma);      // m(m-1) working parameters of TPM (vector: m*m-m columns)
   
   // Uncomment only when using a non-stationary distribution
   //PARAMETER_VECTOR(tdelta);    // m-1 working parameters (vector)
