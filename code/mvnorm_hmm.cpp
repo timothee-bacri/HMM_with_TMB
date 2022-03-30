@@ -71,7 +71,7 @@ Type objective_function<Type>::operator() ()
     }
   }
   
-  // Corresponds to Zucchini's book page 333
+  // Corresponds to (Zucchini et al., 2016, p 333)
   matrix<Type> foo, P;
   Type mllk, sumfoo, lscale;
   

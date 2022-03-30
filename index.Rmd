@@ -39,7 +39,7 @@ This website aims to accompany the reader of [Link to official article]
 The files used in this repository are available in *https://github.com/timothee-bacri/HMM_with_TMB*.
 
 For a description of the files and the directory structure, please read [Directory Structure].\
-Note that only the folders [code](#code), [functions](#functions), and [data](#data) contain files used in the article.
+Note that only the folders [code/](#code), [functions/](#functions), and [data/](#data) contain files used in the article.
 The other folders and files relate to this Gitbook and are not described in [Directory Structure].
 
 For a description of the functions in *[functions/utils.R](#utils.R)* and their parameters and return objects, please take a look at *[functions/utils.R-explanation.R](#utils.R-explanation.R)*.
