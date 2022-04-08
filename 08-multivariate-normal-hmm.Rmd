@@ -65,7 +65,7 @@ source("functions/mvnorm_utils.R")
 
 # Compile and load the objective function for TMB
 TMB::compile("code/mvnorm_hmm.cpp")
-dyn.load(TMB::dynlib("code/mvnorm_hmm"))
+dyn.load(dynlib("code/mvnorm_hmm"))
 
 set.seed(123)
 
@@ -122,7 +122,7 @@ nlminb(start = obj_tmb$par,
 
 ## Results
 We show estimates and their standard errors.
-Note that the matrix results (for $\bs{\delta}$, $\bs{\Gamma}$, and $\bs{\Sigma}$) are displayed in a column-wise format.
+Note that the matrix results (for $\bs{\mu}$, $\bs{\delta}$, $\bs{\Gamma}$, and $\bs{\Sigma}$) are displayed in a column-wise format.
 This can be verified by checking the more easily readable view of these estimates.
 ```{r 8obj-report}
 summary(sdreport(obj_tmb), "report")
@@ -135,7 +135,7 @@ report
 Since the data was simulated, the true parameters are known and the validity of the estimates can be checked.
 To do this, we look at the maximum absolute percentage difference between estimates and true values.
 ```{r 8results-verification}
-(t(report$mu) - mu) / mu
+(report$mu - mu) / mu
 (report$sigma - sigma) / sigma
 (report$gamma - gamma) / gamma
 ```

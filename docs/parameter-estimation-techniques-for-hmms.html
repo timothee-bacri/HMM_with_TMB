@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title> 3 Parameter estimation techniquesfor HMMs | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
 
   <meta property="og:title" content=" 3 Parameter estimation techniquesfor HMMs | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
-  <meta property="og:url" content="https://github.com/timothee-bacri/HMM_with_TMB" />
   
   <meta property="og:description" content="This accompanies the article published at [GITHUB LINK]." />
   <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
@@ -27,7 +26,7 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2022-02-24" />
+<meta name="date" content="2022-04-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -36,7 +35,6 @@
   
 <link rel="prev" href="principles-of-using-tmb-for-mle.html"/>
 <link rel="next" href="using-tmb.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -54,8 +52,9 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
@@ -161,126 +160,126 @@ div.csl-indent {
 <ul class="summary">
 <li><a href="./">A gentle tutorial of accelerated<br>parameter and confidence interval<br>estimation for Hidden Markov Models<BR>using Template Model Builder</a></li>
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for MLE</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction<span></span></a></li>
+<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for MLE<span></span></a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#setup"><i class="fa fa-check"></i><b>2.1</b> Setup</a></li>
-<li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#linear-regression-example"><i class="fa fa-check"></i><b>2.2</b> Linear regression example</a></li>
-<li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#extending-the-c-nll"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> nll</a></li>
+<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#setup"><i class="fa fa-check"></i><b>2.1</b> Setup<span></span></a></li>
+<li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#linear-regression-example"><i class="fa fa-check"></i><b>2.2</b> Linear regression example<span></span></a></li>
+<li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#extending-the-c-nll"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> nll<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques<br>for HMMs</a>
+<li class="chapter" data-level="3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques<br>for HMMs<span></span></a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#basic-notation-and-model-setup"><i class="fa fa-check"></i><b>3.1</b> Basic notation and model setup</a></li>
-<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#the-likelihood-function-of-an-hmm"><i class="fa fa-check"></i><b>3.2</b> The likelihood function of an HMM</a></li>
-<li class="chapter" data-level="3.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#forward-backward"><i class="fa fa-check"></i><b>3.3</b> Forward algorithm and<br>backward algorithm</a>
+<li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#basic-notation-and-model-setup"><i class="fa fa-check"></i><b>3.1</b> Basic notation and model setup<span></span></a></li>
+<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#the-likelihood-function-of-an-hmm"><i class="fa fa-check"></i><b>3.2</b> The likelihood function of an HMM<span></span></a></li>
+<li class="chapter" data-level="3.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#forward-backward"><i class="fa fa-check"></i><b>3.3</b> Forward algorithm and<br>backward algorithm<span></span></a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#setup-1"><i class="fa fa-check"></i><b>3.3.1</b> Setup</a>
+<li class="chapter" data-level="3.3.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#setup-1"><i class="fa fa-check"></i><b>3.3.1</b> Setup<span></span></a>
 <ul>
-<li class="chapter" data-level="3.3.1.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#prepare-the-model"><i class="fa fa-check"></i><b>3.3.1.1</b> Prepare the model</a></li>
-<li class="chapter" data-level="3.3.1.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#define-variables"><i class="fa fa-check"></i><b>3.3.1.2</b> Define variables</a></li>
-<li class="chapter" data-level="3.3.1.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>3.3.1.3</b> Emission/output probabilities</a></li>
+<li class="chapter" data-level="3.3.1.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#prepare-the-model"><i class="fa fa-check"></i><b>3.3.1.1</b> Prepare the model<span></span></a></li>
+<li class="chapter" data-level="3.3.1.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#define-variables"><i class="fa fa-check"></i><b>3.3.1.2</b> Define variables<span></span></a></li>
+<li class="chapter" data-level="3.3.1.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>3.3.1.3</b> Emission/output probabilities<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="3.3.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#log-forward"><i class="fa fa-check"></i><b>3.3.2</b> Log-forward probabilities</a></li>
-<li class="chapter" data-level="3.3.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#log-backward"><i class="fa fa-check"></i><b>3.3.3</b> Log-backward probabilities</a></li>
+<li class="chapter" data-level="3.3.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#log-forward"><i class="fa fa-check"></i><b>3.3.2</b> Log-forward probabilities<span></span></a></li>
+<li class="chapter" data-level="3.3.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#log-backward"><i class="fa fa-check"></i><b>3.3.3</b> Log-backward probabilities<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#reparameterization-of-the-likelihood-function"><i class="fa fa-check"></i><b>3.4</b> Reparameterization of the<br>likelihood function</a>
+<li class="chapter" data-level="3.4" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#reparameterization-of-the-likelihood-function"><i class="fa fa-check"></i><b>3.4</b> Reparameterization of the<br>likelihood function<span></span></a>
 <ul>
-<li class="chapter" data-level="3.4.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-tmb"><i class="fa fa-check"></i><b>3.4.1</b> Utility functions in <code>TMB</code></a></li>
-<li class="chapter" data-level="3.4.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-r"><i class="fa fa-check"></i><b>3.4.2</b> Utility functions in <code>R</code></a>
+<li class="chapter" data-level="3.4.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-tmb"><i class="fa fa-check"></i><b>3.4.1</b> Utility functions in <code>TMB</code><span></span></a></li>
+<li class="chapter" data-level="3.4.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-r"><i class="fa fa-check"></i><b>3.4.2</b> Utility functions in <code>R</code><span></span></a>
 <ul>
-<li class="chapter" data-level="3.4.2.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#label-switching"><i class="fa fa-check"></i><b>3.4.2.1</b> Label switching</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using <code>TMB</code></a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
-<li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#optimization"><i class="fa fa-check"></i><b>4.2</b> Optimization</a></li>
-<li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#basic-nested-model-specification"><i class="fa fa-check"></i><b>4.3</b> Basic nested model<br>specification</a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>4.3.1</b> Principle</a></li>
-<li class="chapter" data-level="4.3.2" data-path="using-tmb.html"><a href="using-tmb.html#limits"><i class="fa fa-check"></i><b>4.3.2</b> Limits</a></li>
-<li class="chapter" data-level="4.3.3" data-path="using-tmb.html"><a href="using-tmb.html#param-eq-constraints"><i class="fa fa-check"></i><b>4.3.3</b> Parameter equality<br>constraints</a></li>
-</ul></li>
-<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#state-inference"><i class="fa fa-check"></i><b>4.4</b> State inference and forecasting</a>
-<ul>
-<li class="chapter" data-level="4.4.1" data-path="using-tmb.html"><a href="using-tmb.html#local-decoding"><i class="fa fa-check"></i><b>4.4.1</b> Local decoding</a></li>
-<li class="chapter" data-level="4.4.2" data-path="using-tmb.html"><a href="using-tmb.html#forecast"><i class="fa fa-check"></i><b>4.4.2</b> Forecast</a></li>
-<li class="chapter" data-level="4.4.3" data-path="using-tmb.html"><a href="using-tmb.html#global-decoding"><i class="fa fa-check"></i><b>4.4.3</b> Global decoding</a></li>
-</ul></li>
-<li class="chapter" data-level="4.5" data-path="using-tmb.html"><a href="using-tmb.html#appendix"><i class="fa fa-check"></i><b>4.5</b> Appendix</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a>
-<ul>
-<li class="chapter" data-level="5.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#Wald-type"><i class="fa fa-check"></i><b>5.1</b> Wald-type confidence<br>intervals based on the Hessian</a></li>
-<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#likelihood-profile-based-confidence-intervals"><i class="fa fa-check"></i><b>5.2</b> Likelihood profile based<br>confidence intervals</a></li>
-<li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-based-confidence-intervals"><i class="fa fa-check"></i><b>5.3</b> Bootstrap-based<br>confidence intervals</a>
-<ul>
-<li class="chapter" data-level="5.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>5.3.1</b> Generating data</a></li>
-<li class="chapter" data-level="5.3.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>5.3.2</b> Bootstrap</a></li>
+<li class="chapter" data-level="3.4.2.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#label-switching"><i class="fa fa-check"></i><b>3.4.2.1</b> Label switching<span></span></a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-data"><i class="fa fa-check"></i><b>6.1</b> TYT data</a></li>
-<li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>6.2</b> Lamb data</a></li>
-<li class="chapter" data-level="6.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-data"><i class="fa fa-check"></i><b>6.3</b> Simulated data</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html"><i class="fa fa-check"></i><b>7</b> Gaussian HMM</a>
+<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using <code>TMB</code><span></span></a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html#dataset"><i class="fa fa-check"></i><b>7.1</b> Dataset</a></li>
-<li class="chapter" data-level="7.2" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html#likelihood-function-1"><i class="fa fa-check"></i><b>7.2</b> Likelihood function</a></li>
-<li class="chapter" data-level="7.3" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html#estimation"><i class="fa fa-check"></i><b>7.3</b> Estimation</a></li>
-<li class="chapter" data-level="7.4" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html#results"><i class="fa fa-check"></i><b>7.4</b> Results</a></li>
+<li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function<span></span></a></li>
+<li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#optimization"><i class="fa fa-check"></i><b>4.2</b> Optimization<span></span></a></li>
+<li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#basic-nested-model-specification"><i class="fa fa-check"></i><b>4.3</b> Basic nested model<br>specification<span></span></a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>4.3.1</b> Principle<span></span></a></li>
+<li class="chapter" data-level="4.3.2" data-path="using-tmb.html"><a href="using-tmb.html#limits"><i class="fa fa-check"></i><b>4.3.2</b> Limits<span></span></a></li>
+<li class="chapter" data-level="4.3.3" data-path="using-tmb.html"><a href="using-tmb.html#param-eq-constraints"><i class="fa fa-check"></i><b>4.3.3</b> Parameter equality<br>constraints<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html"><i class="fa fa-check"></i><b>8</b> Multivariate Gaussian HMM</a>
+<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#state-inference"><i class="fa fa-check"></i><b>4.4</b> State inference and forecasting<span></span></a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#dataset-parameters"><i class="fa fa-check"></i><b>8.1</b> Dataset &amp; Parameters</a></li>
-<li class="chapter" data-level="8.2" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#likelihood-function-2"><i class="fa fa-check"></i><b>8.2</b> Likelihood function</a></li>
-<li class="chapter" data-level="8.3" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#estimation-1"><i class="fa fa-check"></i><b>8.3</b> Estimation</a></li>
-<li class="chapter" data-level="8.4" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#results-1"><i class="fa fa-check"></i><b>8.4</b> Results</a></li>
-<li class="chapter" data-level="8.5" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#bias"><i class="fa fa-check"></i><b>8.5</b> Bias</a></li>
+<li class="chapter" data-level="4.4.1" data-path="using-tmb.html"><a href="using-tmb.html#local-decoding"><i class="fa fa-check"></i><b>4.4.1</b> Local decoding<span></span></a></li>
+<li class="chapter" data-level="4.4.2" data-path="using-tmb.html"><a href="using-tmb.html#forecast"><i class="fa fa-check"></i><b>4.4.2</b> Forecast<span></span></a></li>
+<li class="chapter" data-level="4.4.3" data-path="using-tmb.html"><a href="using-tmb.html#global-decoding"><i class="fa fa-check"></i><b>4.4.3</b> Global decoding<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="github.html"><a href="github.html"><i class="fa fa-check"></i><b>9</b> GitHub</a>
+<li class="chapter" data-level="4.5" data-path="using-tmb.html"><a href="using-tmb.html#appendix"><i class="fa fa-check"></i><b>4.5</b> Appendix<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals<span></span></a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="github.html"><a href="github.html#directory-structure"><i class="fa fa-check"></i><b>9.1</b> Directory structure</a>
+<li class="chapter" data-level="5.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#Wald-type"><i class="fa fa-check"></i><b>5.1</b> Wald-type confidence<br>intervals based on the Hessian<span></span></a></li>
+<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#likelihood-profile-based-confidence-intervals"><i class="fa fa-check"></i><b>5.2</b> Likelihood profile based<br>confidence intervals<span></span></a></li>
+<li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-based-confidence-intervals"><i class="fa fa-check"></i><b>5.3</b> Bootstrap-based<br>confidence intervals<span></span></a>
 <ul>
-<li class="chapter" data-level="9.1.1" data-path="github.html"><a href="github.html#code"><i class="fa fa-check"></i><b>9.1.1</b> code/</a></li>
-<li class="chapter" data-level="9.1.2" data-path="github.html"><a href="github.html#linreg.cpp"><i class="fa fa-check"></i><b>9.1.2</b> code/linreg.cpp</a></li>
-<li class="chapter" data-level="9.1.3" data-path="github.html"><a href="github.html#linreg_extended.cpp"><i class="fa fa-check"></i><b>9.1.3</b> code/linreg_extended.cpp</a></li>
-<li class="chapter" data-level="9.1.4" data-path="github.html"><a href="github.html#main.R"><i class="fa fa-check"></i><b>9.1.4</b> code/main.R</a></li>
-<li class="chapter" data-level="9.1.5" data-path="github.html"><a href="github.html#mvnorm_hmm.cpp"><i class="fa fa-check"></i><b>9.1.5</b> code/mvnorm_hmm.cpp</a></li>
-<li class="chapter" data-level="9.1.6" data-path="github.html"><a href="github.html#norm_hmm.cpp"><i class="fa fa-check"></i><b>9.1.6</b> code/norm_hmm.cpp</a></li>
-<li class="chapter" data-level="9.1.7" data-path="github.html"><a href="github.html#codepackages.r"><i class="fa fa-check"></i><b>9.1.7</b> code/packages.R</a></li>
-<li class="chapter" data-level="9.1.8" data-path="github.html"><a href="github.html#poi_hmm.cpp"><i class="fa fa-check"></i><b>9.1.8</b> code/poi_hmm.cpp</a></li>
-<li class="chapter" data-level="9.1.9" data-path="github.html"><a href="github.html#poi_hmm_lamb.R"><i class="fa fa-check"></i><b>9.1.9</b> code/poi_hmm_lamb.R</a></li>
-<li class="chapter" data-level="9.1.10" data-path="github.html"><a href="github.html#poi_hmm_simu1.R"><i class="fa fa-check"></i><b>9.1.10</b> code/poi_hmm_simu1.R</a></li>
-<li class="chapter" data-level="9.1.11" data-path="github.html"><a href="github.html#poi_hmm_simu2.R"><i class="fa fa-check"></i><b>9.1.11</b> code/poi_hmm_simu2.R</a></li>
-<li class="chapter" data-level="9.1.12" data-path="github.html"><a href="github.html#poi_hmm_simu3.R"><i class="fa fa-check"></i><b>9.1.12</b> code/poi_hmm_simu3.R</a></li>
-<li class="chapter" data-level="9.1.13" data-path="github.html"><a href="github.html#poi_hmm_simu4.R"><i class="fa fa-check"></i><b>9.1.13</b> code/poi_hmm_simu4.R</a></li>
-<li class="chapter" data-level="9.1.14" data-path="github.html"><a href="github.html#poi_hmm_tinn.R"><i class="fa fa-check"></i><b>9.1.14</b> code/poi_hmm_tinn.R</a></li>
-<li class="chapter" data-level="9.1.15" data-path="github.html"><a href="github.html#setup_parameters.R"><i class="fa fa-check"></i><b>9.1.15</b> code/setup_parameters.R</a></li>
-<li class="chapter" data-level="9.1.16" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>9.1.16</b> data/</a></li>
-<li class="chapter" data-level="9.1.17" data-path="github.html"><a href="github.html#fetal-lamb.RData"><i class="fa fa-check"></i><b>9.1.17</b> data/fetal-lamb.RData</a></li>
-<li class="chapter" data-level="9.1.18" data-path="github.html"><a href="github.html#dataresults_lamb.rdata"><i class="fa fa-check"></i><b>9.1.18</b> data/results_lamb.RData</a></li>
-<li class="chapter" data-level="9.1.19" data-path="github.html"><a href="github.html#dataresults_simu1.rdata"><i class="fa fa-check"></i><b>9.1.19</b> data/results_simu1.RData</a></li>
-<li class="chapter" data-level="9.1.20" data-path="github.html"><a href="github.html#dataresults_simu2.rdata"><i class="fa fa-check"></i><b>9.1.20</b> data/results_simu2.RData</a></li>
-<li class="chapter" data-level="9.1.21" data-path="github.html"><a href="github.html#dataresults_simu3.rdata"><i class="fa fa-check"></i><b>9.1.21</b> data/results_simu3.RData</a></li>
-<li class="chapter" data-level="9.1.22" data-path="github.html"><a href="github.html#dataresults_simu4.rdata"><i class="fa fa-check"></i><b>9.1.22</b> data/results_simu4.RData</a></li>
-<li class="chapter" data-level="9.1.23" data-path="github.html"><a href="github.html#dataresults_tinn.rdata"><i class="fa fa-check"></i><b>9.1.23</b> data/results_tinn.RData</a></li>
-<li class="chapter" data-level="9.1.24" data-path="github.html"><a href="github.html#tinnitus.RData"><i class="fa fa-check"></i><b>9.1.24</b> data/tinnitus.RData</a></li>
-<li class="chapter" data-level="9.1.25" data-path="github.html"><a href="github.html#functions"><i class="fa fa-check"></i><b>9.1.25</b> functions/</a></li>
-<li class="chapter" data-level="9.1.26" data-path="github.html"><a href="github.html#mvnorm_utils.cpp"><i class="fa fa-check"></i><b>9.1.26</b> functions/mvnorm_utils.cpp</a></li>
-<li class="chapter" data-level="9.1.27" data-path="github.html"><a href="github.html#mvnorm_utils.R"><i class="fa fa-check"></i><b>9.1.27</b> functions/mvnorm_utils.R</a></li>
-<li class="chapter" data-level="9.1.28" data-path="github.html"><a href="github.html#norm_utils.cpp"><i class="fa fa-check"></i><b>9.1.28</b> functions/norm_utils.cpp</a></li>
-<li class="chapter" data-level="9.1.29" data-path="github.html"><a href="github.html#norm_utils.R"><i class="fa fa-check"></i><b>9.1.29</b> functions/norm_utils.R</a></li>
-<li class="chapter" data-level="9.1.30" data-path="github.html"><a href="github.html#utils.cpp"><i class="fa fa-check"></i><b>9.1.30</b> functions/utils.cpp</a></li>
-<li class="chapter" data-level="9.1.31" data-path="github.html"><a href="github.html#utils.R"><i class="fa fa-check"></i><b>9.1.31</b> functions/utils.R</a></li>
-<li class="chapter" data-level="9.1.32" data-path="github.html"><a href="github.html#utils.R-explanation.R"><i class="fa fa-check"></i><b>9.1.32</b> functions/utils.R-explanation.R</a></li>
-<li class="chapter" data-level="9.1.33" data-path="github.html"><a href="github.html#utils_linreg_extended.cpp"><i class="fa fa-check"></i><b>9.1.33</b> functions/utils_linreg_extended.cpp</a></li>
+<li class="chapter" data-level="5.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>5.3.1</b> Generating data<span></span></a></li>
+<li class="chapter" data-level="5.3.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>5.3.2</b> Bootstrap<span></span></a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets<span></span></a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-data"><i class="fa fa-check"></i><b>6.1</b> TYT data<span></span></a></li>
+<li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>6.2</b> Lamb data<span></span></a></li>
+<li class="chapter" data-level="6.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-data"><i class="fa fa-check"></i><b>6.3</b> Simulated data<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html"><i class="fa fa-check"></i><b>7</b> Gaussian HMM<span></span></a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html#dataset"><i class="fa fa-check"></i><b>7.1</b> Dataset<span></span></a></li>
+<li class="chapter" data-level="7.2" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html#likelihood-function-1"><i class="fa fa-check"></i><b>7.2</b> Likelihood function<span></span></a></li>
+<li class="chapter" data-level="7.3" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html#estimation"><i class="fa fa-check"></i><b>7.3</b> Estimation<span></span></a></li>
+<li class="chapter" data-level="7.4" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html#results"><i class="fa fa-check"></i><b>7.4</b> Results<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html"><i class="fa fa-check"></i><b>8</b> Multivariate Gaussian HMM<span></span></a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#dataset-parameters"><i class="fa fa-check"></i><b>8.1</b> Dataset &amp; Parameters<span></span></a></li>
+<li class="chapter" data-level="8.2" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#likelihood-function-2"><i class="fa fa-check"></i><b>8.2</b> Likelihood function<span></span></a></li>
+<li class="chapter" data-level="8.3" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#estimation-1"><i class="fa fa-check"></i><b>8.3</b> Estimation<span></span></a></li>
+<li class="chapter" data-level="8.4" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#results-1"><i class="fa fa-check"></i><b>8.4</b> Results<span></span></a></li>
+<li class="chapter" data-level="8.5" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#bias"><i class="fa fa-check"></i><b>8.5</b> Bias<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="github.html"><a href="github.html"><i class="fa fa-check"></i><b>9</b> GitHub<span></span></a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="github.html"><a href="github.html#directory-structure"><i class="fa fa-check"></i><b>9.1</b> Directory structure<span></span></a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="github.html"><a href="github.html#code"><i class="fa fa-check"></i><b>9.1.1</b> code/<span></span></a></li>
+<li class="chapter" data-level="9.1.2" data-path="github.html"><a href="github.html#linreg.cpp"><i class="fa fa-check"></i><b>9.1.2</b> code/linreg.cpp<span></span></a></li>
+<li class="chapter" data-level="9.1.3" data-path="github.html"><a href="github.html#linreg_extended.cpp"><i class="fa fa-check"></i><b>9.1.3</b> code/linreg_extended.cpp<span></span></a></li>
+<li class="chapter" data-level="9.1.4" data-path="github.html"><a href="github.html#main.R"><i class="fa fa-check"></i><b>9.1.4</b> code/main.R<span></span></a></li>
+<li class="chapter" data-level="9.1.5" data-path="github.html"><a href="github.html#mvnorm_hmm.cpp"><i class="fa fa-check"></i><b>9.1.5</b> code/mvnorm_hmm.cpp<span></span></a></li>
+<li class="chapter" data-level="9.1.6" data-path="github.html"><a href="github.html#norm_hmm.cpp"><i class="fa fa-check"></i><b>9.1.6</b> code/norm_hmm.cpp<span></span></a></li>
+<li class="chapter" data-level="9.1.7" data-path="github.html"><a href="github.html#codepackages.r"><i class="fa fa-check"></i><b>9.1.7</b> code/packages.R<span></span></a></li>
+<li class="chapter" data-level="9.1.8" data-path="github.html"><a href="github.html#poi_hmm.cpp"><i class="fa fa-check"></i><b>9.1.8</b> code/poi_hmm.cpp<span></span></a></li>
+<li class="chapter" data-level="9.1.9" data-path="github.html"><a href="github.html#poi_hmm_lamb.R"><i class="fa fa-check"></i><b>9.1.9</b> code/poi_hmm_lamb.R<span></span></a></li>
+<li class="chapter" data-level="9.1.10" data-path="github.html"><a href="github.html#poi_hmm_simu1.R"><i class="fa fa-check"></i><b>9.1.10</b> code/poi_hmm_simu1.R<span></span></a></li>
+<li class="chapter" data-level="9.1.11" data-path="github.html"><a href="github.html#poi_hmm_simu2.R"><i class="fa fa-check"></i><b>9.1.11</b> code/poi_hmm_simu2.R<span></span></a></li>
+<li class="chapter" data-level="9.1.12" data-path="github.html"><a href="github.html#poi_hmm_simu3.R"><i class="fa fa-check"></i><b>9.1.12</b> code/poi_hmm_simu3.R<span></span></a></li>
+<li class="chapter" data-level="9.1.13" data-path="github.html"><a href="github.html#poi_hmm_simu4.R"><i class="fa fa-check"></i><b>9.1.13</b> code/poi_hmm_simu4.R<span></span></a></li>
+<li class="chapter" data-level="9.1.14" data-path="github.html"><a href="github.html#poi_hmm_tinn.R"><i class="fa fa-check"></i><b>9.1.14</b> code/poi_hmm_tinn.R<span></span></a></li>
+<li class="chapter" data-level="9.1.15" data-path="github.html"><a href="github.html#setup_parameters.R"><i class="fa fa-check"></i><b>9.1.15</b> code/setup_parameters.R<span></span></a></li>
+<li class="chapter" data-level="9.1.16" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>9.1.16</b> data/<span></span></a></li>
+<li class="chapter" data-level="9.1.17" data-path="github.html"><a href="github.html#fetal-lamb.RData"><i class="fa fa-check"></i><b>9.1.17</b> data/fetal-lamb.RData<span></span></a></li>
+<li class="chapter" data-level="9.1.18" data-path="github.html"><a href="github.html#dataresults_lamb.rdata"><i class="fa fa-check"></i><b>9.1.18</b> data/results_lamb.RData<span></span></a></li>
+<li class="chapter" data-level="9.1.19" data-path="github.html"><a href="github.html#dataresults_simu1.rdata"><i class="fa fa-check"></i><b>9.1.19</b> data/results_simu1.RData<span></span></a></li>
+<li class="chapter" data-level="9.1.20" data-path="github.html"><a href="github.html#dataresults_simu2.rdata"><i class="fa fa-check"></i><b>9.1.20</b> data/results_simu2.RData<span></span></a></li>
+<li class="chapter" data-level="9.1.21" data-path="github.html"><a href="github.html#dataresults_simu3.rdata"><i class="fa fa-check"></i><b>9.1.21</b> data/results_simu3.RData<span></span></a></li>
+<li class="chapter" data-level="9.1.22" data-path="github.html"><a href="github.html#dataresults_simu4.rdata"><i class="fa fa-check"></i><b>9.1.22</b> data/results_simu4.RData<span></span></a></li>
+<li class="chapter" data-level="9.1.23" data-path="github.html"><a href="github.html#dataresults_tinn.rdata"><i class="fa fa-check"></i><b>9.1.23</b> data/results_tinn.RData<span></span></a></li>
+<li class="chapter" data-level="9.1.24" data-path="github.html"><a href="github.html#tinnitus.RData"><i class="fa fa-check"></i><b>9.1.24</b> data/tinnitus.RData<span></span></a></li>
+<li class="chapter" data-level="9.1.25" data-path="github.html"><a href="github.html#functions"><i class="fa fa-check"></i><b>9.1.25</b> functions/<span></span></a></li>
+<li class="chapter" data-level="9.1.26" data-path="github.html"><a href="github.html#mvnorm_utils.cpp"><i class="fa fa-check"></i><b>9.1.26</b> functions/mvnorm_utils.cpp<span></span></a></li>
+<li class="chapter" data-level="9.1.27" data-path="github.html"><a href="github.html#mvnorm_utils.R"><i class="fa fa-check"></i><b>9.1.27</b> functions/mvnorm_utils.R<span></span></a></li>
+<li class="chapter" data-level="9.1.28" data-path="github.html"><a href="github.html#norm_utils.cpp"><i class="fa fa-check"></i><b>9.1.28</b> functions/norm_utils.cpp<span></span></a></li>
+<li class="chapter" data-level="9.1.29" data-path="github.html"><a href="github.html#norm_utils.R"><i class="fa fa-check"></i><b>9.1.29</b> functions/norm_utils.R<span></span></a></li>
+<li class="chapter" data-level="9.1.30" data-path="github.html"><a href="github.html#utils.cpp"><i class="fa fa-check"></i><b>9.1.30</b> functions/utils.cpp<span></span></a></li>
+<li class="chapter" data-level="9.1.31" data-path="github.html"><a href="github.html#utils.R"><i class="fa fa-check"></i><b>9.1.31</b> functions/utils.R<span></span></a></li>
+<li class="chapter" data-level="9.1.32" data-path="github.html"><a href="github.html#utils.R-explanation.R"><i class="fa fa-check"></i><b>9.1.32</b> functions/utils.R-explanation.R<span></span></a></li>
+<li class="chapter" data-level="9.1.33" data-path="github.html"><a href="github.html#utils_linreg_extended.cpp"><i class="fa fa-check"></i><b>9.1.33</b> functions/utils_linreg_extended.cpp<span></span></a></li>
+</ul></li>
+</ul></li>
+<li><a href="references.html#references">References<span></span></a></li>
 </ul>
 
       </nav>
@@ -298,11 +297,11 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="parameter-estimation-techniques-for-hmms" class="section level1" number="3">
-<h1><span class="header-section-number"> 3</span> Parameter estimation techniques<br>for HMMs</h1>
-<p>In this section we recall basic concepts underlying parameter estimation for HMMs via direct numerical optimization of the likelihood. In terms of notation, we stay as close as possible to <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016</a>)</span>, where a more detailed presentation is available.</p>
-<div id="basic-notation-and-model-setup" class="section level2" number="3.1">
-<h2><span class="header-section-number">3.1</span> Basic notation and model setup</h2>
+<div id="parameter-estimation-techniques-for-hmms" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number"> 3</span> Parameter estimation techniques<br>for HMMs<a href="parameter-estimation-techniques-for-hmms.html#parameter-estimation-techniques-for-hmms" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In this section we recall basic concepts underlying parameter estimation for HMMs via direct numerical optimization of the likelihood. In terms of notation, we stay as close as possible to <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016</a>)</span>, where a more detailed presentation is available.</p>
+<div id="basic-notation-and-model-setup" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Basic notation and model setup<a href="parameter-estimation-techniques-for-hmms.html#basic-notation-and-model-setup" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The conditional distribution densities can be called in <code>R</code> as well as in <code>C++</code> (provided that the <code>TMB</code> template is respected) via</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="parameter-estimation-techniques-for-hmms.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dpois</span>(<span class="at">x =</span> <span class="dv">1</span>, <span class="at">lambda =</span> <span class="dv">5</span>) <span class="co"># Poisson</span></span>
 <span id="cb12-2"><a href="parameter-estimation-techniques-for-hmms.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.03368973</span></span>
@@ -311,8 +310,8 @@ div.csl-indent {
 <p>Other distributions are available.</p>
 <p>We let TPM denote the transition probability matrix, and reference it with the variable <span class="math inline">\({\boldsymbol\Gamma}\)</span>.</p>
 </div>
-<div id="the-likelihood-function-of-an-hmm" class="section level2" number="3.2">
-<h2><span class="header-section-number">3.2</span> The likelihood function of an HMM</h2>
+<div id="the-likelihood-function-of-an-hmm" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> The likelihood function of an HMM<a href="parameter-estimation-techniques-for-hmms.html#the-likelihood-function-of-an-hmm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The Poisson HMM negative log-likelihood function in <code>C++</code> can be written the following way using <code>TMB</code>’s template.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb13-1"><a href="parameter-estimation-techniques-for-hmms.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
 <span id="cb13-2"><a href="parameter-estimation-techniques-for-hmms.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
@@ -397,12 +396,12 @@ div.csl-indent {
 <p>The case where <span class="math inline">\(m = 1\)</span> doesn’t involve a hidden state, and thus is a Poisson regression instead of a Poisson HMM.
 Nonetheless, <code>TMB</code> also accelerates its estimation and may be useful to the reader.</p>
 </div>
-<div id="forward-backward" class="section level2" number="3.3">
-<h2><span class="header-section-number">3.3</span> Forward algorithm and<br>backward algorithm</h2>
-<div id="setup-1" class="section level3" number="3.3.1">
-<h3><span class="header-section-number">3.3.1</span> Setup</h3>
-<div id="prepare-the-model" class="section level4" number="3.3.1.1">
-<h4><span class="header-section-number">3.3.1.1</span> Prepare the model</h4>
+<div id="forward-backward" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Forward algorithm and<br>backward algorithm<a href="parameter-estimation-techniques-for-hmms.html#forward-backward" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="setup-1" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Setup<a href="parameter-estimation-techniques-for-hmms.html#setup-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="prepare-the-model" class="section level4 hasAnchor" number="3.3.1.1">
+<h4><span class="header-section-number">3.3.1.1</span> Prepare the model<a href="parameter-estimation-techniques-for-hmms.html#prepare-the-model" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="parameter-estimation-techniques-for-hmms.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
 <span id="cb14-2"><a href="parameter-estimation-techniques-for-hmms.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
 <span id="cb14-3"><a href="parameter-estimation-techniques-for-hmms.html#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/fetal-lamb.RData&quot;</span>)</span>
@@ -420,8 +419,8 @@ Nonetheless, <code>TMB</code> also accelerates its estimation and may be useful 
 <span id="cb14-15"><a href="parameter-estimation-techniques-for-hmms.html#cb14-15" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
 <span id="cb14-16"><a href="parameter-estimation-techniques-for-hmms.html#cb14-16" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr, <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span></code></pre></div>
 </div>
-<div id="define-variables" class="section level4" number="3.3.1.2">
-<h4><span class="header-section-number">3.3.1.2</span> Define variables</h4>
+<div id="define-variables" class="section level4 hasAnchor" number="3.3.1.2">
+<h4><span class="header-section-number">3.3.1.2</span> Define variables<a href="parameter-estimation-techniques-for-hmms.html#define-variables" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Given an optimized <code>MakeADFun</code> object <code>obj</code>, we need to setup some variables to compute the probabilities detailed below.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="parameter-estimation-techniques-for-hmms.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve the objects at ML value</span></span>
 <span id="cb15-2"><a href="parameter-estimation-techniques-for-hmms.html#cb15-2" aria-hidden="true" tabindex="-1"></a>adrep <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(obj_tmb<span class="sc">$</span>env<span class="sc">$</span>last.par.best)</span>
@@ -433,8 +432,8 @@ Nonetheless, <code>TMB</code> also accelerates its estimation and may be useful 
 <span id="cb15-8"><a href="parameter-estimation-techniques-for-hmms.html#cb15-8" aria-hidden="true" tabindex="-1"></a>mllk <span class="ot">&lt;-</span> adrep<span class="sc">$</span>mllk</span></code></pre></div>
 <p>Note that <span class="math inline">\({\boldsymbol\lambda}\)</span> is not needed as we already have access to the emission probabilities.</p>
 </div>
-<div id="emissionoutput-probabilities" class="section level4" number="3.3.1.3">
-<h4><span class="header-section-number">3.3.1.3</span> Emission/output probabilities</h4>
+<div id="emissionoutput-probabilities" class="section level4 hasAnchor" number="3.3.1.3">
+<h4><span class="header-section-number">3.3.1.3</span> Emission/output probabilities<a href="parameter-estimation-techniques-for-hmms.html#emissionoutput-probabilities" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Emission probabilities (also called output probabilities) are the conditional probabilities of the data given a state.</p>
 <p>Using the notation in the article Section 3.1, emission probabilities are the conditional distributions <span class="math inline">\(p_i(x) = \text{P}(X_t = x \vert C_t = i) = \frac{e^{-\lambda_i} \lambda_i^x}{x!}\)</span>.
 We store all these in a data frame where each row and column represent a data and a state respectively.</p>
@@ -474,9 +473,9 @@ the emission probability matrix.</p>
 <span id="cb17-14"><a href="parameter-estimation-techniques-for-hmms.html#cb17-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>
-<div id="log-forward" class="section level3" number="3.3.2">
-<h3><span class="header-section-number">3.3.2</span> Log-forward probabilities</h3>
-<p>We show here a way to compute the log of the forward probabilities, using a scaling scheme defined by <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 66</a> and p.334)</span>.</p>
+<div id="log-forward" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Log-forward probabilities<a href="parameter-estimation-techniques-for-hmms.html#log-forward" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We show here a way to compute the log of the forward probabilities, using a scaling scheme defined by <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 66</a> and p.334)</span>.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="parameter-estimation-techniques-for-hmms.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-forward probabilities (scaling used)</span></span>
 <span id="cb18-2"><a href="parameter-estimation-techniques-for-hmms.html#cb18-2" aria-hidden="true" tabindex="-1"></a>lalpha <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
 <span id="cb18-3"><a href="parameter-estimation-techniques-for-hmms.html#cb18-3" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
@@ -497,9 +496,9 @@ the emission probability matrix.</p>
 <span id="cb18-18"><a href="parameter-estimation-techniques-for-hmms.html#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] -0.2920639 -0.5591179 -0.8265948 -1.094088 -1.361583</span></span>
 <span id="cb18-19"><a href="parameter-estimation-techniques-for-hmms.html#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] -6.4651986 -7.7716769 -8.1146145 -8.385232 -8.652850</span></span></code></pre></div>
 </div>
-<div id="log-backward" class="section level3" number="3.3.3">
-<h3><span class="header-section-number">3.3.3</span> Log-backward probabilities</h3>
-<p>We show here a way to compute the log of the backward probabilities with a scaling scheme defined by <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 67</a> and p.334)</span>.</p>
+<div id="log-backward" class="section level3 hasAnchor" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Log-backward probabilities<a href="parameter-estimation-techniques-for-hmms.html#log-backward" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We show here a way to compute the log of the backward probabilities with a scaling scheme defined by <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 67</a> and p.334)</span>.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="parameter-estimation-techniques-for-hmms.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-backwards probabilities (scaling used)</span></span>
 <span id="cb19-2"><a href="parameter-estimation-techniques-for-hmms.html#cb19-2" aria-hidden="true" tabindex="-1"></a>lbeta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
 <span id="cb19-3"><a href="parameter-estimation-techniques-for-hmms.html#cb19-3" aria-hidden="true" tabindex="-1"></a>lbeta[, n] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, m)</span>
@@ -520,10 +519,10 @@ the emission probability matrix.</p>
 <p>We refer to the Section <a href="using-tmb.html#state-inference">State Inference</a> for an application of this code for state inference and forecasting.</p>
 </div>
 </div>
-<div id="reparameterization-of-the-likelihood-function" class="section level2" number="3.4">
-<h2><span class="header-section-number">3.4</span> Reparameterization of the<br>likelihood function</h2>
-<div id="utility-functions-in-tmb" class="section level3" number="3.4.1">
-<h3><span class="header-section-number">3.4.1</span> Utility functions in <code>TMB</code></h3>
+<div id="reparameterization-of-the-likelihood-function" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Reparameterization of the<br>likelihood function<a href="parameter-estimation-techniques-for-hmms.html#reparameterization-of-the-likelihood-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="utility-functions-in-tmb" class="section level3 hasAnchor" number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> Utility functions in <code>TMB</code><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-tmb" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Defining the negative log-likelihood function requires transforming the working parameters into their natural form.
 We define the function <code>gamma.w2n</code> to perform this transformation.</p>
 <p>The function <code>stat.dist</code> handles computing the stationary distribution, while <code>delta.w2n</code> can be used if a non-stationary distribution is provided.</p>
@@ -600,10 +599,10 @@ We define the function <code>gamma.w2n</code> to perform this transformation.</p
 <span id="cb20-70"><a href="parameter-estimation-techniques-for-hmms.html#cb20-70" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Transforming the Poisson means into their natural form can be done simply with the <code>exp</code> function and doesn’t require a dedicated function.</p>
 </div>
-<div id="utility-functions-in-r" class="section level3" number="3.4.2">
-<h3><span class="header-section-number">3.4.2</span> Utility functions in <code>R</code></h3>
+<div id="utility-functions-in-r" class="section level3 hasAnchor" number="3.4.2">
+<h3><span class="header-section-number">3.4.2</span> Utility functions in <code>R</code><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>While <code>TMB</code> requires functions to transform working parameters to their natural form, pre-processing in <code>R</code> requires the inverse transformation.</p>
-<p>Functions to achieve this are available in <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 51</a>)</span> and are displayed here with explaining comments for convenience.</p>
+<p>Functions to achieve this are available in <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 51</a>)</span> and are displayed here with explaining comments for convenience.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="parameter-estimation-techniques-for-hmms.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform Poisson natural parameters to working parameters</span></span>
 <span id="cb21-2"><a href="parameter-estimation-techniques-for-hmms.html#cb21-2" aria-hidden="true" tabindex="-1"></a>pois.HMM.pn2pw <span class="ot">&lt;-</span> <span class="cf">function</span>(m, lambda, gamma, <span class="at">delta =</span> <span class="cn">NULL</span>,</span>
 <span id="cb21-3"><a href="parameter-estimation-techniques-for-hmms.html#cb21-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">stationary =</span> <span class="cn">TRUE</span>) {</span>
@@ -645,12 +644,12 @@ We define the function <code>gamma.w2n</code> to perform this transformation.</p
 <span id="cb24-9"><a href="parameter-estimation-techniques-for-hmms.html#cb24-9" aria-hidden="true" tabindex="-1"></a>  first_eigen_row <span class="ot">&lt;-</span> <span class="fu">Re</span>(<span class="fu">eigen</span>(<span class="fu">t</span>(gamma))<span class="sc">$</span>vectors[, <span class="dv">1</span>])</span>
 <span id="cb24-10"><a href="parameter-estimation-techniques-for-hmms.html#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(first_eigen_row <span class="sc">/</span> <span class="fu">sum</span>(first_eigen_row))</span>
 <span id="cb24-11"><a href="parameter-estimation-techniques-for-hmms.html#cb24-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p><span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 51</a>)</span> shows that calculating the stationary distribution can be achieved by solving the equation below for <span class="math inline">\({\boldsymbol\delta}\)</span>, where <span class="math inline">\({\boldsymbol I}_m\)</span> is the <span class="math inline">\(m*m\)</span> identity matrix, <span class="math inline">\({\boldsymbol U}\)</span> is a <span class="math inline">\(m*m\)</span> matrix of ones, and <span class="math inline">\({\boldsymbol 1}\)</span> is a row vector of ones.
+<p><span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 51</a>)</span> shows that calculating the stationary distribution can be achieved by solving the equation below for <span class="math inline">\({\boldsymbol\delta}\)</span>, where <span class="math inline">\({\boldsymbol I}_m\)</span> is the <span class="math inline">\(m*m\)</span> identity matrix, <span class="math inline">\({\boldsymbol U}\)</span> is a <span class="math inline">\(m*m\)</span> matrix of ones, and <span class="math inline">\({\boldsymbol 1}\)</span> is a row vector of ones.
 <span class="math display">\[
 {\boldsymbol\delta}({\boldsymbol I}_m - {\boldsymbol\Gamma} + {\boldsymbol U}) = {\boldsymbol 1}
 \]</span></p>
-<div id="label-switching" class="section level4" number="3.4.2.1">
-<h4><span class="header-section-number">3.4.2.1</span> Label switching</h4>
+<div id="label-switching" class="section level4 hasAnchor" number="3.4.2.1">
+<h4><span class="header-section-number">3.4.2.1</span> Label switching<a href="parameter-estimation-techniques-for-hmms.html#label-switching" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>As the model gets estimated each time, no order is imposed on the states by default.
 If one needs to aggregate estimates, this can lead to the label switching problem, where states aren’t ordered the same way in each model and are grouped incorrectly.
 The issue can be relevant when comparing results of different optimizers, initial parameters, or classes of models.</p>
@@ -767,8 +766,8 @@ For readability, the TPM is filled with standard row and column indices instead 
 <span id="cb26-24"><a href="parameter-estimation-techniques-for-hmms.html#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="do">## $ordered_delta_indices</span></span>
 <span id="cb26-25"><a href="parameter-estimation-techniques-for-hmms.html#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2 3 1</span></span></code></pre></div>
 <p>State 1 has been relabeled state 3, state 3 became state 2, and state 2 became state 1.</p>
-<p>Another way to address this issue is by parameterizing in terms of non-negative increments <span class="math inline">\(\lambda_j - \lambda_{j-1}\)</span> with <span class="math inline">\(\lambda_0 \equiv 0\)</span>, as explained by <span class="citation"><a href="references.html#ref-zucchini" role="doc-biblioref">Zucchini, MacDonald, and Langrock</a> (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, sec. 7.1.1</a> p. 112)</span>.
-However, <span class="citation"><a href="references.html#ref-bulla" role="doc-biblioref">Bulla and Berzel</a> (<a href="references.html#ref-bulla" role="doc-biblioref">2008, sec. 3.2</a> p. 7)</span> shows this can impose optimization issues: “over all series, the simplest parameterization, i.e., the use of log-transformed state-dependent parameters, leads to the best results as regards the number of failures and the convergence to the global maximum.”</p>
+<p>Another way to address this issue is by parameterizing in terms of non-negative increments <span class="math inline">\(\lambda_j - \lambda_{j-1}\)</span> with <span class="math inline">\(\lambda_0 \equiv 0\)</span>, as explained by <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, sec. 7.1.1</a> p. 112)</span>.
+However, <span class="citation">Bulla and Berzel (<a href="references.html#ref-bulla" role="doc-biblioref">2008, sec. 3.2</a> p. 7)</span> shows this can impose optimization issues: “over all series, the simplest parameterization, i.e., the use of log-transformed state-dependent parameters, leads to the best results as regards the number of failures and the convergence to the global maximum”.</p>
 <p>These utility functions or subroutines are not complicated, but as you can see, they would cloud up your main code.
 Therefore, we put them in functions we can call from our main program.</p>
 

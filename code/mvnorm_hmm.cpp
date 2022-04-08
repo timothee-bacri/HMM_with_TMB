@@ -10,7 +10,7 @@ Type objective_function<Type>::operator() ()
   DATA_INTEGER(m);        // Number of states m
   
   // Parameters
-  PARAMETER_MATRIX(tmu);         // mp conditional mu's (matrix: p rows, m columns)
+  PARAMETER_MATRIX(tmu);         // mp conditional mu's (matrix: m rows, p columns)
   PARAMETER_MATRIX(tsigma);      // mp(p+1)/2 working parameters of covariance matrices (matrix: p(p+1)/2 rows, m columns)
   PARAMETER_VECTOR(tgamma);      // m(m-1) working parameters of TPM (vector: m*m-m columns)
   
@@ -24,7 +24,7 @@ Type objective_function<Type>::operator() ()
   int p = x.cols();
   
   // Transform working parameters to natural parameters:
-  matrix<Type> mu = tmu;
+  matrix<Type> mu = tmu.transpose(); // We need rows (for the emission probability matrix) but TMB only supports easy retrieval of columns
   matrix<Type> gamma = gamma_w2n(m, tgamma);
   array<Type> sigma = sigma_w2n(m, p, tsigma); // Construct m matrices of size p x p (array: p x p x m)
   
@@ -48,7 +48,7 @@ Type objective_function<Type>::operator() ()
   bool NA_appears = false;
   for (int m_idx = 0; m_idx < m; m_idx++) {
     MVNORM_t<Type> neg_log_dmvnorm(sigma.col(m_idx).matrix());
-
+    
     for (int i = 0; i < n; i++) {
       // Replace missing values (NA in R, NaN in C++) with 1
       NA_appears = false;
@@ -57,7 +57,7 @@ Type objective_function<Type>::operator() ()
           NA_appears = true;
         }
       }
-
+      
       if (NA_appears) {
         emission_probs(i, m_idx) = 1;
       } else {
@@ -88,13 +88,16 @@ Type objective_function<Type>::operator() ()
     foo /= sumfoo;
   }
   mllk = -lscale;
-
+  
+  // Undo the transpose done at the beginning
+  mu.transposeInPlace();
+  
   // Use adreport on variables for which we want standard errors
   ADREPORT(mu);
   ADREPORT(sigma);
   ADREPORT(gamma);
   ADREPORT(delta);
-
+  
   // Variables we need for local decoding and in a convenient format
   REPORT(mu);
   REPORT(sigma);
@@ -103,6 +106,6 @@ Type objective_function<Type>::operator() ()
   REPORT(n);
   // REPORT(emission_probs);
   REPORT(mllk);
-
+  
   return mllk;
 }

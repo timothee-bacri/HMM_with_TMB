@@ -12,12 +12,12 @@ We detail below an example of a Gaussian HMM with TMB.
 The dataset we show in this example contains log-returns of the SP500 dataset pulled from Yahoo finance.
 These log-returns are generated with the following code.
 ```{r 7sp500-generate, eval = FALSE}
-library(dplyr)
+library(tidyverse)
 # Loading the sp500 dataset
 SP500 <- read_csv("data/S&P500.csv") %>%
   mutate(lag = lag(`Adj Close`),
          lr = log(`Adj Close`/lag)) %>%
-  dplyr::select(lr) %>%
+  select(lr) %>%
   drop_na()
 SP500 <- 100 * SP500$lr
 save(SP500, file = "data/SP500.RData")
@@ -45,6 +45,7 @@ dyn.load(dynlib("code/norm_hmm"))
 
 # Parameters and covariates
 load("data/SP500.RData")
+m <- 2
 # Means
 mu <- c(-2 * mean(SP500), 2 * mean(SP500))
 # Standard deviations
@@ -74,7 +75,7 @@ Note that the script above makes a simple educated guess on the true parameters 
 Estimates can be shown here along with their standard errors, as was done previously in the Poisson case.
 As before, the matrix results are displayed in a column-wise format.
 This can be seen by comparing estimates with a more readable view.
-```{r}
+```{r 7results}
 summary(sdreport(obj_tmb), "report")
 # Readable estimates
 obj_tmb$report()

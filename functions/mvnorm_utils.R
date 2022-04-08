@@ -116,14 +116,14 @@ mvnorm.HMM.pn2pw <- function(m, mu, sigma, gamma, delta = NULL,
   
   foo <- log(gamma / diag(gamma))
   tgamma <- as.vector(foo[!diag(m)])
+  # TMB requires a list
   if (stationary) {
     # If tdelta is set to NULL and returned in the list,
     # it will cause issues when optimizing with TMB
-    return(list(tmu = t(mu), tsigma = tsigma, tgamma = tgamma))
+    return(list(tmu = mu, tsigma = tsigma, tgamma = tgamma))
   } else {
     tdelta <- log(delta[- 1] / delta[1])
-    # TMB requires a list
-    return(list(tmu = t(mu), tsigma = tsigma, tgamma = tgamma, tdelta = tdelta))
+    return(list(tmu = mu, tsigma = tsigma, tgamma = tgamma, tdelta = tdelta))
   }
 }
 
