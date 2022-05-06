@@ -339,7 +339,7 @@ The following code requires executing the code presented in the Section [Forward
 ### Local decoding {#local-decoding}
 The smoothing probabilities are defined in @zucchini[p.87 and p.336] as
 \[
-\text{P}(C_t = i \vert X^{(n)}) = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
+\text{P}(C_t = i \vert X^{(n)} = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
 \]
 
 
@@ -347,6 +347,7 @@ The smoothing probabilities are defined in @zucchini[p.87 and p.336] as
 # Compute conditional state probabilities, smoothing probabilities
 stateprobs <- matrix(NA, ncol = n, nrow = m)
 llk <- - mllk
+n <- length(tinn_data)
 for(i in 1:n) {
   stateprobs[, i] <- exp(lalpha[, i] + lbeta[, i] - llk)
 }
