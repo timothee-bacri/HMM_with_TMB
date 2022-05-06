@@ -347,7 +347,6 @@ The smoothing probabilities are defined in @zucchini[p.87 and p.336] as
 # Compute conditional state probabilities, smoothing probabilities
 stateprobs <- matrix(NA, ncol = n, nrow = m)
 llk <- - mllk
-n <- length(tinn_data)
 for(i in 1:n) {
   stateprobs[, i] <- exp(lalpha[, i] + lbeta[, i] - llk)
 }
@@ -405,7 +404,7 @@ dxf[, 1:4]
 
 ### Global decoding {#global-decoding}
 The Viterbi algorithm is detailed in @zucchini[p.88 and p.334].
-It calculates the sequence of states $(i_1^*, \ldots, i_T^*)$ which
+It calculates the sequence of states $(i_1^*, \ldots, i_n^*)$ which
 maximizes the conditional probability of all states simultaneously, i.e.
 \[
 (i_1^*, \ldots, i_n^*) = \argmax_{i_1, \ldots, i_n \in \{1, \ldots, m \}} \text{P}(C_1 = i_1, \ldots, C_n = i_n \vert X^{(n)} = x^{(n)}).
