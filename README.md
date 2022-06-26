@@ -11,7 +11,7 @@ Berentsen<sup>2</sup>, Jan Bulla<sup>1</sup> and Sondre
 Hølleland<sup>3</sup>.*
 
 1.  *University of Bergen, Norway.*
-2.  *Norwegian Buisness school, Norway.*
+2.  *Norwegian Business school, Norway.*
 3.  *Institute of Marine Research, Norway.*
 
 *Correspondance to: <jan.bulla@uib.no>*
