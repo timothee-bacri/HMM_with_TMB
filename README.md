@@ -24,7 +24,7 @@ found [here](https://timothee-bacri.github.io/HMM_with_TMB/).
 
 The folders (*[code/](#code)*, *[data/](#data)*,
 *[functions/](#functions)*) related to the analysis code and results of
-the paper [LINK available later](https://www.nrk.no) are described in
+the paper [https://doi.org/10.1002/bimj.202100256](https://doi.org/10.1002/bimj.202100256) are described in
 [Directory structure](#directory-structure).
 
 ## Author’s github account
