@@ -33,8 +33,9 @@ the paper [https://doi.org/10.1002/bimj.202100256](https://doi.org/10.1002/bimj.
 
 **Sondre Hølleland** - [holleland](https://github.com/holleland)
 
+**Geir Berentsen** - [gberentsen](https://github.com/gberentsen)
+
 ## License
 
-\[ UNDER CONSTRUCTION \]  
 This project is licensed under the GPL v2 License - see
 [LICENSE](LICENSE) for details.
