@@ -332,8 +332,9 @@ Equality constraints involving a diagonal member of the TPM are simpler to speci
 
 ## State inference and forecasting {#state-inference}
 The following code requires executing the code presented in the Section [Forward algorithm and backward algorithm](#forward-backward), as the log-forward and log-backward probabilities are needed.
+We reuse the TYT data set from above along with the HMM that was estimated on it.
 
-```{r 4prepare-state-inference, ref.label=c('3prepare', '3init-decoding', '3log-forward', '3log-backward'), include=FALSE}
+```{r 4prepare-state-inference, ref.label=c('3init-decoding', '3log-forward', '3log-backward')}
 ```
 
 ### Local decoding {#local-decoding}
@@ -345,11 +346,16 @@ The smoothing probabilities are defined in @zucchini[p.87 and p.336] as
 
 ```{r 4smoothing}
 # Compute conditional state probabilities, smoothing probabilities
-stateprobs <- matrix(NA, ncol = n, nrow = m)
+stateprobs <- matrix(NA, ncol = length(tinn_data), nrow = m)
 llk <- - mllk
 for(i in 1:n) {
   stateprobs[, i] <- exp(lalpha[, i] + lbeta[, i] - llk)
 }
+# stateprobs contains n=87 columns, so we only display 4 for readability
+# Each row corresponds to a state.
+# For example, stateprobs[2, 3] is the probability that the third data
+# is associated with state 2
+stateprobs[, 1:4]
 ```
 
 Local decoding is a straightforward maximum of the smoothing probabilities.
@@ -398,7 +404,7 @@ for (i in 1:h) {
     dxf[i, ] <- dxf[i, ] + foo[j] * emission_probs_xf[, j]
   }
 }
-# dxf contains n=240 columns, so we only display 4 for readability
+# dxf contains n=87 columns, so we only display 4 for readability
 dxf[, 1:4]
 ```
 

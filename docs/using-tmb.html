@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title> 4 Using TMB | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
   <meta property="og:title" content=" 4 Using TMB | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
@@ -26,7 +26,6 @@
 <meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
 
 
-<meta name="date" content="2022-05-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -303,86 +302,86 @@ div.csl-indent {
 <div id="likelihood-function" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Likelihood function<a href="using-tmb.html#likelihood-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The function is defined in <em><a href="github.html#poi_hmm.cpp">code/poi_hmm.cpp</a></em> and imports the utility functions defined in <em><a href="github.html#utils.cpp">functions/utils.cpp</a></em>.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb27-1"><a href="using-tmb.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
-<span id="cb27-2"><a href="using-tmb.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
-<span id="cb27-3"><a href="using-tmb.html#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-4"><a href="using-tmb.html#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood for a poisson hidden markov model. </span></span>
-<span id="cb27-5"><a href="using-tmb.html#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
-<span id="cb27-6"><a href="using-tmb.html#cb27-6" aria-hidden="true" tabindex="-1"></a>Type objective_function<span class="op">&lt;</span>Type<span class="op">&gt;::</span><span class="kw">operator</span><span class="op">()</span> <span class="op">()</span></span>
-<span id="cb27-7"><a href="using-tmb.html#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb27-8"><a href="using-tmb.html#cb27-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb27-9"><a href="using-tmb.html#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Data</span></span>
-<span id="cb27-10"><a href="using-tmb.html#cb27-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR<span class="op">(</span>x<span class="op">);</span>          <span class="co">// timeseries vector</span></span>
-<span id="cb27-11"><a href="using-tmb.html#cb27-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER<span class="op">(</span>m<span class="op">);</span>         <span class="co">// Number of states m</span></span>
-<span id="cb27-12"><a href="using-tmb.html#cb27-12" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb27-13"><a href="using-tmb.html#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters</span></span>
-<span id="cb27-14"><a href="using-tmb.html#cb27-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tlambda<span class="op">);</span>     <span class="co">// conditional log_lambdas&#39;s</span></span>
-<span id="cb27-15"><a href="using-tmb.html#cb27-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tgamma<span class="op">);</span>      <span class="co">// m(m-1) working parameters of TPM</span></span>
-<span id="cb27-16"><a href="using-tmb.html#cb27-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb27-17"><a href="using-tmb.html#cb27-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Uncomment only when using a non-stationary distribution</span></span>
-<span id="cb27-18"><a href="using-tmb.html#cb27-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">//PARAMETER_VECTOR(tdelta);    // transformed stationary distribution,</span></span>
-<span id="cb27-19"><a href="using-tmb.html#cb27-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb27-20"><a href="using-tmb.html#cb27-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
-<span id="cb27-21"><a href="using-tmb.html#cb27-21" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> lambda <span class="op">=</span> tlambda<span class="op">.</span>exp<span class="op">();</span></span>
-<span id="cb27-22"><a href="using-tmb.html#cb27-22" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma <span class="op">=</span> gamma_w2n<span class="op">(</span>m<span class="op">,</span> tgamma<span class="op">);</span></span>
-<span id="cb27-23"><a href="using-tmb.html#cb27-23" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb27-24"><a href="using-tmb.html#cb27-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
-<span id="cb27-25"><a href="using-tmb.html#cb27-25" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta <span class="op">=</span> stat_dist<span class="op">(</span>m<span class="op">,</span> gamma<span class="op">);</span></span>
-<span id="cb27-26"><a href="using-tmb.html#cb27-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If using a non-stationary distribution, use this instead</span></span>
-<span id="cb27-27"><a href="using-tmb.html#cb27-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">//vector&lt;Type&gt; delta = delta_w2n(m, tdelta);</span></span>
-<span id="cb27-28"><a href="using-tmb.html#cb27-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb27-29"><a href="using-tmb.html#cb27-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
-<span id="cb27-30"><a href="using-tmb.html#cb27-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n <span class="op">=</span> x<span class="op">.</span>size<span class="op">();</span></span>
-<span id="cb27-31"><a href="using-tmb.html#cb27-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb27-32"><a href="using-tmb.html#cb27-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
-<span id="cb27-33"><a href="using-tmb.html#cb27-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
-<span id="cb27-34"><a href="using-tmb.html#cb27-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
-<span id="cb27-35"><a href="using-tmb.html#cb27-35" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> emission_probs<span class="op">(</span>n<span class="op">,</span> m<span class="op">);</span></span>
-<span id="cb27-36"><a href="using-tmb.html#cb27-36" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> row1vec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> m<span class="op">);</span></span>
-<span id="cb27-37"><a href="using-tmb.html#cb27-37" aria-hidden="true" tabindex="-1"></a>  row1vec<span class="op">.</span>setOnes<span class="op">();</span></span>
-<span id="cb27-38"><a href="using-tmb.html#cb27-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb27-39"><a href="using-tmb.html#cb27-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>x<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> x<span class="op">[</span>i<span class="op">])</span> <span class="op">{</span> <span class="co">// f != f returns true if and only if f is NaN. </span></span>
-<span id="cb27-40"><a href="using-tmb.html#cb27-40" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
-<span id="cb27-41"><a href="using-tmb.html#cb27-41" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> row1vec<span class="op">;</span></span>
-<span id="cb27-42"><a href="using-tmb.html#cb27-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb27-43"><a href="using-tmb.html#cb27-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb27-44"><a href="using-tmb.html#cb27-44" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> dpois<span class="op">(</span>x<span class="op">[</span>i<span class="op">],</span> lambda<span class="op">,</span> <span class="kw">false</span><span class="op">);</span></span>
-<span id="cb27-45"><a href="using-tmb.html#cb27-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb27-46"><a href="using-tmb.html#cb27-46" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb27-47"><a href="using-tmb.html#cb27-47" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb27-48"><a href="using-tmb.html#cb27-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to (Zucchini et al., 2016, p 333)</span></span>
-<span id="cb27-49"><a href="using-tmb.html#cb27-49" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">,</span> P<span class="op">;</span></span>
-<span id="cb27-50"><a href="using-tmb.html#cb27-50" aria-hidden="true" tabindex="-1"></a>  Type mllk<span class="op">,</span> sumfoo<span class="op">,</span> lscale<span class="op">;</span></span>
-<span id="cb27-51"><a href="using-tmb.html#cb27-51" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb27-52"><a href="using-tmb.html#cb27-52" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">=</span> <span class="op">(</span>delta <span class="op">*</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;(</span>emission_probs<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">))).</span>matrix<span class="op">();</span></span>
-<span id="cb27-53"><a href="using-tmb.html#cb27-53" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
-<span id="cb27-54"><a href="using-tmb.html#cb27-54" aria-hidden="true" tabindex="-1"></a>  lscale <span class="op">=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
-<span id="cb27-55"><a href="using-tmb.html#cb27-55" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>transposeInPlace<span class="op">();</span></span>
-<span id="cb27-56"><a href="using-tmb.html#cb27-56" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
-<span id="cb27-57"><a href="using-tmb.html#cb27-57" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb27-58"><a href="using-tmb.html#cb27-58" aria-hidden="true" tabindex="-1"></a>    P <span class="op">=</span> emission_probs<span class="op">.</span>row<span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
-<span id="cb27-59"><a href="using-tmb.html#cb27-59" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">=</span> <span class="op">((</span>foo <span class="op">*</span> gamma<span class="op">).</span>array<span class="op">()</span> <span class="op">*</span> P<span class="op">.</span>array<span class="op">()).</span>matrix<span class="op">();</span></span>
-<span id="cb27-60"><a href="using-tmb.html#cb27-60" aria-hidden="true" tabindex="-1"></a>    sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
-<span id="cb27-61"><a href="using-tmb.html#cb27-61" aria-hidden="true" tabindex="-1"></a>    lscale <span class="op">+=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
-<span id="cb27-62"><a href="using-tmb.html#cb27-62" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
-<span id="cb27-63"><a href="using-tmb.html#cb27-63" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb27-64"><a href="using-tmb.html#cb27-64" aria-hidden="true" tabindex="-1"></a>  mllk <span class="op">=</span> <span class="op">-</span>lscale<span class="op">;</span></span>
-<span id="cb27-65"><a href="using-tmb.html#cb27-65" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb27-66"><a href="using-tmb.html#cb27-66" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
-<span id="cb27-67"><a href="using-tmb.html#cb27-67" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>lambda<span class="op">);</span></span>
-<span id="cb27-68"><a href="using-tmb.html#cb27-68" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>gamma<span class="op">);</span></span>
-<span id="cb27-69"><a href="using-tmb.html#cb27-69" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>delta<span class="op">);</span></span>
-<span id="cb27-70"><a href="using-tmb.html#cb27-70" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb27-71"><a href="using-tmb.html#cb27-71" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
-<span id="cb27-72"><a href="using-tmb.html#cb27-72" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>lambda<span class="op">);</span></span>
-<span id="cb27-73"><a href="using-tmb.html#cb27-73" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>gamma<span class="op">);</span></span>
-<span id="cb27-74"><a href="using-tmb.html#cb27-74" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>delta<span class="op">);</span></span>
-<span id="cb27-75"><a href="using-tmb.html#cb27-75" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>n<span class="op">);</span></span>
-<span id="cb27-76"><a href="using-tmb.html#cb27-76" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>emission_probs<span class="op">);</span></span>
-<span id="cb27-77"><a href="using-tmb.html#cb27-77" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>mllk<span class="op">);</span></span>
-<span id="cb27-78"><a href="using-tmb.html#cb27-78" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb27-79"><a href="using-tmb.html#cb27-79" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk<span class="op">;</span></span>
-<span id="cb27-80"><a href="using-tmb.html#cb27-80" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb29-1"><a href="using-tmb.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
+<span id="cb29-2"><a href="using-tmb.html#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
+<span id="cb29-3"><a href="using-tmb.html#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="using-tmb.html#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood for a poisson hidden markov model. </span></span>
+<span id="cb29-5"><a href="using-tmb.html#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb29-6"><a href="using-tmb.html#cb29-6" aria-hidden="true" tabindex="-1"></a>Type objective_function<span class="op">&lt;</span>Type<span class="op">&gt;::</span><span class="kw">operator</span><span class="op">()</span> <span class="op">()</span></span>
+<span id="cb29-7"><a href="using-tmb.html#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb29-8"><a href="using-tmb.html#cb29-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-9"><a href="using-tmb.html#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Data</span></span>
+<span id="cb29-10"><a href="using-tmb.html#cb29-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR<span class="op">(</span>x<span class="op">);</span>          <span class="co">// timeseries vector</span></span>
+<span id="cb29-11"><a href="using-tmb.html#cb29-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER<span class="op">(</span>m<span class="op">);</span>         <span class="co">// Number of states m</span></span>
+<span id="cb29-12"><a href="using-tmb.html#cb29-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-13"><a href="using-tmb.html#cb29-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters</span></span>
+<span id="cb29-14"><a href="using-tmb.html#cb29-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tlambda<span class="op">);</span>     <span class="co">// conditional log_lambdas&#39;s</span></span>
+<span id="cb29-15"><a href="using-tmb.html#cb29-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tgamma<span class="op">);</span>      <span class="co">// m(m-1) working parameters of TPM</span></span>
+<span id="cb29-16"><a href="using-tmb.html#cb29-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-17"><a href="using-tmb.html#cb29-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Uncomment only when using a non-stationary distribution</span></span>
+<span id="cb29-18"><a href="using-tmb.html#cb29-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">//PARAMETER_VECTOR(tdelta);    // transformed stationary distribution,</span></span>
+<span id="cb29-19"><a href="using-tmb.html#cb29-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-20"><a href="using-tmb.html#cb29-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
+<span id="cb29-21"><a href="using-tmb.html#cb29-21" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> lambda <span class="op">=</span> tlambda<span class="op">.</span>exp<span class="op">();</span></span>
+<span id="cb29-22"><a href="using-tmb.html#cb29-22" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma <span class="op">=</span> gamma_w2n<span class="op">(</span>m<span class="op">,</span> tgamma<span class="op">);</span></span>
+<span id="cb29-23"><a href="using-tmb.html#cb29-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-24"><a href="using-tmb.html#cb29-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
+<span id="cb29-25"><a href="using-tmb.html#cb29-25" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta <span class="op">=</span> stat_dist<span class="op">(</span>m<span class="op">,</span> gamma<span class="op">);</span></span>
+<span id="cb29-26"><a href="using-tmb.html#cb29-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If using a non-stationary distribution, use this instead</span></span>
+<span id="cb29-27"><a href="using-tmb.html#cb29-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">//vector&lt;Type&gt; delta = delta_w2n(m, tdelta);</span></span>
+<span id="cb29-28"><a href="using-tmb.html#cb29-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-29"><a href="using-tmb.html#cb29-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
+<span id="cb29-30"><a href="using-tmb.html#cb29-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n <span class="op">=</span> x<span class="op">.</span>size<span class="op">();</span></span>
+<span id="cb29-31"><a href="using-tmb.html#cb29-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-32"><a href="using-tmb.html#cb29-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
+<span id="cb29-33"><a href="using-tmb.html#cb29-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
+<span id="cb29-34"><a href="using-tmb.html#cb29-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
+<span id="cb29-35"><a href="using-tmb.html#cb29-35" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> emission_probs<span class="op">(</span>n<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb29-36"><a href="using-tmb.html#cb29-36" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> row1vec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb29-37"><a href="using-tmb.html#cb29-37" aria-hidden="true" tabindex="-1"></a>  row1vec<span class="op">.</span>setOnes<span class="op">();</span></span>
+<span id="cb29-38"><a href="using-tmb.html#cb29-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb29-39"><a href="using-tmb.html#cb29-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>x<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> x<span class="op">[</span>i<span class="op">])</span> <span class="op">{</span> <span class="co">// f != f returns true if and only if f is NaN. </span></span>
+<span id="cb29-40"><a href="using-tmb.html#cb29-40" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
+<span id="cb29-41"><a href="using-tmb.html#cb29-41" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> row1vec<span class="op">;</span></span>
+<span id="cb29-42"><a href="using-tmb.html#cb29-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb29-43"><a href="using-tmb.html#cb29-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb29-44"><a href="using-tmb.html#cb29-44" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> dpois<span class="op">(</span>x<span class="op">[</span>i<span class="op">],</span> lambda<span class="op">,</span> <span class="kw">false</span><span class="op">);</span></span>
+<span id="cb29-45"><a href="using-tmb.html#cb29-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb29-46"><a href="using-tmb.html#cb29-46" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb29-47"><a href="using-tmb.html#cb29-47" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-48"><a href="using-tmb.html#cb29-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to (Zucchini et al., 2016, p 333)</span></span>
+<span id="cb29-49"><a href="using-tmb.html#cb29-49" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">,</span> P<span class="op">;</span></span>
+<span id="cb29-50"><a href="using-tmb.html#cb29-50" aria-hidden="true" tabindex="-1"></a>  Type mllk<span class="op">,</span> sumfoo<span class="op">,</span> lscale<span class="op">;</span></span>
+<span id="cb29-51"><a href="using-tmb.html#cb29-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-52"><a href="using-tmb.html#cb29-52" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">=</span> <span class="op">(</span>delta <span class="op">*</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;(</span>emission_probs<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">))).</span>matrix<span class="op">();</span></span>
+<span id="cb29-53"><a href="using-tmb.html#cb29-53" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
+<span id="cb29-54"><a href="using-tmb.html#cb29-54" aria-hidden="true" tabindex="-1"></a>  lscale <span class="op">=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb29-55"><a href="using-tmb.html#cb29-55" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>transposeInPlace<span class="op">();</span></span>
+<span id="cb29-56"><a href="using-tmb.html#cb29-56" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb29-57"><a href="using-tmb.html#cb29-57" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb29-58"><a href="using-tmb.html#cb29-58" aria-hidden="true" tabindex="-1"></a>    P <span class="op">=</span> emission_probs<span class="op">.</span>row<span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb29-59"><a href="using-tmb.html#cb29-59" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">=</span> <span class="op">((</span>foo <span class="op">*</span> gamma<span class="op">).</span>array<span class="op">()</span> <span class="op">*</span> P<span class="op">.</span>array<span class="op">()).</span>matrix<span class="op">();</span></span>
+<span id="cb29-60"><a href="using-tmb.html#cb29-60" aria-hidden="true" tabindex="-1"></a>    sumfoo <span class="op">=</span> foo<span class="op">.</span>sum<span class="op">();</span></span>
+<span id="cb29-61"><a href="using-tmb.html#cb29-61" aria-hidden="true" tabindex="-1"></a>    lscale <span class="op">+=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb29-62"><a href="using-tmb.html#cb29-62" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb29-63"><a href="using-tmb.html#cb29-63" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb29-64"><a href="using-tmb.html#cb29-64" aria-hidden="true" tabindex="-1"></a>  mllk <span class="op">=</span> <span class="op">-</span>lscale<span class="op">;</span></span>
+<span id="cb29-65"><a href="using-tmb.html#cb29-65" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-66"><a href="using-tmb.html#cb29-66" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
+<span id="cb29-67"><a href="using-tmb.html#cb29-67" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>lambda<span class="op">);</span></span>
+<span id="cb29-68"><a href="using-tmb.html#cb29-68" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>gamma<span class="op">);</span></span>
+<span id="cb29-69"><a href="using-tmb.html#cb29-69" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>delta<span class="op">);</span></span>
+<span id="cb29-70"><a href="using-tmb.html#cb29-70" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-71"><a href="using-tmb.html#cb29-71" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
+<span id="cb29-72"><a href="using-tmb.html#cb29-72" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>lambda<span class="op">);</span></span>
+<span id="cb29-73"><a href="using-tmb.html#cb29-73" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>gamma<span class="op">);</span></span>
+<span id="cb29-74"><a href="using-tmb.html#cb29-74" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>delta<span class="op">);</span></span>
+<span id="cb29-75"><a href="using-tmb.html#cb29-75" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>n<span class="op">);</span></span>
+<span id="cb29-76"><a href="using-tmb.html#cb29-76" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>emission_probs<span class="op">);</span></span>
+<span id="cb29-77"><a href="using-tmb.html#cb29-77" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>mllk<span class="op">);</span></span>
+<span id="cb29-78"><a href="using-tmb.html#cb29-78" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-79"><a href="using-tmb.html#cb29-79" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk<span class="op">;</span></span>
+<span id="cb29-80"><a href="using-tmb.html#cb29-80" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Note that we use similar names as to the TMB side.</p>
 </div>
 <div id="optimization" class="section level2 hasAnchor" number="4.2">
@@ -391,25 +390,25 @@ div.csl-indent {
 <ol style="list-style-type: lower-roman">
 <li>We start by compiling the <code>C++</code> code for computing the likelihood and its gradients. Once it is compiled, we can load the TMB likelihood object into <code>R</code> – making it available from <code>R</code>.</li>
 </ol>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="using-tmb.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load TMB and optimization packages</span></span>
-<span id="cb28-2"><a href="using-tmb.html#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
-<span id="cb28-3"><a href="using-tmb.html#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the C++ file containing the TMB code</span></span>
-<span id="cb28-4"><a href="using-tmb.html#cb28-4" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span>
-<span id="cb28-5"><a href="using-tmb.html#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Load it</span></span>
-<span id="cb28-6"><a href="using-tmb.html#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="using-tmb.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load TMB and optimization packages</span></span>
+<span id="cb30-2"><a href="using-tmb.html#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
+<span id="cb30-3"><a href="using-tmb.html#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the C++ file containing the TMB code</span></span>
+<span id="cb30-4"><a href="using-tmb.html#cb30-4" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm.cpp&quot;</span>)</span>
+<span id="cb30-5"><a href="using-tmb.html#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Load it</span></span>
+<span id="cb30-6"><a href="using-tmb.html#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm&quot;</span>))</span></code></pre></div>
 <p>Next, we need to load the necessary packages and the utility <code>R</code> functions.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="using-tmb.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the parameter transformation function</span></span>
-<span id="cb29-2"><a href="using-tmb.html#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="using-tmb.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the parameter transformation function</span></span>
+<span id="cb31-2"><a href="using-tmb.html#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span></code></pre></div>
 <ol start="2" style="list-style-type: lower-roman">
 <li>The data are part of a large data set collected with the “Track Your Tinnitus” (TYT) mobile application, a detailed description of which is presented in <span class="citation">Pryss, Reichert, Langguth, et al. (<a href="references.html#ref-pryss" role="doc-biblioref">2015</a>)</span> and <span class="citation">Pryss, Reichert, Herrmann, et al. (<a href="references.html#ref-pryssa" role="doc-biblioref">2015</a>)</span>.
 We analyze 87 successive days of the “arousal” variable, which is measured on a discrete scale.
 Higher values correspond to a higher degree of excitement, lower values to a more calm emotional state <span class="citation">(for details, see <a href="references.html#ref-probst" role="doc-biblioref">Probst et al. 2016</a>)</span>.
 The data can be loaded by a simple call.</li>
 </ol>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="using-tmb.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="using-tmb.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span></code></pre></div>
 <p>Figure <a href="using-tmb.html#fig:4tinnitus-fig">4.1</a> presents the raw data in the <a href="#table:tinnitus_data">Table</a> below, which are also available for download at <em><a href="github.html#tinnitus.RData">data/tinnitus.RData</a></em>.</p>
-<!-- html table generated in R 4.2.0 by xtable 1.8-4 package -->
-<!-- Fri May  6 17:10:31 2022 -->
+<!-- html table generated in R 4.2.1 by xtable 1.8-4 package -->
+<!-- Fri Oct 28 18:55:34 2022 -->
 <table border="1">
 <caption align="bottom">
 TYT data. Observations collected by the TYT app on 87 successive days (from left to right).
@@ -433,54 +432,54 @@ Figure 4.1: Plot of observations from TYT app data for 87 succesive days.
 <p>First, the number of states needs to be determined. As explained by <span class="citation">Pohle et al. (<a href="references.html#ref-pohlea" role="doc-biblioref">2017a</a>)</span>, <span class="citation">Pohle et al. (<a href="references.html#ref-pohle" role="doc-biblioref">2017b</a>)</span>, and <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, sec. 6</a>)</span> (to name only a few), usually one would first fit models with a different number of states. Then, these models are evaluated e.g. by means of model selection criteria <span class="citation">(as carried out by <a href="references.html#ref-leroux" role="doc-biblioref">Leroux and Puterman 1992</a>)</span> or prediction performance <span class="citation">(<a href="references.html#ref-celeux" role="doc-biblioref">Celeux and Durand 2008</a>)</span>.
 As shown in <a href="using-tmb.html#appendix">the appendix</a>, the model selection procedure shows that both AIC and BIC prefer a two-state model over a Poisson regression and over a model with three or four states. Consequently, we focus on the two-state model in the following.<br />
 The list object <code>TMB_data</code> contains the data and the number of states.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="using-tmb.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model with 2 states</span></span>
-<span id="cb31-2"><a href="using-tmb.html#cb31-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb31-3"><a href="using-tmb.html#cb31-3" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="using-tmb.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model with 2 states</span></span>
+<span id="cb33-2"><a href="using-tmb.html#cb33-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb33-3"><a href="using-tmb.html#cb33-3" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span></code></pre></div>
 <p>Secondly, initial values for the optimization procedure need to be defined.
 Although we will apply unconstrained optimization, we initialize the natural parameters, because this is much more intuitive and practical than handling the working parameters.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="using-tmb.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate initial set of parameters for optimization</span></span>
-<span id="cb32-2"><a href="using-tmb.html#cb32-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
-<span id="cb32-3"><a href="using-tmb.html#cb32-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
-<span id="cb32-4"><a href="using-tmb.html#cb32-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> m)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="using-tmb.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate initial set of parameters for optimization</span></span>
+<span id="cb34-2"><a href="using-tmb.html#cb34-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb34-3"><a href="using-tmb.html#cb34-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>,</span>
+<span id="cb34-4"><a href="using-tmb.html#cb34-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> m)</span></code></pre></div>
 <ol start="4" style="list-style-type: lower-roman">
 <li>Transformation from natural to working parameters</li>
 </ol>
 <p>The previously created initial values are transformed and stored in the list <code>parameters</code> for the optimization procedure.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="using-tmb.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn them into working parameters</span></span>
-<span id="cb33-2"><a href="using-tmb.html#cb33-2" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="using-tmb.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn them into working parameters</span></span>
+<span id="cb35-2"><a href="using-tmb.html#cb35-2" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span></code></pre></div>
 <ol start="22" style="list-style-type: lower-alpha">
 <li>Creation of the <code>TMB</code> negative log-likelihood function with its derivatives</li>
 </ol>
 <p>This object, stored as <code>obj_tmb</code> requires the data, the initial values, and the previously created DLL as input.
 Setting argument <code>silent = TRUE</code> disables tracing information and is only used here to avoid excessive output.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="using-tmb.html#cb34-1" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb34-2"><a href="using-tmb.html#cb34-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="using-tmb.html#cb36-1" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb36-2"><a href="using-tmb.html#cb36-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>This object also contains the previously defined initial values as a vector (<code>par</code>) rather than a list.
 The negative log-likelihood (<code>fn</code>), its gradient (<code>gr</code>), and Hessian (<code>he</code>) are functions of the parameters (in vector form) while the data are considered fixed.
 These functions are available to the user and can be evaluated for instance at the initial parameter values:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="using-tmb.html#cb35-1" aria-hidden="true" tabindex="-1"></a>obj_tmb<span class="sc">$</span>par</span>
-<span id="cb35-2"><a href="using-tmb.html#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="do">##   tlambda   tlambda    tgamma    tgamma </span></span>
-<span id="cb35-3"><a href="using-tmb.html#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  0.000000  1.098612 -1.386294 -1.386294</span></span>
-<span id="cb35-4"><a href="using-tmb.html#cb35-4" aria-hidden="true" tabindex="-1"></a>obj_tmb<span class="sc">$</span><span class="fu">fn</span>(obj_tmb<span class="sc">$</span>par)</span>
-<span id="cb35-5"><a href="using-tmb.html#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 228.3552</span></span>
-<span id="cb35-6"><a href="using-tmb.html#cb35-6" aria-hidden="true" tabindex="-1"></a>obj_tmb<span class="sc">$</span><span class="fu">gr</span>(obj_tmb<span class="sc">$</span>par)</span>
-<span id="cb35-7"><a href="using-tmb.html#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="do">##          [,1]      [,2]     [,3]      [,4]</span></span>
-<span id="cb35-8"><a href="using-tmb.html#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] -3.60306 -146.0336 10.52832 -1.031706</span></span>
-<span id="cb35-9"><a href="using-tmb.html#cb35-9" aria-hidden="true" tabindex="-1"></a>obj_tmb<span class="sc">$</span><span class="fu">he</span>(obj_tmb<span class="sc">$</span>par)</span>
-<span id="cb35-10"><a href="using-tmb.html#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="do">##           [,1]       [,2]       [,3]       [,4]</span></span>
-<span id="cb35-11"><a href="using-tmb.html#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,]  1.902009  -5.877900 -1.3799682  2.4054017</span></span>
-<span id="cb35-12"><a href="using-tmb.html#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] -5.877900 188.088247 -4.8501589  2.3434284</span></span>
-<span id="cb35-13"><a href="using-tmb.html#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] -1.379968  -4.850159  9.6066700 -0.8410438</span></span>
-<span id="cb35-14"><a href="using-tmb.html#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="do">## [4,]  2.405402   2.343428 -0.8410438  0.7984216</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="using-tmb.html#cb37-1" aria-hidden="true" tabindex="-1"></a>obj_tmb<span class="sc">$</span>par</span>
+<span id="cb37-2"><a href="using-tmb.html#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="do">##   tlambda   tlambda    tgamma    tgamma </span></span>
+<span id="cb37-3"><a href="using-tmb.html#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  0.000000  1.098612 -1.386294 -1.386294</span></span>
+<span id="cb37-4"><a href="using-tmb.html#cb37-4" aria-hidden="true" tabindex="-1"></a>obj_tmb<span class="sc">$</span><span class="fu">fn</span>(obj_tmb<span class="sc">$</span>par)</span>
+<span id="cb37-5"><a href="using-tmb.html#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 228.3552</span></span>
+<span id="cb37-6"><a href="using-tmb.html#cb37-6" aria-hidden="true" tabindex="-1"></a>obj_tmb<span class="sc">$</span><span class="fu">gr</span>(obj_tmb<span class="sc">$</span>par)</span>
+<span id="cb37-7"><a href="using-tmb.html#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="do">##          [,1]      [,2]     [,3]      [,4]</span></span>
+<span id="cb37-8"><a href="using-tmb.html#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] -3.60306 -146.0336 10.52832 -1.031706</span></span>
+<span id="cb37-9"><a href="using-tmb.html#cb37-9" aria-hidden="true" tabindex="-1"></a>obj_tmb<span class="sc">$</span><span class="fu">he</span>(obj_tmb<span class="sc">$</span>par)</span>
+<span id="cb37-10"><a href="using-tmb.html#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="do">##           [,1]       [,2]       [,3]       [,4]</span></span>
+<span id="cb37-11"><a href="using-tmb.html#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,]  1.902009  -5.877900 -1.3799682  2.4054017</span></span>
+<span id="cb37-12"><a href="using-tmb.html#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] -5.877900 188.088247 -4.8501589  2.3434284</span></span>
+<span id="cb37-13"><a href="using-tmb.html#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] -1.379968  -4.850159  9.6066700 -0.8410438</span></span>
+<span id="cb37-14"><a href="using-tmb.html#cb37-14" aria-hidden="true" tabindex="-1"></a><span class="do">## [4,]  2.405402   2.343428 -0.8410438  0.7984216</span></span></code></pre></div>
 <ol start="6" style="list-style-type: lower-roman">
 <li>Execution of the optimization</li>
 </ol>
 <p>For this step we rely again on the optimizer implemented in the <code>nlminb</code> function.
 The arguments, i.e.~ initial values for the parameters and the function to be optimized, are extracted from the previously created TMB object.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="using-tmb.html#cb36-1" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn)</span>
-<span id="cb36-2"><a href="using-tmb.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Check that it converged successfully</span></span>
-<span id="cb36-3"><a href="using-tmb.html#cb36-3" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
-<span id="cb36-4"><a href="using-tmb.html#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="using-tmb.html#cb38-1" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn)</span>
+<span id="cb38-2"><a href="using-tmb.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Check that it converged successfully</span></span>
+<span id="cb38-3"><a href="using-tmb.html#cb38-3" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
+<span id="cb38-4"><a href="using-tmb.html#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code></pre></div>
 <p>It is noteworthy that various alternatives to <code>nlminb</code> exist.
 Nevertheless, we focus on this established optimization routine because of its high speed of convergence.</p>
 <ol start="7" style="list-style-type: lower-roman">
@@ -488,21 +487,21 @@ Nevertheless, we focus on this established optimization routine because of its h
 </ol>
 <p>Obtaining the ML estimates of the natural parameters together with their standard errors is possible by using the previously introduced command <code>sdreport</code>.</p>
 <p>Recall that this requires the parameters of interest to be treated by the <code>ADREPORT</code> statement in the <code>C++</code> part. It should be noted that the presentation of the set of parameters <code>gamma</code> below results from a column-wise representation of the TPM.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="using-tmb.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb, <span class="at">par.fixed =</span> mod_tmb<span class="sc">$</span>par), <span class="st">&quot;report&quot;</span>)</span>
-<span id="cb37-2"><a href="using-tmb.html#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="do">##          Estimate Std. Error</span></span>
-<span id="cb37-3"><a href="using-tmb.html#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 1.63641070 0.27758294</span></span>
-<span id="cb37-4"><a href="using-tmb.html#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 5.53309626 0.31876141</span></span>
-<span id="cb37-5"><a href="using-tmb.html#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.94980192 0.04374682</span></span>
-<span id="cb37-6"><a href="using-tmb.html#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.02592209 0.02088689</span></span>
-<span id="cb37-7"><a href="using-tmb.html#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.05019808 0.04374682</span></span>
-<span id="cb37-8"><a href="using-tmb.html#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.97407791 0.02088689</span></span>
-<span id="cb37-9"><a href="using-tmb.html#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.34054163 0.23056401</span></span>
-<span id="cb37-10"><a href="using-tmb.html#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.65945837 0.23056401</span></span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="using-tmb.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb, <span class="at">par.fixed =</span> mod_tmb<span class="sc">$</span>par), <span class="st">&quot;report&quot;</span>)</span>
+<span id="cb39-2"><a href="using-tmb.html#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="do">##          Estimate Std. Error</span></span>
+<span id="cb39-3"><a href="using-tmb.html#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 1.63641070 0.27758294</span></span>
+<span id="cb39-4"><a href="using-tmb.html#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 5.53309626 0.31876141</span></span>
+<span id="cb39-5"><a href="using-tmb.html#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.94980192 0.04374682</span></span>
+<span id="cb39-6"><a href="using-tmb.html#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.02592209 0.02088689</span></span>
+<span id="cb39-7"><a href="using-tmb.html#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.05019808 0.04374682</span></span>
+<span id="cb39-8"><a href="using-tmb.html#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.97407791 0.02088689</span></span>
+<span id="cb39-9"><a href="using-tmb.html#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.34054163 0.23056401</span></span>
+<span id="cb39-10"><a href="using-tmb.html#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.65945837 0.23056401</span></span></code></pre></div>
 <p>Note that the table above also contains estimation results for <span class="math inline">\({\boldsymbol\delta}\)</span> and accompanying standard errors, although <span class="math inline">\({\boldsymbol\delta}\)</span> is not estimated, but derived from <span class="math inline">\({\boldsymbol\Gamma}\)</span>.
 We provide further details on this aspect in <a href="confidence-intervals.html#confidence-intervals">Confidence intervals</a>.<br />
 The value of the nll function in the minimum found by the optimizer can also be extracted directly from the object <code>mod_tmb</code> by accessing the list element <code>objective</code>:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="using-tmb.html#cb38-1" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>objective</span>
-<span id="cb38-2"><a href="using-tmb.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 168.5361</span></span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="using-tmb.html#cb40-1" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>objective</span>
+<span id="cb40-2"><a href="using-tmb.html#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 168.5361</span></span></code></pre></div>
 <ol start="8" style="list-style-type: lower-roman">
 <li>Use exact gradient and Hessian</li>
 </ol>
@@ -510,68 +509,68 @@ The value of the nll function in the minimum found by the optimizer can also be 
 However, since <code>TMB</code> computes the gradient and hessian of the likelihood, we can provide this information to the optimizer
 This is in general advisable, because <code>TMB</code> provides an exact value of both gradient and Hessian up to machine precision, which is superior to approximations used by the optimizing procedure.
 Similar to the nll, both quantities can be extracted directly from the <code>TMB</code> object <code>obj_tmb</code>:</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="using-tmb.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The negative log-likelihood is accessed by the objective</span></span>
-<span id="cb39-2"><a href="using-tmb.html#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co"># attribute of the optimized object</span></span>
-<span id="cb39-3"><a href="using-tmb.html#cb39-3" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
-<span id="cb39-4"><a href="using-tmb.html#cb39-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr, <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
-<span id="cb39-5"><a href="using-tmb.html#cb39-5" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>objective</span>
-<span id="cb39-6"><a href="using-tmb.html#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 168.5361</span></span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="using-tmb.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The negative log-likelihood is accessed by the objective</span></span>
+<span id="cb41-2"><a href="using-tmb.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co"># attribute of the optimized object</span></span>
+<span id="cb41-3"><a href="using-tmb.html#cb41-3" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb41-4"><a href="using-tmb.html#cb41-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr, <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb41-5"><a href="using-tmb.html#cb41-5" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>objective</span>
+<span id="cb41-6"><a href="using-tmb.html#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 168.5361</span></span></code></pre></div>
 <p>Note that passing the exact gradient and Hessian as provided by <code>TMB</code> to <code>nlminb</code> leads to the same minimum, i.e. value of the nll function, here.</p>
 <p>Is it noteworthy that inconsistencies can happen in the estimates due to computer approximations.</p>
 <p>The stationary distribution is a vector of probabilities and should sum to 1.
 However, it doesn’t always behave as expected.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="using-tmb.html#cb40-1" aria-hidden="true" tabindex="-1"></a>adrep <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
-<span id="cb40-2"><a href="using-tmb.html#cb40-2" aria-hidden="true" tabindex="-1"></a>estimate_delta <span class="ot">&lt;-</span> adrep[<span class="fu">rownames</span>(adrep) <span class="sc">==</span> <span class="st">&quot;delta&quot;</span>, <span class="st">&quot;Estimate&quot;</span>]</span>
-<span id="cb40-3"><a href="using-tmb.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(estimate_delta)</span>
-<span id="cb40-4"><a href="using-tmb.html#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1</span></span>
-<span id="cb40-5"><a href="using-tmb.html#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(estimate_delta) <span class="sc">==</span> <span class="dv">1</span> <span class="co"># The sum is displayed as 1 but is not 1</span></span>
-<span id="cb40-6"><a href="using-tmb.html#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] FALSE</span></span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="using-tmb.html#cb42-1" aria-hidden="true" tabindex="-1"></a>adrep <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
+<span id="cb42-2"><a href="using-tmb.html#cb42-2" aria-hidden="true" tabindex="-1"></a>estimate_delta <span class="ot">&lt;-</span> adrep[<span class="fu">rownames</span>(adrep) <span class="sc">==</span> <span class="st">&quot;delta&quot;</span>, <span class="st">&quot;Estimate&quot;</span>]</span>
+<span id="cb42-3"><a href="using-tmb.html#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(estimate_delta)</span>
+<span id="cb42-4"><a href="using-tmb.html#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1</span></span>
+<span id="cb42-5"><a href="using-tmb.html#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(estimate_delta) <span class="sc">==</span> <span class="dv">1</span> <span class="co"># The sum is displayed as 1 but is not 1</span></span>
+<span id="cb42-6"><a href="using-tmb.html#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] FALSE</span></span></code></pre></div>
 <p>As noted on <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 159–60</a>)</span>, ``the row sums of <span class="math inline">\({\boldsymbol\Gamma}\)</span> will only approximately equal 1, and the components of the vector <span class="math inline">\({\boldsymbol\delta}\)</span> will only approximately total 1. This can be remedied by scaling the vector <span class="math inline">\({\boldsymbol\delta}\)</span> and each row of <span class="math inline">\({\boldsymbol\Gamma}\)</span> to total 1’’.
 We do not remedy this issue because it provides no benefit to us, but this may lead to surprising results when checking equality.</p>
 <p>This is likely due to machine approximations when numbers far apart from each other interact together.
 In R, a small number is not 0 but is treated as 0 when added to a much larger number.</p>
 <p>This can result in incoherent findings when checking equality between 2 numbers.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="using-tmb.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fl">1e-100</span> <span class="sc">==</span> <span class="dv">0</span> <span class="co"># Small numbers are 0</span></span>
-<span id="cb41-2"><a href="using-tmb.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] FALSE</span></span>
-<span id="cb41-3"><a href="using-tmb.html#cb41-3" aria-hidden="true" tabindex="-1"></a>(<span class="dv">1</span> <span class="sc">+</span> <span class="fl">1e-100</span>) <span class="sc">==</span> <span class="dv">1</span></span>
-<span id="cb41-4"><a href="using-tmb.html#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="using-tmb.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fl">1e-100</span> <span class="sc">==</span> <span class="dv">0</span> <span class="co"># Small numbers are 0</span></span>
+<span id="cb43-2"><a href="using-tmb.html#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] FALSE</span></span>
+<span id="cb43-3"><a href="using-tmb.html#cb43-3" aria-hidden="true" tabindex="-1"></a>(<span class="dv">1</span> <span class="sc">+</span> <span class="fl">1e-100</span>) <span class="sc">==</span> <span class="dv">1</span></span>
+<span id="cb43-4"><a href="using-tmb.html#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code></pre></div>
 </div>
 <div id="basic-nested-model-specification" class="section level2 hasAnchor" number="4.3">
 <h2><span class="header-section-number">4.3</span> Basic nested model<br>specification<a href="using-tmb.html#basic-nested-model-specification" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="principle" class="section level3 hasAnchor" number="4.3.1">
 <h3><span class="header-section-number">4.3.1</span> Principle<a href="using-tmb.html#principle" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>As a first step in building a nested model, we arbitrarily fix <span class="math inline">\(\lambda_1\)</span> to the value 1.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="using-tmb.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the previous values, and fix some</span></span>
-<span id="cb42-2"><a href="using-tmb.html#cb42-2" aria-hidden="true" tabindex="-1"></a>fixed_par_lambda <span class="ot">&lt;-</span> lambda</span>
-<span id="cb42-3"><a href="using-tmb.html#cb42-3" aria-hidden="true" tabindex="-1"></a>fixed_par_lambda[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb42-4"><a href="using-tmb.html#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform them into working parameters</span></span>
-<span id="cb42-5"><a href="using-tmb.html#cb42-5" aria-hidden="true" tabindex="-1"></a>new_parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(<span class="at">m =</span> m,</span>
-<span id="cb42-6"><a href="using-tmb.html#cb42-6" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">lambda =</span> fixed_par_lambda,</span>
-<span id="cb42-7"><a href="using-tmb.html#cb42-7" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">gamma =</span> gamma)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="using-tmb.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the previous values, and fix some</span></span>
+<span id="cb44-2"><a href="using-tmb.html#cb44-2" aria-hidden="true" tabindex="-1"></a>fixed_par_lambda <span class="ot">&lt;-</span> lambda</span>
+<span id="cb44-3"><a href="using-tmb.html#cb44-3" aria-hidden="true" tabindex="-1"></a>fixed_par_lambda[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb44-4"><a href="using-tmb.html#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform them into working parameters</span></span>
+<span id="cb44-5"><a href="using-tmb.html#cb44-5" aria-hidden="true" tabindex="-1"></a>new_parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(<span class="at">m =</span> m,</span>
+<span id="cb44-6"><a href="using-tmb.html#cb44-6" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">lambda =</span> fixed_par_lambda,</span>
+<span id="cb44-7"><a href="using-tmb.html#cb44-7" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">gamma =</span> gamma)</span></code></pre></div>
 <p>Then, we instruct <code>TMB</code> to read these custom parameters.
 We indicate fixed values by mapping them to NA values, whereas the variable values need to be mapped to different factor variables.
 Lastly, we specify this mapping with the <code>map</code> argument when making the <code>TMB</code> object.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="using-tmb.html#cb43-1" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">tlambda =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="cn">NA</span>, <span class="dv">1</span>)),</span>
-<span id="cb43-2"><a href="using-tmb.html#cb43-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">tgamma =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>)))</span>
-<span id="cb43-3"><a href="using-tmb.html#cb43-3" aria-hidden="true" tabindex="-1"></a>fixed_par_obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, new_parameters,</span>
-<span id="cb43-4"><a href="using-tmb.html#cb43-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>,</span>
-<span id="cb43-5"><a href="using-tmb.html#cb43-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">silent =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb43-6"><a href="using-tmb.html#cb43-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">map =</span> map)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="using-tmb.html#cb45-1" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">tlambda =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="cn">NA</span>, <span class="dv">1</span>)),</span>
+<span id="cb45-2"><a href="using-tmb.html#cb45-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">tgamma =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>)))</span>
+<span id="cb45-3"><a href="using-tmb.html#cb45-3" aria-hidden="true" tabindex="-1"></a>fixed_par_obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, new_parameters,</span>
+<span id="cb45-4"><a href="using-tmb.html#cb45-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>,</span>
+<span id="cb45-5"><a href="using-tmb.html#cb45-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">silent =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb45-6"><a href="using-tmb.html#cb45-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">map =</span> map)</span></code></pre></div>
 <p>Estimation of the model and displaying the results is performed as usual.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="using-tmb.html#cb44-1" aria-hidden="true" tabindex="-1"></a>fixed_par_mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> fixed_par_obj_tmb<span class="sc">$</span>par,</span>
-<span id="cb44-2"><a href="using-tmb.html#cb44-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">objective =</span> fixed_par_obj_tmb<span class="sc">$</span>fn,</span>
-<span id="cb44-3"><a href="using-tmb.html#cb44-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">gradient =</span> fixed_par_obj_tmb<span class="sc">$</span>gr,</span>
-<span id="cb44-4"><a href="using-tmb.html#cb44-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">hessian =</span> fixed_par_obj_tmb<span class="sc">$</span>he)</span>
-<span id="cb44-5"><a href="using-tmb.html#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(fixed_par_obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
-<span id="cb44-6"><a href="using-tmb.html#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="do">##          Estimate Std. Error</span></span>
-<span id="cb44-7"><a href="using-tmb.html#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 1.00000000 0.00000000</span></span>
-<span id="cb44-8"><a href="using-tmb.html#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 5.50164872 0.30963641</span></span>
-<span id="cb44-9"><a href="using-tmb.html#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.94561055 0.04791050</span></span>
-<span id="cb44-10"><a href="using-tmb.html#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.02655944 0.02133283</span></span>
-<span id="cb44-11"><a href="using-tmb.html#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.05438945 0.04791050</span></span>
-<span id="cb44-12"><a href="using-tmb.html#cb44-12" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.97344056 0.02133283</span></span>
-<span id="cb44-13"><a href="using-tmb.html#cb44-13" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.32810136 0.22314460</span></span>
-<span id="cb44-14"><a href="using-tmb.html#cb44-14" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.67189864 0.22314460</span></span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="using-tmb.html#cb46-1" aria-hidden="true" tabindex="-1"></a>fixed_par_mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> fixed_par_obj_tmb<span class="sc">$</span>par,</span>
+<span id="cb46-2"><a href="using-tmb.html#cb46-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">objective =</span> fixed_par_obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb46-3"><a href="using-tmb.html#cb46-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">gradient =</span> fixed_par_obj_tmb<span class="sc">$</span>gr,</span>
+<span id="cb46-4"><a href="using-tmb.html#cb46-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">hessian =</span> fixed_par_obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb46-5"><a href="using-tmb.html#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(fixed_par_obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
+<span id="cb46-6"><a href="using-tmb.html#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="do">##          Estimate Std. Error</span></span>
+<span id="cb46-7"><a href="using-tmb.html#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 1.00000000 0.00000000</span></span>
+<span id="cb46-8"><a href="using-tmb.html#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 5.50164872 0.30963641</span></span>
+<span id="cb46-9"><a href="using-tmb.html#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.94561055 0.04791050</span></span>
+<span id="cb46-10"><a href="using-tmb.html#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.02655944 0.02133283</span></span>
+<span id="cb46-11"><a href="using-tmb.html#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.05438945 0.04791050</span></span>
+<span id="cb46-12"><a href="using-tmb.html#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  0.97344056 0.02133283</span></span>
+<span id="cb46-13"><a href="using-tmb.html#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.32810136 0.22314460</span></span>
+<span id="cb46-14"><a href="using-tmb.html#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  0.67189864 0.22314460</span></span></code></pre></div>
 <p>Note that the standard error of <span class="math inline">\(\lambda_1\)</span> is zero, because it is no longer considered a variable parameter and does not enter the optimization procedure.</p>
 </div>
 <div id="limits" class="section level3 hasAnchor" number="4.3.2">
@@ -593,90 +592,8 @@ For example, imposing equality constraints (such as <span class="math inline">\(
 <p>With a two-state Poisson HMM, the constraint <span class="math inline">\(\gamma_{11} = \gamma_{22}\)</span> is equivalent to <span class="math inline">\(\gamma_{12} = \gamma_{21}\)</span>.
 Thus, the constraint can be transformed into <span class="math inline">\(\tau_{12} = \log(\gamma_{12}/\gamma_{11}) = \log(\gamma_{21}/\gamma_{22}) = \tau_{21}\)</span>.</p>
 <p>The mapping parameters must be set to a common factor to be forced equal.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="using-tmb.html#cb45-1" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">tlambda =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)),</span>
-<span id="cb45-2"><a href="using-tmb.html#cb45-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">tgamma =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>)))</span>
-<span id="cb45-3"><a href="using-tmb.html#cb45-3" aria-hidden="true" tabindex="-1"></a>fixed_par_obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb45-4"><a href="using-tmb.html#cb45-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>,</span>
-<span id="cb45-5"><a href="using-tmb.html#cb45-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">silent =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb45-6"><a href="using-tmb.html#cb45-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">map =</span> map)</span>
-<span id="cb45-7"><a href="using-tmb.html#cb45-7" aria-hidden="true" tabindex="-1"></a>fixed_par_mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> fixed_par_obj_tmb<span class="sc">$</span>par,</span>
-<span id="cb45-8"><a href="using-tmb.html#cb45-8" aria-hidden="true" tabindex="-1"></a>                            <span class="at">objective =</span> fixed_par_obj_tmb<span class="sc">$</span>fn,</span>
-<span id="cb45-9"><a href="using-tmb.html#cb45-9" aria-hidden="true" tabindex="-1"></a>                            <span class="at">gradient =</span> fixed_par_obj_tmb<span class="sc">$</span>gr,</span>
-<span id="cb45-10"><a href="using-tmb.html#cb45-10" aria-hidden="true" tabindex="-1"></a>                            <span class="at">hessian =</span> fixed_par_obj_tmb<span class="sc">$</span>he)</span>
-<span id="cb45-11"><a href="using-tmb.html#cb45-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Results + check that the constraint is respected</span></span>
-<span id="cb45-12"><a href="using-tmb.html#cb45-12" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">sdreport</span>(fixed_par_obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
-<span id="cb45-13"><a href="using-tmb.html#cb45-13" aria-hidden="true" tabindex="-1"></a>tpm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(results[<span class="fu">rownames</span>(results) <span class="sc">==</span> <span class="st">&quot;gamma&quot;</span>, <span class="st">&quot;Estimate&quot;</span>],</span>
-<span id="cb45-14"><a href="using-tmb.html#cb45-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">nrow =</span> m,</span>
-<span id="cb45-15"><a href="using-tmb.html#cb45-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">ncol =</span> m,</span>
-<span id="cb45-16"><a href="using-tmb.html#cb45-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">byrow =</span> <span class="cn">FALSE</span>) <span class="co"># Transformations are column-wise by default, be careful!</span></span>
-<span id="cb45-17"><a href="using-tmb.html#cb45-17" aria-hidden="true" tabindex="-1"></a>tpm</span>
-<span id="cb45-18"><a href="using-tmb.html#cb45-18" aria-hidden="true" tabindex="-1"></a><span class="do">##            [,1]       [,2]</span></span>
-<span id="cb45-19"><a href="using-tmb.html#cb45-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 0.96759216 0.03240784</span></span>
-<span id="cb45-20"><a href="using-tmb.html#cb45-20" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 0.03240784 0.96759216</span></span>
-<span id="cb45-21"><a href="using-tmb.html#cb45-21" aria-hidden="true" tabindex="-1"></a>tpm[<span class="dv">1</span>, <span class="dv">1</span>] <span class="sc">==</span> tpm[<span class="dv">2</span>, <span class="dv">2</span>]</span>
-<span id="cb45-22"><a href="using-tmb.html#cb45-22" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code></pre></div>
-<p>Similar complex constraints on the TPM can also be setup for HMMs with three or more states.
-However, it appears this can only be achieved in general when the constraint involves natural parameters of the same row (with the exception of a two-state model).
-We have not found a way to easily implement equality constraints between natural TPM parameters of different rows.
-A solution might be constrained optimization.</p>
-<p>As an example, we will look at a three-state HMM with the constraint <span class="math inline">\(\gamma_{12} = \gamma_{13}\)</span>.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="using-tmb.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model with 2 states</span></span>
-<span id="cb46-2"><a href="using-tmb.html#cb46-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb46-3"><a href="using-tmb.html#cb46-3" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
-<span id="cb46-4"><a href="using-tmb.html#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-5"><a href="using-tmb.html#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial set of parameters</span></span>
-<span id="cb46-6"><a href="using-tmb.html#cb46-6" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>)</span>
-<span id="cb46-7"><a href="using-tmb.html#cb46-7" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>,</span>
-<span id="cb46-8"><a href="using-tmb.html#cb46-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.1</span>, <span class="fl">0.8</span>, <span class="fl">0.1</span>,</span>
-<span id="cb46-9"><a href="using-tmb.html#cb46-9" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.8</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> m)</span>
-<span id="cb46-10"><a href="using-tmb.html#cb46-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-11"><a href="using-tmb.html#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn them into working parameters</span></span>
-<span id="cb46-12"><a href="using-tmb.html#cb46-12" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
-<span id="cb46-13"><a href="using-tmb.html#cb46-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-14"><a href="using-tmb.html#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the TMB object</span></span>
-<span id="cb46-15"><a href="using-tmb.html#cb46-15" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb46-16"><a href="using-tmb.html#cb46-16" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb46-17"><a href="using-tmb.html#cb46-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-18"><a href="using-tmb.html#cb46-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize</span></span>
-<span id="cb46-19"><a href="using-tmb.html#cb46-19" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
-<span id="cb46-20"><a href="using-tmb.html#cb46-20" aria-hidden="true" tabindex="-1"></a>                  <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
-<span id="cb46-21"><a href="using-tmb.html#cb46-21" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
-<span id="cb46-22"><a href="using-tmb.html#cb46-22" aria-hidden="true" tabindex="-1"></a>                  <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
-<span id="cb46-23"><a href="using-tmb.html#cb46-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-24"><a href="using-tmb.html#cb46-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Check convergence</span></span>
-<span id="cb46-25"><a href="using-tmb.html#cb46-25" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
-<span id="cb46-26"><a href="using-tmb.html#cb46-26" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span>
-<span id="cb46-27"><a href="using-tmb.html#cb46-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-28"><a href="using-tmb.html#cb46-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
-<span id="cb46-29"><a href="using-tmb.html#cb46-29" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
-<span id="cb46-30"><a href="using-tmb.html#cb46-30" aria-hidden="true" tabindex="-1"></a><span class="do">##            Estimate   Std. Error</span></span>
-<span id="cb46-31"><a href="using-tmb.html#cb46-31" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 8.281290e-01 5.418824e-01</span></span>
-<span id="cb46-32"><a href="using-tmb.html#cb46-32" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 1.705082e+00 2.949769e-01</span></span>
-<span id="cb46-33"><a href="using-tmb.html#cb46-33" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 5.514886e+00 3.080238e-01</span></span>
-<span id="cb46-34"><a href="using-tmb.html#cb46-34" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  5.516919e-01 3.132490e-01</span></span>
-<span id="cb46-35"><a href="using-tmb.html#cb46-35" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  4.596623e-09 5.115944e-05</span></span>
-<span id="cb46-36"><a href="using-tmb.html#cb46-36" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  2.749570e-02 2.164849e-02</span></span>
-<span id="cb46-37"><a href="using-tmb.html#cb46-37" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  1.989160e-01 2.698088e-01</span></span>
-<span id="cb46-38"><a href="using-tmb.html#cb46-38" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  9.772963e-01 3.436716e-02</span></span>
-<span id="cb46-39"><a href="using-tmb.html#cb46-39" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  2.453591e-10 2.730433e-06</span></span>
-<span id="cb46-40"><a href="using-tmb.html#cb46-40" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  2.493922e-01 2.546636e-01</span></span>
-<span id="cb46-41"><a href="using-tmb.html#cb46-41" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  2.270369e-02 3.436717e-02</span></span>
-<span id="cb46-42"><a href="using-tmb.html#cb46-42" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  9.725043e-01 2.164849e-02</span></span>
-<span id="cb46-43"><a href="using-tmb.html#cb46-43" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  3.836408e-02 3.757898e-02</span></span>
-<span id="cb46-44"><a href="using-tmb.html#cb46-44" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  3.361227e-01 3.144598e-01</span></span>
-<span id="cb46-45"><a href="using-tmb.html#cb46-45" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  6.255132e-01 3.063220e-01</span></span></code></pre></div>
-<p>The transformed constraint becomes <span class="math inline">\(\tau_{12} = \log(\gamma_{12}/\gamma_{11}) = \log(\gamma_{13}/\gamma_{11}) = \tau_{13}\)</span>.</p>
-<p>We need to be careful how we specify the constraint, because the vector <code>tgamma</code> will be converted into a matrix column-wise since this is R’s default way to handle matrix-vector conversions.</p>
-<p>The <code>tgamma</code> matrix looks naturally like
-<span class="math display">\[\begin{pmatrix}
-         &amp;\tau_{12}&amp;\tau_{13}\\
-\tau_{21}&amp;         &amp;\tau_{23}\\
-\tau_{31}&amp;\tau_{32}&amp;
-\end{pmatrix}\]</span></p>
-<p>As a vector in <code>R</code>, it becomes <span class="math inline">\(\left(\tau_{21}, \tau_{31}, \tau_{12}, \tau_{32}, \tau_{13}, \tau_{23}\right)\)</span>.
-Therefore, the constraint needs to be placed on the <span class="math inline">\(3^{rd}\)</span> and <span class="math inline">\(5^{th}\)</span> vector parameter in the same way as we did when the Poisson mean <span class="math inline">\(\lambda_1\)</span> was fixed.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="using-tmb.html#cb47-1" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">tlambda =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)),</span>
-<span id="cb47-2"><a href="using-tmb.html#cb47-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">tgamma =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">8</span>)))</span>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="using-tmb.html#cb47-1" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">tlambda =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)),</span>
+<span id="cb47-2"><a href="using-tmb.html#cb47-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">tgamma =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>)))</span>
 <span id="cb47-3"><a href="using-tmb.html#cb47-3" aria-hidden="true" tabindex="-1"></a>fixed_par_obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
 <span id="cb47-4"><a href="using-tmb.html#cb47-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>,</span>
 <span id="cb47-5"><a href="using-tmb.html#cb47-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">silent =</span> <span class="cn">TRUE</span>,</span>
@@ -692,40 +609,165 @@ Therefore, the constraint needs to be placed on the <span class="math inline">\(
 <span id="cb47-15"><a href="using-tmb.html#cb47-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">ncol =</span> m,</span>
 <span id="cb47-16"><a href="using-tmb.html#cb47-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">byrow =</span> <span class="cn">FALSE</span>) <span class="co"># Transformations are column-wise by default, be careful!</span></span>
 <span id="cb47-17"><a href="using-tmb.html#cb47-17" aria-hidden="true" tabindex="-1"></a>tpm</span>
-<span id="cb47-18"><a href="using-tmb.html#cb47-18" aria-hidden="true" tabindex="-1"></a><span class="do">##              [,1]         [,2]       [,3]</span></span>
-<span id="cb47-19"><a href="using-tmb.html#cb47-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 5.447127e-01 2.276437e-01 0.22764365</span></span>
-<span id="cb47-20"><a href="using-tmb.html#cb47-20" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 2.718007e-09 9.753263e-01 0.02467374</span></span>
-<span id="cb47-21"><a href="using-tmb.html#cb47-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] 2.710078e-02 2.005408e-10 0.97289922</span></span>
-<span id="cb47-22"><a href="using-tmb.html#cb47-22" aria-hidden="true" tabindex="-1"></a>tpm[<span class="dv">1</span>, <span class="dv">2</span>] <span class="sc">==</span> tpm[<span class="dv">1</span>, <span class="dv">3</span>]</span>
-<span id="cb47-23"><a href="using-tmb.html#cb47-23" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code></pre></div>
+<span id="cb47-18"><a href="using-tmb.html#cb47-18" aria-hidden="true" tabindex="-1"></a><span class="do">##            [,1]       [,2]</span></span>
+<span id="cb47-19"><a href="using-tmb.html#cb47-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 0.96759216 0.03240784</span></span>
+<span id="cb47-20"><a href="using-tmb.html#cb47-20" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 0.03240784 0.96759216</span></span>
+<span id="cb47-21"><a href="using-tmb.html#cb47-21" aria-hidden="true" tabindex="-1"></a>tpm[<span class="dv">1</span>, <span class="dv">1</span>] <span class="sc">==</span> tpm[<span class="dv">2</span>, <span class="dv">2</span>]</span>
+<span id="cb47-22"><a href="using-tmb.html#cb47-22" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code></pre></div>
+<p>Similar complex constraints on the TPM can also be setup for HMMs with three or more states.
+However, it appears this can only be achieved in general when the constraint involves natural parameters of the same row (with the exception of a two-state model).
+We have not found a way to easily implement equality constraints between natural TPM parameters of different rows.
+A solution might be constrained optimization.</p>
+<p>As an example, we will look at a three-state HMM with the constraint <span class="math inline">\(\gamma_{12} = \gamma_{13}\)</span>.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="using-tmb.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model with 2 states</span></span>
+<span id="cb48-2"><a href="using-tmb.html#cb48-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb48-3"><a href="using-tmb.html#cb48-3" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
+<span id="cb48-4"><a href="using-tmb.html#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="using-tmb.html#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial set of parameters</span></span>
+<span id="cb48-6"><a href="using-tmb.html#cb48-6" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>)</span>
+<span id="cb48-7"><a href="using-tmb.html#cb48-7" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>,</span>
+<span id="cb48-8"><a href="using-tmb.html#cb48-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.1</span>, <span class="fl">0.8</span>, <span class="fl">0.1</span>,</span>
+<span id="cb48-9"><a href="using-tmb.html#cb48-9" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.8</span>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> m)</span>
+<span id="cb48-10"><a href="using-tmb.html#cb48-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-11"><a href="using-tmb.html#cb48-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn them into working parameters</span></span>
+<span id="cb48-12"><a href="using-tmb.html#cb48-12" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
+<span id="cb48-13"><a href="using-tmb.html#cb48-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-14"><a href="using-tmb.html#cb48-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the TMB object</span></span>
+<span id="cb48-15"><a href="using-tmb.html#cb48-15" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb48-16"><a href="using-tmb.html#cb48-16" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb48-17"><a href="using-tmb.html#cb48-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-18"><a href="using-tmb.html#cb48-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize</span></span>
+<span id="cb48-19"><a href="using-tmb.html#cb48-19" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par,</span>
+<span id="cb48-20"><a href="using-tmb.html#cb48-20" aria-hidden="true" tabindex="-1"></a>                  <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb48-21"><a href="using-tmb.html#cb48-21" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr,</span>
+<span id="cb48-22"><a href="using-tmb.html#cb48-22" aria-hidden="true" tabindex="-1"></a>                  <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb48-23"><a href="using-tmb.html#cb48-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-24"><a href="using-tmb.html#cb48-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Check convergence</span></span>
+<span id="cb48-25"><a href="using-tmb.html#cb48-25" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
+<span id="cb48-26"><a href="using-tmb.html#cb48-26" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span>
+<span id="cb48-27"><a href="using-tmb.html#cb48-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-28"><a href="using-tmb.html#cb48-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span>
+<span id="cb48-29"><a href="using-tmb.html#cb48-29" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
+<span id="cb48-30"><a href="using-tmb.html#cb48-30" aria-hidden="true" tabindex="-1"></a><span class="do">##            Estimate   Std. Error</span></span>
+<span id="cb48-31"><a href="using-tmb.html#cb48-31" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 8.281290e-01 5.418824e-01</span></span>
+<span id="cb48-32"><a href="using-tmb.html#cb48-32" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 1.705082e+00 2.949769e-01</span></span>
+<span id="cb48-33"><a href="using-tmb.html#cb48-33" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda 5.514886e+00 3.080238e-01</span></span>
+<span id="cb48-34"><a href="using-tmb.html#cb48-34" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  5.516919e-01 3.132490e-01</span></span>
+<span id="cb48-35"><a href="using-tmb.html#cb48-35" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  4.596623e-09 5.115944e-05</span></span>
+<span id="cb48-36"><a href="using-tmb.html#cb48-36" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  2.749570e-02 2.164849e-02</span></span>
+<span id="cb48-37"><a href="using-tmb.html#cb48-37" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  1.989160e-01 2.698088e-01</span></span>
+<span id="cb48-38"><a href="using-tmb.html#cb48-38" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  9.772963e-01 3.436716e-02</span></span>
+<span id="cb48-39"><a href="using-tmb.html#cb48-39" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  2.453591e-10 2.730433e-06</span></span>
+<span id="cb48-40"><a href="using-tmb.html#cb48-40" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  2.493922e-01 2.546636e-01</span></span>
+<span id="cb48-41"><a href="using-tmb.html#cb48-41" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  2.270369e-02 3.436717e-02</span></span>
+<span id="cb48-42"><a href="using-tmb.html#cb48-42" aria-hidden="true" tabindex="-1"></a><span class="do">## gamma  9.725043e-01 2.164849e-02</span></span>
+<span id="cb48-43"><a href="using-tmb.html#cb48-43" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  3.836408e-02 3.757898e-02</span></span>
+<span id="cb48-44"><a href="using-tmb.html#cb48-44" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  3.361227e-01 3.144598e-01</span></span>
+<span id="cb48-45"><a href="using-tmb.html#cb48-45" aria-hidden="true" tabindex="-1"></a><span class="do">## delta  6.255132e-01 3.063220e-01</span></span></code></pre></div>
+<p>The transformed constraint becomes <span class="math inline">\(\tau_{12} = \log(\gamma_{12}/\gamma_{11}) = \log(\gamma_{13}/\gamma_{11}) = \tau_{13}\)</span>.</p>
+<p>We need to be careful how we specify the constraint, because the vector <code>tgamma</code> will be converted into a matrix column-wise since this is R’s default way to handle matrix-vector conversions.</p>
+<p>The <code>tgamma</code> matrix looks naturally like
+<span class="math display">\[\begin{pmatrix}
+         &amp;\tau_{12}&amp;\tau_{13}\\
+\tau_{21}&amp;         &amp;\tau_{23}\\
+\tau_{31}&amp;\tau_{32}&amp;
+\end{pmatrix}\]</span></p>
+<p>As a vector in <code>R</code>, it becomes <span class="math inline">\(\left(\tau_{21}, \tau_{31}, \tau_{12}, \tau_{32}, \tau_{13}, \tau_{23}\right)\)</span>.
+Therefore, the constraint needs to be placed on the <span class="math inline">\(3^{rd}\)</span> and <span class="math inline">\(5^{th}\)</span> vector parameter in the same way as we did when the Poisson mean <span class="math inline">\(\lambda_1\)</span> was fixed.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="using-tmb.html#cb49-1" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">tlambda =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)),</span>
+<span id="cb49-2"><a href="using-tmb.html#cb49-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">tgamma =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">8</span>)))</span>
+<span id="cb49-3"><a href="using-tmb.html#cb49-3" aria-hidden="true" tabindex="-1"></a>fixed_par_obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb49-4"><a href="using-tmb.html#cb49-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>,</span>
+<span id="cb49-5"><a href="using-tmb.html#cb49-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">silent =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb49-6"><a href="using-tmb.html#cb49-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">map =</span> map)</span>
+<span id="cb49-7"><a href="using-tmb.html#cb49-7" aria-hidden="true" tabindex="-1"></a>fixed_par_mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> fixed_par_obj_tmb<span class="sc">$</span>par,</span>
+<span id="cb49-8"><a href="using-tmb.html#cb49-8" aria-hidden="true" tabindex="-1"></a>                            <span class="at">objective =</span> fixed_par_obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb49-9"><a href="using-tmb.html#cb49-9" aria-hidden="true" tabindex="-1"></a>                            <span class="at">gradient =</span> fixed_par_obj_tmb<span class="sc">$</span>gr,</span>
+<span id="cb49-10"><a href="using-tmb.html#cb49-10" aria-hidden="true" tabindex="-1"></a>                            <span class="at">hessian =</span> fixed_par_obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb49-11"><a href="using-tmb.html#cb49-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Results + check that the constraint is respected</span></span>
+<span id="cb49-12"><a href="using-tmb.html#cb49-12" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">sdreport</span>(fixed_par_obj_tmb), <span class="st">&quot;report&quot;</span>)</span>
+<span id="cb49-13"><a href="using-tmb.html#cb49-13" aria-hidden="true" tabindex="-1"></a>tpm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(results[<span class="fu">rownames</span>(results) <span class="sc">==</span> <span class="st">&quot;gamma&quot;</span>, <span class="st">&quot;Estimate&quot;</span>],</span>
+<span id="cb49-14"><a href="using-tmb.html#cb49-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">nrow =</span> m,</span>
+<span id="cb49-15"><a href="using-tmb.html#cb49-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">ncol =</span> m,</span>
+<span id="cb49-16"><a href="using-tmb.html#cb49-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">byrow =</span> <span class="cn">FALSE</span>) <span class="co"># Transformations are column-wise by default, be careful!</span></span>
+<span id="cb49-17"><a href="using-tmb.html#cb49-17" aria-hidden="true" tabindex="-1"></a>tpm</span>
+<span id="cb49-18"><a href="using-tmb.html#cb49-18" aria-hidden="true" tabindex="-1"></a><span class="do">##              [,1]         [,2]       [,3]</span></span>
+<span id="cb49-19"><a href="using-tmb.html#cb49-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 5.447127e-01 2.276437e-01 0.22764365</span></span>
+<span id="cb49-20"><a href="using-tmb.html#cb49-20" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 2.718007e-09 9.753263e-01 0.02467374</span></span>
+<span id="cb49-21"><a href="using-tmb.html#cb49-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] 2.710078e-02 2.005408e-10 0.97289922</span></span>
+<span id="cb49-22"><a href="using-tmb.html#cb49-22" aria-hidden="true" tabindex="-1"></a>tpm[<span class="dv">1</span>, <span class="dv">2</span>] <span class="sc">==</span> tpm[<span class="dv">1</span>, <span class="dv">3</span>]</span>
+<span id="cb49-23"><a href="using-tmb.html#cb49-23" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code></pre></div>
 <p>Equality constraints involving a diagonal member of the TPM are simpler to specify: the constraint <span class="math inline">\(\gamma_{i,j} = \gamma_{i,i}\)</span> becomes transformed to <span class="math inline">\(\tau_{i,j} = 1\)</span> and this can be specified in the same way the Poisson mean <span class="math inline">\(\lambda_1\)</span> was fixed.</p>
 </div>
 </div>
 <div id="state-inference" class="section level2 hasAnchor" number="4.4">
 <h2><span class="header-section-number">4.4</span> State inference and forecasting<a href="using-tmb.html#state-inference" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The following code requires executing the code presented in the Section <a href="parameter-estimation-techniques-for-hmms.html#forward-backward">Forward algorithm and backward algorithm</a>, as the log-forward and log-backward probabilities are needed.</p>
+<p>The following code requires executing the code presented in the Section <a href="parameter-estimation-techniques-for-hmms.html#forward-backward">Forward algorithm and backward algorithm</a>, as the log-forward and log-backward probabilities are needed.
+We reuse the TYT data set from above along with the HMM that was estimated on it.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="using-tmb.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve the objects at ML value</span></span>
+<span id="cb50-2"><a href="using-tmb.html#cb50-2" aria-hidden="true" tabindex="-1"></a>adrep <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(obj_tmb<span class="sc">$</span>env<span class="sc">$</span>last.par.best)</span>
+<span id="cb50-3"><a href="using-tmb.html#cb50-3" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> adrep<span class="sc">$</span>delta</span>
+<span id="cb50-4"><a href="using-tmb.html#cb50-4" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> adrep<span class="sc">$</span>gamma</span>
+<span id="cb50-5"><a href="using-tmb.html#cb50-5" aria-hidden="true" tabindex="-1"></a>emission_probs <span class="ot">&lt;-</span> adrep<span class="sc">$</span>emission_probs</span>
+<span id="cb50-6"><a href="using-tmb.html#cb50-6" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> adrep<span class="sc">$</span>n</span>
+<span id="cb50-7"><a href="using-tmb.html#cb50-7" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">length</span>(delta)</span>
+<span id="cb50-8"><a href="using-tmb.html#cb50-8" aria-hidden="true" tabindex="-1"></a>mllk <span class="ot">&lt;-</span> adrep<span class="sc">$</span>mllk</span>
+<span id="cb50-9"><a href="using-tmb.html#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-forward probabilities (scaling used)</span></span>
+<span id="cb50-10"><a href="using-tmb.html#cb50-10" aria-hidden="true" tabindex="-1"></a>lalpha <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
+<span id="cb50-11"><a href="using-tmb.html#cb50-11" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
+<span id="cb50-12"><a href="using-tmb.html#cb50-12" aria-hidden="true" tabindex="-1"></a>sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb50-13"><a href="using-tmb.html#cb50-13" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb50-14"><a href="using-tmb.html#cb50-14" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb50-15"><a href="using-tmb.html#cb50-15" aria-hidden="true" tabindex="-1"></a>lalpha[, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
+<span id="cb50-16"><a href="using-tmb.html#cb50-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
+<span id="cb50-17"><a href="using-tmb.html#cb50-17" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma <span class="sc">*</span> emission_probs[i, ]</span>
+<span id="cb50-18"><a href="using-tmb.html#cb50-18" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb50-19"><a href="using-tmb.html#cb50-19" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb50-20"><a href="using-tmb.html#cb50-20" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb50-21"><a href="using-tmb.html#cb50-21" aria-hidden="true" tabindex="-1"></a>  lalpha[, i] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
+<span id="cb50-22"><a href="using-tmb.html#cb50-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb50-23"><a href="using-tmb.html#cb50-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute log-backwards probabilities (scaling used)</span></span>
+<span id="cb50-24"><a href="using-tmb.html#cb50-24" aria-hidden="true" tabindex="-1"></a>lbeta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, m, n)</span>
+<span id="cb50-25"><a href="using-tmb.html#cb50-25" aria-hidden="true" tabindex="-1"></a>lbeta[, n] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, m)</span>
+<span id="cb50-26"><a href="using-tmb.html#cb50-26" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="fu">rep</span> (<span class="dv">1</span> <span class="sc">/</span> m, m)</span>
+<span id="cb50-27"><a href="using-tmb.html#cb50-27" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(m)</span>
+<span id="cb50-28"><a href="using-tmb.html#cb50-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span><span class="dv">1</span>) {</span>
+<span id="cb50-29"><a href="using-tmb.html#cb50-29" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> gamma <span class="sc">%*%</span> (emission_probs[i <span class="sc">+</span> <span class="dv">1</span>, ] <span class="sc">*</span> foo)</span>
+<span id="cb50-30"><a href="using-tmb.html#cb50-30" aria-hidden="true" tabindex="-1"></a>  lbeta[, i] <span class="ot">&lt;-</span> <span class="fu">log</span>(foo) <span class="sc">+</span> lscale</span>
+<span id="cb50-31"><a href="using-tmb.html#cb50-31" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb50-32"><a href="using-tmb.html#cb50-32" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb50-33"><a href="using-tmb.html#cb50-33" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb50-34"><a href="using-tmb.html#cb50-34" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <div id="local-decoding" class="section level3 hasAnchor" number="4.4.1">
 <h3><span class="header-section-number">4.4.1</span> Local decoding<a href="using-tmb.html#local-decoding" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The smoothing probabilities are defined in <span class="citation">Zucchini, MacDonald, and Langrock (<a href="references.html#ref-zucchini" role="doc-biblioref">2016, 87</a> and p.336)</span> as
 <span class="math display">\[
 \text{P}(C_t = i \vert X^{(n)} = x^{(n)}) = \frac{\alpha_t(i) \beta_t(i)}{L_n}
 \]</span></p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="using-tmb.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute conditional state probabilities, smoothing probabilities</span></span>
-<span id="cb48-2"><a href="using-tmb.html#cb48-2" aria-hidden="true" tabindex="-1"></a>stateprobs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> n, <span class="at">nrow =</span> m)</span>
-<span id="cb48-3"><a href="using-tmb.html#cb48-3" aria-hidden="true" tabindex="-1"></a>llk <span class="ot">&lt;-</span> <span class="sc">-</span> mllk</span>
-<span id="cb48-4"><a href="using-tmb.html#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb48-5"><a href="using-tmb.html#cb48-5" aria-hidden="true" tabindex="-1"></a>  stateprobs[, i] <span class="ot">&lt;-</span> <span class="fu">exp</span>(lalpha[, i] <span class="sc">+</span> lbeta[, i] <span class="sc">-</span> llk)</span>
-<span id="cb48-6"><a href="using-tmb.html#cb48-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="using-tmb.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute conditional state probabilities, smoothing probabilities</span></span>
+<span id="cb51-2"><a href="using-tmb.html#cb51-2" aria-hidden="true" tabindex="-1"></a>stateprobs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> <span class="fu">length</span>(tinn_data), <span class="at">nrow =</span> m)</span>
+<span id="cb51-3"><a href="using-tmb.html#cb51-3" aria-hidden="true" tabindex="-1"></a>llk <span class="ot">&lt;-</span> <span class="sc">-</span> mllk</span>
+<span id="cb51-4"><a href="using-tmb.html#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb51-5"><a href="using-tmb.html#cb51-5" aria-hidden="true" tabindex="-1"></a>  stateprobs[, i] <span class="ot">&lt;-</span> <span class="fu">exp</span>(lalpha[, i] <span class="sc">+</span> lbeta[, i] <span class="sc">-</span> llk)</span>
+<span id="cb51-6"><a href="using-tmb.html#cb51-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb51-7"><a href="using-tmb.html#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="co"># stateprobs contains n=87 columns, so we only display 4 for readability</span></span>
+<span id="cb51-8"><a href="using-tmb.html#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Each row corresponds to a state.</span></span>
+<span id="cb51-9"><a href="using-tmb.html#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="co"># For example, stateprobs[2, 3] is the probability that the third data</span></span>
+<span id="cb51-10"><a href="using-tmb.html#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="co"># is associated with state 2</span></span>
+<span id="cb51-11"><a href="using-tmb.html#cb51-11" aria-hidden="true" tabindex="-1"></a>stateprobs[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb51-12"><a href="using-tmb.html#cb51-12" aria-hidden="true" tabindex="-1"></a><span class="do">##              [,1]         [,2]         [,3]         [,4]</span></span>
+<span id="cb51-13"><a href="using-tmb.html#cb51-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 1.977715e-05 7.408176e-05 2.674435e-03 1.150174e-05</span></span>
+<span id="cb51-14"><a href="using-tmb.html#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 6.490109e-04 1.548449e-04 9.322969e-05 1.097237e-05</span></span>
+<span id="cb51-15"><a href="using-tmb.html#cb51-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] 9.993312e-01 9.997711e-01 9.972323e-01 9.999775e-01</span></span></code></pre></div>
 <p>Local decoding is a straightforward maximum of the smoothing probabilities.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="using-tmb.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Most probable states (local decoding)</span></span>
-<span id="cb49-2"><a href="using-tmb.html#cb49-2" aria-hidden="true" tabindex="-1"></a>ldecode <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n)</span>
-<span id="cb49-3"><a href="using-tmb.html#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb49-4"><a href="using-tmb.html#cb49-4" aria-hidden="true" tabindex="-1"></a>  ldecode[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(stateprobs[, i])</span>
-<span id="cb49-5"><a href="using-tmb.html#cb49-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb49-6"><a href="using-tmb.html#cb49-6" aria-hidden="true" tabindex="-1"></a>ldecode</span>
-<span id="cb49-7"><a href="using-tmb.html#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</span></span>
-<span id="cb49-8"><a href="using-tmb.html#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [114] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</span></span>
-<span id="cb49-9"><a href="using-tmb.html#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [227] 1 1 1 1 1 1 1 1 1 1 1 1 1 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="using-tmb.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Most probable states (local decoding)</span></span>
+<span id="cb52-2"><a href="using-tmb.html#cb52-2" aria-hidden="true" tabindex="-1"></a>ldecode <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n)</span>
+<span id="cb52-3"><a href="using-tmb.html#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb52-4"><a href="using-tmb.html#cb52-4" aria-hidden="true" tabindex="-1"></a>  ldecode[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(stateprobs[, i])</span>
+<span id="cb52-5"><a href="using-tmb.html#cb52-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-6"><a href="using-tmb.html#cb52-6" aria-hidden="true" tabindex="-1"></a>ldecode</span>
+<span id="cb52-7"><a href="using-tmb.html#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 1 1 1 3 3 3 3 3 3 3 3 3 3 3 1 1 2 2 2 2 2 2 2 2 2 2 2 2</span></span>
+<span id="cb52-8"><a href="using-tmb.html#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [80] 2 2 2 2 2 2 2 2</span></span></code></pre></div>
 </div>
 <div id="forecast" class="section level3 hasAnchor" number="4.4.2">
 <h3><span class="header-section-number">4.4.2</span> Forecast<a href="using-tmb.html#forecast" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -736,33 +778,33 @@ implementation in R is detailed in <span class="citation">Zucchini, MacDonald, a
 \text{P}(X_{n+h} = x \vert X^{(n)} = x^{(n)}) = \frac{{\boldsymbol\alpha}_n {\boldsymbol\Gamma}^h \textbf{P}(x) {\boldsymbol 1}&#39;}{{\boldsymbol\alpha}_n {\boldsymbol 1}&#39;} = {\boldsymbol\Phi}_n {\boldsymbol\Gamma}^h \textbf{P}(x) {\boldsymbol 1}&#39;
 \]</span>
 An implementation of this using a scaling scheme is</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="using-tmb.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of steps</span></span>
-<span id="cb50-2"><a href="using-tmb.html#cb50-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb50-3"><a href="using-tmb.html#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Values for which we want the forecast probabilities</span></span>
-<span id="cb50-4"><a href="using-tmb.html#cb50-4" aria-hidden="true" tabindex="-1"></a>xf <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">50</span></span>
-<span id="cb50-5"><a href="using-tmb.html#cb50-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-6"><a href="using-tmb.html#cb50-6" aria-hidden="true" tabindex="-1"></a>nxf <span class="ot">&lt;-</span> <span class="fu">length</span>(xf)</span>
-<span id="cb50-7"><a href="using-tmb.html#cb50-7" aria-hidden="true" tabindex="-1"></a>dxf <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> h, <span class="at">ncol =</span> nxf)</span>
-<span id="cb50-8"><a href="using-tmb.html#cb50-8" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
-<span id="cb50-9"><a href="using-tmb.html#cb50-9" aria-hidden="true" tabindex="-1"></a>sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb50-10"><a href="using-tmb.html#cb50-10" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(sumfoo)</span>
-<span id="cb50-11"><a href="using-tmb.html#cb50-11" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
-<span id="cb50-12"><a href="using-tmb.html#cb50-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
-<span id="cb50-13"><a href="using-tmb.html#cb50-13" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma <span class="sc">*</span> emission_probs[i, ]</span>
-<span id="cb50-14"><a href="using-tmb.html#cb50-14" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>( foo)</span>
-<span id="cb50-15"><a href="using-tmb.html#cb50-15" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
-<span id="cb50-16"><a href="using-tmb.html#cb50-16" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
-<span id="cb50-17"><a href="using-tmb.html#cb50-17" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb50-18"><a href="using-tmb.html#cb50-18" aria-hidden="true" tabindex="-1"></a>emission_probs_xf <span class="ot">&lt;-</span> <span class="fu">get.emission.probs</span>(xf, lambda)</span>
-<span id="cb50-19"><a href="using-tmb.html#cb50-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>h) {</span>
-<span id="cb50-20"><a href="using-tmb.html#cb50-20" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma</span>
-<span id="cb50-21"><a href="using-tmb.html#cb50-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
-<span id="cb50-22"><a href="using-tmb.html#cb50-22" aria-hidden="true" tabindex="-1"></a>    dxf[i, ] <span class="ot">&lt;-</span> dxf[i, ] <span class="sc">+</span> foo[j] <span class="sc">*</span> emission_probs_xf[, j]</span>
-<span id="cb50-23"><a href="using-tmb.html#cb50-23" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb50-24"><a href="using-tmb.html#cb50-24" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb50-25"><a href="using-tmb.html#cb50-25" aria-hidden="true" tabindex="-1"></a><span class="co"># dxf contains n=240 columns, so we only display 4 for readability</span></span>
-<span id="cb50-26"><a href="using-tmb.html#cb50-26" aria-hidden="true" tabindex="-1"></a>dxf[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb50-27"><a href="using-tmb.html#cb50-27" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.36414482 0.36531388 0.18441055 0.06322379</span></span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="using-tmb.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of steps</span></span>
+<span id="cb53-2"><a href="using-tmb.html#cb53-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb53-3"><a href="using-tmb.html#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Values for which we want the forecast probabilities</span></span>
+<span id="cb53-4"><a href="using-tmb.html#cb53-4" aria-hidden="true" tabindex="-1"></a>xf <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">50</span></span>
+<span id="cb53-5"><a href="using-tmb.html#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-6"><a href="using-tmb.html#cb53-6" aria-hidden="true" tabindex="-1"></a>nxf <span class="ot">&lt;-</span> <span class="fu">length</span>(xf)</span>
+<span id="cb53-7"><a href="using-tmb.html#cb53-7" aria-hidden="true" tabindex="-1"></a>dxf <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> h, <span class="at">ncol =</span> nxf)</span>
+<span id="cb53-8"><a href="using-tmb.html#cb53-8" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
+<span id="cb53-9"><a href="using-tmb.html#cb53-9" aria-hidden="true" tabindex="-1"></a>sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb53-10"><a href="using-tmb.html#cb53-10" aria-hidden="true" tabindex="-1"></a>lscale <span class="ot">&lt;-</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb53-11"><a href="using-tmb.html#cb53-11" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb53-12"><a href="using-tmb.html#cb53-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
+<span id="cb53-13"><a href="using-tmb.html#cb53-13" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma <span class="sc">*</span> emission_probs[i, ]</span>
+<span id="cb53-14"><a href="using-tmb.html#cb53-14" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="ot">&lt;-</span> <span class="fu">sum</span>( foo)</span>
+<span id="cb53-15"><a href="using-tmb.html#cb53-15" aria-hidden="true" tabindex="-1"></a>  lscale <span class="ot">&lt;-</span> lscale <span class="sc">+</span> <span class="fu">log</span>(sumfoo)</span>
+<span id="cb53-16"><a href="using-tmb.html#cb53-16" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">/</span> sumfoo</span>
+<span id="cb53-17"><a href="using-tmb.html#cb53-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb53-18"><a href="using-tmb.html#cb53-18" aria-hidden="true" tabindex="-1"></a>emission_probs_xf <span class="ot">&lt;-</span> <span class="fu">get.emission.probs</span>(xf, lambda)</span>
+<span id="cb53-19"><a href="using-tmb.html#cb53-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>h) {</span>
+<span id="cb53-20"><a href="using-tmb.html#cb53-20" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> foo <span class="sc">%*%</span> gamma</span>
+<span id="cb53-21"><a href="using-tmb.html#cb53-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb53-22"><a href="using-tmb.html#cb53-22" aria-hidden="true" tabindex="-1"></a>    dxf[i, ] <span class="ot">&lt;-</span> dxf[i, ] <span class="sc">+</span> foo[j] <span class="sc">*</span> emission_probs_xf[, j]</span>
+<span id="cb53-23"><a href="using-tmb.html#cb53-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb53-24"><a href="using-tmb.html#cb53-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb53-25"><a href="using-tmb.html#cb53-25" aria-hidden="true" tabindex="-1"></a><span class="co"># dxf contains n=87 columns, so we only display 4 for readability</span></span>
+<span id="cb53-26"><a href="using-tmb.html#cb53-26" aria-hidden="true" tabindex="-1"></a>dxf[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb53-27"><a href="using-tmb.html#cb53-27" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.04892114 0.14674114 0.22073452 0.22199873</span></span></code></pre></div>
 </div>
 <div id="global-decoding" class="section level3 hasAnchor" number="4.4.3">
 <h3><span class="header-section-number">4.4.3</span> Global decoding<a href="using-tmb.html#global-decoding" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -773,22 +815,21 @@ maximizes the conditional probability of all states simultaneously, i.e.
 (i_1^*, \ldots, i_n^*) = \mathop{\mathrm{argmax}}_{i_1, \ldots, i_n \in \{1, \ldots, m \}} \text{P}(C_1 = i_1, \ldots, C_n = i_n \vert X^{(n)} = x^{(n)}).
 \]</span>
 An implementation of it is</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="using-tmb.html#cb51-1" aria-hidden="true" tabindex="-1"></a>xi <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, m)</span>
-<span id="cb51-2"><a href="using-tmb.html#cb51-2" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
-<span id="cb51-3"><a href="using-tmb.html#cb51-3" aria-hidden="true" tabindex="-1"></a>xi[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> foo <span class="sc">/</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb51-4"><a href="using-tmb.html#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
-<span id="cb51-5"><a href="using-tmb.html#cb51-5" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">apply</span>(xi[i <span class="sc">-</span> <span class="dv">1</span>, ] <span class="sc">*</span> gamma, <span class="dv">2</span>, max) <span class="sc">*</span> emission_probs[i, ]</span>
-<span id="cb51-6"><a href="using-tmb.html#cb51-6" aria-hidden="true" tabindex="-1"></a>  xi[i, ] <span class="ot">&lt;-</span> foo <span class="sc">/</span> <span class="fu">sum</span>(foo)</span>
-<span id="cb51-7"><a href="using-tmb.html#cb51-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb51-8"><a href="using-tmb.html#cb51-8" aria-hidden="true" tabindex="-1"></a>iv <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n)</span>
-<span id="cb51-9"><a href="using-tmb.html#cb51-9" aria-hidden="true" tabindex="-1"></a>iv[n] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(xi[n, ])</span>
-<span id="cb51-10"><a href="using-tmb.html#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span><span class="dv">1</span>){</span>
-<span id="cb51-11"><a href="using-tmb.html#cb51-11" aria-hidden="true" tabindex="-1"></a>  iv[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(gamma[, iv[i <span class="sc">+</span> <span class="dv">1</span>]] <span class="sc">*</span> xi[i, ])</span>
-<span id="cb51-12"><a href="using-tmb.html#cb51-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb51-13"><a href="using-tmb.html#cb51-13" aria-hidden="true" tabindex="-1"></a>iv</span>
-<span id="cb51-14"><a href="using-tmb.html#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="do">##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</span></span>
-<span id="cb51-15"><a href="using-tmb.html#cb51-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [114] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</span></span>
-<span id="cb51-16"><a href="using-tmb.html#cb51-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [227] 1 1 1 1 1 1 1 1 1 1 1 1 1 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="using-tmb.html#cb54-1" aria-hidden="true" tabindex="-1"></a>xi <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, m)</span>
+<span id="cb54-2"><a href="using-tmb.html#cb54-2" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> delta <span class="sc">*</span> emission_probs[<span class="dv">1</span>, ]</span>
+<span id="cb54-3"><a href="using-tmb.html#cb54-3" aria-hidden="true" tabindex="-1"></a>xi[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> foo <span class="sc">/</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb54-4"><a href="using-tmb.html#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
+<span id="cb54-5"><a href="using-tmb.html#cb54-5" aria-hidden="true" tabindex="-1"></a>  foo <span class="ot">&lt;-</span> <span class="fu">apply</span>(xi[i <span class="sc">-</span> <span class="dv">1</span>, ] <span class="sc">*</span> gamma, <span class="dv">2</span>, max) <span class="sc">*</span> emission_probs[i, ]</span>
+<span id="cb54-6"><a href="using-tmb.html#cb54-6" aria-hidden="true" tabindex="-1"></a>  xi[i, ] <span class="ot">&lt;-</span> foo <span class="sc">/</span> <span class="fu">sum</span>(foo)</span>
+<span id="cb54-7"><a href="using-tmb.html#cb54-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb54-8"><a href="using-tmb.html#cb54-8" aria-hidden="true" tabindex="-1"></a>iv <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n)</span>
+<span id="cb54-9"><a href="using-tmb.html#cb54-9" aria-hidden="true" tabindex="-1"></a>iv[n] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(xi[n, ])</span>
+<span id="cb54-10"><a href="using-tmb.html#cb54-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (n <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">:</span><span class="dv">1</span>){</span>
+<span id="cb54-11"><a href="using-tmb.html#cb54-11" aria-hidden="true" tabindex="-1"></a>  iv[i] <span class="ot">&lt;-</span> <span class="fu">which.max</span>(gamma[, iv[i <span class="sc">+</span> <span class="dv">1</span>]] <span class="sc">*</span> xi[i, ])</span>
+<span id="cb54-12"><a href="using-tmb.html#cb54-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb54-13"><a href="using-tmb.html#cb54-13" aria-hidden="true" tabindex="-1"></a>iv</span>
+<span id="cb54-14"><a href="using-tmb.html#cb54-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 1 1 1 3 3 3 3 3 3 3 3 3 3 3 1 2 2 2 2 2 2 2 2 2 2 2 2 2</span></span>
+<span id="cb54-15"><a href="using-tmb.html#cb54-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [80] 2 2 2 2 2 2 2 2</span></span></code></pre></div>
 </div>
 </div>
 <div id="appendix" class="section level2 hasAnchor" number="4.5">
@@ -797,103 +838,103 @@ An implementation of it is</p>
 <ul>
 <li>AIC and BIC of a Poisson regression</li>
 </ul>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="using-tmb.html#cb52-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb52-2"><a href="using-tmb.html#cb52-2" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
-<span id="cb52-3"><a href="using-tmb.html#cb52-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb52-4"><a href="using-tmb.html#cb52-4" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb52-5"><a href="using-tmb.html#cb52-5" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
-<span id="cb52-6"><a href="using-tmb.html#cb52-6" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb52-7"><a href="using-tmb.html#cb52-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb52-8"><a href="using-tmb.html#cb52-8" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn)</span>
-<span id="cb52-9"><a href="using-tmb.html#cb52-9" aria-hidden="true" tabindex="-1"></a>mllk <span class="ot">&lt;-</span> mod_tmb<span class="sc">$</span>objective</span>
-<span id="cb52-10"><a href="using-tmb.html#cb52-10" aria-hidden="true" tabindex="-1"></a>np <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unlist</span>(parameters))</span>
-<span id="cb52-11"><a href="using-tmb.html#cb52-11" aria-hidden="true" tabindex="-1"></a>AIC_1 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (mllk <span class="sc">+</span> np)</span>
-<span id="cb52-12"><a href="using-tmb.html#cb52-12" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(TMB_data<span class="sc">$</span>x))</span>
-<span id="cb52-13"><a href="using-tmb.html#cb52-13" aria-hidden="true" tabindex="-1"></a>BIC_1 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> mllk <span class="sc">+</span> np <span class="sc">*</span> <span class="fu">log</span>(n)</span>
-<span id="cb52-14"><a href="using-tmb.html#cb52-14" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
-<span id="cb52-15"><a href="using-tmb.html#cb52-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span>
-<span id="cb52-16"><a href="using-tmb.html#cb52-16" aria-hidden="true" tabindex="-1"></a>AIC_1</span>
-<span id="cb52-17"><a href="using-tmb.html#cb52-17" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 394.197</span></span>
-<span id="cb52-18"><a href="using-tmb.html#cb52-18" aria-hidden="true" tabindex="-1"></a>BIC_1</span>
-<span id="cb52-19"><a href="using-tmb.html#cb52-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 396.6629</span></span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="using-tmb.html#cb55-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb55-2"><a href="using-tmb.html#cb55-2" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
+<span id="cb55-3"><a href="using-tmb.html#cb55-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb55-4"><a href="using-tmb.html#cb55-4" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb55-5"><a href="using-tmb.html#cb55-5" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
+<span id="cb55-6"><a href="using-tmb.html#cb55-6" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb55-7"><a href="using-tmb.html#cb55-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb55-8"><a href="using-tmb.html#cb55-8" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn)</span>
+<span id="cb55-9"><a href="using-tmb.html#cb55-9" aria-hidden="true" tabindex="-1"></a>mllk <span class="ot">&lt;-</span> mod_tmb<span class="sc">$</span>objective</span>
+<span id="cb55-10"><a href="using-tmb.html#cb55-10" aria-hidden="true" tabindex="-1"></a>np <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unlist</span>(parameters))</span>
+<span id="cb55-11"><a href="using-tmb.html#cb55-11" aria-hidden="true" tabindex="-1"></a>AIC_1 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (mllk <span class="sc">+</span> np)</span>
+<span id="cb55-12"><a href="using-tmb.html#cb55-12" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(TMB_data<span class="sc">$</span>x))</span>
+<span id="cb55-13"><a href="using-tmb.html#cb55-13" aria-hidden="true" tabindex="-1"></a>BIC_1 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> mllk <span class="sc">+</span> np <span class="sc">*</span> <span class="fu">log</span>(n)</span>
+<span id="cb55-14"><a href="using-tmb.html#cb55-14" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
+<span id="cb55-15"><a href="using-tmb.html#cb55-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span>
+<span id="cb55-16"><a href="using-tmb.html#cb55-16" aria-hidden="true" tabindex="-1"></a>AIC_1</span>
+<span id="cb55-17"><a href="using-tmb.html#cb55-17" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 394.197</span></span>
+<span id="cb55-18"><a href="using-tmb.html#cb55-18" aria-hidden="true" tabindex="-1"></a>BIC_1</span>
+<span id="cb55-19"><a href="using-tmb.html#cb55-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 396.6629</span></span></code></pre></div>
 <ul>
 <li>AIC and BIC of a two-state Poisson HMM</li>
 </ul>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="using-tmb.html#cb53-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb53-2"><a href="using-tmb.html#cb53-2" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
-<span id="cb53-3"><a href="using-tmb.html#cb53-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">3</span>, <span class="at">length.out =</span> m)</span>
-<span id="cb53-4"><a href="using-tmb.html#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.8 on the diagonal, and 0.2 split along the rest of each line, size m</span></span>
-<span id="cb53-5"><a href="using-tmb.html#cb53-5" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fl">0.2</span> <span class="sc">/</span> (m <span class="sc">-</span> <span class="dv">1</span>),</span>
-<span id="cb53-6"><a href="using-tmb.html#cb53-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">nrow =</span> m,</span>
-<span id="cb53-7"><a href="using-tmb.html#cb53-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">ncol =</span> m)</span>
-<span id="cb53-8"><a href="using-tmb.html#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(gamma) <span class="ot">&lt;-</span> <span class="fl">0.8</span></span>
-<span id="cb53-9"><a href="using-tmb.html#cb53-9" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
-<span id="cb53-10"><a href="using-tmb.html#cb53-10" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb53-11"><a href="using-tmb.html#cb53-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb53-12"><a href="using-tmb.html#cb53-12" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn)</span>
-<span id="cb53-13"><a href="using-tmb.html#cb53-13" aria-hidden="true" tabindex="-1"></a>mllk <span class="ot">&lt;-</span> mod_tmb<span class="sc">$</span>objective</span>
-<span id="cb53-14"><a href="using-tmb.html#cb53-14" aria-hidden="true" tabindex="-1"></a>np <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unlist</span>(parameters))</span>
-<span id="cb53-15"><a href="using-tmb.html#cb53-15" aria-hidden="true" tabindex="-1"></a>AIC_2 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (mllk <span class="sc">+</span> np)</span>
-<span id="cb53-16"><a href="using-tmb.html#cb53-16" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(TMB_data<span class="sc">$</span>x))</span>
-<span id="cb53-17"><a href="using-tmb.html#cb53-17" aria-hidden="true" tabindex="-1"></a>BIC_2 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> mllk <span class="sc">+</span> np <span class="sc">*</span> <span class="fu">log</span>(n)</span>
-<span id="cb53-18"><a href="using-tmb.html#cb53-18" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
-<span id="cb53-19"><a href="using-tmb.html#cb53-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span>
-<span id="cb53-20"><a href="using-tmb.html#cb53-20" aria-hidden="true" tabindex="-1"></a>AIC_2</span>
-<span id="cb53-21"><a href="using-tmb.html#cb53-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 345.0721</span></span>
-<span id="cb53-22"><a href="using-tmb.html#cb53-22" aria-hidden="true" tabindex="-1"></a>BIC_2</span>
-<span id="cb53-23"><a href="using-tmb.html#cb53-23" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 354.9357</span></span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="using-tmb.html#cb56-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb56-2"><a href="using-tmb.html#cb56-2" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
+<span id="cb56-3"><a href="using-tmb.html#cb56-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">3</span>, <span class="at">length.out =</span> m)</span>
+<span id="cb56-4"><a href="using-tmb.html#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.8 on the diagonal, and 0.2 split along the rest of each line, size m</span></span>
+<span id="cb56-5"><a href="using-tmb.html#cb56-5" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fl">0.2</span> <span class="sc">/</span> (m <span class="sc">-</span> <span class="dv">1</span>),</span>
+<span id="cb56-6"><a href="using-tmb.html#cb56-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">nrow =</span> m,</span>
+<span id="cb56-7"><a href="using-tmb.html#cb56-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">ncol =</span> m)</span>
+<span id="cb56-8"><a href="using-tmb.html#cb56-8" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(gamma) <span class="ot">&lt;-</span> <span class="fl">0.8</span></span>
+<span id="cb56-9"><a href="using-tmb.html#cb56-9" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
+<span id="cb56-10"><a href="using-tmb.html#cb56-10" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb56-11"><a href="using-tmb.html#cb56-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb56-12"><a href="using-tmb.html#cb56-12" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn)</span>
+<span id="cb56-13"><a href="using-tmb.html#cb56-13" aria-hidden="true" tabindex="-1"></a>mllk <span class="ot">&lt;-</span> mod_tmb<span class="sc">$</span>objective</span>
+<span id="cb56-14"><a href="using-tmb.html#cb56-14" aria-hidden="true" tabindex="-1"></a>np <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unlist</span>(parameters))</span>
+<span id="cb56-15"><a href="using-tmb.html#cb56-15" aria-hidden="true" tabindex="-1"></a>AIC_2 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (mllk <span class="sc">+</span> np)</span>
+<span id="cb56-16"><a href="using-tmb.html#cb56-16" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(TMB_data<span class="sc">$</span>x))</span>
+<span id="cb56-17"><a href="using-tmb.html#cb56-17" aria-hidden="true" tabindex="-1"></a>BIC_2 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> mllk <span class="sc">+</span> np <span class="sc">*</span> <span class="fu">log</span>(n)</span>
+<span id="cb56-18"><a href="using-tmb.html#cb56-18" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
+<span id="cb56-19"><a href="using-tmb.html#cb56-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span>
+<span id="cb56-20"><a href="using-tmb.html#cb56-20" aria-hidden="true" tabindex="-1"></a>AIC_2</span>
+<span id="cb56-21"><a href="using-tmb.html#cb56-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 345.0721</span></span>
+<span id="cb56-22"><a href="using-tmb.html#cb56-22" aria-hidden="true" tabindex="-1"></a>BIC_2</span>
+<span id="cb56-23"><a href="using-tmb.html#cb56-23" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 354.9357</span></span></code></pre></div>
 <ul>
 <li>AIC and BIC of a three-state Poisson HMM</li>
 </ul>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="using-tmb.html#cb54-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb54-2"><a href="using-tmb.html#cb54-2" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
-<span id="cb54-3"><a href="using-tmb.html#cb54-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">3</span>, <span class="at">length.out =</span> m)</span>
-<span id="cb54-4"><a href="using-tmb.html#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.8 on the diagonal, and 0.2 split along the rest of each line, size m</span></span>
-<span id="cb54-5"><a href="using-tmb.html#cb54-5" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fl">0.2</span> <span class="sc">/</span> (m <span class="sc">-</span> <span class="dv">1</span>),</span>
-<span id="cb54-6"><a href="using-tmb.html#cb54-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">nrow =</span> m,</span>
-<span id="cb54-7"><a href="using-tmb.html#cb54-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">ncol =</span> m)</span>
-<span id="cb54-8"><a href="using-tmb.html#cb54-8" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(gamma) <span class="ot">&lt;-</span> <span class="fl">0.8</span></span>
-<span id="cb54-9"><a href="using-tmb.html#cb54-9" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
-<span id="cb54-10"><a href="using-tmb.html#cb54-10" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb54-11"><a href="using-tmb.html#cb54-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb54-12"><a href="using-tmb.html#cb54-12" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn)</span>
-<span id="cb54-13"><a href="using-tmb.html#cb54-13" aria-hidden="true" tabindex="-1"></a>mllk <span class="ot">&lt;-</span> mod_tmb<span class="sc">$</span>objective</span>
-<span id="cb54-14"><a href="using-tmb.html#cb54-14" aria-hidden="true" tabindex="-1"></a>np <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unlist</span>(parameters))</span>
-<span id="cb54-15"><a href="using-tmb.html#cb54-15" aria-hidden="true" tabindex="-1"></a>AIC_3 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (mllk <span class="sc">+</span> np)</span>
-<span id="cb54-16"><a href="using-tmb.html#cb54-16" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(TMB_data<span class="sc">$</span>x))</span>
-<span id="cb54-17"><a href="using-tmb.html#cb54-17" aria-hidden="true" tabindex="-1"></a>BIC_3 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> mllk <span class="sc">+</span> np <span class="sc">*</span> <span class="fu">log</span>(n)</span>
-<span id="cb54-18"><a href="using-tmb.html#cb54-18" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
-<span id="cb54-19"><a href="using-tmb.html#cb54-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span>
-<span id="cb54-20"><a href="using-tmb.html#cb54-20" aria-hidden="true" tabindex="-1"></a>AIC_3</span>
-<span id="cb54-21"><a href="using-tmb.html#cb54-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 353.0463</span></span>
-<span id="cb54-22"><a href="using-tmb.html#cb54-22" aria-hidden="true" tabindex="-1"></a>BIC_3</span>
-<span id="cb54-23"><a href="using-tmb.html#cb54-23" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 375.2395</span></span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="using-tmb.html#cb57-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb57-2"><a href="using-tmb.html#cb57-2" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
+<span id="cb57-3"><a href="using-tmb.html#cb57-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">3</span>, <span class="at">length.out =</span> m)</span>
+<span id="cb57-4"><a href="using-tmb.html#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.8 on the diagonal, and 0.2 split along the rest of each line, size m</span></span>
+<span id="cb57-5"><a href="using-tmb.html#cb57-5" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fl">0.2</span> <span class="sc">/</span> (m <span class="sc">-</span> <span class="dv">1</span>),</span>
+<span id="cb57-6"><a href="using-tmb.html#cb57-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">nrow =</span> m,</span>
+<span id="cb57-7"><a href="using-tmb.html#cb57-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">ncol =</span> m)</span>
+<span id="cb57-8"><a href="using-tmb.html#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(gamma) <span class="ot">&lt;-</span> <span class="fl">0.8</span></span>
+<span id="cb57-9"><a href="using-tmb.html#cb57-9" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
+<span id="cb57-10"><a href="using-tmb.html#cb57-10" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb57-11"><a href="using-tmb.html#cb57-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb57-12"><a href="using-tmb.html#cb57-12" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn)</span>
+<span id="cb57-13"><a href="using-tmb.html#cb57-13" aria-hidden="true" tabindex="-1"></a>mllk <span class="ot">&lt;-</span> mod_tmb<span class="sc">$</span>objective</span>
+<span id="cb57-14"><a href="using-tmb.html#cb57-14" aria-hidden="true" tabindex="-1"></a>np <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unlist</span>(parameters))</span>
+<span id="cb57-15"><a href="using-tmb.html#cb57-15" aria-hidden="true" tabindex="-1"></a>AIC_3 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (mllk <span class="sc">+</span> np)</span>
+<span id="cb57-16"><a href="using-tmb.html#cb57-16" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(TMB_data<span class="sc">$</span>x))</span>
+<span id="cb57-17"><a href="using-tmb.html#cb57-17" aria-hidden="true" tabindex="-1"></a>BIC_3 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> mllk <span class="sc">+</span> np <span class="sc">*</span> <span class="fu">log</span>(n)</span>
+<span id="cb57-18"><a href="using-tmb.html#cb57-18" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
+<span id="cb57-19"><a href="using-tmb.html#cb57-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span>
+<span id="cb57-20"><a href="using-tmb.html#cb57-20" aria-hidden="true" tabindex="-1"></a>AIC_3</span>
+<span id="cb57-21"><a href="using-tmb.html#cb57-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 353.0463</span></span>
+<span id="cb57-22"><a href="using-tmb.html#cb57-22" aria-hidden="true" tabindex="-1"></a>BIC_3</span>
+<span id="cb57-23"><a href="using-tmb.html#cb57-23" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 375.2395</span></span></code></pre></div>
 <ul>
 <li>AIC and BIC of a four-state Poisson HMM</li>
 </ul>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="using-tmb.html#cb55-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb55-2"><a href="using-tmb.html#cb55-2" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
-<span id="cb55-3"><a href="using-tmb.html#cb55-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">3</span>, <span class="at">length.out =</span> m)</span>
-<span id="cb55-4"><a href="using-tmb.html#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.8 on the diagonal, and 0.2 split along the rest of each line, size m</span></span>
-<span id="cb55-5"><a href="using-tmb.html#cb55-5" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fl">0.2</span> <span class="sc">/</span> (m <span class="sc">-</span> <span class="dv">1</span>),</span>
-<span id="cb55-6"><a href="using-tmb.html#cb55-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">nrow =</span> m,</span>
-<span id="cb55-7"><a href="using-tmb.html#cb55-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">ncol =</span> m)</span>
-<span id="cb55-8"><a href="using-tmb.html#cb55-8" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(gamma) <span class="ot">&lt;-</span> <span class="fl">0.8</span></span>
-<span id="cb55-9"><a href="using-tmb.html#cb55-9" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
-<span id="cb55-10"><a href="using-tmb.html#cb55-10" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
-<span id="cb55-11"><a href="using-tmb.html#cb55-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb55-12"><a href="using-tmb.html#cb55-12" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn)</span>
-<span id="cb55-13"><a href="using-tmb.html#cb55-13" aria-hidden="true" tabindex="-1"></a>mllk <span class="ot">&lt;-</span> mod_tmb<span class="sc">$</span>objective</span>
-<span id="cb55-14"><a href="using-tmb.html#cb55-14" aria-hidden="true" tabindex="-1"></a>np <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unlist</span>(parameters))</span>
-<span id="cb55-15"><a href="using-tmb.html#cb55-15" aria-hidden="true" tabindex="-1"></a>AIC_4 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (mllk <span class="sc">+</span> np)</span>
-<span id="cb55-16"><a href="using-tmb.html#cb55-16" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(TMB_data<span class="sc">$</span>x))</span>
-<span id="cb55-17"><a href="using-tmb.html#cb55-17" aria-hidden="true" tabindex="-1"></a>BIC_4 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> mllk <span class="sc">+</span> np <span class="sc">*</span> <span class="fu">log</span>(n)</span>
-<span id="cb55-18"><a href="using-tmb.html#cb55-18" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
-<span id="cb55-19"><a href="using-tmb.html#cb55-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span>
-<span id="cb55-20"><a href="using-tmb.html#cb55-20" aria-hidden="true" tabindex="-1"></a>AIC_4</span>
-<span id="cb55-21"><a href="using-tmb.html#cb55-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 365.6644</span></span>
-<span id="cb55-22"><a href="using-tmb.html#cb55-22" aria-hidden="true" tabindex="-1"></a>BIC_4</span>
-<span id="cb55-23"><a href="using-tmb.html#cb55-23" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 405.1189</span></span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="using-tmb.html#cb58-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb58-2"><a href="using-tmb.html#cb58-2" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> tinn_data, <span class="at">m =</span> m)</span>
+<span id="cb58-3"><a href="using-tmb.html#cb58-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">3</span>, <span class="at">length.out =</span> m)</span>
+<span id="cb58-4"><a href="using-tmb.html#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 0.8 on the diagonal, and 0.2 split along the rest of each line, size m</span></span>
+<span id="cb58-5"><a href="using-tmb.html#cb58-5" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fl">0.2</span> <span class="sc">/</span> (m <span class="sc">-</span> <span class="dv">1</span>),</span>
+<span id="cb58-6"><a href="using-tmb.html#cb58-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">nrow =</span> m,</span>
+<span id="cb58-7"><a href="using-tmb.html#cb58-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">ncol =</span> m)</span>
+<span id="cb58-8"><a href="using-tmb.html#cb58-8" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(gamma) <span class="ot">&lt;-</span> <span class="fl">0.8</span></span>
+<span id="cb58-9"><a href="using-tmb.html#cb58-9" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
+<span id="cb58-10"><a href="using-tmb.html#cb58-10" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(TMB_data, parameters,</span>
+<span id="cb58-11"><a href="using-tmb.html#cb58-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb58-12"><a href="using-tmb.html#cb58-12" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn)</span>
+<span id="cb58-13"><a href="using-tmb.html#cb58-13" aria-hidden="true" tabindex="-1"></a>mllk <span class="ot">&lt;-</span> mod_tmb<span class="sc">$</span>objective</span>
+<span id="cb58-14"><a href="using-tmb.html#cb58-14" aria-hidden="true" tabindex="-1"></a>np <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unlist</span>(parameters))</span>
+<span id="cb58-15"><a href="using-tmb.html#cb58-15" aria-hidden="true" tabindex="-1"></a>AIC_4 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (mllk <span class="sc">+</span> np)</span>
+<span id="cb58-16"><a href="using-tmb.html#cb58-16" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(TMB_data<span class="sc">$</span>x))</span>
+<span id="cb58-17"><a href="using-tmb.html#cb58-17" aria-hidden="true" tabindex="-1"></a>BIC_4 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> mllk <span class="sc">+</span> np <span class="sc">*</span> <span class="fu">log</span>(n)</span>
+<span id="cb58-18"><a href="using-tmb.html#cb58-18" aria-hidden="true" tabindex="-1"></a>mod_tmb<span class="sc">$</span>convergence <span class="sc">==</span> <span class="dv">0</span></span>
+<span id="cb58-19"><a href="using-tmb.html#cb58-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span>
+<span id="cb58-20"><a href="using-tmb.html#cb58-20" aria-hidden="true" tabindex="-1"></a>AIC_4</span>
+<span id="cb58-21"><a href="using-tmb.html#cb58-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 365.6644</span></span>
+<span id="cb58-22"><a href="using-tmb.html#cb58-22" aria-hidden="true" tabindex="-1"></a>BIC_4</span>
+<span id="cb58-23"><a href="using-tmb.html#cb58-23" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 405.1189</span></span></code></pre></div>
 <ul>
 <li>Summary</li>
 </ul>
@@ -998,7 +1039,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

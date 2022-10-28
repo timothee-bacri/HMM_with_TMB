@@ -5,7 +5,7 @@ author:
   - Jan Bulla [jan.bulla@uib.no](mailto:jan.bulla@uib.no?subject=[GitHub%20TMB%20HMM])
   - Geir Berentsen [geir.berentsen@nhh.no](mailto:geir.berentsen@nhh.no?subject=[GitHub%20TMB%20HMM])
   - Sondre Hølleland [sondre.hoelleland@hi.no](mailto:sondre.hoelleland@hi.no?subject=[GitHub%20TMB%20HMM])
-date: "`r Sys.Date()`"
+# date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [packages.bib, paper.bib]
@@ -34,7 +34,7 @@ editor_options:
 <!-- COMPILE WITH bookdown::render_book("index.Rmd") -->
 Welcome !
 
-This website aims to accompany the reader of [Link to official article]
+This website aims to accompany the reader of *https://doi.org/10.1002/bimj.202100256*.
 
 The files used in this repository are available in *https://github.com/timothee-bacri/HMM_with_TMB*.
 

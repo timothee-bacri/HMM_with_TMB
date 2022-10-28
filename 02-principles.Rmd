@@ -93,7 +93,7 @@ Writing extra files to define functions compatible with `TMB` requires some care
 To illustrate how this works, we add a separate function to the *[code/linreg.cpp](#linreg.cpp)* example.
 The following function does not do anything meaningful, but is just meant to show you how you can add write an additional function and load it into your C++.
 We start by writing the subroutine function as a separate file called *[functions/utils_linreg_extended.cpp](#utils_linreg_extended.cpp)*.
-```{Rcpp 1utils_linreg_extended.cpp, code=readLines("functions/utils_linreg_extended.cpp"), eval=FALSE}
+```{Rcpp 1utils_linreg_extended.cpp-restricted, code=readLines("functions/utils_linreg_extended.cpp"), eval=FALSE}
 ```
 We then import it into *[code/linreg_extended.cpp](#linreg_extended.cpp)*. 
 ```{Rcpp 1utils_linreg_extended.cpp, code=readLines("code/linreg_extended.cpp"), eval=FALSE}

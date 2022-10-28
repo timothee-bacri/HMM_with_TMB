@@ -102,6 +102,9 @@ for (i in 2:n) {
   foo <- foo / sumfoo
   lalpha[, i] <- log(foo) + lscale
 }
+```
+
+```{r 3log-forward-print}
 # lalpha contains n=240 columns, so we only display 5 for readability
 lalpha[, 1:5]
 ```
@@ -122,6 +125,9 @@ for (i in (n - 1):1) {
   foo <- foo / sumfoo
   lscale <- lscale + log(sumfoo)
 }
+```
+
+```{r 3log-backward-print}
 # lbeta contains n=240 columns, so we only display 4 for readability
 lbeta[, 1:4]
 ```
