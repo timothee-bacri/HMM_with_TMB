@@ -61,6 +61,8 @@ mvnorm_hmm.cpp
 norm_hmm.cpp
 codepackages.r
 poi_hmm.cpp
+poi_hmm_smoothing.cpp
+poi_hmm_smoothing_truncated.cpp
 poi_hmm_lamb.R
 poi_hmm_simu1.R
 poi_hmm_simu2.R
@@ -86,3 +88,8 @@ utils.cpp
 utils.R
 utils.R-explanation.R
 utils_linreg_extended.cpp
+local-decoding-confidence-intervals
+likelihood-function-poisson-hmm
+estimation-2
+results-2
+limitation

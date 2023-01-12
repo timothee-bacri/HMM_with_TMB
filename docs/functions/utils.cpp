@@ -61,10 +61,29 @@ vector<Type> stat_dist(int m, matrix<Type> gamma) {
   U = U.setOnes();
   I = I.setIdentity();
   row1vec.setOnes();
-  matrix<Type> A =  I - gamma + U;
+  matrix<Type> A = I - gamma + U;
   matrix<Type> Ainv = A.inverse();
   matrix<Type> deltamat = row1vec * Ainv;
   vector<Type> delta = deltamat.row(0);
   
   return delta;
 }
+
+// // Function computing log-forward probabilities (scaling used)
+// template<class Type>
+// vector<Type> lalpha(int n,
+// // matrix<Type> lalpha(int n,
+//                     int m,
+//                     vector<Type> delta,
+//                     matrix<Type> gamma,
+//                     matrix<Type> emission_probs) {
+//   
+//   matrix<Type> lalpha(m, n);
+//   vector<Type> foo = delta * vector<Type>(emission_probs.row(0));
+//   Type sumfoo = foo.sum();
+//   Type lscale = sumfoo.log();
+//   foo /= sumfoo;
+//   // lalpha.row(0) << foo.log() + lscale;
+//   
+//   return foo;
+// }

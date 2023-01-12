@@ -3,7 +3,7 @@ packages <- c("TMB", "microbenchmark", "ggthemes", "knitr", "xtable",
 if(!all( packages %in% (.packages()) )) {
   for(pkg in packages) {
     if( !require(pkg, character.only = TRUE) ) {
-      install.packages(pkg, type = "binary")
+      install.packages(pkg)
       library(pkg, character.only = TRUE)
     }
   }

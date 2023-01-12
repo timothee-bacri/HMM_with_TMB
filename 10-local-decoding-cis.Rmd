@@ -1,0 +1,355 @@
+# Local decoding confidence intervals
+`TMB` allows to retrieve standard errors for any quantity computed in `C++` that is derived from parameters.
+Therefore, we can derive CIs for quantities defined in [state-inference].
+
+We compute CIs for smoothing probabilities of a Poisson and a Gaussian HMM.
+
+## Likelihood function (Poisson HMM)
+We define the `C++` code first, available in the file *[code/poi_hmm_smoothing.cpp](#poi_hmm_smoothing.cpp)* and below.
+
+Similarly to the `R` code, we compute the log-forward and log-backward probabilities, derive smoothing probabilities, truncate them (optional), and return them with `ADREPORT`.
+We also produce the sequence of most likely states as a by-product using the variable `ldecode`.
+
+```{Rcpp 10poi_hmm_smoothing.cpp, code=readLines("code/poi_hmm_smoothing.cpp"), eval=FALSE}
+```
+
+## Estimation
+In `R`, we can use the `C++` objective function with `TMB` to return smoothing probabilities.
+Note that they are returned column-wise. For example, the first `m` (here 2) values correspond to the smoothing probabilities of the first and second hidden state of the first data.
+```{r 10smoothing_tyt}
+set.seed(1)
+# Load TMB, the data set, and utility functions
+library(TMB)
+source("functions/utils.R")
+load("data/tinnitus.RData")
+TMB::compile("code/poi_hmm_smoothing.cpp")
+dyn.load(dynlib("code/poi_hmm_smoothing"))
+m <- 2
+data_set <- tinn_data
+
+# Setup initial parameters
+lambda <- seq(quantile(data_set, 0.1),
+              quantile(data_set, 0.9),
+              length.out = m)
+gamma <- matrix(0.2 / (m - 1),
+                nrow = m,
+                ncol = m)
+diag(gamma) <- 0.8
+delta <- stat.dist(gamma)
+
+# Create the TMB objects for estimation
+TMB_data <- list(x = data_set, m = m)
+parameters <- pois.HMM.pn2pw(m, lambda, gamma)
+
+obj_tmb <- MakeADFun(data = TMB_data,
+                     parameters = parameters,
+                     DLL = "poi_hmm_smoothing",
+                     silent = TRUE)
+
+# Estimation
+mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn,
+                  gradient = obj_tmb$gr, hessian = obj_tmb$he)
+
+# Retrieve estimates
+adrep <- summary(sdreport(obj_tmb))
+lambda <- obj_tmb$report(obj_tmb$env$last.par.best)$lambda
+gamma <- obj_tmb$report(obj_tmb$env$last.par.best)$gamma
+
+# We are interested only in the smoothing probabilities
+adrep <- adrep[rownames(adrep) == "smoothing_probs", ]
+
+# We follow the notation of (Zucchini et al., 2016)
+# One row per hidden state, one column per data
+smoothing_probs <- matrix(adrep[, "Estimate"], nrow = m)
+smoothing_probs_std_error <- matrix(adrep[, "Std. Error"], nrow = m)
+# 95% confidence intervals
+q95_norm <- qnorm(1 - 0.05 / 2)
+```
+
+## Results
+Next, we plot smoothing probabilities for each state along with their [Wald-type CI](#Wald-type).
+```{r 10plot_smoothing_probabilities}
+# Aesthetic parameters used in the article
+ERRORBAR_LINE_WIDTH <- 0.2
+ERRORBAR_END_WIDTH <- 1.1
+POINT_SIZE <- 0.2
+LINE_SIZE <- 0.25
+COLORS <- c("dodgerblue2", "tomato3", "green", "purple", "gold")
+
+n <- ncol(smoothing_probs)
+
+## Plotting (with ggplot2)
+library(ggplot2)
+
+state_ggplot <- list()
+for (state in 1:m) {
+  # State smoothing probabilities
+  stateprobs <- data.frame(idx = 1:n,
+                           estimate = smoothing_probs[state, ],
+                           std.error = smoothing_probs_std_error[state, ])
+  # Add 95% CI bounds with cutoffs at 0 and 1
+  stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+  stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+  
+  state_ggplot[[state]] <- ggplot(stateprobs, aes(x = idx)) +
+    geom_ribbon(aes(ymin = ci_lower,
+                    ymax = ci_upper),
+                fill = "lightgrey") +
+    geom_errorbar(aes(ymin = ci_lower,
+                      ymax = ci_upper,
+                      width = ERRORBAR_END_WIDTH),
+                  color = COLORS[state],
+                  show.legend = FALSE,
+                  linewidth = ERRORBAR_LINE_WIDTH) +
+    geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
+    geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+    ggtitle(bquote("State" ~ .(state) * "," ~ widehat(lambda) ~ "=" ~ .(round(lambda[state], 2)))) +
+    theme_Publication() +
+    ylim(0, 1) +
+    xlab("") +
+    ylab("Probability")
+}
+
+# STATE MOST LIKELY
+ldecode <- obj_tmb$report(obj_tmb$env$last.par.best)$ldecode
+ldecode_estimates <- c()
+ldecode_std.errors <- c()
+for (i in 1:n) {
+  ldecode_estimates[i] <- smoothing_probs[ldecode[i], i]
+  ldecode_std.errors[i] <- smoothing_probs_std_error[ldecode[i], i]
+}
+stateprobs <- data.frame(idx = 1:n,
+                         estimate = ldecode_estimates,
+                         std.error = ldecode_std.errors,
+                         state = as.factor(ldecode))
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+state_likely_ggplot <- ggplot(stateprobs, aes(x = idx)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH,
+                    color = state),
+                show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  scale_color_manual(values = COLORS[1:m], breaks = 1:m) +
+  ggtitle("Most likely states") +
+  theme_Publication() +
+  xlab("Time (days)") +
+  ylab("Probability") +
+  ylim(0, 1)
+
+# Display the graphs in one figure
+library(ggpubr)
+ggarrange(ggarrange(plotlist = state_ggplot,
+                    ncol = 2, nrow = ceiling(m/2)),
+          state_likely_ggplot,
+          ncol = 1, nrow = 2)
+```
+
+## Limitation
+The TYT data set used above is short and does not pose computing issues.
+However, with a larger set, retrieving the standard errors of the smoothing probabilities becomes time-consuming and can take days or weeks depending on the dataamount of data, as the delta method is applied repeatedly when these errors are retrieved via `summary(sdreport(obj_tmb))`.
+A solution to this problem is to truncate the smoothing probability matrix before it is returned by `TMB`, in the objective function defined above.
+An example of what the function can be is in the file *[code/poi_hmm_smoothing_truncated.cpp](#poi_hmm_smoothing_truncated.cpp)* and below.
+
+```{Rcpp 10poi_hmm_smoothing_truncated.cpp, code=readLines("code/poi_hmm_smoothing_truncated.cpp"), eval=FALSE}
+```
+
+:::{#note-text .note}
+It is important to note that the values `start_row`, `start_col`, `nb_rows`, and `nb_cols` cam be set to `NA` to retrieve the .
+They serve to truncate the amount of smoothing probabilities returned, as there are one per combination of data point and hidden state. With 2000 data and 5 hidden states, there will be 10000 smoothing probabilities in a 5 x 2000 matrix.
+:::
+
+If needed, one can return all smoothing probabilities by estimating the HMM multiple times and returning each time a different block of the matrix of smoothing probabilities, then aggregating these blocks.
+
+To make use of this, in `R`, we need to load the modified likelihood function stored in 
+
+```{r 10load_truncated_nll_cpp, eval = FALSE}
+TMB::compile("code/poi_hmm_smoothing_truncated.cpp")
+dyn.load(dynlib("code/poi_hmm_smoothing_truncated"))
+```
+.
+
+Then, the `TMB_data` object can be defined as
+
+```{r 10smoothing_tyt_truncated_no_change, eval = FALSE}
+TMB_data <- list(x = data_set, m = m,
+                 start_row = 0,
+                 start_col = 0,
+                 nb_rows = m,
+                 nb_cols = length(data_set))
+```
+
+or
+
+```{r 10smoothing_tyt_truncated_NA, eval = FALSE}
+TMB_data <- list(x = data_set, m = m,
+                 start_row = NA,
+                 start_col = NA,
+                 nb_rows = NA,
+                 nb_cols = NA)
+```
+
+and the same smoothing probabilities will be returned as above.
+
+Returning truncated smoothing probabilities can be done as follows
+
+```{r 10smoothing_tyt_truncated, eval = FALSE}
+TMB_data <- list(x = data_set, m = m,
+                 start_row = 0, # C++ indexes at 0, unlike R which indexes from 1. Be careful.
+                 start_col = 50, # C++ indexes at 0, unlike R which indexes from 1. Be careful.
+                 nb_rows = m,
+                 nb_cols = 30)
+```
+.
+This returns the \(m\) smoothing probabilities associated with data points 51, 52, \(\ldots\), 80.
+
+:::{#important-text .important}
+Remember the updated name of the returned smoothing probabilities from `smoothing_probs` to `truncated_stateprobs` for clarity. This will be reflected in the row names of `summary(sdreport(obj_tmb))`.
+:::
+
+Let us show this in action and plot these probabilities as above. We first build the model and retrieve the estimates.
+```{r 10truncated_smoothing_tyt}
+set.seed(1)
+# Load TMB, the data set, and utility functions
+library(TMB)
+source("functions/utils.R")
+load("data/tinnitus.RData")
+TMB::compile("code/poi_hmm_smoothing_truncated.cpp")
+dyn.load(dynlib("code/poi_hmm_smoothing_truncated"))
+m <- 2
+data_set <- tinn_data
+
+# Setup initial parameters
+lambda <- seq(quantile(data_set, 0.1),
+              quantile(data_set, 0.9),
+              length.out = m)
+gamma <- matrix(0.2 / (m - 1),
+                nrow = m,
+                ncol = m)
+diag(gamma) <- 0.8
+delta <- stat.dist(gamma)
+
+# Create the TMB objects for estimation
+TMB_data <- list(x = data_set, m = m,
+                 start_row = 0,
+                 start_col = 50,
+                 nb_rows = m,
+                 nb_cols = 30)
+parameters <- pois.HMM.pn2pw(m, lambda, gamma)
+
+obj_tmb <- MakeADFun(data = TMB_data,
+                     parameters = parameters,
+                     DLL = "poi_hmm_smoothing_truncated",
+                     silent = TRUE)
+
+# Estimation
+mod_tmb <- nlminb(start = obj_tmb$par, objective = obj_tmb$fn,
+                  gradient = obj_tmb$gr, hessian = obj_tmb$he)
+
+# Retrieve estimates
+adrep <- summary(sdreport(obj_tmb))
+lambda <- obj_tmb$report(obj_tmb$env$last.par.best)$lambda
+gamma <- obj_tmb$report(obj_tmb$env$last.par.best)$gamma
+
+# We are interested only in the smoothing probabilities
+adrep <- adrep[rownames(adrep) == "truncated_smoothing_probs", ]
+
+# We follow the notation of (Zucchini et al., 2016)
+# One row per hidden state, one column per data
+smoothing_probs <- matrix(adrep[, "Estimate"], nrow = m)
+smoothing_probs_std_error <- matrix(adrep[, "Std. Error"], nrow = m)
+# 95% confidence intervals
+q95_norm <- qnorm(1 - 0.05 / 2)
+```
+Then we plot the smoothing probabilities and confidence intervals.
+```{r 10plot_truncated_smoothing_probabilities}
+# Aesthetic parameters used in the article
+ERRORBAR_LINE_WIDTH <- 0.2
+ERRORBAR_END_WIDTH <- 1.1
+POINT_SIZE <- 0.2
+LINE_SIZE <- 0.25
+COLORS <- c("dodgerblue2", "tomato3", "green", "purple", "gold")
+
+n <- ncol(smoothing_probs)
+indices_to_plot <- 51:80
+
+## Plotting (with ggplot2)
+library(ggplot2)
+
+state_ggplot <- list()
+for (state in 1:m) {
+  # State smoothing probabilities
+  stateprobs <- data.frame(idx = indices_to_plot,
+                           estimate = smoothing_probs[state, ],
+                           std.error = smoothing_probs_std_error[state, ])
+  # Add 95% CI bounds with cutoffs at 0 and 1
+  stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+  stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+  
+  state_ggplot[[state]] <- ggplot(stateprobs, aes(x = idx)) +
+    geom_ribbon(aes(ymin = ci_lower,
+                    ymax = ci_upper),
+                fill = "lightgrey") +
+    geom_errorbar(aes(ymin = ci_lower,
+                      ymax = ci_upper,
+                      width = ERRORBAR_END_WIDTH),
+                  color = COLORS[state],
+                  show.legend = FALSE,
+                  linewidth = ERRORBAR_LINE_WIDTH) +
+    geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
+    geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+    ggtitle(bquote("State" ~ .(state) * "," ~ widehat(lambda) ~ "=" ~ .(round(lambda[state], 2)))) +
+    theme_Publication() +
+    ylim(0, 1) +
+    xlab("") +
+    ylab("Probability")
+}
+
+# STATE MOST LIKELY
+ldecode <- obj_tmb$report(obj_tmb$env$last.par.best)$ldecode
+ldecode_estimates <- c()
+ldecode_std.errors <- c()
+for (i in 1:n) {
+  ldecode_estimates[i] <- smoothing_probs[ldecode[i], i]
+  ldecode_std.errors[i] <- smoothing_probs_std_error[ldecode[i], i]
+}
+stateprobs <- data.frame(idx = indices_to_plot,
+                         estimate = ldecode_estimates,
+                         std.error = ldecode_std.errors,
+                         state = as.factor(ldecode))
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+state_likely_ggplot <- ggplot(stateprobs, aes(x = idx)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH,
+                    color = state),
+                show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  scale_color_manual(values = COLORS[1:m], breaks = 1:m) +
+  ggtitle("Most likely states") +
+  theme_Publication() +
+  xlab("Time (days)") +
+  ylab("Probability") +
+  ylim(0, 1)
+
+# Display the graphs in one figure
+library(ggpubr)
+ggarrange(ggarrange(plotlist = state_ggplot,
+                    ncol = 2, nrow = ceiling(m/2)),
+          state_likely_ggplot,
+          ncol = 1, nrow = 2)
+```

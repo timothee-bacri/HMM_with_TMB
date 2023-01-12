@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title> 10 Local decoding confidence intervals | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
+  <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content=" 10 Local decoding confidence intervals | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This accompanies the article published at [GITHUB LINK]." />
+  <meta name="github-repo" content="timothee-bacri/HMM_with_TMB" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content=" 10 Local decoding confidence intervals | A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
+  
+  <meta name="twitter:description" content="This accompanies the article published at [GITHUB LINK]." />
+  
+
+<meta name="author" content="Timothée Bacri timothee.bacri@uib.no" />
+<meta name="author" content="Jan Bulla jan.bulla@uib.no" />
+<meta name="author" content="Geir Berentsen geir.berentsen@nhh.no" />
+<meta name="author" content="Sondre Hølleland sondre.hoelleland@hi.no" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="github.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+<script>
+/* ========================================================================
+ * Bootstrap: transition.js v3.3.7
+ * http://getbootstrap.com/javascript/#transitions
+ * ========================================================================
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
+  // ============================================================
+
+  function transitionEnd() {
+    var el = document.createElement('bootstrap')
+
+    var transEndEventNames = {
+      WebkitTransition : 'webkitTransitionEnd',
+      MozTransition    : 'transitionend',
+      OTransition      : 'oTransitionEnd otransitionend',
+      transition       : 'transitionend'
+    }
+
+    for (var name in transEndEventNames) {
+      if (el.style[name] !== undefined) {
+        return { end: transEndEventNames[name] }
+      }
+    }
+
+    return false // explicit for ie8 (  ._.)
+  }
+
+  // http://blog.alexmaccaw.com/css-transitions
+  $.fn.emulateTransitionEnd = function (duration) {
+    var called = false
+    var $el = this
+    $(this).one('bsTransitionEnd', function () { called = true })
+    var callback = function () { if (!called) $($el).trigger($.support.transition.end) }
+    setTimeout(callback, duration)
+    return this
+  }
+
+  $(function () {
+    $.support.transition = transitionEnd()
+
+    if (!$.support.transition) return
+
+    $.event.special.bsTransitionEnd = {
+      bindType: $.support.transition.end,
+      delegateType: $.support.transition.end,
+      handle: function (e) {
+        if ($(e.target).is(this)) return e.handleObj.handler.apply(this, arguments)
+      }
+    }
+  })
+
+}(jQuery);
+</script>
+<script>
+/* ========================================================================
+ * Bootstrap: collapse.js v3.3.7
+ * http://getbootstrap.com/javascript/#collapse
+ * ========================================================================
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+/* jshint latedef: false */
+
++function ($) {
+  'use strict';
+
+  // COLLAPSE PUBLIC CLASS DEFINITION
+  // ================================
+
+  var Collapse = function (element, options) {
+    this.$element      = $(element)
+    this.options       = $.extend({}, Collapse.DEFAULTS, options)
+    this.$trigger      = $('[data-toggle="collapse"][href="#' + element.id + '"],' +
+                           '[data-toggle="collapse"][data-target="#' + element.id + '"]')
+    this.transitioning = null
+
+    if (this.options.parent) {
+      this.$parent = this.getParent()
+    } else {
+      this.addAriaAndCollapsedClass(this.$element, this.$trigger)
+    }
+
+    if (this.options.toggle) this.toggle()
+  }
+
+  Collapse.VERSION  = '3.3.7'
+
+  Collapse.TRANSITION_DURATION = 350
+
+  Collapse.DEFAULTS = {
+    toggle: true
+  }
+
+  Collapse.prototype.dimension = function () {
+    var hasWidth = this.$element.hasClass('width')
+    return hasWidth ? 'width' : 'height'
+  }
+
+  Collapse.prototype.show = function () {
+    if (this.transitioning || this.$element.hasClass('in')) return
+
+    var activesData
+    var actives = this.$parent && this.$parent.children('.panel').children('.in, .collapsing')
+
+    if (actives && actives.length) {
+      activesData = actives.data('bs.collapse')
+      if (activesData && activesData.transitioning) return
+    }
+
+    var startEvent = $.Event('show.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    if (actives && actives.length) {
+      Plugin.call(actives, 'hide')
+      activesData || actives.data('bs.collapse', null)
+    }
+
+    var dimension = this.dimension()
+
+    this.$element
+      .removeClass('collapse')
+      .addClass('collapsing')[dimension](0)
+      .attr('aria-expanded', true)
+
+    this.$trigger
+      .removeClass('collapsed')
+      .attr('aria-expanded', true)
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.$element
+        .removeClass('collapsing')
+        .addClass('collapse in')[dimension]('')
+      this.transitioning = 0
+      this.$element
+        .trigger('shown.bs.collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    var scrollSize = $.camelCase(['scroll', dimension].join('-'))
+
+    this.$element
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)[dimension](this.$element[0][scrollSize])
+  }
+
+  Collapse.prototype.hide = function () {
+    if (this.transitioning || !this.$element.hasClass('in')) return
+
+    var startEvent = $.Event('hide.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    var dimension = this.dimension()
+
+    this.$element[dimension](this.$element[dimension]())[0].offsetHeight
+
+    this.$element
+      .addClass('collapsing')
+      .removeClass('collapse in')
+      .attr('aria-expanded', false)
+
+    this.$trigger
+      .addClass('collapsed')
+      .attr('aria-expanded', false)
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.transitioning = 0
+      this.$element
+        .removeClass('collapsing')
+        .addClass('collapse')
+        .trigger('hidden.bs.collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    this.$element
+      [dimension](0)
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)
+  }
+
+  Collapse.prototype.toggle = function () {
+    this[this.$element.hasClass('in') ? 'hide' : 'show']()
+  }
+
+  Collapse.prototype.getParent = function () {
+    return $(this.options.parent)
+      .find('[data-toggle="collapse"][data-parent="' + this.options.parent + '"]')
+      .each($.proxy(function (i, element) {
+        var $element = $(element)
+        this.addAriaAndCollapsedClass(getTargetFromTrigger($element), $element)
+      }, this))
+      .end()
+  }
+
+  Collapse.prototype.addAriaAndCollapsedClass = function ($element, $trigger) {
+    var isOpen = $element.hasClass('in')
+
+    $element.attr('aria-expanded', isOpen)
+    $trigger
+      .toggleClass('collapsed', !isOpen)
+      .attr('aria-expanded', isOpen)
+  }
+
+  function getTargetFromTrigger($trigger) {
+    var href
+    var target = $trigger.attr('data-target')
+      || (href = $trigger.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') // strip for ie7
+
+    return $(target)
+  }
+
+
+  // COLLAPSE PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.collapse')
+      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
+
+      if (!data && options.toggle && /show|hide/.test(option)) options.toggle = false
+      if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.collapse
+
+  $.fn.collapse             = Plugin
+  $.fn.collapse.Constructor = Collapse
+
+
+  // COLLAPSE NO CONFLICT
+  // ====================
+
+  $.fn.collapse.noConflict = function () {
+    $.fn.collapse = old
+    return this
+  }
+
+
+  // COLLAPSE DATA-API
+  // =================
+
+  $(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
+    var $this   = $(this)
+
+    if (!$this.attr('data-target')) e.preventDefault()
+
+    var $target = getTargetFromTrigger($this)
+    var data    = $target.data('bs.collapse')
+    var option  = data ? 'toggle' : $this.data()
+
+    Plugin.call($target, option)
+  })
+
+}(jQuery);
+</script>
+<script>
+window.initializeCodeFolding = function(show) {
+
+  // handlers for show-all and hide all
+  $("#rmd-show-all-code").click(function() {
+    // close the dropdown menu when an option is clicked
+    $("#allCodeButton").dropdown("toggle");
+    $('div.r-code-collapse').each(function() {
+      $(this).collapse('show');
+    });
+  });
+  $("#rmd-hide-all-code").click(function() {
+    // close the dropdown menu when an option is clicked
+    $("#allCodeButton").dropdown("toggle");
+    $('div.r-code-collapse').each(function() {
+      $(this).collapse('hide');
+    });
+  });
+
+  // index for unique code element ids
+  var currentIndex = 1;
+
+  // select all R code blocks
+  var rCodeBlocks = $('pre.sourceCode, pre.r, pre.python, pre.bash, pre.sql, pre.cpp, pre.stan');
+  rCodeBlocks.each(function() {
+
+    // if code block has been labeled with class `fold-show`, show the code on init!
+    var classList = $(this).attr('class').split(/\s+/);
+    for (var i = 0; i < classList.length; i++) {
+    if (classList[i] === 'fold-show') {
+        show = true;
+      }
+    }
+
+    // create a collapsable div to wrap the code in
+    var div = $('<div class="collapse r-code-collapse"></div>');
+    if (show)
+      div.addClass('in');
+    var id = 'rcode-643E0F36' + currentIndex++;
+    div.attr('id', id);
+    $(this).before(div);
+    $(this).detach().appendTo(div);
+
+    // add a show code button right above
+    var showCodeText = $('<span>' + (show ? 'Hide' : 'Code') + '</span>');
+    var showCodeButton = $('<button type="button" class="btn btn-default btn-xs code-folding-btn pull-right"></button>');
+    showCodeButton.append(showCodeText);
+    showCodeButton
+        .attr('data-toggle', 'collapse')
+        .attr('data-target', '#' + id)
+        .attr('aria-expanded', show)
+        .attr('aria-controls', id);
+
+    var buttonRow = $('<div class="row"></div>');
+    var buttonCol = $('<div class="col-md-12"></div>');
+
+    buttonCol.append(showCodeButton);
+    buttonRow.append(buttonCol);
+
+    div.before(buttonRow);
+
+    // hack: return show to false, otherwise all next codeBlocks will be shown!
+    show = false;
+
+    // update state of button on show/hide
+    div.on('hidden.bs.collapse', function () {
+      showCodeText.text('Code');
+    });
+    div.on('show.bs.collapse', function () {
+      showCodeText.text('Hide');
+    });
+  });
+
+}
+</script>
+<script>
+/* ========================================================================
+ * Bootstrap: dropdown.js v3.3.7
+ * http://getbootstrap.com/javascript/#dropdowns
+ * ========================================================================
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // DROPDOWN CLASS DEFINITION
+  // =========================
+
+  var backdrop = '.dropdown-backdrop'
+  var toggle   = '[data-toggle="dropdown"]'
+  var Dropdown = function (element) {
+    $(element).on('click.bs.dropdown', this.toggle)
+  }
+
+  Dropdown.VERSION = '3.3.7'
+
+  function getParent($this) {
+    var selector = $this.attr('data-target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    var $parent = selector && $(selector)
+
+    return $parent && $parent.length ? $parent : $this.parent()
+  }
+
+  function clearMenus(e) {
+    if (e && e.which === 3) return
+    $(backdrop).remove()
+    $(toggle).each(function () {
+      var $this         = $(this)
+      var $parent       = getParent($this)
+      var relatedTarget = { relatedTarget: this }
+
+      if (!$parent.hasClass('open')) return
+
+      if (e && e.type == 'click' && /input|textarea/i.test(e.target.tagName) && $.contains($parent[0], e.target)) return
+
+      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this.attr('aria-expanded', 'false')
+      $parent.removeClass('open').trigger($.Event('hidden.bs.dropdown', relatedTarget))
+    })
+  }
+
+  Dropdown.prototype.toggle = function (e) {
+    var $this = $(this)
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    clearMenus()
+
+    if (!isActive) {
+      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
+        // if mobile we use a backdrop because click events don't delegate
+        $(document.createElement('div'))
+          .addClass('dropdown-backdrop')
+          .insertAfter($(this))
+          .on('click', clearMenus)
+      }
+
+      var relatedTarget = { relatedTarget: this }
+      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this
+        .trigger('focus')
+        .attr('aria-expanded', 'true')
+
+      $parent
+        .toggleClass('open')
+        .trigger($.Event('shown.bs.dropdown', relatedTarget))
+    }
+
+    return false
+  }
+
+  Dropdown.prototype.keydown = function (e) {
+    if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
+
+    var $this = $(this)
+
+    e.preventDefault()
+    e.stopPropagation()
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    if (!isActive && e.which != 27 || isActive && e.which == 27) {
+      if (e.which == 27) $parent.find(toggle).trigger('focus')
+      return $this.trigger('click')
+    }
+
+    var desc = ' li:not(.disabled):visible a'
+    var $items = $parent.find('.dropdown-menu' + desc)
+
+    if (!$items.length) return
+
+    var index = $items.index(e.target)
+
+    if (e.which == 38 && index > 0)                 index--         // up
+    if (e.which == 40 && index < $items.length - 1) index++         // down
+    if (!~index)                                    index = 0
+
+    $items.eq(index).trigger('focus')
+  }
+
+
+  // DROPDOWN PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this = $(this)
+      var data  = $this.data('bs.dropdown')
+
+      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
+      if (typeof option == 'string') data[option].call($this)
+    })
+  }
+
+  var old = $.fn.dropdown
+
+  $.fn.dropdown             = Plugin
+  $.fn.dropdown.Constructor = Dropdown
+
+
+  // DROPDOWN NO CONFLICT
+  // ====================
+
+  $.fn.dropdown.noConflict = function () {
+    $.fn.dropdown = old
+    return this
+  }
+
+
+  // APPLY TO STANDARD DROPDOWN ELEMENTS
+  // ===================================
+
+  $(document)
+    .on('click.bs.dropdown.data-api', clearMenus)
+    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
+    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
+    .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
+    .on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
+
+}(jQuery);
+</script>
+<style type="text/css">
+.code-folding-btn {
+  margin-bottom: 4px;
+}
+
+.row { display: flex; }
+.collapse { display: none; }
+.in { display:block }
+.pull-right > .dropdown-menu {
+    right: 0;
+    left: auto;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+.open > .dropdown-menu {
+    display: block;
+    color: #ffffff;
+    background-color: #ffffff;
+    background-image: none;
+    border-color: #92897e;
+}
+
+.dropdown-menu > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #000000;
+  white-space: nowrap;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  color: #ffffff;
+  text-decoration: none;
+  background-color: #e95420;
+}
+
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+  color: #ffffff;
+  text-decoration: none;
+  background-color: #e95420;
+  outline: 0;
+}
+.dropdown-menu > .disabled > a,
+.dropdown-menu > .disabled > a:hover,
+.dropdown-menu > .disabled > a:focus {
+  color: #aea79f;
+}
+
+.dropdown-menu > .disabled > a:hover,
+.dropdown-menu > .disabled > a:focus {
+  text-decoration: none;
+  cursor: not-allowed;
+  background-color: transparent;
+  background-image: none;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+
+.btn {
+  display: inline-block;
+  margin-bottom: 1;
+  font-weight: normal;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  padding: 4px 8px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn.active.focus {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.btn:hover,
+.btn:focus,
+.btn.focus {
+  color: #ffffff;
+  text-decoration: none;
+}
+.btn:active,
+.btn.active {
+  background-image: none;
+  outline: 0;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.btn.disabled,
+.btn[disabled],
+fieldset[disabled] .btn {
+  cursor: not-allowed;
+  filter: alpha(opacity=65);
+  opacity: 0.65;
+  box-shadow: none;
+}
+a.btn.disabled,
+fieldset[disabled] a.btn {
+  pointer-events: none;
+}
+.btn-default {
+  color: #ffffff;
+  background-color: #aea79f; #important
+  border-color: #aea79f;
+}
+
+.btn-default:focus,
+.btn-default.focus {
+  color: #ffffff;
+  background-color: #978e83;
+  border-color: #6f675e;
+}
+
+.btn-default:hover {
+  color: #ffffff;
+  background-color: #978e83;
+  border-color: #92897e;
+}
+.btn-default:active,
+.btn-default.active,
+.btn-group > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+  border-radius: 0;
+}
+.btn-group > .btn:first-child {
+  margin-left: 0;
+}
+.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.btn-group > .btn:last-child:not(:first-child),
+.btn-group > .dropdown-toggle:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.btn-group > .btn-group {
+  float: left;
+}
+.btn-group > .btn-group:not(:first-child):not(:last-child) > .btn {
+  border-radius: 0;
+}
+.btn-group > .btn-group:first-child:not(:last-child) > .btn:last-child,
+.btn-group > .btn-group:first-child:not(:last-child) > .dropdown-toggle {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.btn-group > .btn-group:last-child:not(:first-child) > .btn:first-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.btn-group .dropdown-toggle:active,
+.btn-group.open .dropdown-toggle {
+  outline: 0;
+}
+.btn-group > .btn + .dropdown-toggle {
+  padding-right: 8px;
+  padding-left: 8px;
+}
+.btn-group > .btn-lg + .dropdown-toggle {
+  padding-right: 12px;
+  padding-left: 12px;
+}
+.btn-group.open .dropdown-toggle {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.btn-group.open .dropdown-toggle.btn-link {
+  box-shadow: none;
+}
+
+</style>
+<script>
+var str = '<div class="btn-group pull-right" style="position: fixed; right: 50px; top: 10px; z-index: 200"><button type="button" class="btn btn-default btn-xs dropdown-toggle" id="allCodeButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-_extension-text-contrast=""><span>Code</span> <span class="caret"></span></button><ul class="dropdown-menu" style="min-width: 50px;"><li><a id="rmd-show-all-code" href="#">Show All Code</a></li><li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li></ul></div>';
+document.write(str);
+</script>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "hide");
+});
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="width.css" type="text/css" />
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A gentle tutorial of accelerated<br>parameter and confidence interval<br>estimation for Hidden Markov Models<BR>using Template Model Builder</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for MLE</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#setup"><i class="fa fa-check"></i><b>2.1</b> Setup</a></li>
+<li class="chapter" data-level="2.2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#linear-regression-example"><i class="fa fa-check"></i><b>2.2</b> Linear regression example</a></li>
+<li class="chapter" data-level="2.3" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#extending-the-c-nll"><i class="fa fa-check"></i><b>2.3</b> Extending the <code>C++</code> nll</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html"><i class="fa fa-check"></i><b>3</b> Parameter estimation techniques<br>for HMMs</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#basic-notation-and-model-setup"><i class="fa fa-check"></i><b>3.1</b> Basic notation and model setup</a></li>
+<li class="chapter" data-level="3.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#the-likelihood-function-of-an-hmm"><i class="fa fa-check"></i><b>3.2</b> The likelihood function of an HMM</a></li>
+<li class="chapter" data-level="3.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#forward-backward"><i class="fa fa-check"></i><b>3.3</b> Forward algorithm and<br>backward algorithm</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#setup-1"><i class="fa fa-check"></i><b>3.3.1</b> Setup</a>
+<ul>
+<li class="chapter" data-level="3.3.1.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#prepare-the-model"><i class="fa fa-check"></i><b>3.3.1.1</b> Prepare the model</a></li>
+<li class="chapter" data-level="3.3.1.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#define-variables"><i class="fa fa-check"></i><b>3.3.1.2</b> Define variables</a></li>
+<li class="chapter" data-level="3.3.1.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#emissionoutput-probabilities"><i class="fa fa-check"></i><b>3.3.1.3</b> Emission/output probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#log-forward"><i class="fa fa-check"></i><b>3.3.2</b> Log-forward probabilities</a></li>
+<li class="chapter" data-level="3.3.3" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#log-backward"><i class="fa fa-check"></i><b>3.3.3</b> Log-backward probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#reparameterization-of-the-likelihood-function"><i class="fa fa-check"></i><b>3.4</b> Reparameterization of the<br>likelihood function</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-tmb"><i class="fa fa-check"></i><b>3.4.1</b> Utility functions in <code>TMB</code></a></li>
+<li class="chapter" data-level="3.4.2" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#utility-functions-in-r"><i class="fa fa-check"></i><b>3.4.2</b> Utility functions in <code>R</code></a>
+<ul>
+<li class="chapter" data-level="3.4.2.1" data-path="parameter-estimation-techniques-for-hmms.html"><a href="parameter-estimation-techniques-for-hmms.html#label-switching"><i class="fa fa-check"></i><b>3.4.2.1</b> Label switching</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="using-tmb.html"><a href="using-tmb.html"><i class="fa fa-check"></i><b>4</b> Using <code>TMB</code></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="using-tmb.html"><a href="using-tmb.html#likelihood-function"><i class="fa fa-check"></i><b>4.1</b> Likelihood function</a></li>
+<li class="chapter" data-level="4.2" data-path="using-tmb.html"><a href="using-tmb.html#optimization"><i class="fa fa-check"></i><b>4.2</b> Optimization</a></li>
+<li class="chapter" data-level="4.3" data-path="using-tmb.html"><a href="using-tmb.html#basic-nested-model-specification"><i class="fa fa-check"></i><b>4.3</b> Basic nested model<br>specification</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="using-tmb.html"><a href="using-tmb.html#principle"><i class="fa fa-check"></i><b>4.3.1</b> Principle</a></li>
+<li class="chapter" data-level="4.3.2" data-path="using-tmb.html"><a href="using-tmb.html#limits"><i class="fa fa-check"></i><b>4.3.2</b> Limits</a></li>
+<li class="chapter" data-level="4.3.3" data-path="using-tmb.html"><a href="using-tmb.html#param-eq-constraints"><i class="fa fa-check"></i><b>4.3.3</b> Parameter equality<br>constraints</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="using-tmb.html"><a href="using-tmb.html#state-inference"><i class="fa fa-check"></i><b>4.4</b> State inference and forecasting</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="using-tmb.html"><a href="using-tmb.html#local-decoding"><i class="fa fa-check"></i><b>4.4.1</b> Local decoding</a></li>
+<li class="chapter" data-level="4.4.2" data-path="using-tmb.html"><a href="using-tmb.html#forecast"><i class="fa fa-check"></i><b>4.4.2</b> Forecast</a></li>
+<li class="chapter" data-level="4.4.3" data-path="using-tmb.html"><a href="using-tmb.html#global-decoding"><i class="fa fa-check"></i><b>4.4.3</b> Global decoding</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="using-tmb.html"><a href="using-tmb.html#appendix"><i class="fa fa-check"></i><b>4.5</b> Appendix</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>5</b> Confidence intervals</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#Wald-type"><i class="fa fa-check"></i><b>5.1</b> Wald-type confidence<br>intervals based on the Hessian</a></li>
+<li class="chapter" data-level="5.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#likelihood-profile-based-confidence-intervals"><i class="fa fa-check"></i><b>5.2</b> Likelihood profile based<br>confidence intervals</a></li>
+<li class="chapter" data-level="5.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-based-confidence-intervals"><i class="fa fa-check"></i><b>5.3</b> Bootstrap-based<br>confidence intervals</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#generating-data"><i class="fa fa-check"></i><b>5.3.1</b> Generating data</a></li>
+<li class="chapter" data-level="5.3.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap"><i class="fa fa-check"></i><b>5.3.2</b> Bootstrap</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html"><i class="fa fa-check"></i><b>6</b> Application to different data sets</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#tyt-data"><i class="fa fa-check"></i><b>6.1</b> TYT data</a></li>
+<li class="chapter" data-level="6.2" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#lamb-data"><i class="fa fa-check"></i><b>6.2</b> Lamb data</a></li>
+<li class="chapter" data-level="6.3" data-path="application-to-different-data-sets.html"><a href="application-to-different-data-sets.html#simulated-data"><i class="fa fa-check"></i><b>6.3</b> Simulated data</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html"><i class="fa fa-check"></i><b>7</b> Gaussian HMM</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html#dataset"><i class="fa fa-check"></i><b>7.1</b> Dataset</a></li>
+<li class="chapter" data-level="7.2" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html#likelihood-function-1"><i class="fa fa-check"></i><b>7.2</b> Likelihood function</a></li>
+<li class="chapter" data-level="7.3" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html#estimation"><i class="fa fa-check"></i><b>7.3</b> Estimation</a></li>
+<li class="chapter" data-level="7.4" data-path="gaussian-hmm.html"><a href="gaussian-hmm.html#results"><i class="fa fa-check"></i><b>7.4</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html"><i class="fa fa-check"></i><b>8</b> Multivariate Gaussian HMM</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#dataset-parameters"><i class="fa fa-check"></i><b>8.1</b> Dataset &amp; Parameters</a></li>
+<li class="chapter" data-level="8.2" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#likelihood-function-2"><i class="fa fa-check"></i><b>8.2</b> Likelihood function</a></li>
+<li class="chapter" data-level="8.3" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#estimation-1"><i class="fa fa-check"></i><b>8.3</b> Estimation</a></li>
+<li class="chapter" data-level="8.4" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#results-1"><i class="fa fa-check"></i><b>8.4</b> Results</a></li>
+<li class="chapter" data-level="8.5" data-path="multivariate-gaussian-hmm.html"><a href="multivariate-gaussian-hmm.html#bias"><i class="fa fa-check"></i><b>8.5</b> Bias</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="github.html"><a href="github.html"><i class="fa fa-check"></i><b>9</b> GitHub</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="github.html"><a href="github.html#directory-structure"><i class="fa fa-check"></i><b>9.1</b> Directory structure</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="github.html"><a href="github.html#code"><i class="fa fa-check"></i><b>9.1.1</b> code/</a></li>
+<li class="chapter" data-level="9.1.2" data-path="github.html"><a href="github.html#linreg.cpp"><i class="fa fa-check"></i><b>9.1.2</b> code/linreg.cpp</a></li>
+<li class="chapter" data-level="9.1.3" data-path="github.html"><a href="github.html#linreg_extended.cpp"><i class="fa fa-check"></i><b>9.1.3</b> code/linreg_extended.cpp</a></li>
+<li class="chapter" data-level="9.1.4" data-path="github.html"><a href="github.html#main.R"><i class="fa fa-check"></i><b>9.1.4</b> code/main.R</a></li>
+<li class="chapter" data-level="9.1.5" data-path="github.html"><a href="github.html#mvnorm_hmm.cpp"><i class="fa fa-check"></i><b>9.1.5</b> code/mvnorm_hmm.cpp</a></li>
+<li class="chapter" data-level="9.1.6" data-path="github.html"><a href="github.html#norm_hmm.cpp"><i class="fa fa-check"></i><b>9.1.6</b> code/norm_hmm.cpp</a></li>
+<li class="chapter" data-level="9.1.7" data-path="github.html"><a href="github.html#codepackages.r"><i class="fa fa-check"></i><b>9.1.7</b> code/packages.R</a></li>
+<li class="chapter" data-level="9.1.8" data-path="github.html"><a href="github.html#poi_hmm.cpp"><i class="fa fa-check"></i><b>9.1.8</b> code/poi_hmm.cpp</a></li>
+<li class="chapter" data-level="9.1.9" data-path="github.html"><a href="github.html#poi_hmm_smoothing.cpp"><i class="fa fa-check"></i><b>9.1.9</b> code/poi_hmm_smoothing.cpp</a></li>
+<li class="chapter" data-level="9.1.10" data-path="github.html"><a href="github.html#poi_hmm_smoothing_truncated.cpp"><i class="fa fa-check"></i><b>9.1.10</b> code/poi_hmm_smoothing_truncated.cpp</a></li>
+<li class="chapter" data-level="9.1.11" data-path="github.html"><a href="github.html#poi_hmm_lamb.R"><i class="fa fa-check"></i><b>9.1.11</b> code/poi_hmm_lamb.R</a></li>
+<li class="chapter" data-level="9.1.12" data-path="github.html"><a href="github.html#poi_hmm_simu1.R"><i class="fa fa-check"></i><b>9.1.12</b> code/poi_hmm_simu1.R</a></li>
+<li class="chapter" data-level="9.1.13" data-path="github.html"><a href="github.html#poi_hmm_simu2.R"><i class="fa fa-check"></i><b>9.1.13</b> code/poi_hmm_simu2.R</a></li>
+<li class="chapter" data-level="9.1.14" data-path="github.html"><a href="github.html#poi_hmm_simu3.R"><i class="fa fa-check"></i><b>9.1.14</b> code/poi_hmm_simu3.R</a></li>
+<li class="chapter" data-level="9.1.15" data-path="github.html"><a href="github.html#poi_hmm_simu4.R"><i class="fa fa-check"></i><b>9.1.15</b> code/poi_hmm_simu4.R</a></li>
+<li class="chapter" data-level="9.1.16" data-path="github.html"><a href="github.html#poi_hmm_tinn.R"><i class="fa fa-check"></i><b>9.1.16</b> code/poi_hmm_tinn.R</a></li>
+<li class="chapter" data-level="9.1.17" data-path="github.html"><a href="github.html#setup_parameters.R"><i class="fa fa-check"></i><b>9.1.17</b> code/setup_parameters.R</a></li>
+<li class="chapter" data-level="9.1.18" data-path="github.html"><a href="github.html#data"><i class="fa fa-check"></i><b>9.1.18</b> data/</a></li>
+<li class="chapter" data-level="9.1.19" data-path="github.html"><a href="github.html#fetal-lamb.RData"><i class="fa fa-check"></i><b>9.1.19</b> data/fetal-lamb.RData</a></li>
+<li class="chapter" data-level="9.1.20" data-path="github.html"><a href="github.html#dataresults_lamb.rdata"><i class="fa fa-check"></i><b>9.1.20</b> data/results_lamb.RData</a></li>
+<li class="chapter" data-level="9.1.21" data-path="github.html"><a href="github.html#dataresults_simu1.rdata"><i class="fa fa-check"></i><b>9.1.21</b> data/results_simu1.RData</a></li>
+<li class="chapter" data-level="9.1.22" data-path="github.html"><a href="github.html#dataresults_simu2.rdata"><i class="fa fa-check"></i><b>9.1.22</b> data/results_simu2.RData</a></li>
+<li class="chapter" data-level="9.1.23" data-path="github.html"><a href="github.html#dataresults_simu3.rdata"><i class="fa fa-check"></i><b>9.1.23</b> data/results_simu3.RData</a></li>
+<li class="chapter" data-level="9.1.24" data-path="github.html"><a href="github.html#dataresults_simu4.rdata"><i class="fa fa-check"></i><b>9.1.24</b> data/results_simu4.RData</a></li>
+<li class="chapter" data-level="9.1.25" data-path="github.html"><a href="github.html#dataresults_tinn.rdata"><i class="fa fa-check"></i><b>9.1.25</b> data/results_tinn.RData</a></li>
+<li class="chapter" data-level="9.1.26" data-path="github.html"><a href="github.html#tinnitus.RData"><i class="fa fa-check"></i><b>9.1.26</b> data/tinnitus.RData</a></li>
+<li class="chapter" data-level="9.1.27" data-path="github.html"><a href="github.html#functions"><i class="fa fa-check"></i><b>9.1.27</b> functions/</a></li>
+<li class="chapter" data-level="9.1.28" data-path="github.html"><a href="github.html#mvnorm_utils.cpp"><i class="fa fa-check"></i><b>9.1.28</b> functions/mvnorm_utils.cpp</a></li>
+<li class="chapter" data-level="9.1.29" data-path="github.html"><a href="github.html#mvnorm_utils.R"><i class="fa fa-check"></i><b>9.1.29</b> functions/mvnorm_utils.R</a></li>
+<li class="chapter" data-level="9.1.30" data-path="github.html"><a href="github.html#norm_utils.cpp"><i class="fa fa-check"></i><b>9.1.30</b> functions/norm_utils.cpp</a></li>
+<li class="chapter" data-level="9.1.31" data-path="github.html"><a href="github.html#norm_utils.R"><i class="fa fa-check"></i><b>9.1.31</b> functions/norm_utils.R</a></li>
+<li class="chapter" data-level="9.1.32" data-path="github.html"><a href="github.html#utils.cpp"><i class="fa fa-check"></i><b>9.1.32</b> functions/utils.cpp</a></li>
+<li class="chapter" data-level="9.1.33" data-path="github.html"><a href="github.html#utils.R"><i class="fa fa-check"></i><b>9.1.33</b> functions/utils.R</a></li>
+<li class="chapter" data-level="9.1.34" data-path="github.html"><a href="github.html#utils.R-explanation.R"><i class="fa fa-check"></i><b>9.1.34</b> functions/utils.R-explanation.R</a></li>
+<li class="chapter" data-level="9.1.35" data-path="github.html"><a href="github.html#utils_linreg_extended.cpp"><i class="fa fa-check"></i><b>9.1.35</b> functions/utils_linreg_extended.cpp</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="local-decoding-confidence-intervals.html"><a href="local-decoding-confidence-intervals.html"><i class="fa fa-check"></i><b>10</b> Local decoding confidence intervals</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="local-decoding-confidence-intervals.html"><a href="local-decoding-confidence-intervals.html#likelihood-function-poisson-hmm"><i class="fa fa-check"></i><b>10.1</b> Likelihood function (Poisson HMM)</a></li>
+<li class="chapter" data-level="10.2" data-path="local-decoding-confidence-intervals.html"><a href="local-decoding-confidence-intervals.html#estimation-2"><i class="fa fa-check"></i><b>10.2</b> Estimation</a></li>
+<li class="chapter" data-level="10.3" data-path="local-decoding-confidence-intervals.html"><a href="local-decoding-confidence-intervals.html#results-2"><i class="fa fa-check"></i><b>10.3</b> Results</a></li>
+<li class="chapter" data-level="10.4" data-path="local-decoding-confidence-intervals.html"><a href="local-decoding-confidence-intervals.html#limitation"><i class="fa fa-check"></i><b>10.4</b> Limitation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="local-decoding-confidence-intervals" class="section level1 hasAnchor" number="10">
+<h1><span class="header-section-number"> 10</span> Local decoding confidence intervals<a href="local-decoding-confidence-intervals.html#local-decoding-confidence-intervals" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><code>TMB</code> allows to retrieve standard errors for any quantity computed in <code>C++</code> that is derived from parameters.
+Therefore, we can derive CIs for quantities defined in [state-inference].</p>
+<p>We compute CIs for smoothing probabilities of a Poisson and a Gaussian HMM.</p>
+<div id="likelihood-function-poisson-hmm" class="section level2 hasAnchor" number="10.1">
+<h2><span class="header-section-number">10.1</span> Likelihood function (Poisson HMM)<a href="local-decoding-confidence-intervals.html#likelihood-function-poisson-hmm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We define the <code>C++</code> code first, available in the file <em><a href="github.html#poi_hmm_smoothing.cpp">code/poi_hmm_smoothing.cpp</a></em> and below.</p>
+<p>Similarly to the <code>R</code> code, we compute the log-forward and log-backward probabilities, derive smoothing probabilities, truncate them (optional), and return them with <code>ADREPORT</code>.
+We also produce the sequence of most likely states as a by-product using the variable <code>ldecode</code>.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb99-1"><a href="local-decoding-confidence-intervals.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
+<span id="cb99-2"><a href="local-decoding-confidence-intervals.html#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
+<span id="cb99-3"><a href="local-decoding-confidence-intervals.html#cb99-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-4"><a href="local-decoding-confidence-intervals.html#cb99-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood for a poisson hidden markov model. </span></span>
+<span id="cb99-5"><a href="local-decoding-confidence-intervals.html#cb99-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb99-6"><a href="local-decoding-confidence-intervals.html#cb99-6" aria-hidden="true" tabindex="-1"></a>Type objective_function<span class="op">&lt;</span>Type<span class="op">&gt;::</span><span class="kw">operator</span><span class="op">()</span> <span class="op">()</span></span>
+<span id="cb99-7"><a href="local-decoding-confidence-intervals.html#cb99-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb99-8"><a href="local-decoding-confidence-intervals.html#cb99-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-9"><a href="local-decoding-confidence-intervals.html#cb99-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Data</span></span>
+<span id="cb99-10"><a href="local-decoding-confidence-intervals.html#cb99-10" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR<span class="op">(</span>x<span class="op">);</span>          <span class="co">// timeseries vector</span></span>
+<span id="cb99-11"><a href="local-decoding-confidence-intervals.html#cb99-11" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER<span class="op">(</span>m<span class="op">);</span>         <span class="co">// Number of states m</span></span>
+<span id="cb99-12"><a href="local-decoding-confidence-intervals.html#cb99-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-13"><a href="local-decoding-confidence-intervals.html#cb99-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters</span></span>
+<span id="cb99-14"><a href="local-decoding-confidence-intervals.html#cb99-14" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tlambda<span class="op">);</span>     <span class="co">// conditional log_lambdas&#39;s</span></span>
+<span id="cb99-15"><a href="local-decoding-confidence-intervals.html#cb99-15" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tgamma<span class="op">);</span>      <span class="co">// m(m-1) working parameters of TPM</span></span>
+<span id="cb99-16"><a href="local-decoding-confidence-intervals.html#cb99-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-17"><a href="local-decoding-confidence-intervals.html#cb99-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Uncomment only when using a non-stationary distribution</span></span>
+<span id="cb99-18"><a href="local-decoding-confidence-intervals.html#cb99-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">//PARAMETER_VECTOR(tdelta);    // transformed stationary distribution,</span></span>
+<span id="cb99-19"><a href="local-decoding-confidence-intervals.html#cb99-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-20"><a href="local-decoding-confidence-intervals.html#cb99-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
+<span id="cb99-21"><a href="local-decoding-confidence-intervals.html#cb99-21" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> lambda <span class="op">=</span> tlambda<span class="op">.</span>exp<span class="op">();</span></span>
+<span id="cb99-22"><a href="local-decoding-confidence-intervals.html#cb99-22" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma <span class="op">=</span> gamma_w2n<span class="op">(</span>m<span class="op">,</span> tgamma<span class="op">);</span></span>
+<span id="cb99-23"><a href="local-decoding-confidence-intervals.html#cb99-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-24"><a href="local-decoding-confidence-intervals.html#cb99-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
+<span id="cb99-25"><a href="local-decoding-confidence-intervals.html#cb99-25" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta <span class="op">=</span> stat_dist<span class="op">(</span>m<span class="op">,</span> gamma<span class="op">);</span></span>
+<span id="cb99-26"><a href="local-decoding-confidence-intervals.html#cb99-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If using a non-stationary distribution, use this instead</span></span>
+<span id="cb99-27"><a href="local-decoding-confidence-intervals.html#cb99-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">//vector&lt;Type&gt; delta = delta_w2n(m, tdelta);</span></span>
+<span id="cb99-28"><a href="local-decoding-confidence-intervals.html#cb99-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-29"><a href="local-decoding-confidence-intervals.html#cb99-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
+<span id="cb99-30"><a href="local-decoding-confidence-intervals.html#cb99-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n <span class="op">=</span> x<span class="op">.</span>size<span class="op">();</span></span>
+<span id="cb99-31"><a href="local-decoding-confidence-intervals.html#cb99-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-32"><a href="local-decoding-confidence-intervals.html#cb99-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
+<span id="cb99-33"><a href="local-decoding-confidence-intervals.html#cb99-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
+<span id="cb99-34"><a href="local-decoding-confidence-intervals.html#cb99-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
+<span id="cb99-35"><a href="local-decoding-confidence-intervals.html#cb99-35" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> emission_probs<span class="op">(</span>n<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb99-36"><a href="local-decoding-confidence-intervals.html#cb99-36" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> row1vec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb99-37"><a href="local-decoding-confidence-intervals.html#cb99-37" aria-hidden="true" tabindex="-1"></a>  row1vec<span class="op">.</span>setOnes<span class="op">();</span></span>
+<span id="cb99-38"><a href="local-decoding-confidence-intervals.html#cb99-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb99-39"><a href="local-decoding-confidence-intervals.html#cb99-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>x<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> x<span class="op">[</span>i<span class="op">])</span> <span class="op">{</span> <span class="co">// f != f returns true if and only if f is NaN. </span></span>
+<span id="cb99-40"><a href="local-decoding-confidence-intervals.html#cb99-40" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
+<span id="cb99-41"><a href="local-decoding-confidence-intervals.html#cb99-41" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> row1vec<span class="op">;</span></span>
+<span id="cb99-42"><a href="local-decoding-confidence-intervals.html#cb99-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb99-43"><a href="local-decoding-confidence-intervals.html#cb99-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb99-44"><a href="local-decoding-confidence-intervals.html#cb99-44" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> dpois<span class="op">(</span>x<span class="op">[</span>i<span class="op">],</span> lambda<span class="op">,</span> <span class="kw">false</span><span class="op">);</span></span>
+<span id="cb99-45"><a href="local-decoding-confidence-intervals.html#cb99-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb99-46"><a href="local-decoding-confidence-intervals.html#cb99-46" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb99-47"><a href="local-decoding-confidence-intervals.html#cb99-47" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-48"><a href="local-decoding-confidence-intervals.html#cb99-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to (Zucchini et al., 2016, p 333)</span></span>
+<span id="cb99-49"><a href="local-decoding-confidence-intervals.html#cb99-49" aria-hidden="true" tabindex="-1"></a>  <span class="co">// temp is used in the computation of log-backward probabilities</span></span>
+<span id="cb99-50"><a href="local-decoding-confidence-intervals.html#cb99-50" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">,</span> P<span class="op">,</span> temp<span class="op">;</span></span>
+<span id="cb99-51"><a href="local-decoding-confidence-intervals.html#cb99-51" aria-hidden="true" tabindex="-1"></a>  Type mllk<span class="op">,</span> sumfoo<span class="op">,</span> lscale<span class="op">;</span></span>
+<span id="cb99-52"><a href="local-decoding-confidence-intervals.html#cb99-52" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-53"><a href="local-decoding-confidence-intervals.html#cb99-53" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Log-forward and log-backward probabilities</span></span>
+<span id="cb99-54"><a href="local-decoding-confidence-intervals.html#cb99-54" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> lalpha<span class="op">(</span>m<span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb99-55"><a href="local-decoding-confidence-intervals.html#cb99-55" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> lbeta<span class="op">(</span>m<span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb99-56"><a href="local-decoding-confidence-intervals.html#cb99-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-57"><a href="local-decoding-confidence-intervals.html#cb99-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">//// Log-forward probabilities (scaling used) and nll computation</span></span>
+<span id="cb99-58"><a href="local-decoding-confidence-intervals.html#cb99-58" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>setZero<span class="op">();</span></span>
+<span id="cb99-59"><a href="local-decoding-confidence-intervals.html#cb99-59" aria-hidden="true" tabindex="-1"></a>  <span class="co">// foo is a matrix where only the first column is relevant (vectors are</span></span>
+<span id="cb99-60"><a href="local-decoding-confidence-intervals.html#cb99-60" aria-hidden="true" tabindex="-1"></a>  <span class="co">// treated as columns)</span></span>
+<span id="cb99-61"><a href="local-decoding-confidence-intervals.html#cb99-61" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Specifying &quot;row(0)&quot; or &quot;col(0)&quot; is optional, but it helps to remember</span></span>
+<span id="cb99-62"><a href="local-decoding-confidence-intervals.html#cb99-62" aria-hidden="true" tabindex="-1"></a>  <span class="co">// if it is a row or a column</span></span>
+<span id="cb99-63"><a href="local-decoding-confidence-intervals.html#cb99-63" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">=</span> <span class="op">(</span>delta <span class="op">*</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;(</span>emission_probs<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">))).</span>matrix<span class="op">();</span></span>
+<span id="cb99-64"><a href="local-decoding-confidence-intervals.html#cb99-64" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="op">=</span> foo<span class="op">.</span>col<span class="op">(</span><span class="dv">0</span><span class="op">).</span>sum<span class="op">();</span></span>
+<span id="cb99-65"><a href="local-decoding-confidence-intervals.html#cb99-65" aria-hidden="true" tabindex="-1"></a>  lscale <span class="op">=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb99-66"><a href="local-decoding-confidence-intervals.html#cb99-66" aria-hidden="true" tabindex="-1"></a>  <span class="co">// foo = foo.transpose(); is not reliable because of</span></span>
+<span id="cb99-67"><a href="local-decoding-confidence-intervals.html#cb99-67" aria-hidden="true" tabindex="-1"></a>  <span class="co">// aliasing, c.f https://eigen.tuxfamily.org/dox/group__TopicAliasing.html</span></span>
+<span id="cb99-68"><a href="local-decoding-confidence-intervals.html#cb99-68" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>transposeInPlace<span class="op">();</span></span>
+<span id="cb99-69"><a href="local-decoding-confidence-intervals.html#cb99-69" aria-hidden="true" tabindex="-1"></a>  <span class="co">// foo is now a matrix where only the first row is relevant.</span></span>
+<span id="cb99-70"><a href="local-decoding-confidence-intervals.html#cb99-70" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb99-71"><a href="local-decoding-confidence-intervals.html#cb99-71" aria-hidden="true" tabindex="-1"></a>  <span class="co">// We can alternatively use foo.row(0).array().log()</span></span>
+<span id="cb99-72"><a href="local-decoding-confidence-intervals.html#cb99-72" aria-hidden="true" tabindex="-1"></a>  lalpha<span class="op">.</span>col<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">=</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;(</span>foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">)).</span>log<span class="op">()</span> <span class="op">+</span> lscale<span class="op">;</span></span>
+<span id="cb99-73"><a href="local-decoding-confidence-intervals.html#cb99-73" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-74"><a href="local-decoding-confidence-intervals.html#cb99-74" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb99-75"><a href="local-decoding-confidence-intervals.html#cb99-75" aria-hidden="true" tabindex="-1"></a>    P <span class="op">=</span> emission_probs<span class="op">.</span>row<span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb99-76"><a href="local-decoding-confidence-intervals.html#cb99-76" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">=</span> <span class="op">((</span>foo <span class="op">*</span> gamma<span class="op">).</span>array<span class="op">()</span> <span class="op">*</span> P<span class="op">.</span>array<span class="op">()).</span>matrix<span class="op">();</span></span>
+<span id="cb99-77"><a href="local-decoding-confidence-intervals.html#cb99-77" aria-hidden="true" tabindex="-1"></a>    sumfoo <span class="op">=</span> foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">).</span>sum<span class="op">();</span></span>
+<span id="cb99-78"><a href="local-decoding-confidence-intervals.html#cb99-78" aria-hidden="true" tabindex="-1"></a>    lscale <span class="op">+=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb99-79"><a href="local-decoding-confidence-intervals.html#cb99-79" aria-hidden="true" tabindex="-1"></a>    foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb99-80"><a href="local-decoding-confidence-intervals.html#cb99-80" aria-hidden="true" tabindex="-1"></a>    lalpha<span class="op">.</span>col<span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">=</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;(</span>foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">)).</span>log<span class="op">()</span> <span class="op">+</span> lscale<span class="op">;</span></span>
+<span id="cb99-81"><a href="local-decoding-confidence-intervals.html#cb99-81" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb99-82"><a href="local-decoding-confidence-intervals.html#cb99-82" aria-hidden="true" tabindex="-1"></a>  mllk <span class="op">=</span> <span class="op">-</span>lscale<span class="op">;</span></span>
+<span id="cb99-83"><a href="local-decoding-confidence-intervals.html#cb99-83" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-84"><a href="local-decoding-confidence-intervals.html#cb99-84" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-85"><a href="local-decoding-confidence-intervals.html#cb99-85" aria-hidden="true" tabindex="-1"></a>  <span class="co">//// Log-backward probabilities (scaling used)</span></span>
+<span id="cb99-86"><a href="local-decoding-confidence-intervals.html#cb99-86" aria-hidden="true" tabindex="-1"></a>  lbeta<span class="op">.</span>setZero<span class="op">();</span></span>
+<span id="cb99-87"><a href="local-decoding-confidence-intervals.html#cb99-87" aria-hidden="true" tabindex="-1"></a>  <span class="co">// &quot;Type(m)&quot; is used because of a similar issue at </span></span>
+<span id="cb99-88"><a href="local-decoding-confidence-intervals.html#cb99-88" aria-hidden="true" tabindex="-1"></a>  <span class="co">// https://kaskr.github.io/adcomp/_book/Errors.html#missing-casts-for-vectorized-functions</span></span>
+<span id="cb99-89"><a href="local-decoding-confidence-intervals.html#cb99-89" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">).</span>setConstant<span class="op">(</span><span class="dv">1</span> <span class="op">/</span> Type<span class="op">(</span>m<span class="op">));</span></span>
+<span id="cb99-90"><a href="local-decoding-confidence-intervals.html#cb99-90" aria-hidden="true" tabindex="-1"></a>  lscale <span class="op">=</span> log<span class="op">(</span>m<span class="op">);</span></span>
+<span id="cb99-91"><a href="local-decoding-confidence-intervals.html#cb99-91" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> n <span class="op">-</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&gt;=</span> <span class="dv">1</span><span class="op">;</span> i<span class="op">--)</span> <span class="op">{</span></span>
+<span id="cb99-92"><a href="local-decoding-confidence-intervals.html#cb99-92" aria-hidden="true" tabindex="-1"></a>    P <span class="op">=</span> emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">);</span></span>
+<span id="cb99-93"><a href="local-decoding-confidence-intervals.html#cb99-93" aria-hidden="true" tabindex="-1"></a>    temp <span class="op">=</span> <span class="op">(</span>P<span class="op">.</span>array<span class="op">()</span> <span class="op">*</span> foo<span class="op">.</span>array<span class="op">()).</span>matrix<span class="op">();</span> <span class="co">// temp is a row matrix</span></span>
+<span id="cb99-94"><a href="local-decoding-confidence-intervals.html#cb99-94" aria-hidden="true" tabindex="-1"></a>    <span class="co">// temp must be a column for the matrix product below</span></span>
+<span id="cb99-95"><a href="local-decoding-confidence-intervals.html#cb99-95" aria-hidden="true" tabindex="-1"></a>    temp<span class="op">.</span>transposeInPlace<span class="op">();</span></span>
+<span id="cb99-96"><a href="local-decoding-confidence-intervals.html#cb99-96" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">=</span> gamma <span class="op">*</span> temp<span class="op">;</span></span>
+<span id="cb99-97"><a href="local-decoding-confidence-intervals.html#cb99-97" aria-hidden="true" tabindex="-1"></a>    lbeta<span class="op">.</span>col<span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">=</span> foo<span class="op">.</span>col<span class="op">(</span><span class="dv">0</span><span class="op">).</span>array<span class="op">().</span>log<span class="op">()</span> <span class="op">+</span> lscale<span class="op">;</span></span>
+<span id="cb99-98"><a href="local-decoding-confidence-intervals.html#cb99-98" aria-hidden="true" tabindex="-1"></a>    <span class="co">// &quot;foo&quot; is a column, but must be turned into a row in order to do</span></span>
+<span id="cb99-99"><a href="local-decoding-confidence-intervals.html#cb99-99" aria-hidden="true" tabindex="-1"></a>    <span class="co">// the element-wise product above (&quot;P.array() * foo.array()&quot;)</span></span>
+<span id="cb99-100"><a href="local-decoding-confidence-intervals.html#cb99-100" aria-hidden="true" tabindex="-1"></a>    foo<span class="op">.</span>transposeInPlace<span class="op">();</span></span>
+<span id="cb99-101"><a href="local-decoding-confidence-intervals.html#cb99-101" aria-hidden="true" tabindex="-1"></a>    sumfoo <span class="op">=</span> foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">).</span>sum<span class="op">();</span></span>
+<span id="cb99-102"><a href="local-decoding-confidence-intervals.html#cb99-102" aria-hidden="true" tabindex="-1"></a>    foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb99-103"><a href="local-decoding-confidence-intervals.html#cb99-103" aria-hidden="true" tabindex="-1"></a>    lscale <span class="op">+=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb99-104"><a href="local-decoding-confidence-intervals.html#cb99-104" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb99-105"><a href="local-decoding-confidence-intervals.html#cb99-105" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-106"><a href="local-decoding-confidence-intervals.html#cb99-106" aria-hidden="true" tabindex="-1"></a>  <span class="co">//// Local decoding (part 1)</span></span>
+<span id="cb99-107"><a href="local-decoding-confidence-intervals.html#cb99-107" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> smoothing_probs<span class="op">(</span>m<span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb99-108"><a href="local-decoding-confidence-intervals.html#cb99-108" aria-hidden="true" tabindex="-1"></a>  smoothing_probs<span class="op">.</span>setZero<span class="op">();</span></span>
+<span id="cb99-109"><a href="local-decoding-confidence-intervals.html#cb99-109" aria-hidden="true" tabindex="-1"></a>  Type llk <span class="op">=</span> <span class="op">-</span> mllk<span class="op">;</span></span>
+<span id="cb99-110"><a href="local-decoding-confidence-intervals.html#cb99-110" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> n <span class="op">-</span> <span class="dv">1</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb99-111"><a href="local-decoding-confidence-intervals.html#cb99-111" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>x<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> x<span class="op">[</span>i<span class="op">])</span> <span class="op">{</span></span>
+<span id="cb99-112"><a href="local-decoding-confidence-intervals.html#cb99-112" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Missing data will get a smoothing probability of NA</span></span>
+<span id="cb99-113"><a href="local-decoding-confidence-intervals.html#cb99-113" aria-hidden="true" tabindex="-1"></a>      smoothing_probs<span class="op">.</span>col<span class="op">(</span>i<span class="op">).</span>setConstant<span class="op">(</span>x<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb99-114"><a href="local-decoding-confidence-intervals.html#cb99-114" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb99-115"><a href="local-decoding-confidence-intervals.html#cb99-115" aria-hidden="true" tabindex="-1"></a>      smoothing_probs<span class="op">.</span>col<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> <span class="op">((</span>lalpha<span class="op">.</span>col<span class="op">(</span>i<span class="op">)</span> <span class="op">+</span> lbeta<span class="op">.</span>col<span class="op">(</span>i<span class="op">)).</span>array<span class="op">()</span> <span class="op">-</span> llk<span class="op">).</span>exp<span class="op">();</span></span>
+<span id="cb99-116"><a href="local-decoding-confidence-intervals.html#cb99-116" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb99-117"><a href="local-decoding-confidence-intervals.html#cb99-117" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb99-118"><a href="local-decoding-confidence-intervals.html#cb99-118" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-119"><a href="local-decoding-confidence-intervals.html#cb99-119" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Local decoding (part 2)</span></span>
+<span id="cb99-120"><a href="local-decoding-confidence-intervals.html#cb99-120" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> ldecode<span class="op">(</span>n<span class="op">);</span></span>
+<span id="cb99-121"><a href="local-decoding-confidence-intervals.html#cb99-121" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> col_idx<span class="op">;</span></span>
+<span id="cb99-122"><a href="local-decoding-confidence-intervals.html#cb99-122" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb99-123"><a href="local-decoding-confidence-intervals.html#cb99-123" aria-hidden="true" tabindex="-1"></a>    <span class="co">// https://eigen.tuxfamily.org/dox/group__QuickRefPage.html</span></span>
+<span id="cb99-124"><a href="local-decoding-confidence-intervals.html#cb99-124" aria-hidden="true" tabindex="-1"></a>    <span class="co">// we don&#39;t save the result because we are not interested in the max value</span></span>
+<span id="cb99-125"><a href="local-decoding-confidence-intervals.html#cb99-125" aria-hidden="true" tabindex="-1"></a>    <span class="co">// only the index</span></span>
+<span id="cb99-126"><a href="local-decoding-confidence-intervals.html#cb99-126" aria-hidden="true" tabindex="-1"></a>    smoothing_probs<span class="op">.</span>col<span class="op">(</span>i<span class="op">).</span>maxCoeff<span class="op">(&amp;</span>col_idx<span class="op">);</span></span>
+<span id="cb99-127"><a href="local-decoding-confidence-intervals.html#cb99-127" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Columns start from 1 in R, but from 0 in C++ so we adjust to be similar</span></span>
+<span id="cb99-128"><a href="local-decoding-confidence-intervals.html#cb99-128" aria-hidden="true" tabindex="-1"></a>    <span class="co">// to R results.</span></span>
+<span id="cb99-129"><a href="local-decoding-confidence-intervals.html#cb99-129" aria-hidden="true" tabindex="-1"></a>    ldecode<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> col_idx <span class="op">+</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb99-130"><a href="local-decoding-confidence-intervals.html#cb99-130" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb99-131"><a href="local-decoding-confidence-intervals.html#cb99-131" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-132"><a href="local-decoding-confidence-intervals.html#cb99-132" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
+<span id="cb99-133"><a href="local-decoding-confidence-intervals.html#cb99-133" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Be careful, matrices are read column-wise and displayed (like </span></span>
+<span id="cb99-134"><a href="local-decoding-confidence-intervals.html#cb99-134" aria-hidden="true" tabindex="-1"></a>  <span class="co">// the rest) as part of one vector</span></span>
+<span id="cb99-135"><a href="local-decoding-confidence-intervals.html#cb99-135" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>lambda<span class="op">);</span></span>
+<span id="cb99-136"><a href="local-decoding-confidence-intervals.html#cb99-136" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>gamma<span class="op">);</span></span>
+<span id="cb99-137"><a href="local-decoding-confidence-intervals.html#cb99-137" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>delta<span class="op">);</span></span>
+<span id="cb99-138"><a href="local-decoding-confidence-intervals.html#cb99-138" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>mllk<span class="op">);</span></span>
+<span id="cb99-139"><a href="local-decoding-confidence-intervals.html#cb99-139" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>smoothing_probs<span class="op">);</span></span>
+<span id="cb99-140"><a href="local-decoding-confidence-intervals.html#cb99-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-141"><a href="local-decoding-confidence-intervals.html#cb99-141" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
+<span id="cb99-142"><a href="local-decoding-confidence-intervals.html#cb99-142" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>mllk<span class="op">);</span></span>
+<span id="cb99-143"><a href="local-decoding-confidence-intervals.html#cb99-143" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>lambda<span class="op">);</span></span>
+<span id="cb99-144"><a href="local-decoding-confidence-intervals.html#cb99-144" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>gamma<span class="op">);</span></span>
+<span id="cb99-145"><a href="local-decoding-confidence-intervals.html#cb99-145" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>delta<span class="op">);</span></span>
+<span id="cb99-146"><a href="local-decoding-confidence-intervals.html#cb99-146" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>n<span class="op">);</span></span>
+<span id="cb99-147"><a href="local-decoding-confidence-intervals.html#cb99-147" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>ldecode<span class="op">);</span></span>
+<span id="cb99-148"><a href="local-decoding-confidence-intervals.html#cb99-148" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-149"><a href="local-decoding-confidence-intervals.html#cb99-149" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk<span class="op">;</span></span>
+<span id="cb99-150"><a href="local-decoding-confidence-intervals.html#cb99-150" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+</div>
+<div id="estimation-2" class="section level2 hasAnchor" number="10.2">
+<h2><span class="header-section-number">10.2</span> Estimation<a href="local-decoding-confidence-intervals.html#estimation-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In <code>R</code>, we can use the <code>C++</code> objective function with <code>TMB</code> to return smoothing probabilities.
+Note that they are returned column-wise. For example, the first <code>m</code> (here 2) values correspond to the smoothing probabilities of the first and second hidden state of the first data.</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="local-decoding-confidence-intervals.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb100-2"><a href="local-decoding-confidence-intervals.html#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Load TMB, the data set, and utility functions</span></span>
+<span id="cb100-3"><a href="local-decoding-confidence-intervals.html#cb100-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
+<span id="cb100-4"><a href="local-decoding-confidence-intervals.html#cb100-4" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
+<span id="cb100-5"><a href="local-decoding-confidence-intervals.html#cb100-5" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span>
+<span id="cb100-6"><a href="local-decoding-confidence-intervals.html#cb100-6" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm_smoothing.cpp&quot;</span>)</span>
+<span id="cb100-7"><a href="local-decoding-confidence-intervals.html#cb100-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0</span></span>
+<span id="cb100-8"><a href="local-decoding-confidence-intervals.html#cb100-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm_smoothing&quot;</span>))</span>
+<span id="cb100-9"><a href="local-decoding-confidence-intervals.html#cb100-9" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb100-10"><a href="local-decoding-confidence-intervals.html#cb100-10" aria-hidden="true" tabindex="-1"></a>data_set <span class="ot">&lt;-</span> tinn_data</span>
+<span id="cb100-11"><a href="local-decoding-confidence-intervals.html#cb100-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-12"><a href="local-decoding-confidence-intervals.html#cb100-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup initial parameters</span></span>
+<span id="cb100-13"><a href="local-decoding-confidence-intervals.html#cb100-13" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">quantile</span>(data_set, <span class="fl">0.1</span>),</span>
+<span id="cb100-14"><a href="local-decoding-confidence-intervals.html#cb100-14" aria-hidden="true" tabindex="-1"></a>              <span class="fu">quantile</span>(data_set, <span class="fl">0.9</span>),</span>
+<span id="cb100-15"><a href="local-decoding-confidence-intervals.html#cb100-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">length.out =</span> m)</span>
+<span id="cb100-16"><a href="local-decoding-confidence-intervals.html#cb100-16" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fl">0.2</span> <span class="sc">/</span> (m <span class="sc">-</span> <span class="dv">1</span>),</span>
+<span id="cb100-17"><a href="local-decoding-confidence-intervals.html#cb100-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">nrow =</span> m,</span>
+<span id="cb100-18"><a href="local-decoding-confidence-intervals.html#cb100-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">ncol =</span> m)</span>
+<span id="cb100-19"><a href="local-decoding-confidence-intervals.html#cb100-19" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(gamma) <span class="ot">&lt;-</span> <span class="fl">0.8</span></span>
+<span id="cb100-20"><a href="local-decoding-confidence-intervals.html#cb100-20" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(gamma)</span>
+<span id="cb100-21"><a href="local-decoding-confidence-intervals.html#cb100-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-22"><a href="local-decoding-confidence-intervals.html#cb100-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the TMB objects for estimation</span></span>
+<span id="cb100-23"><a href="local-decoding-confidence-intervals.html#cb100-23" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> data_set, <span class="at">m =</span> m)</span>
+<span id="cb100-24"><a href="local-decoding-confidence-intervals.html#cb100-24" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
+<span id="cb100-25"><a href="local-decoding-confidence-intervals.html#cb100-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-26"><a href="local-decoding-confidence-intervals.html#cb100-26" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(<span class="at">data =</span> TMB_data,</span>
+<span id="cb100-27"><a href="local-decoding-confidence-intervals.html#cb100-27" aria-hidden="true" tabindex="-1"></a>                     <span class="at">parameters =</span> parameters,</span>
+<span id="cb100-28"><a href="local-decoding-confidence-intervals.html#cb100-28" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm_smoothing&quot;</span>,</span>
+<span id="cb100-29"><a href="local-decoding-confidence-intervals.html#cb100-29" aria-hidden="true" tabindex="-1"></a>                     <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb100-30"><a href="local-decoding-confidence-intervals.html#cb100-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-31"><a href="local-decoding-confidence-intervals.html#cb100-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimation</span></span>
+<span id="cb100-32"><a href="local-decoding-confidence-intervals.html#cb100-32" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb100-33"><a href="local-decoding-confidence-intervals.html#cb100-33" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr, <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb100-34"><a href="local-decoding-confidence-intervals.html#cb100-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-35"><a href="local-decoding-confidence-intervals.html#cb100-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve estimates</span></span>
+<span id="cb100-36"><a href="local-decoding-confidence-intervals.html#cb100-36" aria-hidden="true" tabindex="-1"></a>adrep <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb))</span>
+<span id="cb100-37"><a href="local-decoding-confidence-intervals.html#cb100-37" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(obj_tmb<span class="sc">$</span>env<span class="sc">$</span>last.par.best)<span class="sc">$</span>lambda</span>
+<span id="cb100-38"><a href="local-decoding-confidence-intervals.html#cb100-38" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(obj_tmb<span class="sc">$</span>env<span class="sc">$</span>last.par.best)<span class="sc">$</span>gamma</span>
+<span id="cb100-39"><a href="local-decoding-confidence-intervals.html#cb100-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-40"><a href="local-decoding-confidence-intervals.html#cb100-40" aria-hidden="true" tabindex="-1"></a><span class="co"># We are interested only in the smoothing probabilities</span></span>
+<span id="cb100-41"><a href="local-decoding-confidence-intervals.html#cb100-41" aria-hidden="true" tabindex="-1"></a>adrep <span class="ot">&lt;-</span> adrep[<span class="fu">rownames</span>(adrep) <span class="sc">==</span> <span class="st">&quot;smoothing_probs&quot;</span>, ]</span>
+<span id="cb100-42"><a href="local-decoding-confidence-intervals.html#cb100-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-43"><a href="local-decoding-confidence-intervals.html#cb100-43" aria-hidden="true" tabindex="-1"></a><span class="co"># We follow the notation of (Zucchini et al., 2016)</span></span>
+<span id="cb100-44"><a href="local-decoding-confidence-intervals.html#cb100-44" aria-hidden="true" tabindex="-1"></a><span class="co"># One row per hidden state, one column per data</span></span>
+<span id="cb100-45"><a href="local-decoding-confidence-intervals.html#cb100-45" aria-hidden="true" tabindex="-1"></a>smoothing_probs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(adrep[, <span class="st">&quot;Estimate&quot;</span>], <span class="at">nrow =</span> m)</span>
+<span id="cb100-46"><a href="local-decoding-confidence-intervals.html#cb100-46" aria-hidden="true" tabindex="-1"></a>smoothing_probs_std_error <span class="ot">&lt;-</span> <span class="fu">matrix</span>(adrep[, <span class="st">&quot;Std. Error&quot;</span>], <span class="at">nrow =</span> m)</span>
+<span id="cb100-47"><a href="local-decoding-confidence-intervals.html#cb100-47" aria-hidden="true" tabindex="-1"></a><span class="co"># 95% confidence intervals</span></span>
+<span id="cb100-48"><a href="local-decoding-confidence-intervals.html#cb100-48" aria-hidden="true" tabindex="-1"></a>q95_norm <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>)</span></code></pre></div>
+</div>
+<div id="results-2" class="section level2 hasAnchor" number="10.3">
+<h2><span class="header-section-number">10.3</span> Results<a href="local-decoding-confidence-intervals.html#results-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Next, we plot smoothing probabilities for each state along with their <a href="confidence-intervals.html#Wald-type">Wald-type CI</a>.</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="local-decoding-confidence-intervals.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Aesthetic parameters used in the article</span></span>
+<span id="cb101-2"><a href="local-decoding-confidence-intervals.html#cb101-2" aria-hidden="true" tabindex="-1"></a>ERRORBAR_LINE_WIDTH <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
+<span id="cb101-3"><a href="local-decoding-confidence-intervals.html#cb101-3" aria-hidden="true" tabindex="-1"></a>ERRORBAR_END_WIDTH <span class="ot">&lt;-</span> <span class="fl">1.1</span></span>
+<span id="cb101-4"><a href="local-decoding-confidence-intervals.html#cb101-4" aria-hidden="true" tabindex="-1"></a>POINT_SIZE <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
+<span id="cb101-5"><a href="local-decoding-confidence-intervals.html#cb101-5" aria-hidden="true" tabindex="-1"></a>LINE_SIZE <span class="ot">&lt;-</span> <span class="fl">0.25</span></span>
+<span id="cb101-6"><a href="local-decoding-confidence-intervals.html#cb101-6" aria-hidden="true" tabindex="-1"></a>COLORS <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;dodgerblue2&quot;</span>, <span class="st">&quot;tomato3&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;gold&quot;</span>)</span>
+<span id="cb101-7"><a href="local-decoding-confidence-intervals.html#cb101-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-8"><a href="local-decoding-confidence-intervals.html#cb101-8" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">ncol</span>(smoothing_probs)</span>
+<span id="cb101-9"><a href="local-decoding-confidence-intervals.html#cb101-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-10"><a href="local-decoding-confidence-intervals.html#cb101-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting (with ggplot2)</span></span>
+<span id="cb101-11"><a href="local-decoding-confidence-intervals.html#cb101-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb101-12"><a href="local-decoding-confidence-intervals.html#cb101-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-13"><a href="local-decoding-confidence-intervals.html#cb101-13" aria-hidden="true" tabindex="-1"></a>state_ggplot <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb101-14"><a href="local-decoding-confidence-intervals.html#cb101-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (state <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb101-15"><a href="local-decoding-confidence-intervals.html#cb101-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># State smoothing probabilities</span></span>
+<span id="cb101-16"><a href="local-decoding-confidence-intervals.html#cb101-16" aria-hidden="true" tabindex="-1"></a>  stateprobs <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">idx =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
+<span id="cb101-17"><a href="local-decoding-confidence-intervals.html#cb101-17" aria-hidden="true" tabindex="-1"></a>                           <span class="at">estimate =</span> smoothing_probs[state, ],</span>
+<span id="cb101-18"><a href="local-decoding-confidence-intervals.html#cb101-18" aria-hidden="true" tabindex="-1"></a>                           <span class="at">std.error =</span> smoothing_probs_std_error[state, ])</span>
+<span id="cb101-19"><a href="local-decoding-confidence-intervals.html#cb101-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add 95% CI bounds with cutoffs at 0 and 1</span></span>
+<span id="cb101-20"><a href="local-decoding-confidence-intervals.html#cb101-20" aria-hidden="true" tabindex="-1"></a>  stateprobs<span class="sc">$</span>ci_lower <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">0</span>, stateprobs<span class="sc">$</span>estimate <span class="sc">-</span> q95_norm <span class="sc">*</span> stateprobs<span class="sc">$</span>std.error)</span>
+<span id="cb101-21"><a href="local-decoding-confidence-intervals.html#cb101-21" aria-hidden="true" tabindex="-1"></a>  stateprobs<span class="sc">$</span>ci_upper <span class="ot">&lt;-</span> <span class="fu">pmin</span>(stateprobs<span class="sc">$</span>estimate <span class="sc">+</span> q95_norm <span class="sc">*</span> stateprobs<span class="sc">$</span>std.error, <span class="dv">1</span>)</span>
+<span id="cb101-22"><a href="local-decoding-confidence-intervals.html#cb101-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb101-23"><a href="local-decoding-confidence-intervals.html#cb101-23" aria-hidden="true" tabindex="-1"></a>  state_ggplot[[state]] <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(stateprobs, <span class="fu">aes</span>(<span class="at">x =</span> idx)) <span class="sc">+</span></span>
+<span id="cb101-24"><a href="local-decoding-confidence-intervals.html#cb101-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> ci_lower,</span>
+<span id="cb101-25"><a href="local-decoding-confidence-intervals.html#cb101-25" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax =</span> ci_upper),</span>
+<span id="cb101-26"><a href="local-decoding-confidence-intervals.html#cb101-26" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill =</span> <span class="st">&quot;lightgrey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb101-27"><a href="local-decoding-confidence-intervals.html#cb101-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> ci_lower,</span>
+<span id="cb101-28"><a href="local-decoding-confidence-intervals.html#cb101-28" aria-hidden="true" tabindex="-1"></a>                      <span class="at">ymax =</span> ci_upper,</span>
+<span id="cb101-29"><a href="local-decoding-confidence-intervals.html#cb101-29" aria-hidden="true" tabindex="-1"></a>                      <span class="at">width =</span> ERRORBAR_END_WIDTH),</span>
+<span id="cb101-30"><a href="local-decoding-confidence-intervals.html#cb101-30" aria-hidden="true" tabindex="-1"></a>                  <span class="at">color =</span> COLORS[state],</span>
+<span id="cb101-31"><a href="local-decoding-confidence-intervals.html#cb101-31" aria-hidden="true" tabindex="-1"></a>                  <span class="at">show.legend =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb101-32"><a href="local-decoding-confidence-intervals.html#cb101-32" aria-hidden="true" tabindex="-1"></a>                  <span class="at">linewidth =</span> ERRORBAR_LINE_WIDTH) <span class="sc">+</span></span>
+<span id="cb101-33"><a href="local-decoding-confidence-intervals.html#cb101-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> estimate), <span class="at">size =</span> POINT_SIZE, <span class="at">shape =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb101-34"><a href="local-decoding-confidence-intervals.html#cb101-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> estimate), <span class="at">linewidth =</span> LINE_SIZE) <span class="sc">+</span></span>
+<span id="cb101-35"><a href="local-decoding-confidence-intervals.html#cb101-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="fu">bquote</span>(<span class="st">&quot;State&quot;</span> <span class="sc">~</span> .(state) <span class="sc">*</span> <span class="st">&quot;,&quot;</span> <span class="sc">~</span> <span class="fu">widehat</span>(lambda) <span class="sc">~</span> <span class="st">&quot;=&quot;</span> <span class="sc">~</span> .(<span class="fu">round</span>(lambda[state], <span class="dv">2</span>)))) <span class="sc">+</span></span>
+<span id="cb101-36"><a href="local-decoding-confidence-intervals.html#cb101-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_Publication</span>() <span class="sc">+</span></span>
+<span id="cb101-37"><a href="local-decoding-confidence-intervals.html#cb101-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb101-38"><a href="local-decoding-confidence-intervals.html#cb101-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb101-39"><a href="local-decoding-confidence-intervals.html#cb101-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot;Probability&quot;</span>)</span>
+<span id="cb101-40"><a href="local-decoding-confidence-intervals.html#cb101-40" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb101-41"><a href="local-decoding-confidence-intervals.html#cb101-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-42"><a href="local-decoding-confidence-intervals.html#cb101-42" aria-hidden="true" tabindex="-1"></a><span class="co"># STATE MOST LIKELY</span></span>
+<span id="cb101-43"><a href="local-decoding-confidence-intervals.html#cb101-43" aria-hidden="true" tabindex="-1"></a>ldecode <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(obj_tmb<span class="sc">$</span>env<span class="sc">$</span>last.par.best)<span class="sc">$</span>ldecode</span>
+<span id="cb101-44"><a href="local-decoding-confidence-intervals.html#cb101-44" aria-hidden="true" tabindex="-1"></a>ldecode_estimates <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb101-45"><a href="local-decoding-confidence-intervals.html#cb101-45" aria-hidden="true" tabindex="-1"></a>ldecode_std.errors <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb101-46"><a href="local-decoding-confidence-intervals.html#cb101-46" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb101-47"><a href="local-decoding-confidence-intervals.html#cb101-47" aria-hidden="true" tabindex="-1"></a>  ldecode_estimates[i] <span class="ot">&lt;-</span> smoothing_probs[ldecode[i], i]</span>
+<span id="cb101-48"><a href="local-decoding-confidence-intervals.html#cb101-48" aria-hidden="true" tabindex="-1"></a>  ldecode_std.errors[i] <span class="ot">&lt;-</span> smoothing_probs_std_error[ldecode[i], i]</span>
+<span id="cb101-49"><a href="local-decoding-confidence-intervals.html#cb101-49" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb101-50"><a href="local-decoding-confidence-intervals.html#cb101-50" aria-hidden="true" tabindex="-1"></a>stateprobs <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">idx =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
+<span id="cb101-51"><a href="local-decoding-confidence-intervals.html#cb101-51" aria-hidden="true" tabindex="-1"></a>                         <span class="at">estimate =</span> ldecode_estimates,</span>
+<span id="cb101-52"><a href="local-decoding-confidence-intervals.html#cb101-52" aria-hidden="true" tabindex="-1"></a>                         <span class="at">std.error =</span> ldecode_std.errors,</span>
+<span id="cb101-53"><a href="local-decoding-confidence-intervals.html#cb101-53" aria-hidden="true" tabindex="-1"></a>                         <span class="at">state =</span> <span class="fu">as.factor</span>(ldecode))</span>
+<span id="cb101-54"><a href="local-decoding-confidence-intervals.html#cb101-54" aria-hidden="true" tabindex="-1"></a>stateprobs<span class="sc">$</span>ci_lower <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">0</span>, stateprobs<span class="sc">$</span>estimate <span class="sc">-</span> q95_norm <span class="sc">*</span> stateprobs<span class="sc">$</span>std.error)</span>
+<span id="cb101-55"><a href="local-decoding-confidence-intervals.html#cb101-55" aria-hidden="true" tabindex="-1"></a>stateprobs<span class="sc">$</span>ci_upper <span class="ot">&lt;-</span> <span class="fu">pmin</span>(stateprobs<span class="sc">$</span>estimate <span class="sc">+</span> q95_norm <span class="sc">*</span> stateprobs<span class="sc">$</span>std.error, <span class="dv">1</span>)</span>
+<span id="cb101-56"><a href="local-decoding-confidence-intervals.html#cb101-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-57"><a href="local-decoding-confidence-intervals.html#cb101-57" aria-hidden="true" tabindex="-1"></a>state_likely_ggplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(stateprobs, <span class="fu">aes</span>(<span class="at">x =</span> idx)) <span class="sc">+</span></span>
+<span id="cb101-58"><a href="local-decoding-confidence-intervals.html#cb101-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> ci_lower,</span>
+<span id="cb101-59"><a href="local-decoding-confidence-intervals.html#cb101-59" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ymax =</span> ci_upper),</span>
+<span id="cb101-60"><a href="local-decoding-confidence-intervals.html#cb101-60" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">&quot;lightgrey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb101-61"><a href="local-decoding-confidence-intervals.html#cb101-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> ci_lower,</span>
+<span id="cb101-62"><a href="local-decoding-confidence-intervals.html#cb101-62" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax =</span> ci_upper,</span>
+<span id="cb101-63"><a href="local-decoding-confidence-intervals.html#cb101-63" aria-hidden="true" tabindex="-1"></a>                    <span class="at">width =</span> ERRORBAR_END_WIDTH,</span>
+<span id="cb101-64"><a href="local-decoding-confidence-intervals.html#cb101-64" aria-hidden="true" tabindex="-1"></a>                    <span class="at">color =</span> state),</span>
+<span id="cb101-65"><a href="local-decoding-confidence-intervals.html#cb101-65" aria-hidden="true" tabindex="-1"></a>                <span class="at">show.legend =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb101-66"><a href="local-decoding-confidence-intervals.html#cb101-66" aria-hidden="true" tabindex="-1"></a>                <span class="at">linewidth =</span> ERRORBAR_LINE_WIDTH) <span class="sc">+</span></span>
+<span id="cb101-67"><a href="local-decoding-confidence-intervals.html#cb101-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> estimate), <span class="at">size =</span> POINT_SIZE) <span class="sc">+</span></span>
+<span id="cb101-68"><a href="local-decoding-confidence-intervals.html#cb101-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> estimate), <span class="at">linewidth =</span> LINE_SIZE) <span class="sc">+</span></span>
+<span id="cb101-69"><a href="local-decoding-confidence-intervals.html#cb101-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> COLORS[<span class="dv">1</span><span class="sc">:</span>m], <span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span>m) <span class="sc">+</span></span>
+<span id="cb101-70"><a href="local-decoding-confidence-intervals.html#cb101-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Most likely states&quot;</span>) <span class="sc">+</span></span>
+<span id="cb101-71"><a href="local-decoding-confidence-intervals.html#cb101-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_Publication</span>() <span class="sc">+</span></span>
+<span id="cb101-72"><a href="local-decoding-confidence-intervals.html#cb101-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Time (days)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb101-73"><a href="local-decoding-confidence-intervals.html#cb101-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Probability&quot;</span>) <span class="sc">+</span></span>
+<span id="cb101-74"><a href="local-decoding-confidence-intervals.html#cb101-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb101-75"><a href="local-decoding-confidence-intervals.html#cb101-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-76"><a href="local-decoding-confidence-intervals.html#cb101-76" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the graphs in one figure</span></span>
+<span id="cb101-77"><a href="local-decoding-confidence-intervals.html#cb101-77" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
+<span id="cb101-78"><a href="local-decoding-confidence-intervals.html#cb101-78" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(<span class="fu">ggarrange</span>(<span class="at">plotlist =</span> state_ggplot,</span>
+<span id="cb101-79"><a href="local-decoding-confidence-intervals.html#cb101-79" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">nrow =</span> <span class="fu">ceiling</span>(m<span class="sc">/</span><span class="dv">2</span>)),</span>
+<span id="cb101-80"><a href="local-decoding-confidence-intervals.html#cb101-80" aria-hidden="true" tabindex="-1"></a>          state_likely_ggplot,</span>
+<span id="cb101-81"><a href="local-decoding-confidence-intervals.html#cb101-81" aria-hidden="true" tabindex="-1"></a>          <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Data-supplements_files/figure-html/10plot_smoothing_probabilities-1.png" width="672" /></p>
+</div>
+<div id="limitation" class="section level2 hasAnchor" number="10.4">
+<h2><span class="header-section-number">10.4</span> Limitation<a href="local-decoding-confidence-intervals.html#limitation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The TYT data set used above is short and does not pose computing issues.
+However, with a larger set, retrieving the standard errors of the smoothing probabilities becomes time-consuming and can take days or weeks depending on the dataamount of data, as the delta method is applied repeatedly when these errors are retrieved via <code>summary(sdreport(obj_tmb))</code>.
+A solution to this problem is to truncate the smoothing probability matrix before it is returned by <code>TMB</code>, in the objective function defined above.
+An example of what the function can be is in the file <em><a href="github.html#poi_hmm_smoothing_truncated.cpp">code/poi_hmm_smoothing_truncated.cpp</a></em> and below.</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb102-1"><a href="local-decoding-confidence-intervals.html#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;TMB.hpp&gt;</span></span>
+<span id="cb102-2"><a href="local-decoding-confidence-intervals.html#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../functions/utils.cpp&quot;</span></span>
+<span id="cb102-3"><a href="local-decoding-confidence-intervals.html#cb102-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-4"><a href="local-decoding-confidence-intervals.html#cb102-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Likelihood for a poisson hidden markov model. </span></span>
+<span id="cb102-5"><a href="local-decoding-confidence-intervals.html#cb102-5" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> Type<span class="op">&gt;</span></span>
+<span id="cb102-6"><a href="local-decoding-confidence-intervals.html#cb102-6" aria-hidden="true" tabindex="-1"></a>Type objective_function<span class="op">&lt;</span>Type<span class="op">&gt;::</span><span class="kw">operator</span><span class="op">()</span> <span class="op">()</span></span>
+<span id="cb102-7"><a href="local-decoding-confidence-intervals.html#cb102-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb102-8"><a href="local-decoding-confidence-intervals.html#cb102-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Data</span></span>
+<span id="cb102-9"><a href="local-decoding-confidence-intervals.html#cb102-9" aria-hidden="true" tabindex="-1"></a>  DATA_VECTOR<span class="op">(</span>x<span class="op">);</span>          <span class="co">// timeseries vector</span></span>
+<span id="cb102-10"><a href="local-decoding-confidence-intervals.html#cb102-10" aria-hidden="true" tabindex="-1"></a>  DATA_INTEGER<span class="op">(</span>m<span class="op">);</span>         <span class="co">// Number of states m</span></span>
+<span id="cb102-11"><a href="local-decoding-confidence-intervals.html#cb102-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// With a large data set, there are too many smoothing probabilities to return</span></span>
+<span id="cb102-12"><a href="local-decoding-confidence-intervals.html#cb102-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// So we truncate them.</span></span>
+<span id="cb102-13"><a href="local-decoding-confidence-intervals.html#cb102-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// They are returned as a block of m rows and (size of data set) columns</span></span>
+<span id="cb102-14"><a href="local-decoding-confidence-intervals.html#cb102-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// The Eigen library lets us crop that block and return a sub-matrix</span></span>
+<span id="cb102-15"><a href="local-decoding-confidence-intervals.html#cb102-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">// DATA_INTEGER does not allow for NA, but DATA_SCALAR does, so we use it</span></span>
+<span id="cb102-16"><a href="local-decoding-confidence-intervals.html#cb102-16" aria-hidden="true" tabindex="-1"></a>  DATA_SCALAR<span class="op">(</span>start_row<span class="op">);</span> <span class="co">// The crop will start with this row index</span></span>
+<span id="cb102-17"><a href="local-decoding-confidence-intervals.html#cb102-17" aria-hidden="true" tabindex="-1"></a>  DATA_SCALAR<span class="op">(</span>start_col<span class="op">);</span> <span class="co">// The crop will start with this column index</span></span>
+<span id="cb102-18"><a href="local-decoding-confidence-intervals.html#cb102-18" aria-hidden="true" tabindex="-1"></a>  DATA_SCALAR<span class="op">(</span>nb_rows<span class="op">);</span> <span class="co">// The crop will take this many rows</span></span>
+<span id="cb102-19"><a href="local-decoding-confidence-intervals.html#cb102-19" aria-hidden="true" tabindex="-1"></a>  DATA_SCALAR<span class="op">(</span>nb_cols<span class="op">);</span> <span class="co">// The crop will take this many columns</span></span>
+<span id="cb102-20"><a href="local-decoding-confidence-intervals.html#cb102-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// </span><span class="al">TODO</span><span class="co">:</span></span>
+<span id="cb102-21"><a href="local-decoding-confidence-intervals.html#cb102-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use DATA_UPDATE to adjust the submatrix dimension without reestimating</span></span>
+<span id="cb102-22"><a href="local-decoding-confidence-intervals.html#cb102-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">// c.f. https://kaskr.github.io/adcomp/group__macros.html#ga3a3716228d46fbe32e23856b2f53be8d</span></span>
+<span id="cb102-23"><a href="local-decoding-confidence-intervals.html#cb102-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-24"><a href="local-decoding-confidence-intervals.html#cb102-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Parameters</span></span>
+<span id="cb102-25"><a href="local-decoding-confidence-intervals.html#cb102-25" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tlambda<span class="op">);</span>     <span class="co">// conditional log_lambdas&#39;s</span></span>
+<span id="cb102-26"><a href="local-decoding-confidence-intervals.html#cb102-26" aria-hidden="true" tabindex="-1"></a>  PARAMETER_VECTOR<span class="op">(</span>tgamma<span class="op">);</span>      <span class="co">// m(m-1) working parameters of TPM</span></span>
+<span id="cb102-27"><a href="local-decoding-confidence-intervals.html#cb102-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-28"><a href="local-decoding-confidence-intervals.html#cb102-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Uncomment only when using a non-stationary distribution</span></span>
+<span id="cb102-29"><a href="local-decoding-confidence-intervals.html#cb102-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">//PARAMETER_VECTOR(tdelta);    // transformed stationary distribution,</span></span>
+<span id="cb102-30"><a href="local-decoding-confidence-intervals.html#cb102-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-31"><a href="local-decoding-confidence-intervals.html#cb102-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Transform working parameters to natural parameters:</span></span>
+<span id="cb102-32"><a href="local-decoding-confidence-intervals.html#cb102-32" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> lambda <span class="op">=</span> tlambda<span class="op">.</span>exp<span class="op">();</span></span>
+<span id="cb102-33"><a href="local-decoding-confidence-intervals.html#cb102-33" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> gamma <span class="op">=</span> gamma_w2n<span class="op">(</span>m<span class="op">,</span> tgamma<span class="op">);</span></span>
+<span id="cb102-34"><a href="local-decoding-confidence-intervals.html#cb102-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-35"><a href="local-decoding-confidence-intervals.html#cb102-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Construct stationary distribution</span></span>
+<span id="cb102-36"><a href="local-decoding-confidence-intervals.html#cb102-36" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> delta <span class="op">=</span> stat_dist<span class="op">(</span>m<span class="op">,</span> gamma<span class="op">);</span></span>
+<span id="cb102-37"><a href="local-decoding-confidence-intervals.html#cb102-37" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If using a non-stationary distribution, use this instead</span></span>
+<span id="cb102-38"><a href="local-decoding-confidence-intervals.html#cb102-38" aria-hidden="true" tabindex="-1"></a>  <span class="co">//vector&lt;Type&gt; delta = delta_w2n(m, tdelta);</span></span>
+<span id="cb102-39"><a href="local-decoding-confidence-intervals.html#cb102-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-40"><a href="local-decoding-confidence-intervals.html#cb102-40" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get number of timesteps (n)</span></span>
+<span id="cb102-41"><a href="local-decoding-confidence-intervals.html#cb102-41" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> n <span class="op">=</span> x<span class="op">.</span>size<span class="op">();</span></span>
+<span id="cb102-42"><a href="local-decoding-confidence-intervals.html#cb102-42" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-43"><a href="local-decoding-confidence-intervals.html#cb102-43" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Are any of these smoothing matrix parameters NA? If yes, set them to the maximum</span></span>
+<span id="cb102-44"><a href="local-decoding-confidence-intervals.html#cb102-44" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> int_start_row<span class="op">,</span> int_start_col<span class="op">,</span> int_nb_rows<span class="op">,</span> int_nb_cols<span class="op">;</span></span>
+<span id="cb102-45"><a href="local-decoding-confidence-intervals.html#cb102-45" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>start_row <span class="op">!=</span> start_row <span class="kw">or</span> start_col <span class="op">!=</span> start_col <span class="kw">or</span> nb_rows <span class="op">!=</span> nb_rows <span class="kw">or</span> nb_cols <span class="op">!=</span> nb_cols<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb102-46"><a href="local-decoding-confidence-intervals.html#cb102-46" aria-hidden="true" tabindex="-1"></a>    int_start_row <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb102-47"><a href="local-decoding-confidence-intervals.html#cb102-47" aria-hidden="true" tabindex="-1"></a>    int_start_col <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb102-48"><a href="local-decoding-confidence-intervals.html#cb102-48" aria-hidden="true" tabindex="-1"></a>    int_nb_rows <span class="op">=</span> m<span class="op">;</span></span>
+<span id="cb102-49"><a href="local-decoding-confidence-intervals.html#cb102-49" aria-hidden="true" tabindex="-1"></a>    int_nb_cols <span class="op">=</span> n<span class="op">;</span></span>
+<span id="cb102-50"><a href="local-decoding-confidence-intervals.html#cb102-50" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb102-51"><a href="local-decoding-confidence-intervals.html#cb102-51" aria-hidden="true" tabindex="-1"></a>    int_start_row <span class="op">=</span> CppAD<span class="op">::</span>Integer<span class="op">(</span>start_row<span class="op">);</span></span>
+<span id="cb102-52"><a href="local-decoding-confidence-intervals.html#cb102-52" aria-hidden="true" tabindex="-1"></a>    int_start_col <span class="op">=</span> CppAD<span class="op">::</span>Integer<span class="op">(</span>start_col<span class="op">);</span></span>
+<span id="cb102-53"><a href="local-decoding-confidence-intervals.html#cb102-53" aria-hidden="true" tabindex="-1"></a>    int_nb_rows <span class="op">=</span> CppAD<span class="op">::</span>Integer<span class="op">(</span>nb_rows<span class="op">);</span></span>
+<span id="cb102-54"><a href="local-decoding-confidence-intervals.html#cb102-54" aria-hidden="true" tabindex="-1"></a>    int_nb_cols <span class="op">=</span> CppAD<span class="op">::</span>Integer<span class="op">(</span>nb_cols<span class="op">);</span></span>
+<span id="cb102-55"><a href="local-decoding-confidence-intervals.html#cb102-55" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb102-56"><a href="local-decoding-confidence-intervals.html#cb102-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-57"><a href="local-decoding-confidence-intervals.html#cb102-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Evaluate conditional distribution: Put conditional</span></span>
+<span id="cb102-58"><a href="local-decoding-confidence-intervals.html#cb102-58" aria-hidden="true" tabindex="-1"></a>  <span class="co">// probabilities of observed x in n times m matrix</span></span>
+<span id="cb102-59"><a href="local-decoding-confidence-intervals.html#cb102-59" aria-hidden="true" tabindex="-1"></a>  <span class="co">// (one column for each state, one row for each datapoint):</span></span>
+<span id="cb102-60"><a href="local-decoding-confidence-intervals.html#cb102-60" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> emission_probs<span class="op">(</span>n<span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb102-61"><a href="local-decoding-confidence-intervals.html#cb102-61" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> row1vec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> m<span class="op">);</span></span>
+<span id="cb102-62"><a href="local-decoding-confidence-intervals.html#cb102-62" aria-hidden="true" tabindex="-1"></a>  row1vec<span class="op">.</span>setOnes<span class="op">();</span></span>
+<span id="cb102-63"><a href="local-decoding-confidence-intervals.html#cb102-63" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb102-64"><a href="local-decoding-confidence-intervals.html#cb102-64" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>x<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> x<span class="op">[</span>i<span class="op">])</span> <span class="op">{</span> <span class="co">// f != f returns true if and only if f is NaN. </span></span>
+<span id="cb102-65"><a href="local-decoding-confidence-intervals.html#cb102-65" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Replace missing values (NA in R, NaN in C++) with 1</span></span>
+<span id="cb102-66"><a href="local-decoding-confidence-intervals.html#cb102-66" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> row1vec<span class="op">;</span></span>
+<span id="cb102-67"><a href="local-decoding-confidence-intervals.html#cb102-67" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb102-68"><a href="local-decoding-confidence-intervals.html#cb102-68" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb102-69"><a href="local-decoding-confidence-intervals.html#cb102-69" aria-hidden="true" tabindex="-1"></a>      emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> dpois<span class="op">(</span>x<span class="op">[</span>i<span class="op">],</span> lambda<span class="op">,</span> <span class="kw">false</span><span class="op">);</span></span>
+<span id="cb102-70"><a href="local-decoding-confidence-intervals.html#cb102-70" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb102-71"><a href="local-decoding-confidence-intervals.html#cb102-71" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb102-72"><a href="local-decoding-confidence-intervals.html#cb102-72" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-73"><a href="local-decoding-confidence-intervals.html#cb102-73" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Corresponds to (Zucchini et al., 2016, p 333)</span></span>
+<span id="cb102-74"><a href="local-decoding-confidence-intervals.html#cb102-74" aria-hidden="true" tabindex="-1"></a>  <span class="co">// temp is used in the computation of log-backward probabilities</span></span>
+<span id="cb102-75"><a href="local-decoding-confidence-intervals.html#cb102-75" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> foo<span class="op">,</span> P<span class="op">,</span> temp<span class="op">;</span></span>
+<span id="cb102-76"><a href="local-decoding-confidence-intervals.html#cb102-76" aria-hidden="true" tabindex="-1"></a>  Type mllk<span class="op">,</span> sumfoo<span class="op">,</span> lscale<span class="op">;</span></span>
+<span id="cb102-77"><a href="local-decoding-confidence-intervals.html#cb102-77" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-78"><a href="local-decoding-confidence-intervals.html#cb102-78" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Log-forward and log-backward probabilities</span></span>
+<span id="cb102-79"><a href="local-decoding-confidence-intervals.html#cb102-79" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> lalpha<span class="op">(</span>m<span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb102-80"><a href="local-decoding-confidence-intervals.html#cb102-80" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> lbeta<span class="op">(</span>m<span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb102-81"><a href="local-decoding-confidence-intervals.html#cb102-81" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-82"><a href="local-decoding-confidence-intervals.html#cb102-82" aria-hidden="true" tabindex="-1"></a>  <span class="co">//// Log-forward probabilities (scaling used) and nll computation</span></span>
+<span id="cb102-83"><a href="local-decoding-confidence-intervals.html#cb102-83" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>setZero<span class="op">();</span></span>
+<span id="cb102-84"><a href="local-decoding-confidence-intervals.html#cb102-84" aria-hidden="true" tabindex="-1"></a>  <span class="co">// foo is a matrix where only the first column is relevant (vectors are</span></span>
+<span id="cb102-85"><a href="local-decoding-confidence-intervals.html#cb102-85" aria-hidden="true" tabindex="-1"></a>  <span class="co">// treated as columns)</span></span>
+<span id="cb102-86"><a href="local-decoding-confidence-intervals.html#cb102-86" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Specifying &quot;row(0)&quot; or &quot;col(0)&quot; is optional, but it helps to remember</span></span>
+<span id="cb102-87"><a href="local-decoding-confidence-intervals.html#cb102-87" aria-hidden="true" tabindex="-1"></a>  <span class="co">// if it is a row or a column</span></span>
+<span id="cb102-88"><a href="local-decoding-confidence-intervals.html#cb102-88" aria-hidden="true" tabindex="-1"></a>  foo <span class="op">=</span> <span class="op">(</span>delta <span class="op">*</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;(</span>emission_probs<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">))).</span>matrix<span class="op">();</span></span>
+<span id="cb102-89"><a href="local-decoding-confidence-intervals.html#cb102-89" aria-hidden="true" tabindex="-1"></a>  sumfoo <span class="op">=</span> foo<span class="op">.</span>col<span class="op">(</span><span class="dv">0</span><span class="op">).</span>sum<span class="op">();</span></span>
+<span id="cb102-90"><a href="local-decoding-confidence-intervals.html#cb102-90" aria-hidden="true" tabindex="-1"></a>  lscale <span class="op">=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb102-91"><a href="local-decoding-confidence-intervals.html#cb102-91" aria-hidden="true" tabindex="-1"></a>  <span class="co">// foo = foo.transpose(); is not reliable because of</span></span>
+<span id="cb102-92"><a href="local-decoding-confidence-intervals.html#cb102-92" aria-hidden="true" tabindex="-1"></a>  <span class="co">// aliasing, c.f https://eigen.tuxfamily.org/dox/group__TopicAliasing.html</span></span>
+<span id="cb102-93"><a href="local-decoding-confidence-intervals.html#cb102-93" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>transposeInPlace<span class="op">();</span></span>
+<span id="cb102-94"><a href="local-decoding-confidence-intervals.html#cb102-94" aria-hidden="true" tabindex="-1"></a>  <span class="co">// foo is now a matrix where only the first row is relevant.</span></span>
+<span id="cb102-95"><a href="local-decoding-confidence-intervals.html#cb102-95" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb102-96"><a href="local-decoding-confidence-intervals.html#cb102-96" aria-hidden="true" tabindex="-1"></a>  <span class="co">// We can alternatively use foo.row(0).array().log()</span></span>
+<span id="cb102-97"><a href="local-decoding-confidence-intervals.html#cb102-97" aria-hidden="true" tabindex="-1"></a>  lalpha<span class="op">.</span>col<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">=</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;(</span>foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">)).</span>log<span class="op">()</span> <span class="op">+</span> lscale<span class="op">;</span></span>
+<span id="cb102-98"><a href="local-decoding-confidence-intervals.html#cb102-98" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-99"><a href="local-decoding-confidence-intervals.html#cb102-99" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb102-100"><a href="local-decoding-confidence-intervals.html#cb102-100" aria-hidden="true" tabindex="-1"></a>    P <span class="op">=</span> emission_probs<span class="op">.</span>row<span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb102-101"><a href="local-decoding-confidence-intervals.html#cb102-101" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">=</span> <span class="op">((</span>foo <span class="op">*</span> gamma<span class="op">).</span>array<span class="op">()</span> <span class="op">*</span> P<span class="op">.</span>array<span class="op">()).</span>matrix<span class="op">();</span></span>
+<span id="cb102-102"><a href="local-decoding-confidence-intervals.html#cb102-102" aria-hidden="true" tabindex="-1"></a>    sumfoo <span class="op">=</span> foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">).</span>sum<span class="op">();</span></span>
+<span id="cb102-103"><a href="local-decoding-confidence-intervals.html#cb102-103" aria-hidden="true" tabindex="-1"></a>    lscale <span class="op">+=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb102-104"><a href="local-decoding-confidence-intervals.html#cb102-104" aria-hidden="true" tabindex="-1"></a>    foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb102-105"><a href="local-decoding-confidence-intervals.html#cb102-105" aria-hidden="true" tabindex="-1"></a>    lalpha<span class="op">.</span>col<span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">=</span> vector<span class="op">&lt;</span>Type<span class="op">&gt;(</span>foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">)).</span>log<span class="op">()</span> <span class="op">+</span> lscale<span class="op">;</span></span>
+<span id="cb102-106"><a href="local-decoding-confidence-intervals.html#cb102-106" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb102-107"><a href="local-decoding-confidence-intervals.html#cb102-107" aria-hidden="true" tabindex="-1"></a>  mllk <span class="op">=</span> <span class="op">-</span>lscale<span class="op">;</span></span>
+<span id="cb102-108"><a href="local-decoding-confidence-intervals.html#cb102-108" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-109"><a href="local-decoding-confidence-intervals.html#cb102-109" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-110"><a href="local-decoding-confidence-intervals.html#cb102-110" aria-hidden="true" tabindex="-1"></a>  <span class="co">//// Log-backward probabilities (scaling used)</span></span>
+<span id="cb102-111"><a href="local-decoding-confidence-intervals.html#cb102-111" aria-hidden="true" tabindex="-1"></a>  lbeta<span class="op">.</span>setZero<span class="op">();</span></span>
+<span id="cb102-112"><a href="local-decoding-confidence-intervals.html#cb102-112" aria-hidden="true" tabindex="-1"></a>  <span class="co">// &quot;Type(m)&quot; is used because of a similar issue at </span></span>
+<span id="cb102-113"><a href="local-decoding-confidence-intervals.html#cb102-113" aria-hidden="true" tabindex="-1"></a>  <span class="co">// https://kaskr.github.io/adcomp/_book/Errors.html#missing-casts-for-vectorized-functions</span></span>
+<span id="cb102-114"><a href="local-decoding-confidence-intervals.html#cb102-114" aria-hidden="true" tabindex="-1"></a>  foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">).</span>setConstant<span class="op">(</span><span class="dv">1</span> <span class="op">/</span> Type<span class="op">(</span>m<span class="op">));</span></span>
+<span id="cb102-115"><a href="local-decoding-confidence-intervals.html#cb102-115" aria-hidden="true" tabindex="-1"></a>  lscale <span class="op">=</span> log<span class="op">(</span>m<span class="op">);</span></span>
+<span id="cb102-116"><a href="local-decoding-confidence-intervals.html#cb102-116" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> n <span class="op">-</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&gt;=</span> <span class="dv">1</span><span class="op">;</span> i<span class="op">--)</span> <span class="op">{</span></span>
+<span id="cb102-117"><a href="local-decoding-confidence-intervals.html#cb102-117" aria-hidden="true" tabindex="-1"></a>    P <span class="op">=</span> emission_probs<span class="op">.</span>row<span class="op">(</span>i<span class="op">);</span></span>
+<span id="cb102-118"><a href="local-decoding-confidence-intervals.html#cb102-118" aria-hidden="true" tabindex="-1"></a>    temp <span class="op">=</span> <span class="op">(</span>P<span class="op">.</span>array<span class="op">()</span> <span class="op">*</span> foo<span class="op">.</span>array<span class="op">()).</span>matrix<span class="op">();</span> <span class="co">// temp is a row matrix</span></span>
+<span id="cb102-119"><a href="local-decoding-confidence-intervals.html#cb102-119" aria-hidden="true" tabindex="-1"></a>    <span class="co">// temp must be a column for the matrix product below</span></span>
+<span id="cb102-120"><a href="local-decoding-confidence-intervals.html#cb102-120" aria-hidden="true" tabindex="-1"></a>    temp<span class="op">.</span>transposeInPlace<span class="op">();</span></span>
+<span id="cb102-121"><a href="local-decoding-confidence-intervals.html#cb102-121" aria-hidden="true" tabindex="-1"></a>    foo <span class="op">=</span> gamma <span class="op">*</span> temp<span class="op">;</span></span>
+<span id="cb102-122"><a href="local-decoding-confidence-intervals.html#cb102-122" aria-hidden="true" tabindex="-1"></a>    lbeta<span class="op">.</span>col<span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">=</span> foo<span class="op">.</span>col<span class="op">(</span><span class="dv">0</span><span class="op">).</span>array<span class="op">().</span>log<span class="op">()</span> <span class="op">+</span> lscale<span class="op">;</span></span>
+<span id="cb102-123"><a href="local-decoding-confidence-intervals.html#cb102-123" aria-hidden="true" tabindex="-1"></a>    <span class="co">// &quot;foo&quot; is a column, but must be turned into a row in order to do</span></span>
+<span id="cb102-124"><a href="local-decoding-confidence-intervals.html#cb102-124" aria-hidden="true" tabindex="-1"></a>    <span class="co">// the element-wise product above (&quot;P.array() * foo.array()&quot;)</span></span>
+<span id="cb102-125"><a href="local-decoding-confidence-intervals.html#cb102-125" aria-hidden="true" tabindex="-1"></a>    foo<span class="op">.</span>transposeInPlace<span class="op">();</span></span>
+<span id="cb102-126"><a href="local-decoding-confidence-intervals.html#cb102-126" aria-hidden="true" tabindex="-1"></a>    sumfoo <span class="op">=</span> foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">).</span>sum<span class="op">();</span></span>
+<span id="cb102-127"><a href="local-decoding-confidence-intervals.html#cb102-127" aria-hidden="true" tabindex="-1"></a>    foo<span class="op">.</span>row<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">/=</span> sumfoo<span class="op">;</span></span>
+<span id="cb102-128"><a href="local-decoding-confidence-intervals.html#cb102-128" aria-hidden="true" tabindex="-1"></a>    lscale <span class="op">+=</span> log<span class="op">(</span>sumfoo<span class="op">);</span></span>
+<span id="cb102-129"><a href="local-decoding-confidence-intervals.html#cb102-129" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb102-130"><a href="local-decoding-confidence-intervals.html#cb102-130" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-131"><a href="local-decoding-confidence-intervals.html#cb102-131" aria-hidden="true" tabindex="-1"></a>  <span class="co">//// Local decoding (part 1)</span></span>
+<span id="cb102-132"><a href="local-decoding-confidence-intervals.html#cb102-132" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> smoothing_probs<span class="op">(</span>m<span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb102-133"><a href="local-decoding-confidence-intervals.html#cb102-133" aria-hidden="true" tabindex="-1"></a>  Type llk <span class="op">=</span> <span class="op">-</span> mllk<span class="op">;</span></span>
+<span id="cb102-134"><a href="local-decoding-confidence-intervals.html#cb102-134" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> n <span class="op">-</span> <span class="dv">1</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb102-135"><a href="local-decoding-confidence-intervals.html#cb102-135" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>x<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> x<span class="op">[</span>i<span class="op">])</span> <span class="op">{</span></span>
+<span id="cb102-136"><a href="local-decoding-confidence-intervals.html#cb102-136" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Missing data will get a smoothing probability of NA</span></span>
+<span id="cb102-137"><a href="local-decoding-confidence-intervals.html#cb102-137" aria-hidden="true" tabindex="-1"></a>      smoothing_probs<span class="op">.</span>col<span class="op">(</span>i<span class="op">).</span>setConstant<span class="op">(</span>x<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb102-138"><a href="local-decoding-confidence-intervals.html#cb102-138" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb102-139"><a href="local-decoding-confidence-intervals.html#cb102-139" aria-hidden="true" tabindex="-1"></a>      smoothing_probs<span class="op">.</span>col<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> <span class="op">((</span>lalpha<span class="op">.</span>col<span class="op">(</span>i<span class="op">)</span> <span class="op">+</span> lbeta<span class="op">.</span>col<span class="op">(</span>i<span class="op">)).</span>array<span class="op">()</span> <span class="op">-</span> llk<span class="op">).</span>exp<span class="op">();</span></span>
+<span id="cb102-140"><a href="local-decoding-confidence-intervals.html#cb102-140" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb102-141"><a href="local-decoding-confidence-intervals.html#cb102-141" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb102-142"><a href="local-decoding-confidence-intervals.html#cb102-142" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If there is a large amount of values in smoothing_probs due to e.g. a large</span></span>
+<span id="cb102-143"><a href="local-decoding-confidence-intervals.html#cb102-143" aria-hidden="true" tabindex="-1"></a>  <span class="co">// amount of data, retrieving submatrices is faster</span></span>
+<span id="cb102-144"><a href="local-decoding-confidence-intervals.html#cb102-144" aria-hidden="true" tabindex="-1"></a>  <span class="co">// https://eigen.tuxfamily.org/dox/group__QuickRefPage.html</span></span>
+<span id="cb102-145"><a href="local-decoding-confidence-intervals.html#cb102-145" aria-hidden="true" tabindex="-1"></a>  <span class="co">// block starting at (start_row, start_col) taking nb_rows rows and nb_cols cols</span></span>
+<span id="cb102-146"><a href="local-decoding-confidence-intervals.html#cb102-146" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If any submatrix parameters are NA, return the entire matrix</span></span>
+<span id="cb102-147"><a href="local-decoding-confidence-intervals.html#cb102-147" aria-hidden="true" tabindex="-1"></a>  <span class="co">// f != f returns true if and only if f is NaN (NA in R, NaN in C++).</span></span>
+<span id="cb102-148"><a href="local-decoding-confidence-intervals.html#cb102-148" aria-hidden="true" tabindex="-1"></a>  matrix<span class="op">&lt;</span>Type<span class="op">&gt;</span> truncated_smoothing_probs<span class="op">;</span></span>
+<span id="cb102-149"><a href="local-decoding-confidence-intervals.html#cb102-149" aria-hidden="true" tabindex="-1"></a>  truncated_smoothing_probs <span class="op">=</span> smoothing_probs<span class="op">.</span>block<span class="op">(</span>int_start_row<span class="op">,</span></span>
+<span id="cb102-150"><a href="local-decoding-confidence-intervals.html#cb102-150" aria-hidden="true" tabindex="-1"></a>                                                    int_start_col<span class="op">,</span></span>
+<span id="cb102-151"><a href="local-decoding-confidence-intervals.html#cb102-151" aria-hidden="true" tabindex="-1"></a>                                                    int_nb_rows<span class="op">,</span></span>
+<span id="cb102-152"><a href="local-decoding-confidence-intervals.html#cb102-152" aria-hidden="true" tabindex="-1"></a>                                                    int_nb_cols<span class="op">);</span></span>
+<span id="cb102-153"><a href="local-decoding-confidence-intervals.html#cb102-153" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-154"><a href="local-decoding-confidence-intervals.html#cb102-154" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Local decoding (part 2)</span></span>
+<span id="cb102-155"><a href="local-decoding-confidence-intervals.html#cb102-155" aria-hidden="true" tabindex="-1"></a>  vector<span class="op">&lt;</span>Type<span class="op">&gt;</span> ldecode<span class="op">(</span>int_nb_cols<span class="op">);</span></span>
+<span id="cb102-156"><a href="local-decoding-confidence-intervals.html#cb102-156" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> col_idx<span class="op">;</span></span>
+<span id="cb102-157"><a href="local-decoding-confidence-intervals.html#cb102-157" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> int_start_row<span class="op">;</span> i <span class="op">&lt;</span> int_start_row <span class="op">+</span> int_nb_cols<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb102-158"><a href="local-decoding-confidence-intervals.html#cb102-158" aria-hidden="true" tabindex="-1"></a>    <span class="co">// If the data is missing, set the state to -1</span></span>
+<span id="cb102-159"><a href="local-decoding-confidence-intervals.html#cb102-159" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>x<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> x<span class="op">[</span>i<span class="op">])</span> <span class="op">{</span></span>
+<span id="cb102-160"><a href="local-decoding-confidence-intervals.html#cb102-160" aria-hidden="true" tabindex="-1"></a>      ldecode<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> x<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb102-161"><a href="local-decoding-confidence-intervals.html#cb102-161" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb102-162"><a href="local-decoding-confidence-intervals.html#cb102-162" aria-hidden="true" tabindex="-1"></a>      <span class="co">// https://eigen.tuxfamily.org/dox/group__QuickRefPage.html</span></span>
+<span id="cb102-163"><a href="local-decoding-confidence-intervals.html#cb102-163" aria-hidden="true" tabindex="-1"></a>      <span class="co">// we don&#39;t save the result because we are not interested in the max value</span></span>
+<span id="cb102-164"><a href="local-decoding-confidence-intervals.html#cb102-164" aria-hidden="true" tabindex="-1"></a>      <span class="co">// only the index</span></span>
+<span id="cb102-165"><a href="local-decoding-confidence-intervals.html#cb102-165" aria-hidden="true" tabindex="-1"></a>      truncated_smoothing_probs<span class="op">.</span>col<span class="op">(</span>i<span class="op">).</span>maxCoeff<span class="op">(&amp;</span>col_idx<span class="op">);</span></span>
+<span id="cb102-166"><a href="local-decoding-confidence-intervals.html#cb102-166" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Columns start from 1 in R, but from 0 in C++ so we adjust to be similar</span></span>
+<span id="cb102-167"><a href="local-decoding-confidence-intervals.html#cb102-167" aria-hidden="true" tabindex="-1"></a>      <span class="co">// to R results.</span></span>
+<span id="cb102-168"><a href="local-decoding-confidence-intervals.html#cb102-168" aria-hidden="true" tabindex="-1"></a>      ldecode<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> col_idx <span class="op">+</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb102-169"><a href="local-decoding-confidence-intervals.html#cb102-169" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb102-170"><a href="local-decoding-confidence-intervals.html#cb102-170" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb102-171"><a href="local-decoding-confidence-intervals.html#cb102-171" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-172"><a href="local-decoding-confidence-intervals.html#cb102-172" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use adreport on variables for which we want standard errors</span></span>
+<span id="cb102-173"><a href="local-decoding-confidence-intervals.html#cb102-173" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Be careful, matrices are read column-wise and displayed (like </span></span>
+<span id="cb102-174"><a href="local-decoding-confidence-intervals.html#cb102-174" aria-hidden="true" tabindex="-1"></a>  <span class="co">// the rest) as part of one vector</span></span>
+<span id="cb102-175"><a href="local-decoding-confidence-intervals.html#cb102-175" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>lambda<span class="op">);</span></span>
+<span id="cb102-176"><a href="local-decoding-confidence-intervals.html#cb102-176" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>gamma<span class="op">);</span></span>
+<span id="cb102-177"><a href="local-decoding-confidence-intervals.html#cb102-177" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>delta<span class="op">);</span></span>
+<span id="cb102-178"><a href="local-decoding-confidence-intervals.html#cb102-178" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>mllk<span class="op">);</span></span>
+<span id="cb102-179"><a href="local-decoding-confidence-intervals.html#cb102-179" aria-hidden="true" tabindex="-1"></a>  ADREPORT<span class="op">(</span>truncated_smoothing_probs<span class="op">);</span></span>
+<span id="cb102-180"><a href="local-decoding-confidence-intervals.html#cb102-180" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-181"><a href="local-decoding-confidence-intervals.html#cb102-181" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Variables we need for local decoding and in a convenient format</span></span>
+<span id="cb102-182"><a href="local-decoding-confidence-intervals.html#cb102-182" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>lambda<span class="op">);</span></span>
+<span id="cb102-183"><a href="local-decoding-confidence-intervals.html#cb102-183" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>gamma<span class="op">);</span></span>
+<span id="cb102-184"><a href="local-decoding-confidence-intervals.html#cb102-184" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>delta<span class="op">);</span></span>
+<span id="cb102-185"><a href="local-decoding-confidence-intervals.html#cb102-185" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>n<span class="op">);</span></span>
+<span id="cb102-186"><a href="local-decoding-confidence-intervals.html#cb102-186" aria-hidden="true" tabindex="-1"></a>  <span class="co">// REPORT(emission_probs);</span></span>
+<span id="cb102-187"><a href="local-decoding-confidence-intervals.html#cb102-187" aria-hidden="true" tabindex="-1"></a>  <span class="co">// REPORT(lalpha);</span></span>
+<span id="cb102-188"><a href="local-decoding-confidence-intervals.html#cb102-188" aria-hidden="true" tabindex="-1"></a>  <span class="co">// REPORT(lbeta);</span></span>
+<span id="cb102-189"><a href="local-decoding-confidence-intervals.html#cb102-189" aria-hidden="true" tabindex="-1"></a>  <span class="co">// REPORT(smoothing_probs);</span></span>
+<span id="cb102-190"><a href="local-decoding-confidence-intervals.html#cb102-190" aria-hidden="true" tabindex="-1"></a>  <span class="co">// REPORT(truncated_smoothing_probs);</span></span>
+<span id="cb102-191"><a href="local-decoding-confidence-intervals.html#cb102-191" aria-hidden="true" tabindex="-1"></a>  REPORT<span class="op">(</span>ldecode<span class="op">);</span></span>
+<span id="cb102-192"><a href="local-decoding-confidence-intervals.html#cb102-192" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb102-193"><a href="local-decoding-confidence-intervals.html#cb102-193" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> mllk<span class="op">;</span></span>
+<span id="cb102-194"><a href="local-decoding-confidence-intervals.html#cb102-194" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div id="note-text" class="note">
+<p>It is important to note that the values <code>start_row</code>, <code>start_col</code>, <code>nb_rows</code>, and <code>nb_cols</code> cam be set to <code>NA</code> to retrieve the .
+They serve to truncate the amount of smoothing probabilities returned, as there are one per combination of data point and hidden state. With 2000 data and 5 hidden states, there will be 10000 smoothing probabilities in a 5 x 2000 matrix.</p>
+</div>
+<p>If needed, one can return all smoothing probabilities by estimating the HMM multiple times and returning each time a different block of the matrix of smoothing probabilities, then aggregating these blocks.</p>
+<p>To make use of this, in <code>R</code>, we need to load the modified likelihood function stored in</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="local-decoding-confidence-intervals.html#cb103-1" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm_smoothing_truncated.cpp&quot;</span>)</span>
+<span id="cb103-2"><a href="local-decoding-confidence-intervals.html#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm_smoothing_truncated&quot;</span>))</span></code></pre></div>
+<p>.</p>
+<p>Then, the <code>TMB_data</code> object can be defined as</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="local-decoding-confidence-intervals.html#cb104-1" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> data_set, <span class="at">m =</span> m,</span>
+<span id="cb104-2"><a href="local-decoding-confidence-intervals.html#cb104-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">start_row =</span> <span class="dv">0</span>,</span>
+<span id="cb104-3"><a href="local-decoding-confidence-intervals.html#cb104-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">start_col =</span> <span class="dv">0</span>,</span>
+<span id="cb104-4"><a href="local-decoding-confidence-intervals.html#cb104-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nb_rows =</span> m,</span>
+<span id="cb104-5"><a href="local-decoding-confidence-intervals.html#cb104-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nb_cols =</span> <span class="fu">length</span>(data_set))</span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="local-decoding-confidence-intervals.html#cb105-1" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> data_set, <span class="at">m =</span> m,</span>
+<span id="cb105-2"><a href="local-decoding-confidence-intervals.html#cb105-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">start_row =</span> <span class="cn">NA</span>,</span>
+<span id="cb105-3"><a href="local-decoding-confidence-intervals.html#cb105-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">start_col =</span> <span class="cn">NA</span>,</span>
+<span id="cb105-4"><a href="local-decoding-confidence-intervals.html#cb105-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nb_rows =</span> <span class="cn">NA</span>,</span>
+<span id="cb105-5"><a href="local-decoding-confidence-intervals.html#cb105-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nb_cols =</span> <span class="cn">NA</span>)</span></code></pre></div>
+<p>and the same smoothing probabilities will be returned as above.</p>
+<p>Returning truncated smoothing probabilities can be done as follows</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="local-decoding-confidence-intervals.html#cb106-1" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> data_set, <span class="at">m =</span> m,</span>
+<span id="cb106-2"><a href="local-decoding-confidence-intervals.html#cb106-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">start_row =</span> <span class="dv">0</span>, <span class="co"># C++ indexes at 0, unlike R which indexes from 1. Be careful.</span></span>
+<span id="cb106-3"><a href="local-decoding-confidence-intervals.html#cb106-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">start_col =</span> <span class="dv">50</span>, <span class="co"># C++ indexes at 0, unlike R which indexes from 1. Be careful.</span></span>
+<span id="cb106-4"><a href="local-decoding-confidence-intervals.html#cb106-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nb_rows =</span> m,</span>
+<span id="cb106-5"><a href="local-decoding-confidence-intervals.html#cb106-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nb_cols =</span> <span class="dv">30</span>)</span></code></pre></div>
+<p>.
+This returns the <span class="math inline">\(m\)</span> smoothing probabilities associated with data points 51, 52, <span class="math inline">\(\ldots\)</span>, 80.</p>
+<div id="important-text" class="important">
+<p>Remember the updated name of the returned smoothing probabilities from <code>smoothing_probs</code> to <code>truncated_stateprobs</code> for clarity. This will be reflected in the row names of <code>summary(sdreport(obj_tmb))</code>.</p>
+</div>
+<p>Let us show this in action and plot these probabilities as above. We first build the model and retrieve the estimates.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="local-decoding-confidence-intervals.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb107-2"><a href="local-decoding-confidence-intervals.html#cb107-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Load TMB, the data set, and utility functions</span></span>
+<span id="cb107-3"><a href="local-decoding-confidence-intervals.html#cb107-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TMB)</span>
+<span id="cb107-4"><a href="local-decoding-confidence-intervals.html#cb107-4" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions/utils.R&quot;</span>)</span>
+<span id="cb107-5"><a href="local-decoding-confidence-intervals.html#cb107-5" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/tinnitus.RData&quot;</span>)</span>
+<span id="cb107-6"><a href="local-decoding-confidence-intervals.html#cb107-6" aria-hidden="true" tabindex="-1"></a>TMB<span class="sc">::</span><span class="fu">compile</span>(<span class="st">&quot;code/poi_hmm_smoothing_truncated.cpp&quot;</span>)</span>
+<span id="cb107-7"><a href="local-decoding-confidence-intervals.html#cb107-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0</span></span>
+<span id="cb107-8"><a href="local-decoding-confidence-intervals.html#cb107-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dyn.load</span>(<span class="fu">dynlib</span>(<span class="st">&quot;code/poi_hmm_smoothing_truncated&quot;</span>))</span>
+<span id="cb107-9"><a href="local-decoding-confidence-intervals.html#cb107-9" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb107-10"><a href="local-decoding-confidence-intervals.html#cb107-10" aria-hidden="true" tabindex="-1"></a>data_set <span class="ot">&lt;-</span> tinn_data</span>
+<span id="cb107-11"><a href="local-decoding-confidence-intervals.html#cb107-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-12"><a href="local-decoding-confidence-intervals.html#cb107-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup initial parameters</span></span>
+<span id="cb107-13"><a href="local-decoding-confidence-intervals.html#cb107-13" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">quantile</span>(data_set, <span class="fl">0.1</span>),</span>
+<span id="cb107-14"><a href="local-decoding-confidence-intervals.html#cb107-14" aria-hidden="true" tabindex="-1"></a>              <span class="fu">quantile</span>(data_set, <span class="fl">0.9</span>),</span>
+<span id="cb107-15"><a href="local-decoding-confidence-intervals.html#cb107-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">length.out =</span> m)</span>
+<span id="cb107-16"><a href="local-decoding-confidence-intervals.html#cb107-16" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fl">0.2</span> <span class="sc">/</span> (m <span class="sc">-</span> <span class="dv">1</span>),</span>
+<span id="cb107-17"><a href="local-decoding-confidence-intervals.html#cb107-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">nrow =</span> m,</span>
+<span id="cb107-18"><a href="local-decoding-confidence-intervals.html#cb107-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">ncol =</span> m)</span>
+<span id="cb107-19"><a href="local-decoding-confidence-intervals.html#cb107-19" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(gamma) <span class="ot">&lt;-</span> <span class="fl">0.8</span></span>
+<span id="cb107-20"><a href="local-decoding-confidence-intervals.html#cb107-20" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">stat.dist</span>(gamma)</span>
+<span id="cb107-21"><a href="local-decoding-confidence-intervals.html#cb107-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-22"><a href="local-decoding-confidence-intervals.html#cb107-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the TMB objects for estimation</span></span>
+<span id="cb107-23"><a href="local-decoding-confidence-intervals.html#cb107-23" aria-hidden="true" tabindex="-1"></a>TMB_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> data_set, <span class="at">m =</span> m,</span>
+<span id="cb107-24"><a href="local-decoding-confidence-intervals.html#cb107-24" aria-hidden="true" tabindex="-1"></a>                 <span class="at">start_row =</span> <span class="dv">0</span>,</span>
+<span id="cb107-25"><a href="local-decoding-confidence-intervals.html#cb107-25" aria-hidden="true" tabindex="-1"></a>                 <span class="at">start_col =</span> <span class="dv">50</span>,</span>
+<span id="cb107-26"><a href="local-decoding-confidence-intervals.html#cb107-26" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nb_rows =</span> m,</span>
+<span id="cb107-27"><a href="local-decoding-confidence-intervals.html#cb107-27" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nb_cols =</span> <span class="dv">30</span>)</span>
+<span id="cb107-28"><a href="local-decoding-confidence-intervals.html#cb107-28" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">pois.HMM.pn2pw</span>(m, lambda, gamma)</span>
+<span id="cb107-29"><a href="local-decoding-confidence-intervals.html#cb107-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-30"><a href="local-decoding-confidence-intervals.html#cb107-30" aria-hidden="true" tabindex="-1"></a>obj_tmb <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(<span class="at">data =</span> TMB_data,</span>
+<span id="cb107-31"><a href="local-decoding-confidence-intervals.html#cb107-31" aria-hidden="true" tabindex="-1"></a>                     <span class="at">parameters =</span> parameters,</span>
+<span id="cb107-32"><a href="local-decoding-confidence-intervals.html#cb107-32" aria-hidden="true" tabindex="-1"></a>                     <span class="at">DLL =</span> <span class="st">&quot;poi_hmm_smoothing_truncated&quot;</span>,</span>
+<span id="cb107-33"><a href="local-decoding-confidence-intervals.html#cb107-33" aria-hidden="true" tabindex="-1"></a>                     <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb107-34"><a href="local-decoding-confidence-intervals.html#cb107-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-35"><a href="local-decoding-confidence-intervals.html#cb107-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimation</span></span>
+<span id="cb107-36"><a href="local-decoding-confidence-intervals.html#cb107-36" aria-hidden="true" tabindex="-1"></a>mod_tmb <span class="ot">&lt;-</span> <span class="fu">nlminb</span>(<span class="at">start =</span> obj_tmb<span class="sc">$</span>par, <span class="at">objective =</span> obj_tmb<span class="sc">$</span>fn,</span>
+<span id="cb107-37"><a href="local-decoding-confidence-intervals.html#cb107-37" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gradient =</span> obj_tmb<span class="sc">$</span>gr, <span class="at">hessian =</span> obj_tmb<span class="sc">$</span>he)</span>
+<span id="cb107-38"><a href="local-decoding-confidence-intervals.html#cb107-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-39"><a href="local-decoding-confidence-intervals.html#cb107-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve estimates</span></span>
+<span id="cb107-40"><a href="local-decoding-confidence-intervals.html#cb107-40" aria-hidden="true" tabindex="-1"></a>adrep <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">sdreport</span>(obj_tmb))</span>
+<span id="cb107-41"><a href="local-decoding-confidence-intervals.html#cb107-41" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(obj_tmb<span class="sc">$</span>env<span class="sc">$</span>last.par.best)<span class="sc">$</span>lambda</span>
+<span id="cb107-42"><a href="local-decoding-confidence-intervals.html#cb107-42" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(obj_tmb<span class="sc">$</span>env<span class="sc">$</span>last.par.best)<span class="sc">$</span>gamma</span>
+<span id="cb107-43"><a href="local-decoding-confidence-intervals.html#cb107-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-44"><a href="local-decoding-confidence-intervals.html#cb107-44" aria-hidden="true" tabindex="-1"></a><span class="co"># We are interested only in the smoothing probabilities</span></span>
+<span id="cb107-45"><a href="local-decoding-confidence-intervals.html#cb107-45" aria-hidden="true" tabindex="-1"></a>adrep <span class="ot">&lt;-</span> adrep[<span class="fu">rownames</span>(adrep) <span class="sc">==</span> <span class="st">&quot;truncated_smoothing_probs&quot;</span>, ]</span>
+<span id="cb107-46"><a href="local-decoding-confidence-intervals.html#cb107-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-47"><a href="local-decoding-confidence-intervals.html#cb107-47" aria-hidden="true" tabindex="-1"></a><span class="co"># We follow the notation of (Zucchini et al., 2016)</span></span>
+<span id="cb107-48"><a href="local-decoding-confidence-intervals.html#cb107-48" aria-hidden="true" tabindex="-1"></a><span class="co"># One row per hidden state, one column per data</span></span>
+<span id="cb107-49"><a href="local-decoding-confidence-intervals.html#cb107-49" aria-hidden="true" tabindex="-1"></a>smoothing_probs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(adrep[, <span class="st">&quot;Estimate&quot;</span>], <span class="at">nrow =</span> m)</span>
+<span id="cb107-50"><a href="local-decoding-confidence-intervals.html#cb107-50" aria-hidden="true" tabindex="-1"></a>smoothing_probs_std_error <span class="ot">&lt;-</span> <span class="fu">matrix</span>(adrep[, <span class="st">&quot;Std. Error&quot;</span>], <span class="at">nrow =</span> m)</span>
+<span id="cb107-51"><a href="local-decoding-confidence-intervals.html#cb107-51" aria-hidden="true" tabindex="-1"></a><span class="co"># 95% confidence intervals</span></span>
+<span id="cb107-52"><a href="local-decoding-confidence-intervals.html#cb107-52" aria-hidden="true" tabindex="-1"></a>q95_norm <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>)</span></code></pre></div>
+<p>Then we plot the smoothing probabilities and confidence intervals.</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="local-decoding-confidence-intervals.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Aesthetic parameters used in the article</span></span>
+<span id="cb108-2"><a href="local-decoding-confidence-intervals.html#cb108-2" aria-hidden="true" tabindex="-1"></a>ERRORBAR_LINE_WIDTH <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
+<span id="cb108-3"><a href="local-decoding-confidence-intervals.html#cb108-3" aria-hidden="true" tabindex="-1"></a>ERRORBAR_END_WIDTH <span class="ot">&lt;-</span> <span class="fl">1.1</span></span>
+<span id="cb108-4"><a href="local-decoding-confidence-intervals.html#cb108-4" aria-hidden="true" tabindex="-1"></a>POINT_SIZE <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
+<span id="cb108-5"><a href="local-decoding-confidence-intervals.html#cb108-5" aria-hidden="true" tabindex="-1"></a>LINE_SIZE <span class="ot">&lt;-</span> <span class="fl">0.25</span></span>
+<span id="cb108-6"><a href="local-decoding-confidence-intervals.html#cb108-6" aria-hidden="true" tabindex="-1"></a>COLORS <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;dodgerblue2&quot;</span>, <span class="st">&quot;tomato3&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;gold&quot;</span>)</span>
+<span id="cb108-7"><a href="local-decoding-confidence-intervals.html#cb108-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-8"><a href="local-decoding-confidence-intervals.html#cb108-8" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">ncol</span>(smoothing_probs)</span>
+<span id="cb108-9"><a href="local-decoding-confidence-intervals.html#cb108-9" aria-hidden="true" tabindex="-1"></a>indices_to_plot <span class="ot">&lt;-</span> <span class="dv">51</span><span class="sc">:</span><span class="dv">80</span></span>
+<span id="cb108-10"><a href="local-decoding-confidence-intervals.html#cb108-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-11"><a href="local-decoding-confidence-intervals.html#cb108-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting (with ggplot2)</span></span>
+<span id="cb108-12"><a href="local-decoding-confidence-intervals.html#cb108-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb108-13"><a href="local-decoding-confidence-intervals.html#cb108-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-14"><a href="local-decoding-confidence-intervals.html#cb108-14" aria-hidden="true" tabindex="-1"></a>state_ggplot <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb108-15"><a href="local-decoding-confidence-intervals.html#cb108-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (state <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb108-16"><a href="local-decoding-confidence-intervals.html#cb108-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># State smoothing probabilities</span></span>
+<span id="cb108-17"><a href="local-decoding-confidence-intervals.html#cb108-17" aria-hidden="true" tabindex="-1"></a>  stateprobs <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">idx =</span> indices_to_plot,</span>
+<span id="cb108-18"><a href="local-decoding-confidence-intervals.html#cb108-18" aria-hidden="true" tabindex="-1"></a>                           <span class="at">estimate =</span> smoothing_probs[state, ],</span>
+<span id="cb108-19"><a href="local-decoding-confidence-intervals.html#cb108-19" aria-hidden="true" tabindex="-1"></a>                           <span class="at">std.error =</span> smoothing_probs_std_error[state, ])</span>
+<span id="cb108-20"><a href="local-decoding-confidence-intervals.html#cb108-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add 95% CI bounds with cutoffs at 0 and 1</span></span>
+<span id="cb108-21"><a href="local-decoding-confidence-intervals.html#cb108-21" aria-hidden="true" tabindex="-1"></a>  stateprobs<span class="sc">$</span>ci_lower <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">0</span>, stateprobs<span class="sc">$</span>estimate <span class="sc">-</span> q95_norm <span class="sc">*</span> stateprobs<span class="sc">$</span>std.error)</span>
+<span id="cb108-22"><a href="local-decoding-confidence-intervals.html#cb108-22" aria-hidden="true" tabindex="-1"></a>  stateprobs<span class="sc">$</span>ci_upper <span class="ot">&lt;-</span> <span class="fu">pmin</span>(stateprobs<span class="sc">$</span>estimate <span class="sc">+</span> q95_norm <span class="sc">*</span> stateprobs<span class="sc">$</span>std.error, <span class="dv">1</span>)</span>
+<span id="cb108-23"><a href="local-decoding-confidence-intervals.html#cb108-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb108-24"><a href="local-decoding-confidence-intervals.html#cb108-24" aria-hidden="true" tabindex="-1"></a>  state_ggplot[[state]] <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(stateprobs, <span class="fu">aes</span>(<span class="at">x =</span> idx)) <span class="sc">+</span></span>
+<span id="cb108-25"><a href="local-decoding-confidence-intervals.html#cb108-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> ci_lower,</span>
+<span id="cb108-26"><a href="local-decoding-confidence-intervals.html#cb108-26" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax =</span> ci_upper),</span>
+<span id="cb108-27"><a href="local-decoding-confidence-intervals.html#cb108-27" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill =</span> <span class="st">&quot;lightgrey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb108-28"><a href="local-decoding-confidence-intervals.html#cb108-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> ci_lower,</span>
+<span id="cb108-29"><a href="local-decoding-confidence-intervals.html#cb108-29" aria-hidden="true" tabindex="-1"></a>                      <span class="at">ymax =</span> ci_upper,</span>
+<span id="cb108-30"><a href="local-decoding-confidence-intervals.html#cb108-30" aria-hidden="true" tabindex="-1"></a>                      <span class="at">width =</span> ERRORBAR_END_WIDTH),</span>
+<span id="cb108-31"><a href="local-decoding-confidence-intervals.html#cb108-31" aria-hidden="true" tabindex="-1"></a>                  <span class="at">color =</span> COLORS[state],</span>
+<span id="cb108-32"><a href="local-decoding-confidence-intervals.html#cb108-32" aria-hidden="true" tabindex="-1"></a>                  <span class="at">show.legend =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb108-33"><a href="local-decoding-confidence-intervals.html#cb108-33" aria-hidden="true" tabindex="-1"></a>                  <span class="at">linewidth =</span> ERRORBAR_LINE_WIDTH) <span class="sc">+</span></span>
+<span id="cb108-34"><a href="local-decoding-confidence-intervals.html#cb108-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> estimate), <span class="at">size =</span> POINT_SIZE, <span class="at">shape =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb108-35"><a href="local-decoding-confidence-intervals.html#cb108-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> estimate), <span class="at">linewidth =</span> LINE_SIZE) <span class="sc">+</span></span>
+<span id="cb108-36"><a href="local-decoding-confidence-intervals.html#cb108-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="fu">bquote</span>(<span class="st">&quot;State&quot;</span> <span class="sc">~</span> .(state) <span class="sc">*</span> <span class="st">&quot;,&quot;</span> <span class="sc">~</span> <span class="fu">widehat</span>(lambda) <span class="sc">~</span> <span class="st">&quot;=&quot;</span> <span class="sc">~</span> .(<span class="fu">round</span>(lambda[state], <span class="dv">2</span>)))) <span class="sc">+</span></span>
+<span id="cb108-37"><a href="local-decoding-confidence-intervals.html#cb108-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_Publication</span>() <span class="sc">+</span></span>
+<span id="cb108-38"><a href="local-decoding-confidence-intervals.html#cb108-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb108-39"><a href="local-decoding-confidence-intervals.html#cb108-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb108-40"><a href="local-decoding-confidence-intervals.html#cb108-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot;Probability&quot;</span>)</span>
+<span id="cb108-41"><a href="local-decoding-confidence-intervals.html#cb108-41" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb108-42"><a href="local-decoding-confidence-intervals.html#cb108-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-43"><a href="local-decoding-confidence-intervals.html#cb108-43" aria-hidden="true" tabindex="-1"></a><span class="co"># STATE MOST LIKELY</span></span>
+<span id="cb108-44"><a href="local-decoding-confidence-intervals.html#cb108-44" aria-hidden="true" tabindex="-1"></a>ldecode <span class="ot">&lt;-</span> obj_tmb<span class="sc">$</span><span class="fu">report</span>(obj_tmb<span class="sc">$</span>env<span class="sc">$</span>last.par.best)<span class="sc">$</span>ldecode</span>
+<span id="cb108-45"><a href="local-decoding-confidence-intervals.html#cb108-45" aria-hidden="true" tabindex="-1"></a>ldecode_estimates <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb108-46"><a href="local-decoding-confidence-intervals.html#cb108-46" aria-hidden="true" tabindex="-1"></a>ldecode_std.errors <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb108-47"><a href="local-decoding-confidence-intervals.html#cb108-47" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb108-48"><a href="local-decoding-confidence-intervals.html#cb108-48" aria-hidden="true" tabindex="-1"></a>  ldecode_estimates[i] <span class="ot">&lt;-</span> smoothing_probs[ldecode[i], i]</span>
+<span id="cb108-49"><a href="local-decoding-confidence-intervals.html#cb108-49" aria-hidden="true" tabindex="-1"></a>  ldecode_std.errors[i] <span class="ot">&lt;-</span> smoothing_probs_std_error[ldecode[i], i]</span>
+<span id="cb108-50"><a href="local-decoding-confidence-intervals.html#cb108-50" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb108-51"><a href="local-decoding-confidence-intervals.html#cb108-51" aria-hidden="true" tabindex="-1"></a>stateprobs <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">idx =</span> indices_to_plot,</span>
+<span id="cb108-52"><a href="local-decoding-confidence-intervals.html#cb108-52" aria-hidden="true" tabindex="-1"></a>                         <span class="at">estimate =</span> ldecode_estimates,</span>
+<span id="cb108-53"><a href="local-decoding-confidence-intervals.html#cb108-53" aria-hidden="true" tabindex="-1"></a>                         <span class="at">std.error =</span> ldecode_std.errors,</span>
+<span id="cb108-54"><a href="local-decoding-confidence-intervals.html#cb108-54" aria-hidden="true" tabindex="-1"></a>                         <span class="at">state =</span> <span class="fu">as.factor</span>(ldecode))</span>
+<span id="cb108-55"><a href="local-decoding-confidence-intervals.html#cb108-55" aria-hidden="true" tabindex="-1"></a>stateprobs<span class="sc">$</span>ci_lower <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">0</span>, stateprobs<span class="sc">$</span>estimate <span class="sc">-</span> q95_norm <span class="sc">*</span> stateprobs<span class="sc">$</span>std.error)</span>
+<span id="cb108-56"><a href="local-decoding-confidence-intervals.html#cb108-56" aria-hidden="true" tabindex="-1"></a>stateprobs<span class="sc">$</span>ci_upper <span class="ot">&lt;-</span> <span class="fu">pmin</span>(stateprobs<span class="sc">$</span>estimate <span class="sc">+</span> q95_norm <span class="sc">*</span> stateprobs<span class="sc">$</span>std.error, <span class="dv">1</span>)</span>
+<span id="cb108-57"><a href="local-decoding-confidence-intervals.html#cb108-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-58"><a href="local-decoding-confidence-intervals.html#cb108-58" aria-hidden="true" tabindex="-1"></a>state_likely_ggplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(stateprobs, <span class="fu">aes</span>(<span class="at">x =</span> idx)) <span class="sc">+</span></span>
+<span id="cb108-59"><a href="local-decoding-confidence-intervals.html#cb108-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> ci_lower,</span>
+<span id="cb108-60"><a href="local-decoding-confidence-intervals.html#cb108-60" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ymax =</span> ci_upper),</span>
+<span id="cb108-61"><a href="local-decoding-confidence-intervals.html#cb108-61" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">&quot;lightgrey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb108-62"><a href="local-decoding-confidence-intervals.html#cb108-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> ci_lower,</span>
+<span id="cb108-63"><a href="local-decoding-confidence-intervals.html#cb108-63" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax =</span> ci_upper,</span>
+<span id="cb108-64"><a href="local-decoding-confidence-intervals.html#cb108-64" aria-hidden="true" tabindex="-1"></a>                    <span class="at">width =</span> ERRORBAR_END_WIDTH,</span>
+<span id="cb108-65"><a href="local-decoding-confidence-intervals.html#cb108-65" aria-hidden="true" tabindex="-1"></a>                    <span class="at">color =</span> state),</span>
+<span id="cb108-66"><a href="local-decoding-confidence-intervals.html#cb108-66" aria-hidden="true" tabindex="-1"></a>                <span class="at">show.legend =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb108-67"><a href="local-decoding-confidence-intervals.html#cb108-67" aria-hidden="true" tabindex="-1"></a>                <span class="at">linewidth =</span> ERRORBAR_LINE_WIDTH) <span class="sc">+</span></span>
+<span id="cb108-68"><a href="local-decoding-confidence-intervals.html#cb108-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> estimate), <span class="at">size =</span> POINT_SIZE) <span class="sc">+</span></span>
+<span id="cb108-69"><a href="local-decoding-confidence-intervals.html#cb108-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> estimate), <span class="at">linewidth =</span> LINE_SIZE) <span class="sc">+</span></span>
+<span id="cb108-70"><a href="local-decoding-confidence-intervals.html#cb108-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> COLORS[<span class="dv">1</span><span class="sc">:</span>m], <span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span>m) <span class="sc">+</span></span>
+<span id="cb108-71"><a href="local-decoding-confidence-intervals.html#cb108-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Most likely states&quot;</span>) <span class="sc">+</span></span>
+<span id="cb108-72"><a href="local-decoding-confidence-intervals.html#cb108-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_Publication</span>() <span class="sc">+</span></span>
+<span id="cb108-73"><a href="local-decoding-confidence-intervals.html#cb108-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Time (days)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb108-74"><a href="local-decoding-confidence-intervals.html#cb108-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Probability&quot;</span>) <span class="sc">+</span></span>
+<span id="cb108-75"><a href="local-decoding-confidence-intervals.html#cb108-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb108-76"><a href="local-decoding-confidence-intervals.html#cb108-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-77"><a href="local-decoding-confidence-intervals.html#cb108-77" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the graphs in one figure</span></span>
+<span id="cb108-78"><a href="local-decoding-confidence-intervals.html#cb108-78" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
+<span id="cb108-79"><a href="local-decoding-confidence-intervals.html#cb108-79" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(<span class="fu">ggarrange</span>(<span class="at">plotlist =</span> state_ggplot,</span>
+<span id="cb108-80"><a href="local-decoding-confidence-intervals.html#cb108-80" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">nrow =</span> <span class="fu">ceiling</span>(m<span class="sc">/</span><span class="dv">2</span>)),</span>
+<span id="cb108-81"><a href="local-decoding-confidence-intervals.html#cb108-81" aria-hidden="true" tabindex="-1"></a>          state_likely_ggplot,</span>
+<span id="cb108-82"><a href="local-decoding-confidence-intervals.html#cb108-82" aria-hidden="true" tabindex="-1"></a>          <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Data-supplements_files/figure-html/10plot_truncated_smoothing_probabilities-1.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="github.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": true
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

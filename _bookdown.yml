@@ -14,4 +14,5 @@ rmd_files:
   - 07-normal-hmm.Rmd
   - 08-multivariate-normal-hmm.Rmd
   - 09-guide-code.Rmd
-  - 10-references.Rmd
+  - 10-local-decoding-cis.Rmd
+  - 11-references.Rmd

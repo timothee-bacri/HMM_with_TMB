@@ -8,9 +8,9 @@ Type objective_function<Type>::operator() ()
   // Data
   DATA_MATRIX(x);         // timeseries matrix (n rows * p cols)
   DATA_INTEGER(m);        // Number of states m
-  
+
   // Parameters
-  PARAMETER_MATRIX(tmu);         // mp conditional mu's (matrix: m rows, p columns)
+  PARAMETER_MATRIX(tmu);         // mp conditional mu's (matrix: p rows, m columns)
   PARAMETER_MATRIX(tsigma);      // mp(p+1)/2 working parameters of covariance matrices (matrix: p(p+1)/2 rows, m columns)
   PARAMETER_VECTOR(tgamma);      // m(m-1) working parameters of TPM (vector: m*m-m columns)
   
@@ -48,7 +48,7 @@ Type objective_function<Type>::operator() ()
   bool NA_appears = false;
   for (int m_idx = 0; m_idx < m; m_idx++) {
     MVNORM_t<Type> neg_log_dmvnorm(sigma.col(m_idx).matrix());
-    
+
     for (int i = 0; i < n; i++) {
       // Replace missing values (NA in R, NaN in C++) with 1
       NA_appears = false;
@@ -57,7 +57,7 @@ Type objective_function<Type>::operator() ()
           NA_appears = true;
         }
       }
-      
+
       if (NA_appears) {
         emission_probs(i, m_idx) = 1;
       } else {
@@ -72,22 +72,107 @@ Type objective_function<Type>::operator() ()
   }
   
   // Corresponds to (Zucchini et al., 2016, p 333)
-  matrix<Type> foo, P;
+  // temp is used in the computation of log-backward probabilities
+  matrix<Type> foo, P, temp;
   Type mllk, sumfoo, lscale;
   
+  // Log-forward and log-backward probabilities
+  matrix<Type> lalpha(m, n);
+  matrix<Type> lbeta(m, n);
+  
+  //// Log-forward probabilities (scaling used) and nll computation
+  // foo is a matrix where only the first column is relevant (vectors are
+  // treated as columns)
+  // Specifying "row(0)" or "col(0)" is optional, but it helps to remember
+  // if it is a row or a column
   foo = (delta * vector<Type>(emission_probs.row(0))).matrix();
-  sumfoo = foo.sum();
+  sumfoo = foo.col(0).sum();
   lscale = log(sumfoo);
+  // foo = foo.transpose(); is not reliable because of
+  // aliasing, c.f https://eigen.tuxfamily.org/dox/group__TopicAliasing.html
   foo.transposeInPlace();
-  foo /= sumfoo;
+  // foo is now a matrix where only the first row is relevant.
+  foo.row(0) /= sumfoo;
+  // We can alternatively use foo.row(0).array().log()
+  lalpha.col(0) = vector<Type>(foo.row(0)).log() + lscale;
+  
   for (int i = 2; i <= n; i++) {
     P = emission_probs.row(i - 1);
     foo = ((foo * gamma).array() * P.array()).matrix();
-    sumfoo = foo.sum();
+    sumfoo = foo.row(0).sum();
     lscale += log(sumfoo);
-    foo /= sumfoo;
+    foo.row(0) /= sumfoo;
+    lalpha.col(i - 1) = vector<Type>(foo.row(0)).log() + lscale;
   }
   mllk = -lscale;
+  
+  
+  //// Log-backward probabilities (scaling used)
+  // "Type(m)" is used because of a similar issue at 
+  // https://kaskr.github.io/adcomp/_book/Errors.html#missing-casts-for-vectorized-functions
+  foo.row(0).setConstant(1 / Type(m));
+  lscale = log(m);
+  for (int i = n - 1; i >= 1; i--) {
+    P = emission_probs.row(i);
+    temp = (P.array() * foo.array()).matrix(); // temp is a row matrix
+    // temp must be a column for the matrix product below
+    temp.transposeInPlace();
+    foo = gamma * temp;
+    lbeta.col(i - 1) = foo.col(0).array().log() + lscale;
+    // "foo" is a column, but must be turned into a row in order to do
+    // the element-wise product above ("P.array() * foo.array()")
+    foo.transposeInPlace();
+    sumfoo = foo.row(0).sum();
+    foo.row(0) /= sumfoo;
+    lscale += log(sumfoo);
+  }
+  
+  //// Local decoding (part 1)
+  matrix<Type> smoothing_probs(m, n);
+  Type llk = - mllk;
+  int p_idx;
+  for (int i = 0; i <= n - 1; i++) {
+    
+    NA_appears = false;
+    for (p_idx = 0; p_idx < p; p_idx++) {
+      if (x(i, p_idx) != x(i, p_idx)) { // f != f returns true if and only if f is NaN.
+        NA_appears = true;
+        break;
+      }
+    }
+    
+    if (NA_appears) {
+      // Missing data will get a smoothing probability of NA
+      smoothing_probs.col(i).setConstant(x(i, p_idx));
+    } else {
+      smoothing_probs.col(i) = ((lalpha.col(i) + lbeta.col(i)).array() - llk).exp();
+    }
+  }
+  
+  // Local decoding (part 2)
+  vector<Type> ldecode(truncated_smoothing_probs.cols());
+  int col_idx;
+  for (int i = 0; i < n; i++) {
+    // If the data is missing, set the state to NA
+    NA_appears = false;
+    for (p_idx = 0; p_idx < p; p_idx++) {
+      if (x(i, p_idx) != x(i, p_idx)) { // f != f returns true if and only if f is NaN.
+        NA_appears = true;
+        break;
+      }
+    }
+    if (NA_appears) {
+      ldecode(i) = x(i, p_idx);
+    } else {
+      // https://eigen.tuxfamily.org/dox/group__QuickRefPage.html
+      // we don't save the result because we are not interested in the max value
+      // only the index
+      smoothing_probs.col(i).maxCoeff(&col_idx);
+      // Columns start from 1 in R, but from 0 in C++ so we adjust to be similar
+      // to R results.
+      ldecode(i) = col_idx + 1;
+    }
+  }
   
   // Undo the transpose done at the beginning
   mu.transposeInPlace();
@@ -97,6 +182,7 @@ Type objective_function<Type>::operator() ()
   ADREPORT(sigma);
   ADREPORT(gamma);
   ADREPORT(delta);
+  ADREPORT(smoothing_probs);
   ADREPORT(mllk);
   
   // Variables we need for local decoding and in a convenient format
@@ -105,6 +191,7 @@ Type objective_function<Type>::operator() ()
   REPORT(gamma);
   REPORT(delta);
   REPORT(n);
+  REPORT(ldecode);
   
   return mllk;
 }
