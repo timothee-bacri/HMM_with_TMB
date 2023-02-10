@@ -1,5 +1,6 @@
 fig:4tinnitus-fig
 introduction
+other-article
 principles-of-using-tmb-for-mle
 setup
 linear-regression-example
@@ -88,7 +89,7 @@ utils.cpp
 utils.R
 utils.R-explanation.R
 utils_linreg_extended.cpp
-local-decoding-confidence-intervals
+local-decoding-cis
 likelihood-function-poisson-hmm
 estimation-2
 results-2

@@ -274,7 +274,7 @@ mvnorm.HMM.label.order <- function(m,
   }
   
   # Reorder the standard errors
-  ordered_mu_std_error <- mu_std_error[, ordered_mu_indices]
+  ordered_mu_std_error <- mu_std_error[ordered_mu_indices, ]
   ordered_sigma_std_error <- sigma_std_error[, , ordered_mu_indices]
   ordered_delta_std_error <- delta_std_error[ordered_mu_indices]
   
@@ -429,9 +429,10 @@ mvnorm.HMM.label.order.sigma <- function(m,
   }
   
   # Reorder the standard errors
-  ordered_mu_std_error <- mu_std_error[, ordered_sigma_indices]
+  ordered_mu_std_error <- mu_std_error[ordered_sigma_indices, ]
   ordered_sigma_std_error <- sigma_std_error[, , ordered_sigma_indices]
   ordered_delta_std_error <- delta_std_error[ordered_sigma_indices]
+  
   # 1 row per state, 1 column per data
   ordered_smoothing_probs_std_error <- if (!is.null(smoothing_probs_std_error)) smoothing_probs_std_error[ordered_sigma_indices, ] else NULL
   

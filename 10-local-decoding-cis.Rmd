@@ -1,4 +1,4 @@
-# Local decoding confidence intervals
+# Local decoding confidence intervals {#local-decoding-cis}
 `TMB` allows to retrieve standard errors for any quantity computed in `C++` that is derived from parameters.
 Therefore, we can derive CIs for quantities defined in [state-inference].
 
@@ -104,7 +104,7 @@ for (state in 1:m) {
     geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
     geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
     ggtitle(bquote("State" ~ .(state) * "," ~ widehat(lambda) ~ "=" ~ .(round(lambda[state], 2)))) +
-    theme_Publication() +
+    theme_Publication() + # Custom defined function, this is optional
     ylim(0, 1) +
     xlab("") +
     ylab("Probability")
@@ -139,7 +139,7 @@ state_likely_ggplot <- ggplot(stateprobs, aes(x = idx)) +
   geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
   scale_color_manual(values = COLORS[1:m], breaks = 1:m) +
   ggtitle("Most likely states") +
-  theme_Publication() +
+  theme_Publication() + # Custom defined function, this is optional
   xlab("Time (days)") +
   ylab("Probability") +
   ylim(0, 1)

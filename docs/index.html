@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder</title>
   <meta name="description" content="This accompanies the article published at [GITHUB LINK]." />
-  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
 
   <meta property="og:title" content="A gentle tutorial of accelerated parameter and confidence interval estimation for Hidden Markov Models using Template Model Builder" />
   <meta property="og:type" content="book" />
@@ -896,7 +896,10 @@ div.csl-indent {
 <ul class="summary">
 <li><a href="./">A gentle tutorial of accelerated<br>parameter and confidence interval<br>estimation for Hidden Markov Models<BR>using Template Model Builder</a></li>
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#other-article"><i class="fa fa-check"></i><b>1.1</b> Other article</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html"><i class="fa fa-check"></i><b>2</b> Principles of using <code>TMB</code> for MLE</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="principles-of-using-tmb-for-mle.html"><a href="principles-of-using-tmb-for-mle.html#setup"><i class="fa fa-check"></i><b>2.1</b> Setup</a></li>
@@ -1017,12 +1020,12 @@ div.csl-indent {
 <li class="chapter" data-level="9.1.35" data-path="github.html"><a href="github.html#utils_linreg_extended.cpp"><i class="fa fa-check"></i><b>9.1.35</b> functions/utils_linreg_extended.cpp</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="local-decoding-confidence-intervals.html"><a href="local-decoding-confidence-intervals.html"><i class="fa fa-check"></i><b>10</b> Local decoding confidence intervals</a>
+<li class="chapter" data-level="10" data-path="local-decoding-cis.html"><a href="local-decoding-cis.html"><i class="fa fa-check"></i><b>10</b> Local decoding confidence intervals</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="local-decoding-confidence-intervals.html"><a href="local-decoding-confidence-intervals.html#likelihood-function-poisson-hmm"><i class="fa fa-check"></i><b>10.1</b> Likelihood function (Poisson HMM)</a></li>
-<li class="chapter" data-level="10.2" data-path="local-decoding-confidence-intervals.html"><a href="local-decoding-confidence-intervals.html#estimation-2"><i class="fa fa-check"></i><b>10.2</b> Estimation</a></li>
-<li class="chapter" data-level="10.3" data-path="local-decoding-confidence-intervals.html"><a href="local-decoding-confidence-intervals.html#results-2"><i class="fa fa-check"></i><b>10.3</b> Results</a></li>
-<li class="chapter" data-level="10.4" data-path="local-decoding-confidence-intervals.html"><a href="local-decoding-confidence-intervals.html#limitation"><i class="fa fa-check"></i><b>10.4</b> Limitation</a></li>
+<li class="chapter" data-level="10.1" data-path="local-decoding-cis.html"><a href="local-decoding-cis.html#likelihood-function-poisson-hmm"><i class="fa fa-check"></i><b>10.1</b> Likelihood function (Poisson HMM)</a></li>
+<li class="chapter" data-level="10.2" data-path="local-decoding-cis.html"><a href="local-decoding-cis.html#estimation-2"><i class="fa fa-check"></i><b>10.2</b> Estimation</a></li>
+<li class="chapter" data-level="10.3" data-path="local-decoding-cis.html"><a href="local-decoding-cis.html#results-2"><i class="fa fa-check"></i><b>10.3</b> Results</a></li>
+<li class="chapter" data-level="10.4" data-path="local-decoding-cis.html"><a href="local-decoding-cis.html#limitation"><i class="fa fa-check"></i><b>10.4</b> Limitation</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
@@ -1059,10 +1062,16 @@ div.csl-indent {
 Note that only the folders <a href="github.html#code">code/</a>, <a href="github.html#functions">functions/</a>, and <a href="github.html#data">data/</a> contain files used in the article.
 The other folders and files relate to this Gitbook and are not described in <a href="github.html#directory-structure">Directory Structure</a>.</p>
 <p>For a description of the functions in <em><a href="github.html#utils.R">functions/utils.R</a></em> and their parameters and return objects, please take a look at <em><a href="github.html#utils.R-explanation.R">functions/utils.R-explanation.R</a></em>.</p>
-<p>Additionally, as a by-product of using <code>TMB</code>, we can derive standard errors and hence confidence intervals for smoothing probabilities (as defined in [local-decoding]).</p>
+<p>Additionally, as a by-product of using <code>TMB</code>, we can derive standard errors and hence confidence intervals for smoothing probabilities (as defined in <a href="local-decoding-cis.html#local-decoding-cis">Section 11</a>).</p>
+<div id="other-article" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Other article<a href="index.html#other-article" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A preprint version of an article that will (hopefully) be published soon can be found along with the code of its results in the folder <a href="https://github.com/timothee-bacri/HMM_with_TMB/blob/main/paper2-github-preprint">paper2-github-preprint/</a>.</p>
+<p>This article looks at HMM optimization using popular optimization functions, compares their performance along with their robustness to bad initial parameters, and presents and analyzes smoothing probabilities confidence intervals.
+Its code is organized in a similar fashion to the article that this repository accompanies.</p>
 <!-- # License {-} -->
 <!-- This project is licensed under the xxxx License - see [LICENSE.md](LICENSE.md) for details. -->
 
+</div>
 </div>
             </section>
 

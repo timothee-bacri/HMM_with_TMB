@@ -1,0 +1,3009 @@
+% compile with knitr::knit2pdf("paper2.rnw")
+% You need to have a tex distribution installed and setup
+% If you don't you can install tinytex via the 2 commands:
+% install.packages("tinytex")
+% tinytex::install_tinytex()
+
+% \documentclass[12pt]{article}
+% https://tex.stackexchange.com/questions/70381/the-article-class-ignores-14pt/70384#70384
+% 8pt, 9pt, 10pt, 11pt, 12pt, 14pt, 17pt, 20pt
+% \documentclass[a4paper,12pt]{extarticle}
+
+% JOURNAL TEMPLATE ---------------------------------------------------
+\documentclass[]{interact}
+
+\usepackage{epstopdf}% To incorporate .eps illustrations using PDFLaTeX, etc.
+\usepackage[caption=false]{subfig}% Support for small, `sub' figures and tables
+%\usepackage[nolists,tablesfirst]{endfloat}% To `separate' figures and tables from text if required
+%\usepackage[doublespacing]{setspace}% To produce a `double spaced' document if required
+%\setlength\parindent{24pt}% To increase paragraph indentation when line spacing is doubled
+
+\usepackage[numbers,sort&compress]{natbib}% Citation support using natbib.sty
+\bibpunct[, ]{[}{]}{,}{n}{,}{,}% Citation support using natbib.sty
+\renewcommand\bibfont{\fontsize{10}{12}\selectfont}% Bibliography support using natbib.sty
+\makeatletter% @ becomes a letter
+\def\NAT@def@citea{\def\@citea{\NAT@separator}}% Suppress spaces between citations using natbib.sty
+\makeatother% @ becomes a symbol again
+
+\theoremstyle{plain}% Theorem-like structures provided by amsthm.sty
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newtheorem{notation}{Notation}
+% JOURNAL TEMPLATE ---------------------------------------------------
+
+
+
+
+
+\usepackage{geometry} % change margins
+\usepackage{array}
+\usepackage{times}
+% \usepackage[authoryear, round]{natbib} % REMOVE DUE TO TEMPLATE
+% \usepackage{w-thm}
+\usepackage{booktabs}
+\usepackage{multirow}
+
+% huxtable
+% \usepackage{caption}
+% \usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+\usepackage{colortbl}
+% \usepackage{multirow}
+\usepackage{hhline}
+\usepackage{calc}
+\usepackage{tabularx}
+\usepackage{threeparttable}
+\usepackage{wrapfig}
+\usepackage{adjustbox}
+% \usepackage{hyperref}
+
+
+\setlength{\bibsep}{2pt}
+\setlength{\bibhang}{2em}
+\providecommand{\bt}{\bigtriangleup}
+% \providecommand{\bs}[1]{\mbox{\boldmath $#1$}}
+% \theoremstyle{plain}
+% \newtheorem{criterion}{Criterion}
+% \theoremstyle{definition}
+% \newtheorem{condition}[theorem]{Condition}
+\usepackage{graphicx}
+\chardef\bslash=`\\ % p. 424, TeXbook
+\providecommand{\ntt}{\normalfont\ttfamily}
+\providecommand{\cn}[1]{{\protect\ntt\bslash#1}}
+\providecommand{\pkg}[1]{{\protect\ntt#1}}
+\let\fn\pkg
+\let\env\pkg
+\let\opt\pkg
+\hfuzz1pc % Don't bother to report overfull boxes if overage is < 1pc
+\providecommand{\envert}[1]{\left\lvert#1\right\rvert}
+\let\abs=\envert
+
+\newcommand{\hl}[1]{\color{red} \bf{#1}} % highlight changes in red
+% \newcommand{\hl}[1]{{#1}}
+
+% Linebreaks in xtable
+\usepackage{bm}
+\usepackage{amsthm,amsmath,amssymb,amsfonts,amssymb}
+\usepackage{listings}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\setlist[enumerate,1]{label={(\roman*)}}
+% \usepackage[figuresright]{rotating} % COMMENTED OUT DUE TO TEMPLATE
+\usepackage{mathtools}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\hypersetup{
+colorlinks,
+citecolor=black,
+filecolor=black,
+linkcolor=black,
+urlcolor=black
+}
+% For \autoref
+\def\sectionautorefname{Section}
+\def\subsectionautorefname{Section}
+\def\subsubsectionautorefname{Section}
+
+\definecolor{backgroundColour}{rgb}{0.97,0.96,0.97}
+\lstset {
+  language={C++},
+  numbers=none,
+  frame=none,
+  includerangemarker=false,
+  basicstyle=\small\ttfamily, % basic font setting
+  backgroundcolor=\color{backgroundColour},
+  keywordstyle=\color{Green}\textbf,
+  emph={int},
+  emphstyle=\color{BrickRed},
+  emph={[2]a, 0, 1, 2},
+  emphstyle={[2]\color{Green}},
+  commentstyle=\color{cyan}\textit,
+}
+
+\providecommand{\argmax}{\operatornamewithlimits{arg\,max}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+<<set-opts, cache=FALSE, echo = FALSE>>=
+library(knitr)
+# library(parallelly)
+# library(purrr)
+# library(lubridate)
+# library(dplyr)
+opts_chunk$set(fig.width = 8, fig.height = 6,
+               fig.env='figure',
+               fig.lp='fig:',
+               fig.align='center',
+               fig.pos='htb',
+               cache = TRUE)
+options(xtable.booktabs = NULL)
+options(xtable.caption.placement = "top") # The captions appear above the tables in the Interact style (document class)
+options(width = 68)
+RNGversion("3.6.0")
+set.seed(123)
+@
+
+% Import R files here with proper labels
+% include = FALSE removes any output from this chunk
+<<import-files, include = FALSE, cache = FALSE>>=
+source("code/main.R")
+@
+
+%\title{\vspace{-3.0cm}Regime classification uncertainty and optimizer reliability on hidden Markov models parameter estimation using Template Model Builder}
+
+\title{\vspace{-3.0cm} Computational issues in parameter estimation for hidden Markov models with Template Model Builder}
+
+\author{
+\name{
+Timoth\'ee Bacri\textsuperscript{a}\thanks{CONTACT Timoth\'ee Bacri. Email: timot@bacri.eu},
+Geir D.~Berentsen \textsuperscript{b},
+B{\aa}rd St{\o}ve\textsuperscript{a},
+and Jan Bulla\textsuperscript{a}
+}
+\affil{\textsuperscript{a} Department of Mathematics, University of Bergen, Postbox 7803, 5007 Bergen, Norway}
+\affil{\textsuperscript{b} Department of Business and Management Science, Norwegian School of Economics, 5045 Bergen, Norway}
+}
+
+\maketitle
+
+
+% \vspace{-0.5cm}
+\begin{abstract}
+% \fontsize{9pt}{11pt} % 2nd parameter = 1.2 times the font size, https://tex.stackexchange.com/a/48277
+% \selectfont
+\noindent
+A popular way to estimate the parameters of a hidden Markov model (HMM) is direct numerical maximization (DNM) of the (log-)likelihood function. The advantages of employing the {\tt{TMB}} \citep{kristensen} framework in {\tt{R}} for this purpose  were illustrated recently \cite{bacri}. In this paper, we present extensions of these results in two directions.\\
+First, we present a practical way to obtain uncertainty estimates in form of confidence intervals (CIs) for the so-called smoothing probabilities at moderate computational and programming effort via {\tt{TMB}}. Our approach thus permits to avoid computer-intensive bootstrap methods. By means of several examples, we illustrate patterns present for the derived CIs.\\
+Secondly, we investigate the performance of popular optimizers available in {\tt{R}} when estimating HMMs via DNM. Hereby, our focus lies on the potential benefits of employing {\tt{TMB}}. Investigated criteria via a number of simulation studies are convergence speed, accuracy, and the impact of (poor) initial values. Our findings suggest that all optimizers considered benefit in terms of speed from using the gradient supplied by {\tt{TMB}}. When supplying both gradient and Hessian from {\tt{TMB}}, the number of iterations reduces, suggesting a more efficient convergence to the maximum of the log-likelihood. Last, we briefly point out potential advantages of a hybrid approach.
+
+% whereas \texttt{nlm}, \texttt{nlminb}, and \texttt{hjn} should be preferred in the presence of poor initial values. 
+
+%The two most popular ways to estimate the parameters of a hidden Markov model (HMM) are the Baum-Welch (BW) algorithm \citep{bauma, dempster} and direct numerical maximization (DNM) of the (log-)likelihood function. Both techniques provide maximum likelihood (ML) estimates under certain conditions. However, there is currently no generally accepted best way to set initial parameters for either method, as noted e.g.~by \cite{oudelha} and \cite{zucchini}. Consequently, parameter estimation for HMMs may suffer from poor parameter initialization, although some approaches to tackle this issue have already been investigated for both the BW algorithms and DNM \citep[see, e.g.,][]{hathaway, bulla, hassan, oudelha}.\\
+%We look into the problem of picking an optimization method in a first part, and in a second part investigate that impact.
+%the estimation algorithm usually derives from BW or DNM, both rely heavily on optimizing an objective function.
+%We focus on DNM due to its simplicity and adaptability in the context of HMMs. Following \cite{bacri}, we accelerate the estimation procedures with the {\tt{TMB}} \citep{kristensen} package. Within this setup, we first present a practical and fast approach to obtain uncertainty estimates on smoothing probabilities while avoiding computer-intensive bootstrap methods. More precisely, we show how to calculate confidence intervals for the smoothing probabilities under moderate computational and programming effort via {\tt{TMB}}. 
+%Secondly, we perform a number of simulation studies examining the performance of popular optimizers available in {\tt{R}} \cite{rcoreteam}. Investigated criteria are convergence speed, accuracy, and the impact of (poor) initial values. We find that \texttt{marqLevAlg}, \texttt{nlm}, \texttt{nlminb}, \texttt{nlminb}, and \texttt{BFGS} perform almost equally fast, whereas \texttt{nlm}, \texttt{nlminb}, and \texttt{hjn} should be preferred in the presence of poor initial values.
+\end{abstract}
+
+% \begin{abbreviations}
+% Hidden Markov Model (HMM), Direct Numerical Maximization (DNM), negative log-likelihood (nll), Maximum Likelihood (ML), Baum-Welch (BW), Expectation-Maximization (EM), Confidence intervals (CIs), ``Track Your Tinnitus'' (TYT), Template Model Builder (TMB)
+% \end{abbreviations}
+
+
+\begin{keywords}
+Hidden Markov model; Template Model Builder; Smoothing probabilities; Confidence intervals; Maximum likelihood estimation; Robustness; Initial conditions
+\end{keywords}
+
+\vspace*{1pc}
+\noindent
+% \textit{Key words:} Hidden Markov model; Template Model Builder; Maximum Likelihood estimation; Robustness; Initial conditions\\
+% \\[2pt]
+\noindent Supporting Information for this article is available from the author or online under\\ %[blinded]
+\url{https://timothee-bacri.github.io/HMM_with_TMB}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Hidden Markov models (HMMs) are a well-studied and popular class of models in many areas. While they have been used for speech recognition historically \citep[see, e.g.][]{juang, baum, rabiner, rabinera, fredkin}, these models also became important in many other fields due to their flexibility. These are, to name only a few, biology and bioinformatics \citep{schadt, durbin, eddy}, finance \citep{hamilton}, ecology \citep{mcclintock}, stochastic weather modeling \citep{lystig, ailliot}, and engineering \citep{mor}. In short, HMMs are a class of models where the given data is assumed to follow varying distributions according to an underlying unknown Markov chain.\\
+Parameter estimation for HMMs is typically achieved either by the Baum-Welch (BW) algorithm \citep{bauma, dempster, rabiner, liporace, wu} - an Expectation-Maximization(EM)-type algorithm - or in a quite straightforward fashion by direct numerical maximization (DNM) of the (log-)likelihood function \citep[see, e.g.,][]{turner,macdonald}. A discussion of both approaches can be found in \cite[p.~358]{cappe}. Furthermore, \citep{lange} points out that it is challenging to fit complex models with the BW algorithm, \cite[pp. ~77-78]{zucchini} advises using DNM with HMMs due to the ease of fitting complex models, and \citep{altmana, turner} report a greater speed of DNM compared to the BW algorithm. Nevertheless, the BW is highly accepted and finds widespread application. However, we will only use DNM in the following due to the possibility of accelerating the estimation via the R-package {\tt{TMB}} \citep{kristensen, bacri}.
+
+In this paper, we present a straightforward procedure to calculate uncertainty estimates of the \textit{smoothing probabilities} through appropriate use of {\tt{TMB}}. Hence, we quantify the uncertainty of the state classifications of the observations at a low computational cost. To the best of our knowledge, such results on confidence intervals for the aforementioned probabilities are not available in the literature.\\
+Furthermore, the chosen optimization routine for DNM plays an important role in parameter estimation. While e.g.~\cite{zucchini} focuses on the unconstrained optimizer \texttt{nlm}, alternatives include the popular \texttt{nlminb} \citep{gay} and many others, such as those provided by the \texttt{optim} function \citep{R-optimr}. In this context, \cite{bulla} compare different estimation routines for two-state HMMs: a Newton-Type algorithm \citep{dennis, schnabel}, the Nelder-Mead algorithm \citep{nelder}, BW, and a hybrid algorithm successively executing BW and DNM.
+To complement these studies, we investigate the speed of several optimization algorithms, many of which allow the gradient and Hessian of the objective function as input. Particular focus lies on the ability of the {\tt{TMB}} framework, which allows for easy retrieval of the exact gradient and Hessian (up to machine precision). This enriches the existing literature on parameter estimation for HMMs.\\
+%\cite{oudelha} note that "the BW algorithm uses an initial random guess of the parameters, therefore after convergence the output tends to be close to this initial value of the algorithm, which is not necessarily the global optimum of the model parameters", and 
+Among others, \cite{zucchini} report that ``Depending on the starting values, it can easily happen that the algorithm (i.e.~DNM) identifies a local, but not the global, maximum''. The literature on how to tackle this problem is rich, and includes among others: the use of artificial neural networks to guess the initial values \citep{hassan}, model induction \citep{stolcke}, genetic algorithms in combination with HMMs \citep{oudelha}, hybridizing both the BW and the DNM algorithms \citep{redner, lange, bulla}, specific assumptions on the parameters \citep{kato}, or educated guesses \citep[p. ~53]{zucchini}. We investigate how stable the various considered optimization routines are towards poor initial values. Again, this part takes under consideration the special features of {\tt{TMB}}, which have not been investigated yet.
+
+The paper is organized as follows. In \autoref{sec:basics}, we provide a brief overview of parameter estimation for HMMs, including inference for CIs. In \autoref{sec:smoothing-uncertainty} we show how uncertainty estimates of the smoothing probabilities can be computed via {\tt{TMB}}. Then, we apply our results to a couple of data sets with different characteristics. We perform simulation studies in \cref{sec:optimization,sec:robustness}. Therein, we compare measures of performance and accuracy of various optimizers and check how well these optimizers perform in the presence of poor initial values. \autoref{sec:conclusion} provides some concluding remarks. All code necessary to reproduce our results is available in the supporting information.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Basics on hidden Markov models}
+\label{sec:basics}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The HMMs considered here are fit on observed time series $\{X_t: t = 1, \ldots, T\}$ where $t$ denotes the (time) index ranging from one to $T$. In this setting, a mixture of conditional distributions is assumed to be driven by an unobserved (hidden) homogeneous Markov chain, whose states will be denoted as $\{C_t : t = 1, \ldots, T\}$. We will use different conditional distributions in the paper. First, we specify an $m$-state Poisson HMM, i.e.~with the conditional distribution
+\begin{equation*}
+p_i(x) = \text{P}(X_t = x \vert C_t = i) = \frac{e^{-\lambda_i} \lambda_i^x}{x!}
+\end{equation*}
+with parameters $\lambda_i, i = 1,...,m$. Secondly, we consider Gaussian HMMs with conditional distribution specified by
+\begin{equation*}
+p_i(x) = \text{P}(X_t = x \vert C_t = i) = \frac{1}{\sigma \sqrt{2 \pi}} e^{-\frac{1}{2} \left( \frac{x - \mu_i}{ \sigma_i} \right)^2 },
+\end{equation*}
+with parameters $(\mu_i, \sigma_i), i = 1, \ldots, m$. In addition,  $\bm{\Gamma} = \{\gamma_{ij}\}, i,j=1,...,m$ denotes the transition probability matrix (TPM) of the HMM's underlying Markov chain, and $\bm{\delta}$ is a vector of length $m$ collecting the corresponding stationary distribution. We assume that the Markov chains underlying our HMMs are irreducible and aperiodic. This ensures the existence and uniqueness of a stationary distribution as the limiting distribution \citep{Feller}. However, these results are of limited relevance for most estimation algorithms, because the elements of $\bm{\Gamma}$ are generally strictly positive. Nevertheless, one should be careful when manually fixing selected elements of $\bm{\Gamma}$ to zero.
+
+The basis for our estimation procedure is the (log-)likelihood function. We denote the ``history'' of observations $x_t$ and the observed process $X_t$ up to time $t$ by $\bm{x^{(t)}} = \{x_1, \ldots, x_t \}$ and $\bm{X^{(t)}} = \{X_1, \ldots, X_t \}$, respectively. In addition, let $\bm{\theta}$ be the vector of model parameters. As explained, e.g., by \cite[p.~37]{zucchini}, the likelihood function can then be represented as a product of matrices:  
+\begin{equation}
+\label{eq:hmm_likelihood}
+L(\bm{\theta}) = \bm{P}(\bm{X^{(T)}} = \bm{x^{(T)}}) = \bm{\delta} \bm{P}(x_1) \bm{\Gamma} \bm{P}(x_2) \bm{\Gamma} \bm{P}(x_3) \ldots \bm{\Gamma} \bm{P}(x_T) \bm{1}',
+\end{equation}
+where the $m$ conditional probability density functions evaluated at $x$ (we use this term for discrete support as well) are collected in the diagonal matrix
+\begin{equation*}
+\bm{P}(x) = \begin{pmatrix}
+p_1(x)    &         &         & 0\\
+          & p_2(x)  &         &\\
+          &         & \ddots  &\\
+0         &         &         & p_m(x)
+\end{pmatrix},
+\end{equation*}
+and $\bm{1}'$ and $\bm{\delta}$ denote a transposed vector of ones and the stationary distribution, respectively. That is, we assume that the initial distribution corresponds to $\bm{\delta}$. %Funny! Moreover, alt g{\aa}r i grisen. 
+The likelihood function given in \autoref{eq:hmm_likelihood} can be efficiently evaluated by a so-called forward pass through the observations, as illustrated in \autoref{sec:appendix-hmm_fwbw}. Consequently, it is possible to obtain $\hat{\bm{\theta}}$, the ML estimates of $\bm{\theta}$, by - in our case - unconstrained DNM. Since several of our parameters are constrained, we rely on known re-parametrization procedures (see \autoref{sec:appendix-reparameterization} for details).
+
+Confidence intervals (CIs) for the estimated parameters of HMMs can be derived via various approaches. The most common ones are Wald-type, profile likelihood, and bootstrap-based CIs. \cite{bacri} shows that {\tt{TMB}} can yield valid Wald-type CIs in a fraction of the time required by classical bootstrap-based methods as investigated e.g.~by \cite{bulla, zucchini}. Furthermore, the likelihood profile method may fail to provide CIs \citep{bacri}. Therefore, we rely on Wald-type confidence intervals derived via {\tt{TMB}}. For details, see \autoref{sec:appendix-cis}.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Uncertainty of smoothing probabilities}
+\label{sec:smoothing-uncertainty}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+When interpreting the estimation results of an HMM, the so-called smoothing probabilities often play an important role.
+These quantities, denoted by $p_{it}(\bm{\theta})$ in the following, correspond to the probability of being in state $i$ at time $t$ given the observations, i.e., 
+\begin{equation*}
+\label{eq:sm_prob}
+  p_{it}(\bm{\theta}) = \text{P}_{\bm{\theta}}(C_t = i \vert X^{(T)} = x^{(T)}) = \frac{\alpha_t(i) \beta_t(i)}{L(\bm{\theta})},
+\end{equation*}
+and can be calculated for $i=1, \ldots, m$ and $t=1, \ldots, T$ \citep[see, e.g.,][p.~87]{zucchini}. The involved quantities $\alpha_t(i)$ and $\beta_t(i)$, which also depend on $\bm{\theta}$, result directly from the forward- and backward algorithm, respectively, as illustrated in \autoref{sec:appendix-hmm_fwbw}.
+Estimates of $p_{it}(\bm{\theta})$ are obtained by $p_{it}(\hat{\bm{\theta}})$ where $\hat{\bm{\theta}}$ is the ML estimate of $\bm{\theta}$.
+
+An important feature of {\tt{TMB}} is that it not only permits obtaining standard errors for $\hat{\bm{\theta}}$ (and CIs for $\bm{\theta}$), but in principle also for any other quantity depending on the parameters. This is achieved by combining the delta method with automatic differentiation (see \citep{kristensen} for details).
+A minor requirement for deriving standard deviations for $p_{it}(\hat{\bm{\theta}})$ via the \texttt{ADREPORT} function provided by {\tt{TMB}} consists in implementing the function $p_{it}(\bm{\theta})$ in \texttt{C++}. Then, this part has to be integrated into the scripts necessary for the parameter estimation procedure. It is noteworthy that, once implemented, the procedures related to inference of the smoothing probabilities do not need to change when the HMM considered changes, because the input vector for $p_{it}(\bm{\theta})$ remains the same. The \texttt{C++} code in the supporting information illustrates how to complete these tasks. Note that population value we are interested in constructing a CI for is $p_{it}(\bm{\theta}) $, which should not be confused with  $E_{X^{(T)}}\left(P_{\hat{\bm{\theta}}(X^{(T)})}(C_t = i\mid X^{(T)})\right)$. That is, we treat $p_{it}(\bm{\theta})$ as the probability of the event $C_t=i$ conditional on $X^{(T)}$ being equal to the particular sequence of observations $x^{(T)}$. After all, it is this sequence and the corresponding smoothing probabilities which are of interest to the researcher. 
+% In the end, smoothing probabilities and corresponding confidence intervals are available as by-products of the parameter estimation procedure with {\tt{TMB}}.
+ %, because only the parameters involved in the estimation need to be updated.
+% Furthermore, the 95\% CIs can be formed via $\hat{\psi} \pm q_{0.975} \cdot \text{SE}(\hat{\psi})$ where $q_{0.975} \approx 1.96$ is the 97.5th percentile from the standard normal distribution, and $\text{SE}(\hat{\psi})$ denotes the standard error of $\hat{\psi}$, calculated from {\tt{TMB}}. 
+
+Quantifying the uncertainty in the estimated smoothing probabilities can be of interest in multiple fields because the underlying states are often linked to certain events of interest (e.g., the state of an economy or the behavior of a customer). In the following, we illustrate the results of our approach through a couple of examples.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Track Your Tinnitus}
+\label{sec:sm-tyt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The ``Track Your Tinnitus'' (TYT) mobile application gathered a large data set, a description of which is detailed in \cite{pryss} and \cite{pryssa}.
+The data plotted in \autoref{fig:data-plot-tinn} shows the so-called ``arousal'' variable reported for an individual over 87 consecutive days.
+This variable takes high values when a high level of excitement is achieved and low values when the individual is in a calm emotional state.
+The values are measured on a discrete scale; we refer to \cite{probst, probsta} for details.
+
+<<model-tinn, include = FALSE>>=
+set.seed(1)
+m <- M_LIST_TINN
+DATA <- tinn_data
+n <- length(DATA)
+
+lambda <- seq(quantile(DATA, 0.1, na.rm = TRUE),
+              quantile(DATA, 0.9, na.rm = TRUE),
+              length.out = m)
+gamma <- matrix(0.2 / (m - 1),
+                nrow = m,
+                ncol = m)
+diag(gamma) <- 0.8
+delta <- stat.dist(gamma)
+
+results <- TMB.estimate(TMB_data = list(x = DATA, m = m),
+                        working_parameters = pois.HMM.pn2pw(m = m,
+                                                            lambda = lambda,
+                                                            gamma = gamma,
+                                                            delta = delta),
+                        gradient = TRUE,
+                        hessian = TRUE,
+                        return_smoothing_probabilities = TRUE,
+                        std_error = TRUE,
+                        optimizer = "nlminb",
+                        return_obj = TRUE)
+
+# Retrieve estimates
+lambda <- results$lambda
+gamma <- results$gamma
+# We are interested only in the smoothing probabilities
+smoothing_probs <- results$smoothing_probs
+smoothing_probs_std_error <- results$smoothing_probs_std_error
+states <- results$ldecode
+means <- lambda[states]
+
+sec_axis_y_values <- round(lambda, 2)
+@
+
+<<data-plot-tinn, warning=FALSE, dependson="model-tinn", fig.cap = paste0("Plot of a two-state Poisson HMM fitted to the TYT data (of size ", DATA_SIZE_TYT, "). The colored dots correspond to the conditional mean of the inferred state at each time. Model estimates are displayed in \\autoref{tab:estimates-cis-aic-bic-real-data-part1}."), fig.height=3, echo = FALSE>>=
+data.frame(idx = 1:n,
+           data = DATA,
+           state = as.factor(states),
+           mean = means) %>%
+  ggplot(aes(x = idx)) +
+  geom_line(aes(y = data)) +
+  geom_point(aes(y = mean),
+             colour = COLORS[2],
+             size = 0.5,
+             show.legend = FALSE) +
+  # geom_errorbar(aes(y = data,
+  #                   ymin = mean,
+  #                   ymax = mean,
+  #                   colour = COLORS[1]),
+  #               show.legend = FALSE) +
+  scale_y_continuous(sec.axis = sec_axis(~ .,
+                                         breaks = lambda,
+                                         labels = as.expression(c(bquote(widehat(lambda)[1] %~~% .(sec_axis_y_values[1])),
+                                                                  bquote(widehat(lambda)[2] %~~% .(sec_axis_y_values[2])))))) +
+  xlab("Time (days)") +
+  ylab("Arousal") +
+  theme_Publication()
+@
+
+We estimated Poisson HMMs with varying number of states by \texttt{nlminb} with {\tt{TMB}}'s gradient and Hessian functions passed as arguments (this approach was chosen for all estimated models in our examples). The preferred HMM in terms of AIC and BIC is a two-state model, see \autoref{tab:estimates-cis-aic-bic-real-data-part1} in \autoref{sec:appendix-estmod}. 
+
+\autoref{fig:smoothing-tinn} displays the corresponding smoothing probabilities with 95\% Wald-type CIs, constructed using the standard error provided by {\tt{TMB}}. Intuitively, one might expect the uncertainty to be low when a smoothing probability takes values close to zero or one, whereas higher uncertainty should be inherent to smoothing probabilities further away from these bounds. The CIs illustrated in \autoref{fig:smoothing-tinn} follow this pattern. However, as pointed out by \cite{bacri}, this data set is atypically short for fitting HMMs. As we will see in the following, different patterns will emerge for longer sequences of observations.
+
+<<smoothing-tinn, dependson="model-tinn", fig.pos="!htb", echo=FALSE, results='hide', fig.cap="Smoothing probabilities and confidence intervals of a two-state Poisson HMM fitted to the TYT data set. The solid line shows the smoothing probability estimates and the 95\\% CIs are represented by vertical lines. The bottom graph displays smoothing probabilities for the most likely state estimated for each data point. The vertical confidence interval lines are colored differently per hidden state. Further details on the model estimates are available in \\autoref{tab:estimates-cis-aic-bic-real-data-part1}.">>=
+# State 1 smoothing probabilities
+stateprobs <- data.frame(idx = 1:n,
+                         estimate = smoothing_probs[1, ],
+                         std.error = smoothing_probs_std_error[1, ])
+# Add 95% CI bounds with cutoffs at 0 and 1
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+library(ggplot2)
+state1_ggplot <- ggplot(stateprobs, aes(x = idx)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH),
+                color = COLORS[1],
+                show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  ggtitle(bquote("State 1," ~ widehat(lambda) ~ "=" ~ .(round(lambda[1], 2)))) +
+  theme_Publication() +
+  xlab("") +
+  ylab("Probability") +
+  ylim(0, 1)
+
+# STATE 2
+stateprobs <- data.frame(idx = 1:n,
+                         estimate = smoothing_probs[2, ],
+                         std.error = smoothing_probs_std_error[2, ])
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+state2_ggplot <- ggplot(stateprobs, aes(x = idx)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH),
+                color = COLORS[2],
+                show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  ggtitle(bquote("State 2," ~ widehat(lambda) ~ "=" ~ .(round(lambda[2], 2)))) +
+  theme_Publication() +
+  xlab("") +
+  ylab("") +
+  ylim(0, 1)
+
+# STATE MOST LIKELY
+ldecode <- states
+ldecode_smoothing_estimates <- c()
+ldecode_smoothing_std.errors <- c()
+for (i in 1:n) {
+  ldecode_smoothing_estimates[i] <- smoothing_probs[ldecode[i], i]
+  ldecode_smoothing_std.errors[i] <- smoothing_probs_std_error[ldecode[i], i]
+}
+stateprobs <- data.frame(idx = 1:n,
+                         estimate = ldecode_smoothing_estimates,
+                         std.error = ldecode_smoothing_std.errors,
+                         state = as.factor(ldecode))
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+state_likely_ggplot <- ggplot(stateprobs, aes(x = idx)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH,
+                    color = state),
+                # show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  scale_color_manual(values = COLORS[1:m], breaks = 1:m) +
+  ggtitle("Most likely states") +
+  theme_Publication() +
+  xlab("Time (days)") +
+  ylab("Probability") +
+  ylim(0, 1)
+
+# Display the graphs in one figure
+library(ggpubr)
+ggarrange(ggarrange(state1_ggplot,
+                    state2_ggplot,
+                    ncol = 2, nrow = 1),
+          state_likely_ggplot,
+          ncol = 1, nrow = 2)
+@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Soap}
+\label{sec:sm-soap}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In the following, we consider a data set of weekly sales of a soap in a supermarket. The data were provided by the Kilts Center for Marketing, Graduate School of Business of the University of Chicago and are available in the database at \url{https://research.chicagobooth.edu/kilts/marketing-databases/dominicks}.
+The data are displayed in \autoref{fig:data-plot-soap}.
+%The product was ``Zest White Water 15 oz.'', with code 3700031165 and store number 67.
+Similarly to the previous section, we fitted multiple Poisson HMMs, and the preferred HMM in terms of AIC and BIC is a two-state model as well (see \autoref{tab:estimates-cis-aic-bic-real-data-part1} in \autoref{sec:appendix-estmod}). \autoref{fig:smoothing-soap} displays the smoothing probabilities resulting from this model.
+The patterns of the CIs described in the previous section are, in principle, also present here.
+Nevertheless, an exception is highlighted in the bottom panel of \autoref{fig:smoothing-soap}:
+at $t = 152$, the smoothing probability of State 2 is closer to the upper boundary of one than the corresponding probability at $t = 147$. Yet, the uncertainty is higher at $t = 152$.
+%We also note that many smoothing probability estimates not in the immediate neighborhood of 0.5 possess CIs that go through 0.5, showing that many state classifications are uncertain. This effect can be noticed at a larger degree with the S\&P 500 data set in \autoref{sec:sm-weekly}, where the thresholds are $1/3$ and $2/3$ due to the model having three hidden states.
+
+
+<<model-soap, echo = FALSE>>=
+set.seed(1)
+m <- 2 # Number of hidden states
+DATA <- soap_data
+n <- length(DATA)
+
+lambda <- seq(quantile(DATA, 0.1, na.rm = TRUE),
+              quantile(DATA, 0.9, na.rm = TRUE),
+              length.out = m)
+gamma <- matrix(0.2 / (m - 1),
+                nrow = m,
+                ncol = m)
+diag(gamma) <- 0.8
+delta <- stat.dist(gamma)
+
+results <- TMB.estimate(TMB_data = list(x = DATA, m = m),
+                        working_parameters = pois.HMM.pn2pw(m = m,
+                                                            lambda = lambda,
+                                                            gamma = gamma,
+                                                            delta = delta),
+                        gradient = TRUE,
+                        hessian = TRUE,
+                        return_smoothing_probabilities = TRUE,
+                        std_error = TRUE,
+                        optimizer = "nlminb",
+                        return_obj = TRUE)
+
+# Retrieve estimates
+lambda <- results$lambda
+gamma <- results$gamma
+# We are interested only in the smoothing probabilities
+smoothing_probs <- results$smoothing_probs
+smoothing_probs_std_error <- results$smoothing_probs_std_error
+states <- results$ldecode
+means <- lambda[states]
+
+sec_axis_y_values <- round(lambda, 2)
+@
+
+<<data-plot-soap, dependson="model-soap", fig.cap = paste0('Plot of the soap data (of size ', DATA_SIZE_SOAP, '), with fitted two-state Poisson HMM. The colored dots correspond to the conditional mean of the inferred state at each time. Model estimates are displayed in \\autoref{tab:estimates-cis-aic-bic-real-data-part1}.'), fig.height=3, echo=FALSE>>=
+data.frame(idx = 1:n,
+           data = DATA,
+           state = as.factor(states),
+           mean = means) %>%
+  ggplot(aes(x = idx)) +
+  geom_line(aes(y = data)) +
+  geom_point(aes(y = mean),
+             colour = COLORS[2],
+             size = 0.5,
+             show.legend = FALSE) +
+  # geom_errorbar(aes(y = data,
+  #                   ymin = mean,
+  #                   ymax = mean,
+  #                   colour = COLORS[1]),
+  #               show.legend = FALSE) +
+  scale_y_continuous(sec.axis = sec_axis(~ .,
+                                         breaks = lambda,
+                                         labels = as.expression(c(bquote(widehat(lambda)[1] %~~% .(sec_axis_y_values[1])),
+                                                                  bquote(widehat(lambda)[2] %~~% .(sec_axis_y_values[2])))))) +
+  xlab("Time (weeks)") +
+  ylab("Soap sales") +
+  theme_Publication()
+@
+
+
+<<smoothing-soap, dependson="model-soap", fig.pos="!htb", echo=FALSE, results='hide', fig.cap="Smoothing probabilities and confidence intervals of a two-state Poisson HMM fitted to the soap data set. The solid line shows the smoothing probability estimates and the 95\\% CIs are represented by vertical lines. The bottom left graph displays smoothing probabilities for the most likely state estimated for each data point. The vertical confidence interval lines are colored differently per hidden state. Further details on the model estimates are available in \\autoref{tab:estimates-cis-aic-bic-real-data-part1}. ">>=
+# State 1 smoothing probabilities
+stateprobs <- data.frame(idx = 1:n,
+                         estimate = smoothing_probs[1, ],
+                         std.error = smoothing_probs_std_error[1, ])
+# Add 95% CI bounds with cutoffs at 0 and 1
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+library(ggplot2)
+state1_ggplot <- ggplot(stateprobs, aes(x = idx)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH),
+                color = COLORS[1],
+                show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  ggtitle(bquote("State 1," ~ widehat(lambda) ~ "=" ~ .(round(lambda[1], 2)))) +
+  theme_Publication() +
+  xlab("") +
+  ylab("Probability") +
+  ylim(0, 1)
+
+# STATE 2
+stateprobs <- data.frame(idx = 1:n,
+                         estimate = smoothing_probs[2, ],
+                         std.error = smoothing_probs_std_error[2, ])
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+state2_ggplot <- ggplot(stateprobs, aes(x = idx)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH),
+                color = COLORS[2],
+                show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  ggtitle(bquote("State 2," ~ widehat(lambda) ~ "=" ~ .(round(lambda[2], 2)))) +
+  theme_Publication() +
+  xlab("") +
+  ylab("") +
+  ylim(0, 1)
+
+# STATE MOST LIKELY
+ldecode <- states
+ldecode_smoothing_estimates <- c()
+ldecode_smoothing_std.errors <- c()
+for (i in 1:n) {
+  ldecode_smoothing_estimates[i] <- smoothing_probs[ldecode[i], i]
+  ldecode_smoothing_std.errors[i] <- smoothing_probs_std_error[ldecode[i], i]
+}
+stateprobs <- data.frame(idx = 1:n,
+                         estimate = ldecode_smoothing_estimates,
+                         std.error = ldecode_smoothing_std.errors,
+                         state = as.factor(ldecode))
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+state_likely_ggplot <- ggplot(stateprobs, aes(x = idx)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH,
+                    color = state),
+                # show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  scale_color_manual(values = COLORS[1:m], breaks = 1:m) +
+  ggtitle("Most likely states") +
+  theme_Publication() +
+  xlab("Time (weeks)") +
+  ylab("Probability") +
+  ylim(0, 1) +
+  geom_vline(xintercept = c(147, 152), linetype = "dashed", linewidth = ERRORBAR_LINE_WIDTH) +
+  scale_x_continuous(breaks = c(0, 50, 100, 150, 200, 250, 147, 152),
+                     labels = c(0, 50, 100, 150, 200, 250, "\n147", "\n\n152"))
+
+# Display the graphs in one figure
+library(ggpubr)
+ggarrange(ggarrange(state1_ggplot,
+                    state2_ggplot,
+                    ncol = 2, nrow = 1),
+          # state3_ggplot,
+          state_likely_ggplot,
+          ncol = 1, nrow = 2)
+@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Weekly returns}
+\label{sec:sm-weekly}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The data set considered in this section are 2230 weekly log-returns based on the adjusted closing share price of the S\&P 500 stock market index retrieved from Yahoo Finance, between January $1^{st}$ 1980 and September $30^{th}$ 2022.
+The returns are expressed in per cent to facilitate reading and interpreting the estimates.
+As shown, e.g., by \cite{rydenb}, Gaussian HMMs reproduce well certain stylized facts of financial returns. We thus estimated such models with varying number of states.
+A three-state model is preferred by the BIC, whereas the AIC is almost identical for three and four states (see \autoref{tab:estimates-cis-aic-bic-real-data-part1}). The estimates show a decrease in conditional standard deviation with increasing conditional mean.
+This is a well-known property of many financial returns (see, e.g., \cite{schwerta,maheua,guidolina}) related to the behavior of market participants in crisis and calm periods. \autoref{fig:data-plot-sp500} shows the first 200 data points plotted along with conditional means from the preferred model.
+
+<<model-sp500, echo = FALSE>>=
+set.seed(1)
+m <- 3 # Number of hidden states
+DATA <- 100 * sp500_data
+n <- length(DATA)
+indices_to_plot <- 1:200 # Number of smoothing probabilities to plot
+
+mu <- seq(-2 * mean(DATA),
+          2 * mean(DATA),
+          length.out = m)
+sigma <- seq(0.5 * sd(DATA),
+             1.5 * sd(DATA),
+             length.out = m)
+gamma <- matrix(0.2 / (m - 1),
+                nrow = m,
+                ncol = m)
+diag(gamma) <- 0.8
+delta <- stat.dist(gamma) # Stationary distribution
+
+# Estimation
+results <- norm.TMB.estimate(TMB_data = list(x = DATA, m = m),
+                             working_parameters = norm.HMM.pn2pw(m = m,
+                                                                 mu = mu,
+                                                                 sigma = sigma,
+                                                                 gamma = gamma,
+                                                                 delta = delta),
+                             gradient = TRUE,
+                             hessian = TRUE,
+                             return_smoothing_probabilities = TRUE,
+                             std_error = TRUE,
+                             optimizer = "nlminb",
+                             return_obj = TRUE)
+
+# Retrieve estimates
+mu <- results$mu
+sigma <- results$sigma
+gamma <- results$gamma
+# We are interested only in the smoothing probabilities
+smoothing_probs <- results$smoothing_probs
+smoothing_probs_std_error <- results$smoothing_probs_std_error
+states <- results$ldecode
+means <- mu[states]
+
+# sec_axis_y_values <- c(round(mu[1], 2), round(mu[2]))
+sec_axis_y_values <- round(mu, 2)
+@
+
+<<data-plot-sp500, dependson="model-sp500", fig.cap = paste0('Plot of the weekly returns (of size ', DATA_SIZE_SP500, '). The colored dots correspond to the conditional mean of the inferred state from a fitted 3-state Gaussian HMM (see \\autoref{tab:estimates-cis-aic-bic-real-data-part1}). For readability, only the first 200 data are plotted.'), fig.height=3, echo=FALSE>>=
+data.frame(idx = indices_to_plot,
+           data = DATA[indices_to_plot],
+           state = as.factor(states[indices_to_plot]),
+           mean = means[indices_to_plot]) %>%
+  ggplot(aes(x = idx)) +
+  geom_line(aes(y = data)) +
+  geom_point(aes(y = mean),
+             colour = COLORS[2],
+             size = 0.5,
+             show.legend = FALSE) +
+  # geom_errorbar(aes(y = data,
+  #                   ymin = mean,
+  #                   ymax = mean,
+  #                   colour = COLORS[1]),
+  #               show.legend = FALSE) +
+  scale_y_continuous(sec.axis = sec_axis(~ .,
+                                         breaks = mu,
+                                         labels = as.expression(c(bquote(widehat(mu)[1] %~~% .(sec_axis_y_values[1])),
+                                                                  bquote(widehat(mu)[2] %~~% .(sec_axis_y_values[2])),
+                                                                  bquote(widehat(mu)[3] %~~% .(sec_axis_y_values[3])))),
+                                         guide = guide_axis(n.dodge = 2))) +
+  xlab("Time (weeks)") +
+  ylab("Log-returns") +
+  theme_Publication()
+@
+
+
+<<smoothing-sp500, dependson="model-sp500", fig.pos="!htb", fig.cap="Smoothing probabilities and confidence intervals of a three-state Gaussian HMM fitted to the weekly returns data. The solid line shows the smoothing probability estimates and the 95\\% CIs are represented by vertical lines. The bottom right graph displays smoothing probabilities for the most likely state estimated for each data point. The vertical confidence interval lines are colored differently per hidden state. Only the first 200 out of the 2230 values are shown for readability purposes. Further details on the model estimates are available in \\autoref{tab:estimates-cis-aic-bic-real-data-part1}.", echo = FALSE, results='hide'>>=
+# State 1 smoothing probabilities
+stateprobs <- data.frame(idx = indices_to_plot,
+                         estimate = smoothing_probs[1, indices_to_plot],
+                         std.error = smoothing_probs_std_error[1, indices_to_plot])
+# Add 95% CI bounds with cutoffs at 0 and 1
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+library(ggplot2)
+state1_ggplot <- ggplot(stateprobs, aes(x = idx)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH),
+                color = COLORS[1],
+                show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  ggtitle(bquote("State 1," ~ widehat(mu) ~ "=" ~ .(round(mu[1], 3)) * "," ~ widehat(sigma) ~ "=" ~ .(round(sigma[1], 3)))) +
+  theme_Publication() +
+  ylim(0, 1) +
+  xlab("") +
+  ylab("Probability")
+
+# STATE 2
+stateprobs <- data.frame(idx = indices_to_plot,
+                         estimate = smoothing_probs[2, indices_to_plot],
+                         std.error = smoothing_probs_std_error[2, indices_to_plot])
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+state2_ggplot <- ggplot(stateprobs, aes(x = idx)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH),
+                color = COLORS[2],
+                show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  ggtitle(bquote("State 2," ~ widehat(mu) ~ "=" ~ .(round(mu[2], 3)) * "," ~ widehat(sigma) ~ "=" ~ .(round(sigma[2], 3)))) +
+  theme_Publication() +
+  ylim(0, 1) +
+  xlab("") +
+  ylab("")
+
+# STATE 3
+stateprobs <- data.frame(idx = indices_to_plot,
+                         estimate = smoothing_probs[3, indices_to_plot],
+                         std.error = smoothing_probs_std_error[3, indices_to_plot])
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+state3_ggplot <- ggplot(stateprobs, aes(x = idx)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH),
+                color = COLORS[3],
+                show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  ggtitle(bquote("State 3," ~ widehat(mu) ~ "=" ~ .(round(mu[3], 3)) * "," ~ widehat(sigma) ~ "=" ~ .(round(sigma[3], 3)))) +
+  theme_Publication() +
+  ylim(0, 1) +
+  xlab("Time (weeks)") +
+  ylab("Probability") +
+  geom_vline(xintercept = c(30, 83), linetype = "dashed", linewidth = ERRORBAR_LINE_WIDTH) +
+  scale_x_continuous(breaks = c(0, 50, 100, 150, 200, 30, 83),
+                     labels = c(0, 50, 100, 150, 200, 30, 83))
+
+# STATE MOST LIKELY
+ldecode <- states[indices_to_plot]
+ldecode_smoothing_estimates <- c()
+ldecode_smoothing_std.errors <- c()
+for (i in indices_to_plot) {
+  ldecode_smoothing_estimates[i] <- smoothing_probs[ldecode[i], i]
+  ldecode_smoothing_std.errors[i] <- smoothing_probs_std_error[ldecode[i], i]
+}
+stateprobs <- data.frame(idx = indices_to_plot,
+                         estimate = ldecode_smoothing_estimates,
+                         std.error = ldecode_smoothing_std.errors,
+                         state = factor(ldecode, levels = 1:m))
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+state_likely_ggplot <- ggplot(stateprobs, aes(x = idx)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH,
+                    color = state),
+                # show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  scale_color_manual(values = COLORS[1:m], breaks = 1:m, drop = FALSE) +
+  ggtitle("Most likely states") +
+  theme_Publication() +
+  ylim(0, 1) +
+  xlab("Time (weeks)") +
+  ylab("") +
+  geom_vline(xintercept = c(30, 83), linetype = "dashed", linewidth = ERRORBAR_LINE_WIDTH) +
+  scale_x_continuous(breaks = c(0, 50, 100, 150, 200, 30, 83),
+                     labels = c(0, 50, 100, 150, 200, 30, 83))
+
+# Display the graphs in one figure
+library(ggpubr)
+ggarrange(state1_ggplot, state2_ggplot, state3_ggplot, state_likely_ggplot,
+          ncol = 2, nrow = 2)
+@
+
+The subsequent \autoref{fig:smoothing-sp500} shows inferred smoothing probabilities together with their CIs. In addition to the previous applications, where smoothing probabilities close to the boundary seemed to be linked to lower uncertainty, this data set shows also some clear exceptions from this pattern. For example, the smoothing probabilities of State 3 inferred at $t = 30$ and $t = 83$ take the relatively close values \Sexpr{round(smoothing_probs[3, 30], 2)} and \Sexpr{round(smoothing_probs[3, 83], 2)}, respectively. However, the associated uncertainty at $t = 30$ is visibly higher than the corresponding uncertainty at $t = 83$ (the estimated standard errors are \Sexpr{round(smoothing_probs_std_error[3, 30], 3)} and \Sexpr{round(smoothing_probs_std_error[3, 83], 3)}). This may be explained by the fact that the inferred states closely around $t=30$ oscillated between State 2 and 3, thus indicating a high uncertainty of the state classification during this period. On the contrary, around $t=83$ a quick and persistent change from State 2 to 3 takes place.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Hospital}
+\label{sec:sm-hospital}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Basis for our last example is a data set issued by the hospital "H\^{o}pital Lariboisi\`ere" from Assistance Publique -- H\^{o}pitaux de Paris (a french hospital trust).
+This data set consists of the hourly number of patient arrivals to the emergency ward during a period of roughly 10 years.
+A subset of the data (over one week) is displayed in \autoref{fig:data-plot-hosp}.
+We examine this due to several reasons.
+First, with \Sexpr{DATA_SIZE_HOSP} observations, this data set is much larger than the ones examined previously.
+Secondly, the medical staff noticed differences between the rates of patient arrivals at day and night, respectively, which motivates the use of, e.g., an HMM.
+Last, a Poisson HMM is a natural candidate for the observed count-type data. The preferred model by both AIC and BIC has five states (see \autoref{tab:estimates-cis-aic-bic-real-data-part2} in \autoref{sec:appendix-estmod})
+and confirms the impression of the hospital employees: State 5 is mainly visited during core operating hours during day time.
+The fourth and third states mainly occur late afternoon, early evening, and early morning.
+Last, State 1 and 2 correspond to night time observations.    
+
+<<model-hosp, include = FALSE>>=
+set.seed(1)
+m <- 5
+DATA <- hosp_data
+n <- length(DATA)
+# Number of smoothing probabilities to plot (Monday 4 January 2010 -> Sunday)
+# 3 days after 1 January, for 7 days
+indices_to_plot <- 24*3 + 1:(24*7)
+
+lambda <- seq(quantile(DATA, 0.1, na.rm = TRUE),
+              quantile(DATA, 0.9, na.rm = TRUE),
+              length.out = m)
+gamma <- matrix(0.2 / (m - 1),
+                nrow = m,
+                ncol = m)
+diag(gamma) <- 0.8
+delta <- stat.dist(gamma)
+
+results <- TMB.estimate(TMB_data = list(x = DATA, m = m,
+                                        start_row = 0,
+                                        start_col = 24*3 - 1,
+                                        nb_rows = m,
+                                        nb_cols = 24*7),
+                        working_parameters = pois.HMM.pn2pw(m = m,
+                                                            lambda = lambda,
+                                                            gamma = gamma,
+                                                            delta = delta),
+                        gradient = TRUE,
+                        hessian = TRUE,
+                        return_smoothing_probabilities = TRUE,
+                        std_error = TRUE,
+                        optimizer = "nlminb",
+                        return_obj = TRUE)
+
+# Retrieve estimates
+lambda <- results$lambda
+gamma <- results$gamma
+# We are interested only in the smoothing probabilities
+smoothing_probs <- results$smoothing_probs
+smoothing_probs_std_error <- results$smoothing_probs_std_error
+states <- results$ldecode
+means <- lambda[states]
+
+sec_axis_y_values <- round(lambda, 2)
+@
+
+<<data-plot-hosp, dependson="model-hosp", fig.cap = paste0("Plot of the hospital data (of size ", DATA_SIZE_HOSP, "). The colored dots correspond to the conditional mean of the inferred state at each time. For readability, only the first week starting on Monday (from Monday January $4^{th}$ 2010 at 00:00 to Sunday January $10^{th}$ 2010 at 23:59) is plotted instead of the entire 10 years. Model estimates are displayed in \\autoref{tab:estimates-cis-aic-bic-real-data-part2}."), fig.height=3, echo=FALSE, cache = TRUE>>=
+data.frame(idx = 1:length(indices_to_plot),
+           data = DATA[indices_to_plot],
+           state = as.factor(states),
+           mean = means,
+           date = full_hosp_data$DATE[indices_to_plot]) %>%
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = data)) +
+  geom_point(aes(y = mean),
+             colour = COLORS[2],
+             size = 0.5,
+             show.legend = FALSE) +
+  # geom_errorbar(aes(y = data,
+  #                   ymin = mean,
+  #                   ymax = mean,
+  #                   colour = COLORS[1]),
+  #               show.legend = FALSE) +
+  scale_y_continuous(sec.axis = sec_axis(~ .,
+                                         breaks = lambda,
+                                         labels = as.expression(c(bquote(widehat(lambda)[1] ~ "=" ~ .(sec_axis_y_values[1])),
+                                                                  bquote(widehat(lambda)[2] ~ "=" ~ .(sec_axis_y_values[2])),
+                                                                  bquote(widehat(lambda)[3] ~ "=" ~ .(sec_axis_y_values[3])),
+                                                                  bquote(widehat(lambda)[4] ~ "=" ~ .(sec_axis_y_values[4])),
+                                                                  bquote(widehat(lambda)[5] ~ "=" ~ .(sec_axis_y_values[5])))))) +
+  scale_x_datetime(date_breaks = "1 day", date_labels = "%a") +
+  xlab("Time (hours)") +
+  ylab("Patient arrivals") +
+  theme_Publication()
+@
+
+Even for a data set of this size, the smoothing probabilities and corresponding CIs can be derived with moderate computational effort and time: \autoref{fig:smoothing-hosp} displays the results.
+Overall, the inferred CIs are relatively small, in particular in comparison with those obtained for the stock return data discussed in the previous example.
+The low uncertainty in the state classification may most likely result from the clear, close to periodic transition patterns.
+
+<<smoothing-hosp, dependson="model-hosp", echo = FALSE, fig.pos="!htb", fig.cap="Smoothing probabilities and confidence intervals of a five-state Gaussian HMM fitted to the hospital data set. The solid line shows the smoothing probability estimates and the 95\\% CIs are represented by vertical lines. The bottom right graph displays smoothing probabilities for the most likely state estimated for each data point. The vertical confidence interval lines are colored differently per hidden state. For readability, only the first week starting on Monday (from Monday January $4^{th}$ 2010 at 00:00 to Sunday January $10^{th}$ 2010 at 23:59) is plotted instead of the entire 10 years. Further details on the model estimates are available in \\autoref{tab:estimates-cis-aic-bic-real-data-part2}.", fig.height = 9>>=
+X_AXIS_TICKS <- ymd_hms(full_hosp_data$DATE[indices_to_plot])
+
+# STATE 1
+stateprobs <- data.frame(idx = indices_to_plot,
+                         x_axis_ticks = X_AXIS_TICKS,
+                         estimate = smoothing_probs[1, ],
+                         std.error = smoothing_probs_std_error[1, ])
+# Add 95% CI bounds with cutoffs at 0 and 1
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+library(ggplot2)
+state1_ggplot <- ggplot(stateprobs, aes(x = x_axis_ticks)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH),
+                color = COLORS[1],
+                show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  # stat_boxplot(geom = "errorbar", width = ERRORBAR_END_WIDTH, size = ERRORBAR_MIDDLE_WIDTH) +
+  # geom_boxplot(aes(ymin = ci_lower,
+  #                  y = estimate,
+  #                  ymax = ci_upper,
+  #                  x = x_axis_ticks,
+  #                  group = x_axis_ticks)) +
+  geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  ggtitle(bquote("State 1," ~ widehat(lambda) ~ "=" ~ .(round(lambda[1], 2)))) +
+  scale_x_datetime(date_breaks = "1 day", date_labels = "%a") +
+  theme_Publication() +
+  xlab("") +
+  ylab("Probability") +
+  ylim(0, 1)
+
+# STATE 2
+stateprobs <- data.frame(idx = indices_to_plot,
+                         x_axis_ticks = X_AXIS_TICKS,
+                         estimate = smoothing_probs[2, ],
+                         std.error = smoothing_probs_std_error[2, ])
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+state2_ggplot <- ggplot(stateprobs, aes(x = x_axis_ticks)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH),
+                color = COLORS[2],
+                show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  ggtitle(bquote("State 2," ~ widehat(lambda) ~ "=" ~ .(round(lambda[2], 2)))) +
+  scale_x_datetime(date_breaks = "1 day", date_labels = "%a") +
+  theme_Publication() +
+  xlab("") +
+  ylab("") +
+  ylim(0, 1)
+
+# STATE 3
+stateprobs <- data.frame(idx = indices_to_plot,
+                         x_axis_ticks = X_AXIS_TICKS,
+                         estimate = smoothing_probs[3, ],
+                         std.error = smoothing_probs_std_error[3, ])
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+state3_ggplot <- ggplot(stateprobs, aes(x = x_axis_ticks)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH),
+                color = COLORS[3],
+                show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  ggtitle(bquote("State 3," ~ widehat(lambda) ~ "=" ~ .(round(lambda[3], 2)))) +
+  scale_x_datetime(date_breaks = "1 day", date_labels = "%a") +
+  theme_Publication() +
+  xlab("") +
+  ylab("Probability") +
+  ylim(0, 1)
+
+# STATE 4
+stateprobs <- data.frame(idx = indices_to_plot,
+                         x_axis_ticks = X_AXIS_TICKS,
+                         estimate = smoothing_probs[4, ],
+                         std.error = smoothing_probs_std_error[4, ])
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+state4_ggplot <- ggplot(stateprobs, aes(x = x_axis_ticks)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH),
+                color = COLORS[4],
+                show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  ggtitle(bquote("State 4," ~ widehat(lambda) ~ "=" ~ .(round(lambda[4], 2)))) +
+  scale_x_datetime(date_breaks = "1 day", date_labels = "%a") +
+  theme_Publication() +
+  xlab("") +
+  ylab("") +
+  ylim(0, 1)
+
+# STATE 5
+stateprobs <- data.frame(idx = indices_to_plot,
+                         x_axis_ticks = X_AXIS_TICKS,
+                         estimate = smoothing_probs[5, ],
+                         std.error = smoothing_probs_std_error[5, ])
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+state5_ggplot <- ggplot(stateprobs, aes(x = x_axis_ticks)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH),
+                color = COLORS[5],
+                show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate,), size = POINT_SIZE, shape = 16) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  ggtitle(bquote("State 5," ~ widehat(lambda) ~ "=" ~ .(round(lambda[5], 2)))) +
+  scale_x_datetime(date_breaks = "1 day", date_labels = "%a") +
+  theme_Publication() +
+  xlab("Time (hours)") +
+  ylab("Probability") +
+  ylim(0, 1)
+
+# STATE MOST LIKELY
+ldecode <- states
+ldecode_smoothing_estimates <- c()
+ldecode_smoothing_std.errors <- c()
+for (i in 1:length(indices_to_plot)) {
+  ldecode_smoothing_estimates[i] <- smoothing_probs[ldecode[i], i]
+  ldecode_smoothing_std.errors[i] <- smoothing_probs_std_error[ldecode[i], i]
+}
+stateprobs <- data.frame(idx = indices_to_plot,
+                         x_axis_ticks = X_AXIS_TICKS,
+                         estimate = ldecode_smoothing_estimates,
+                         std.error = ldecode_smoothing_std.errors,
+                         state = as.factor(ldecode))
+
+# https://stackoverflow.com/questions/62141341/ggplot2-fill-grouping-causes-unwanted-lines-to-connect-in-geom-ribbon/62141972#62141972
+# myrle <- rle(ldecode)
+# myrle <- within(unclass(myrle), values[!is.na(values)] <- seq_along(values[!is.na(values)]))
+# stateprobs$ribbongroup <- inverse.rle(myrle)
+
+stateprobs$ci_lower <- pmax(0, stateprobs$estimate - q95_norm * stateprobs$std.error)
+stateprobs$ci_upper <- pmin(stateprobs$estimate + q95_norm * stateprobs$std.error, 1)
+
+state_likely_ggplot <- ggplot(stateprobs, aes(x = x_axis_ticks)) +
+  geom_ribbon(aes(ymin = ci_lower,
+                  ymax = ci_upper),
+              fill = "lightgrey") +
+                  # fill = state,
+                  # group = ribbongroup)) +
+  geom_errorbar(aes(ymin = ci_lower,
+                    ymax = ci_upper,
+                    width = ERRORBAR_END_WIDTH,
+                    color = state),
+                # show.legend = FALSE,
+                linewidth = ERRORBAR_LINE_WIDTH) +
+  geom_point(aes(y = estimate), size = POINT_SIZE, shape = 16) +
+  geom_line(aes(y = estimate), linewidth = LINE_SIZE) +
+  scale_color_manual(values = COLORS[1:m], breaks = 1:m) +
+  ggtitle("Most likely states") +
+  scale_x_datetime(date_breaks = "1 day", date_labels = "%a") +
+  theme_Publication() +
+  xlab("Time (hours)") +
+  ylab("") +
+  ylim(0, 1)
+
+# Display the graphs in one figure
+library(ggpubr)
+  
+ggarrange(ggarrange(state1_ggplot,
+                    state2_ggplot,
+                    ncol = 2, nrow = 1),
+          ggarrange(state3_ggplot,
+                    state4_ggplot,
+                    ncol = 2, nrow = 1),
+          ggarrange(state5_ggplot,
+                    state_likely_ggplot,
+                    ncol = 2, nrow = 1),
+          ncol = 1, nrow = 3)
+@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Performance and accuracy of different optimizers}
+\label{sec:optimization}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This section compares the speed and accuracy of different optimizers in R using {\tt{TMB}} in a HMM estimation setting with DNM by several simulation studies with different settings.
+
+In the first setting, we simulate time series consisting of 87 observations from a two-state Poisson HMM fitted to the TYT data, as we want to examine the different optimizers performance on data sets with relatively few observations.
+In the second setting, we simulate time series of length \Sexpr{DATA_SIZE_SIMU1} from a two-state Poisson HMM, and in the third setting, time series of length 200 from a two-state Gaussian HMM are simulated.
+The specific choice of parameters is described in more detail in the forthcoming sections. 
+
+%An additional design is available in Appendix \ref{sec:appendix-perf}, where simulated data sets of length \Sexpr{DATA_SIZE_SIMU2} from a Poisson HMM, with parameters chosen closer together, to make estimation less straightforward, and to examine the impact of increased sample size. \textcolor{red}{BS: we can remove this design - as it basically do not add much to the findings we already have - moved out}
+
+The comparisons that focus on computational speed and iterations of the different optimizers, are based on 200 replications from the different models, while the studies focusing on the accuracy of the optimizers are based on 1000 replications from the different models. 
+Hence, the Monte-Carlo simulation setup in this paper closely resembles the setup of \cite{bacri}.
+%\newline
+%\newline
+%\textcolor{red}{TB: Both. The speeds and iterations are compared on 200 samples, and the estimates are compared on 1000 samples}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Computational setup}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\textcolor{red}{BS: Should we maybe move this before the smoothing probs section - or maybe it is ok to leave the section here?}
+
+
+The results presented in this paper required installing and using the {\tt{R}}-package {\tt{TMB}} and the software {\tt{Rtools}}, where the latter is needed to compile {\tt{C++}} code.
+Scripts were coded in the interpreted programming language {\tt{R}} \citep{rcoreteam} using its eponymous software environment {\tt{RStudio}}.
+For the purpose of making our results reproducible, the generation of random numbers is handled with the function \texttt{set.seed} under {\tt{R}} version number 3.6.0.
+A seed is set multiple times in our scripts, ensuring that smaller parts can be easily duplicated without executing lengthy prior code.
+A workstation with 4 Intel(R) Xeon(R) Gold 6134 processors (3.7 GHz) running under the Linux distribution Ubuntu 18.04.6 LTS (Bionic Beaver) with 384 GB RAM was used to execute our scripts. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Selected optimizers and additional study design}
+\label{sec:design}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\textcolor{red}{
+%\textbf{\textit{BÅRD TEXT: Of course, here you need to expand quite a bit more. Explaining the simulation setup (processes etc.) (not enough to refer to paper 1), results etc.}}}
+
+%{\hl BS: would it be better just to state that we selected the following optimizers based on their use and by some pre-tests of ours?}
+%\newline
+%{\hl TB: If we do that, wouldn't it open us to being asked by the reviewer if we can provide some evidence that they are used enough? I agree that your way reads better though.}
+
+There exist a large number of optimizers for use within the {\tt{R}} ecosystem, see e.g. \cite{schwendinger}.
+In a preliminary phase, multiple optimization routines were attempted, and the ones failing to converge on a few selected test data sets from the designs mentioned above were excluded (details available from the author upon request).
+Hence, the following optimizers were selected for the simulation studies:
+
+\begin{itemize}
+\item \texttt{optim} from the {\tt{stats}} package to test the BFGS \citep{broyden, fletchera, goldfarb, shanno}, L-BFGS-B \citep{byrd}, CG \citep{fletcher}, and Nelder-Mead \citep{nelder} algorithms. 
+\item \texttt{nlm} \citep{dennisa} and \texttt{nlminb} \citep{gay} from the same package to test popular non-linear unconstrained optimization algorithms.
+\item \texttt{hjn} from the {\tt{optimr}} package \citep{R-optimr} to test the so-called Hooke and Jeeves Pattern Search Optimization \citep{hooke}.
+\item \texttt{marqLevAlg} from the {\tt{marqLevAlg}} package \citep{R-marqLevAlg} to test a general-purpose optimization based on the Marquardt-Levenberg algorithm \citep{levenberg, marquardt}.
+\item \texttt{ucminf} from the {\tt{ucminf}} package \citep{R-ucminf} to test a general-purpose optimization based on the Marquardt-Levenberg algorithm \citep{nielsen}.
+\item \texttt{BBoptim} from the {\tt{BB}} package \citep{R-BB} to test a spectral projected gradient method for large scale optimization with simple constraints \citep{varadhan}.
+\item \texttt{newuoa} from the {\tt{minqa}} package \citep{R-minqa} to test a large-scale nonlinear optimization algorithm \cite{powell}.
+\end{itemize}
+
+%A similar Monte-Carlo simulation strategy to \cite{bacri} was used to generate the simulated data sets and benchmark samples.
+
+By also providing the Hessian and/or gradient to the optimizers that support such inputs, 22 optimization procedures are examined for each study design.
+For the study of the computational speed and number of iterations, we applied the  {\tt{microbenchmark}} package \citep{R-microbenchmark} that allows us to obtain precise durations for each of the simulated data sets. Furthermore, HMM ML estimates were reordered by increasing Poisson rates or Gaussian means to avoid a random order of the states.
+% Note that \cite{bacri} points out that HMM ML estimation with {\tt{TMB}} has a duration that varies little when repeated exactly.
+% In other words, the normal background tasks of the computer do not noticeably impact speeds.
+
+%Similarly, a bootstrap was executed on some of the data sets.
+%More precisely, we used the ML estimates to generate sequences of states and random data from the states' respective conditional distributions.
+%Then, the models of interest were re-estimated on each of the sampled data sets.
+
+
+
+% Alternatively, an order could have been set from the start by estimating non-negative increments $\lambda_j - \lambda_{j-1}$ with $\lambda_0 \equiv 0$, as explained by \cite[Section 7.1.1 p.112]{zucchini} and similarly in the Gaussian case.
+% But as \cite[Section 3.2 p.7]{bulla} points out, this can impose optimization issues: "over all series, the simplest parameterization, i.e., the use of log-transformed state-dependent parameters, leads to the best results as regards the number of failures and the convergence to the global maximum".
+% Therefore, this alternative was not pursued.
+
+It is important to note that we discarded all those samples for which the simulated state sequence did not sojourn at least once in each state.
+This was to avoid identifiability and convergence issues when trying to estimate a $m$-state HMM on a data set where only $m - 1$ states are visited.
+Further, samples where at least one optimizer failed to converge were also discarded to ensure comparability.
+% The reason is that optimizers do not typically behave in the same way when failing to converge.
+% Some may reach their limit of iterations, whereas others may have a tolerance too small.
+% This failure can be caused by multiple reasons, many of which are not common with all optimizers in the list.
+% Timing convergence failures would make durations impossible to meaningfully compare.
+For the same reason, we set the maximum number of iterations to \Sexpr{max_iterations} whenever possible.
+Note that some optimizers (\texttt{\Sexpr{toString(OPTIMIZERS_MISSING_ITERATIONS)}}) do not report a number of iterations and are therefore missing from our comparisons of iterations.
+Finally, we use the true values as initial parameters.
+For the TYT data, initial values are calculated as medians from the fitted models resulting from all optimizers listed above.
+
+%(among all optimizers listed above) of estimates based on the TYT data are used for the first design. 
+
+
+%On the real data set, optimizers seem to agree on one or rarely two possible values for each estimate (with negligible differences).
+%In the latter case, an often large majority prefers one value.
+%We prefer the estimate picked by majority and select the third quartile.
+%The mode would be preferred but is unavailable due to small variations between estimates, likely due to computer approximations.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Results}
+\label{results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%This section intends to compare the performance of various optimizer routines by using a couple of example data sets.
+%They aim to be diverse in the number of observations and model complexity.
+%These data sets include one of tinnitus ``arousal'', one of hospital patient arrivals, and simulated ones, as 
+%described in \cref{sec:data_sets}.
+
+In this section, we report the results from the simulation studies focusing on the performance of different optimizers in terms of the computational speed and the lack or presence of unreasonable estimates.
+This section uses {\tt{R}} scripts that may be of interest to users investigating their own HMM settings, and are available in the supporting information.
+We begin by reporting the speed of all optimization routines and thereafter the accuracy. 
+The routine names contain the optimizer names and may be followed by either ``\_gr'' to indicate that the routine uses {\tt{TMB}}'s provided gradient function, ``\_he'' to indicate the use of {\tt{TMB}}'s provided Hessian function, or ``\_grhe'' to indicate the use of both gradient and Hessian functions provided by {\tt{TMB}}.
+Note that some optimizers cannot make use of these functions and hence bear no extension at the end of their names.
+
+%The same infrastructure and setup as in \cite{bacri} is used, therefore a preliminary check of its reliability is unnecessary.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Simulation study: TYT setting}
+\label{sec:results-tinn}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<<optimizers-acceleration-tinn-plot, fig.height = 4, fig.cap = paste("Median duration (in milliseconds) and median number of iterations together with 2.5\\%- and 97.5\\%-quantile when fitting two-state Poisson HMMs to 200 replications in the first setting."), echo = FALSE>>=
+
+benchmark_optimizer_comparison_df_tinn_plot <- benchmark_optimizer_comparison_df_tinn %>%
+  select(c("optimizer", "time", "iterations")) %>%
+  mutate(time = 1e3 * time) %>%
+  mutate(iterations = ifelse(optimizer %in% OPTIMIZERS_MISSING_ITERATIONS_FULL, NA, iterations))
+
+benchmark_table <- as.data.frame(benchmark_optimizer_comparison_df_tinn_plot %>%
+                                   rename(Optimizer = optimizer) %>%
+                                   group_by(Optimizer) %>% # We want an average per parameter, and by optimizer (already separated with columns)
+                                   summarise("Time-Median" = median(time),
+                                             "Time-CI1" = quantile.colwise(time)[1],
+                                             "Time-CI2" = quantile.colwise(time)[2],
+                                             "Iterations-Median" = median(iterations, na.rm = TRUE),
+                                             "Iterations-CI1" = quantile.colwise(iterations, na.rm = TRUE)[1],
+                                             "Iterations-CI2" = quantile.colwise(iterations, na.rm = TRUE)[2]))
+
+# quantiles <- as.data.frame(benchmark_optimizer_comparison_df_lamb_plot %>%
+#                              mutate(Optimizer = factor(optimizer, levels = unique(optimizer))) %>%
+#                              group_by(Optimizer) %>%
+#                              summarise(across(where(is.double), quantile.colwise), .groups = "keep") %>%
+#                              mutate(Optimizer = as.character(Optimizer)))
+# 
+# for (parameter_name in quantiles$Parameter) {
+#   for (optimizer_name in OPTIMIZERS_METHOD_UNDERSCORE) {
+#     idx_rows <- which(quantiles$Parameter == parameter_name)
+#     idx_col <- which(colnames(quantiles) == optimizer_name)
+#     
+#     new_col_name1 <- sub(pattern = "$", replacement = paste0("-", "CI1"), x = optimizer_name)
+#     new_col_name2 <- sub(pattern = "$", replacement = paste0("-", "CI2"), x = optimizer_name)
+#     idx_row_bootstrap_table <- which(bootstrap_table$Parameter == parameter_name)
+#     bootstrap_table[idx_row_bootstrap_table, new_col_name1] <- quantiles[idx_rows, idx_col][1]
+#     bootstrap_table[idx_row_bootstrap_table, new_col_name2] <- quantiles[idx_rows, idx_col][2]
+#   }
+# }
+# 
+# # Rename parameters to plotmath
+# params_names_plotmath <- paste0(rep("widehat(lambda[",
+#                                  m),
+#                              1:m,
+#                              "])")
+# for (row in 1:m) {
+#   # Get row and column indices for gamma instead of the default
+#   # columnwise index: the default indices are 1:m for the 1st column,
+#   # then (m + 1):(2 * m) for the 2nd, etc...
+#   params_names_plotmath <- c(params_names_plotmath,
+#                           paste0(sapply(X = 1:m,
+#                                         FUN = function(row, col) {paste0("widehat(gamma[",
+#                                                                          row,
+#                                                                          col,
+#                                                                          "])")},
+#                                         row = row)))
+# }
+# params_names_plotmath <- c(params_names_plotmath,
+#                            paste0(rep("widehat(delta[",
+#                                       m),
+#                                   1:m,
+#                                   "])"))
+# 
+# params_names_plotmath_with_nll <- c("nll", params_names_plotmath)
+# 
+plot_table <- benchmark_table %>%
+  pivot_longer(cols = matches("^((Time)|(Iterations))", perl = TRUE), # All columns except "Optimizer"
+               names_to = c("Type", ".value"),
+               names_sep = "-")
+  # rename(Parameter = `Parameter-Median`) %>%
+  # mutate(Optimizer = factor(Optimizer),
+  #        Parameter = factor(Parameter, labels = c(params_names_plotmath[order(params_names_plotmath)], "nll"))) %>%
+  # mutate(Parameter = factor(Parameter, levels = params_names_plotmath_with_nll)) -> plot_table
+
+# len <- length(params_names_plotmath_with_nll)
+# idx_half <- len %/% 2
+
+plot_table %>%
+  # filter(Parameter %in% params_names_plotmath_with_nll[1:idx_half]) %>%
+  ggplot(aes(x = Median, y = Optimizer, color = Optimizer)) +
+  geom_point(na.rm = TRUE, show.legend = FALSE) +
+  # scale_x_log10(limits = plot_limits) +
+  # scale_x_continuous(limits = plot_limits) +
+  geom_errorbarh(aes(xmin = CI1, xmax = CI2, height = .3),
+                 na.rm = TRUE,
+                 show.legend = FALSE) +
+  facet_grid(
+    # . ~ Parameter,
+    cols = vars(Type),
+    # space ="free",
+    scales = "free",
+    switch = "x",
+    labeller = label_parsed
+  ) +
+  xlab("") +
+  theme_Publication() +
+  scale_color_manual(values = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]) +
+  theme(axis.text.y = element_markdown(colour = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]))
+@
+
+
+
+\autoref{fig:optimizers-acceleration-tinn-plot} shows the time required by each optimization routine, measured over the \Sexpr{BENCHMARK_SAMPLES} replication. The number of iterations required by each optimization routine is also reported where available. Times range from \Sexpr{round(min(benchmark_optimizer_comparison_df_tinn_plot$time))} to \Sexpr{round(max(benchmark_optimizer_comparison_df_tinn_plot$time))} milliseconds.
+As shown by the large medians and wide CIs, \texttt{CG} and \texttt{CG\_gr} require substantially more time to estimate a HMM, compared to the other optimizers.
+Furthermore, optimizers that take a long time to estimate HMMs require a high amount of iterations as well, as expected.
+Notably, optimization routines almost always take longer when the Hessian is passed.
+This likely results from a higher computational burden due to handling and evaluating Hessian matrices via {\tt{TMB}}.
+
+Looking at the details, the optimizer \texttt{BFGS\_gr} is among the fastest optimizers, and this is partly explained by a relatively low number of iterations, and by the fact that it does not make use of the Hessian. 
+However, we note that \texttt{nlm} and \texttt{nlmimb} families of optimizers are slower when the gradient and Hessian are not passed as argument.
+The optimizer \texttt{BBoptim} is comparatively slow, and \texttt{nlminb\_grhe} fails to converge comparably often.
+
+In addition to time durations, we investigate the accuracy of the optimizers, based on another 1000 replications from the two-state Poisson HMM in the first setting.
+The main conclusion from this simulation is that the medians and empirical quantiles calculated  are in fact almost identical across all optimizers, and very close to the true parameter values used in the simulations. Results are reported in \autoref{fig:bootstrap-graph-tinn} in \autoref{sec:appendix-perf}.
+These result imply that the different optimizers are equally accurate. Note, however, that the variation is quite high for some of the estimated parameters and for the nll, which results most likely from the limited number of observations.
+   
+%will all provide almost identical estimation results for the HMM.
+
+
+%As shown by their broad CIs, nlls are fairly spread, with values ranging from a minimum of \Sexpr{round(min(subset(bootstrap_tinn_results_with_nll, subset = Parameter == "nll", select = -Parameter)))} to a maximum of \Sexpr{round(max(subset(bootstrap_tinn_results_with_nll, subset = Parameter == "nll", select = -Parameter)))}.
+%This is caused by some optimizers sometimes finding very different estimates on the same data, resulting in large differences in nll. It also explains the broad CIs on some estimates. Furthermore, the bootstrap estimates shown graphically in \autoref{fig:bootstrap-graph-tinn} shows little variations between nlls and parameter estimate medians and CIs accross the different optimizers.
+
+
+
+%As with the smoothing probabilities, the width of the TPM's CIs grows with the distance to the boundaries zero and one.
+%An intuitive interpretation is that their uncertainty should be low when the corresponding event's probability is near one or zero (in other words when the event is certain to happen or not), and high when its probability is far from zero or one (in other words when it is unsure whether the event happens or not).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Simulation study: two-state Poisson HMM}
+\label{sec:results-simu1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\noindent In this second simulation setting, the parameters of our two-state Poisson HMM are given by
+\begin{equation*}
+\bm{\lambda} = (\Sexpr{toString(simu1_true_lambda)}), \quad
+\bm{\Gamma} = \Sexpr{matrix.to.LaTeX(simu1_true_gamma)},
+\end{equation*}
+and the sample size is fixed at 200.
+ \autoref{fig:optimizers-acceleration-simu1-plot} illustrates our results, which are in line with those obtained in the first setting. More precisely, \texttt{BBoptim} still dominates the number of iterations, and \texttt{CG} and \texttt{CG\_gr} require more computational time than the others.
+Overall, most optimizers need more time compared to the previous setting as there is more data to process, but the time increase for \texttt{nlm\_he} and \texttt{hjn} is much more substantial than for other optimizers.
+%Surprisingly, the change in the number of iterations does not follow the same principle.
+Moreover, although the data set is larger, some optimizers (e.g. \texttt{BBoptim} and \texttt{BFGS\_gr}) perform as fast as or faster than in the previous setting.
+Furthermore, passing {\tt{TMB}}'s Hessian to optimizers does not always slow down the optimization. This can be seen, e.g., from \texttt{nlminb\_he} which exhibits a lower median time than \texttt{nlminb}. A last notable pattern concerns the popular \texttt{nlm} optimizer. When only the Hessian but not the gradient is supplied from \texttt{TMB}, the computational time increases substantially compared to \texttt{nlm\_gr} and \texttt{nlm\_grhe}. Interestingly, the equally popular optimizer \texttt{nlminb} is not affected in the same way. Thus, one should be careful when only supplying the Hessian from \texttt{TMB} while an optimizer carries out the gradient approximation. In any case, the low number of iterations required by both \texttt{nlminb\_grhe} and \texttt{nlm\_grhe} indicate a preferable convergence behavior when supplying both quantities.
+
+In terms of accuracy of the parameter estimates and obtained nlls, our results are highly similar to those described in the first setting (for details, see \autoref{fig:bootstrap-graph-simu1} in \autoref{sec:appendix-perf}).
+
+<<optimizers-acceleration-simu1-plot, fig.height = 4, fig.cap = paste("Median duration (in milliseconds) and median number of iterations together with 2.5\\%- and 97.5\\%-quantile when fitting two-state Poisson HMMs to 200 replications in the second setting."), echo = FALSE>>=
+benchmark_optimizer_comparison_df_simu1_plot <- benchmark_optimizer_comparison_df_simu1 %>%
+  select(c("optimizer", "time", "iterations")) %>%
+  mutate(time = 1e3 * time) %>%
+  mutate(iterations = ifelse(optimizer %in% OPTIMIZERS_MISSING_ITERATIONS_FULL, NA, iterations))
+
+benchmark_table <- as.data.frame(benchmark_optimizer_comparison_df_simu1_plot %>%
+                                   rename(Optimizer = optimizer) %>%
+                                   group_by(Optimizer) %>% # We want an average per parameter, and by optimizer (already separated with columns)
+                                   summarise("Time-Median" = median(time),
+                                             "Time-CI1" = quantile.colwise(time)[1],
+                                             "Time-CI2" = quantile.colwise(time)[2],
+                                             "Iterations-Median" = median(iterations, na.rm = TRUE),
+                                             "Iterations-CI1" = quantile.colwise(iterations, na.rm = TRUE)[1],
+                                             "Iterations-CI2" = quantile.colwise(iterations, na.rm = TRUE)[2]))
+
+# quantiles <- as.data.frame(benchmark_optimizer_comparison_df_lamb_plot %>%
+#                              mutate(Optimizer = factor(optimizer, levels = unique(optimizer))) %>%
+#                              group_by(Optimizer) %>%
+#                              summarise(across(where(is.double), quantile.colwise), .groups = "keep") %>%
+#                              mutate(Optimizer = as.character(Optimizer)))
+# 
+# for (parameter_name in quantiles$Parameter) {
+#   for (optimizer_name in OPTIMIZERS_METHOD_UNDERSCORE) {
+#     idx_rows <- which(quantiles$Parameter == parameter_name)
+#     idx_col <- which(colnames(quantiles) == optimizer_name)
+#     
+#     new_col_name1 <- sub(pattern = "$", replacement = paste0("-", "CI1"), x = optimizer_name)
+#     new_col_name2 <- sub(pattern = "$", replacement = paste0("-", "CI2"), x = optimizer_name)
+#     idx_row_bootstrap_table <- which(bootstrap_table$Parameter == parameter_name)
+#     bootstrap_table[idx_row_bootstrap_table, new_col_name1] <- quantiles[idx_rows, idx_col][1]
+#     bootstrap_table[idx_row_bootstrap_table, new_col_name2] <- quantiles[idx_rows, idx_col][2]
+#   }
+# }
+# 
+# # Rename parameters to plotmath
+# params_names_plotmath <- paste0(rep("widehat(lambda[",
+#                                  m),
+#                              1:m,
+#                              "])")
+# for (row in 1:m) {
+#   # Get row and column indices for gamma instead of the default
+#   # columnwise index: the default indices are 1:m for the 1st column,
+#   # then (m + 1):(2 * m) for the 2nd, etc...
+#   params_names_plotmath <- c(params_names_plotmath,
+#                           paste0(sapply(X = 1:m,
+#                                         FUN = function(row, col) {paste0("widehat(gamma[",
+#                                                                          row,
+#                                                                          col,
+#                                                                          "])")},
+#                                         row = row)))
+# }
+# params_names_plotmath <- c(params_names_plotmath,
+#                            paste0(rep("widehat(delta[",
+#                                       m),
+#                                   1:m,
+#                                   "])"))
+# 
+# params_names_plotmath_with_nll <- c("nll", params_names_plotmath)
+# 
+plot_table <- benchmark_table %>%
+  pivot_longer(cols = matches("^(?!Optimizer)", perl = TRUE), # All columns except "Optimizer"
+               names_to = c("Type", ".value"),
+               names_sep = "-")
+  # rename(Parameter = `Parameter-Median`) %>%
+  # mutate(Optimizer = factor(Optimizer),
+  #        Parameter = factor(Parameter, labels = c(params_names_plotmath[order(params_names_plotmath)], "nll"))) %>%
+  # mutate(Parameter = factor(Parameter, levels = params_names_plotmath_with_nll)) -> plot_table
+
+# len <- length(params_names_plotmath_with_nll)
+# idx_half <- len %/% 2
+
+plot_table %>%
+  # filter(Parameter %in% params_names_plotmath_with_nll[1:idx_half]) %>%
+  ggplot(aes(x = Median, y = Optimizer, color = Optimizer)) +
+  geom_point(na.rm = TRUE, show.legend = FALSE) +
+  # scale_x_log10(limits = plot_limits) +
+  # scale_x_continuous(limits = plot_limits) +
+  geom_errorbarh(aes(xmin = CI1, xmax = CI2, height = .3),
+                 na.rm = TRUE,
+                 show.legend = FALSE) +
+  facet_grid(
+    # . ~ Parameter,
+    cols = vars(Type),
+    # space ="free",
+    scales = "free",
+    switch = "x",
+    labeller = label_parsed
+  ) +
+  xlab("") +
+  theme_Publication() +
+  scale_color_manual(values = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]) +
+  theme(axis.text.y = element_markdown(colour = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]))
+@
+
+%\restoregeometry
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Simulation study: two-state Gaussian HMM} %3 data}
+\label{results-simu3}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\noindent In our third and last simulation setting, the parameters of a two-state Gaussian HMM are given by
+\begin{equation*}
+\bm{\Gamma} = \Sexpr{matrix.to.LaTeX(simu3_true_gamma)}, \quad
+\bm{\mu} = (\Sexpr{toString(simu3_true_mu)}), \quad
+\bm{\sigma} = (\Sexpr{toString(simu3_true_sigma)}), 
+\end{equation*}
+and the sample size is fixed at 200. In terms of computational time and the number of iterations, the results observed for this setup are similar to the previously studied Poisson HMMs (see \autoref{fig:optimizers-acceleration-simu3-plot}). A minor aspect is an increase in both iterations and computational time, which is not surprising given the higher number of parameters.
+
+Regarding estimation accuracy of the parameter estimates and obtained nlls, our results are again highly similar to those obtained in the previous two settings (illustrated graphically by \autoref{fig:bootstrap-graph-simu3} in \autoref{sec:appendix-perf}). 
+  
+<<optimizers-acceleration-simu3-plot, fig.height = 4, fig.cap = paste("Median duration (in milliseconds) and median number of iterations together with 2.5\\%- and 97.5\\%-quantile when fitting two-state Gaussian HMMs to 200 replications in the third setting."), echo = FALSE>>=
+benchmark_optimizer_comparison_df_simu3_plot <- benchmark_optimizer_comparison_df_simu3 %>%
+  select(c("optimizer", "time", "iterations")) %>%
+  mutate(time = 1e3 * time) %>%
+  mutate(iterations = ifelse(optimizer %in% OPTIMIZERS_MISSING_ITERATIONS_FULL, NA, iterations))
+
+benchmark_table <- as.data.frame(benchmark_optimizer_comparison_df_simu3_plot %>%
+                                   rename(Optimizer = optimizer) %>%
+                                   group_by(Optimizer) %>% # We want an average per parameter, and by optimizer (already separated with columns)
+                                   summarise("Time-Median" = median(time),
+                                             "Time-CI1" = quantile.colwise(time)[1],
+                                             "Time-CI2" = quantile.colwise(time)[2],
+                                             "Iterations-Median" = median(iterations, na.rm = TRUE),
+                                             "Iterations-CI1" = quantile.colwise(iterations, na.rm = TRUE)[1],
+                                             "Iterations-CI2" = quantile.colwise(iterations, na.rm = TRUE)[2]))
+
+# quantiles <- as.data.frame(benchmark_optimizer_comparison_df_lamb_plot %>%
+#                              mutate(Optimizer = factor(optimizer, levels = unique(optimizer))) %>%
+#                              group_by(Optimizer) %>%
+#                              summarise(across(where(is.double), quantile.colwise), .groups = "keep") %>%
+#                              mutate(Optimizer = as.character(Optimizer)))
+# 
+# for (parameter_name in quantiles$Parameter) {
+#   for (optimizer_name in OPTIMIZERS_METHOD_UNDERSCORE) {
+#     idx_rows <- which(quantiles$Parameter == parameter_name)
+#     idx_col <- which(colnames(quantiles) == optimizer_name)
+#     
+#     new_col_name1 <- sub(pattern = "$", replacement = paste0("-", "CI1"), x = optimizer_name)
+#     new_col_name2 <- sub(pattern = "$", replacement = paste0("-", "CI2"), x = optimizer_name)
+#     idx_row_bootstrap_table <- which(bootstrap_table$Parameter == parameter_name)
+#     bootstrap_table[idx_row_bootstrap_table, new_col_name1] <- quantiles[idx_rows, idx_col][1]
+#     bootstrap_table[idx_row_bootstrap_table, new_col_name2] <- quantiles[idx_rows, idx_col][2]
+#   }
+# }
+# 
+# # Rename parameters to plotmath
+# params_names_plotmath <- paste0(rep("widehat(lambda[",
+#                                  m),
+#                              1:m,
+#                              "])")
+# for (row in 1:m) {
+#   # Get row and column indices for gamma instead of the default
+#   # columnwise index: the default indices are 1:m for the 1st column,
+#   # then (m + 1):(2 * m) for the 2nd, etc...
+#   params_names_plotmath <- c(params_names_plotmath,
+#                           paste0(sapply(X = 1:m,
+#                                         FUN = function(row, col) {paste0("widehat(gamma[",
+#                                                                          row,
+#                                                                          col,
+#                                                                          "])")},
+#                                         row = row)))
+# }
+# params_names_plotmath <- c(params_names_plotmath,
+#                            paste0(rep("widehat(delta[",
+#                                       m),
+#                                   1:m,
+#                                   "])"))
+# 
+# params_names_plotmath_with_nll <- c("nll", params_names_plotmath)
+# 
+plot_table <- benchmark_table %>%
+  pivot_longer(cols = matches("^(?!Optimizer)", perl = TRUE), # All columns except "Optimizer"
+               names_to = c("Type", ".value"),
+               names_sep = "-")
+  # rename(Parameter = `Parameter-Median`) %>%
+  # mutate(Optimizer = factor(Optimizer),
+  #        Parameter = factor(Parameter, labels = c(params_names_plotmath[order(params_names_plotmath)], "nll"))) %>%
+  # mutate(Parameter = factor(Parameter, levels = params_names_plotmath_with_nll)) -> plot_table
+
+# len <- length(params_names_plotmath_with_nll)
+# idx_half <- len %/% 2
+
+plot_table %>%
+  # filter(Parameter %in% params_names_plotmath_with_nll[1:idx_half]) %>%
+  ggplot(aes(x = Median, y = Optimizer, color = Optimizer)) +
+  geom_point(na.rm = TRUE, show.legend = FALSE) +
+  # scale_x_log10(limits = plot_limits) +
+  # scale_x_continuous(limits = plot_limits) +
+  geom_errorbarh(aes(xmin = CI1, xmax = CI2, height = .3),
+                 na.rm = TRUE,
+                 show.legend = FALSE) +
+  facet_grid(
+    # . ~ Parameter,
+    cols = vars(Type),
+    # space ="free",
+    scales = "free",
+    switch = "x",
+    labeller = label_parsed
+  ) +
+  xlab("") +
+  theme_Publication() +
+  scale_color_manual(values = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]) +
+  theme(axis.text.y = element_markdown(colour = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)])) #+ scale_x_log10()
+@
+
+%\restoregeometry
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Robustness to initial value selection}
+\label{sec:robustness}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this section, we examine the impact of initial values of the parameters - including poorly selected ones - on the convergence behavior and accuracy of different optimizers. We investigate one real and several simulated data sets. In order to ``challenge'' the optimizers, all data sets are of comparable small size.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Study design}
+\label{sec:robustness-design}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We again consider three settings in the following. In the first, we investigate the TYT data set. In the second and third setting, we focus on simulated data from Poisson and Gaussian HMMs, respectively. More specifically, for the Poisson HMMs we generate one data set of sample size \Sexpr{DATA_SIZE_SIMU1} for each of the HMMs considered. These HMMs are defined by all possible combinations of the following Poisson rates and TPMs:
+\begin{align*}
+& \bm{\lambda} \in \left\{ (\Sexpr{true_lambda_1_simu1}), (\Sexpr{true_lambda_2_simu1}) \right\} \text{and}\\
+& \bm{\Gamma} \in \left\{ \Sexpr{matrix.to.LaTeX(true_gamma_1_simu1)}, \Sexpr{matrix.to.LaTeX(true_gamma_2_simu1)}, \Sexpr{matrix.to.LaTeX(true_gamma_3_simu1)}, \Sexpr{matrix.to.LaTeX(true_gamma_4_simu1)} \right\}.
+\end{align*}
+%For example, the second data set in this first simulation setting is generated by a two-state HMM based on the Poisson rates $\bm{\lambda} = (1,4)$ and the TPM $\bm{\Gamma} = \Sexpr{matrix.to.LaTeX(true_gamma_2_simu1)}$.
+This setup leads to the generation of 2 x 4 data sets. For the Gaussian HMMs, we follow the same approach, %$\Sexpr{DATA_SIZE_SIMU3}$
+where the Gaussian means and standard deviations are selected from the sets
+\begin{align*}
+\bm{\mu} &\in \left\{ (\Sexpr{true_mu_1_simu3}), (\Sexpr{true_mu_2_simu3}) \right\} \text{and}\\
+\bm{\sigma} &\in \left\{ (\Sexpr{true_sigma_1_simu3}), (\Sexpr{true_sigma_2_simu3}) \right\}.
+\end{align*}
+This setting thus generates 2 x 2 x 4 data sets.
+
+For each data set, we pass a large range of initial values to the same optimizers considered in the previous section. In this way, we investigate the resistance of each optimizer to potentially poor initial values when fitting HMMs.
+To generate sets of initial values, we consider the following potential candidates for Poisson rates $\bm{\lambda}$, Gaussian means $\bm{\mu}$, Gaussian standard deviations $\bm{\sigma}$, and TPMs $\bm{\Gamma}$: 
+\begin{align*}
+\lambda_1, \lambda_2 \in & \left\{ M, M + 0.5, M + 1, 1.5, \ldots, x_{max} \right\} ,\text{ where } \lambda_1 < \lambda_2,\\
+\mu_1, \mu_2 \in & \left\{ x_{min}, x_{min} + 0.5, x_{min} + 1, \ldots, x_{max} - 0.5, x_{max} \right\}, \text{ where } \mu_1 < \mu_2,\\
+\sigma_1, \sigma_2 \in & \left\{ 10 \text{ equidistant points going from } \sqrt{\frac{(x_{max} - x_{min})^2}{2T}} \text{ to } \sqrt{(x_{max} - \widehat{\mu})(\widehat{\mu} - x_{min})} \right\},\\
+\text{and } \bm{\Gamma} \in
+& \biggl\{
+  \begin{pmatrix}
+    0.1 & 0.9\\
+    0.9 & 0.1
+  \end{pmatrix},
+  \begin{pmatrix}
+    0.1 & 0.9\\
+    0.8 & 0.2
+  \end{pmatrix},
+  \ldots,
+  \begin{pmatrix}
+    0.1 & 0.9\\
+    0.1 & 0.9
+  \end{pmatrix},
+\\
+& \begin{pmatrix}
+    0.2 & 0.8\\
+    0.9 & 0.1
+  \end{pmatrix},
+  \begin{pmatrix}
+    0.2 & 0.8\\
+    0.8 & 0.2
+  \end{pmatrix},
+  \ldots,
+  \begin{pmatrix}
+    0.2 & 0.8\\
+    0.1 & 0.9
+  \end{pmatrix},
+\\
+& \qquad \qquad \qquad \qquad \qquad \qquad, \ldots
+  \begin{pmatrix}
+    0.9 & 0.1\\
+    0.1 & 0.9
+  \end{pmatrix}
+\biggl\},
+\end{align*}
+where $x_{min} = \min(x_1, x_2, \ldots, x_T)$, $x_{max} = \max(x_1, x_2, \ldots, x_T)$, $\widehat{\mu} = \frac{1}{T}$ $\sum_{i=1}^T x_i$ and $M = \max(0.5, x_{min})$. The motivation for this selection is as follows. First, Poisson means have to be greater than zero, so we set their lower boundary to $M$. Secondly, the $\widehat{\lambda}_i$'s have to belong to the interval $(x_{min}, x_{max})$, cfr. \citep{bohning}. This applies to the Gaussian means as well. Thirdly, the upper and lower limit of ${\sigma}_1, {\sigma}_2 $ is motivated by the Bhatia-Davis \citep{bhatia} and the von Szokefalvi Nagy inequalities \citep{nagy}.
+%The simulation respects the assumption of independence required by the latter inequality.
+
+%Also note that we impose $\lambda_1 < \lambda_2$. By allowing all possibilities, many settings would be equivalent and lead to the same model being estimated, the only difference being the order of the states. The inequality constraint prevents this situation. With more than two states, the constraint would become $\lambda_1 < \lambda_2 < \ldots < \lambda_m$. For the same reason, we impose $\mu_1 < \mu_2$.
+
+For the Poisson HMMs fitted, we consider all possible combination of the parameters described above. For the Gaussian HMMs, however, we sample \Sexpr{as.integer(nrow(accuracy_rates_simu3) / length(unique(accuracy_rates_simu3$dataset_idx)))} initial parameters for each of the \Sexpr{length(unique(accuracy_rates_simu3$dataset_idx))}   data sets to reduce computation time (the total amount reduces from \Sexpr{sum(simu3_parameter_possibilities_initial_amounts)} to \Sexpr{nrow(accuracy_rates_simu3)}). As in the previous \autoref{sec:optimization}, we limit the maximal number of iterations to \Sexpr{max_iterations} whenever possible. Other settings were left as default. 
+
+To evaluate the performance of the optimizers considered, we rely on two criteria. First, we register whether the optimizer converges (all errors are registered regardless of their type). Secondly, when an optimizer converges, we also register if the nll is equal to the "true" nll (with a gentle margin of $\pm$ \Sexpr{100 * NLL_THRESHOLD}\%). We calculate this "true" nll as the median of all nlls derived with all optimizers initiated with the true parameter values. 
+
+% For the TYT data, we use all available sets of initial values, for the simulated data sets we starting the optimization from the true initial values only.
+%This design yields tens of millions sets of initial parameters, across all study designs, from which we can infer convergence failure rates for different optimizers and the rate at which they find the correct global minimum nll.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\autoref{tab:performance-rates-tinn} shows the results for the two-state Poisson HMMs fitted to the TYT data. The four \texttt{marqLevAlg} follow closely. We note that \texttt{hjn} has the best performance: it basically does not fail and converges almost always. Moreover, \texttt{nlminb\_grhe} fails to converge much more often than other optimizers, but is the most likely to find the global maximum when it converges.
+For the other optimizers, the failure rate is generally low (less than 5\%) and the global maximum is found in more than 65\% of the cases.
+
+<<optimizers-performance-rates-tinn, results='asis', echo = FALSE>>=
+rates <- data.frame("Failures $(\\%)$" = numeric(),
+                    "Global maximum found $(\\%)$" = numeric(),
+                    check.names = FALSE)
+
+length_optims <- length(OPTIMIZERS_METHOD)
+rates_rownames <- rep("", length_optims)
+data <- accuracy_rates_tinn[accuracy_rates_tinn$m == 2, -1]
+
+idx_rates <- 1
+for (optim in OPTIMIZERS_METHOD_UNDERSCORE) {
+  rates_rownames[idx_rates] <- gsub(pattern = "_", replacement = "-", x = optim)
+  rates_rownames[idx_rates] <- gsub(pattern = "-gr", replacement = "_gr", x = rates_rownames[idx_rates])
+  rates_rownames[idx_rates] <- gsub(pattern = "-he", replacement = "_he", x = rates_rownames[idx_rates])
+  
+  # For e.g. BFGS_convergence_failure BFGS_gr_convergence_failure BFGS_gr_nll_found BFGS_nll_found,
+  # we want BFGS_convergence_failure and BFGS_nll_found, then BFGS_gr_convergence_failure and BFGS_gr_nll_found
+  # so we need to search for "BFGS_c" or "BFGS_n", then for "BFGS_gr_c" and "BFGS_gr_n".
+  # i.e. we need to search for optim"_[cn]"
+  optim_columns <- grep(pattern = paste0("^", optim, "_[cn]"), x = colnames(data))
+  data_optim <- data[, optim_columns]
+  
+  # Failure rate
+  failure_column <- data_optim[, grep(pattern = "failure", colnames(data_optim))]
+  rates[idx_rates, "Failures $(\\%)$"] <- sum(failure_column) / length(failure_column) * 100
+  
+  # Convergence rate
+  nll_column <- data_optim[, grep(pattern = "nll", colnames(data_optim))]
+  # Only count the nll when the optimizer finds a solution
+  non_failure_indices <- which(failure_column == FALSE)
+  nll_column_relevant <- nll_column[non_failure_indices]
+  
+  nominator <- sum(nll_column_relevant)
+  denominator <- length(non_failure_indices)
+  rates[idx_rates, "Global maximum found $(\\%)$"] <- nominator / denominator * 100
+  
+  idx_rates <- idx_rates + 1
+}
+rownames(rates) <- rates_rownames
+
+table <- xtable(rates,
+                caption = paste0("Performance of multiple optimizers estimating Poisson HMMs from the TYT data (first setting) over ", nrow(accuracy_rates_tinn), " different sets of initial parameters. The first column lists all optimizers. The second column shows how often optimizers fail to converge successfully. The third column displays how often optimizers successfully found the global maximum of the nll when converging."),
+                label = "tab:performance-rates-tinn")
+
+print(table,
+      sanitize.colnames.function = identity)
+@
+
+\autoref{tab:performance-rates-simu1} reports the results from the second setting, also with two-state Poisson HMMs. The results show that all optimizers find the global maximum in the majority of cases ($> 96\%$) when converging. Moreover, the failure rates are relatively low for all optimizers with the exception of \texttt{CG}, which stands out with comparably high failure rates. %Furthermore, we note that the \texttt{nlminb}, with either the gradient or Hessian passed, and \texttt{hjn} have both excellent performances.  
+
+Finally, \autoref{tab:performance-rates-simu3} presents the results from the third setting with Gaussian HMMs. The results regarding the failure rates point in the same direction as those from the Poisson HMM setting: \texttt{CG} attains the highes failure rate, followed by \texttt{newuoa} and \texttt{L-BFGS-B}. The remaining optimizers perform satisfactorily. Note, however, that \texttt{nlminb} does not benefit from being supplied with the gradient and Hessian from \texttt{TMB}. Regarding the global maximum found, many algorithms reach success rates of about 95\% or more. Notable exceptions are \texttt{Nelder-Mead} and \texttt{nlm} when not both gradient and Hessian are provided by \texttt{TMB}. As observed previously for the TYT data, \texttt{nlm} benefits strongly from the full use of \texttt{TMB}.
+
+<<optimizers-performance-rates-simu1, results='asis', echo = FALSE>>=
+rates <- data.frame("Failures $(\\%)$" = numeric(),
+                    "Global maximum found $(\\%)$" = numeric(),
+                    check.names = FALSE)
+length_optims <- length(OPTIMIZERS_METHOD)
+rates_rownames <- rep("", length_optims)
+data <- accuracy_rates_simu1[accuracy_rates_simu1$m == 2, -1]
+
+idx_rates <- 1
+for (optim in OPTIMIZERS_METHOD_UNDERSCORE) {
+  rates_rownames[idx_rates] <- gsub(pattern = "_", replacement = "-", x = optim)
+  rates_rownames[idx_rates] <- gsub(pattern = "-gr", replacement = "_gr", x = rates_rownames[idx_rates])
+  rates_rownames[idx_rates] <- gsub(pattern = "-he", replacement = "_he", x = rates_rownames[idx_rates])
+  
+  # For e.g. BFGS_convergence_failure BFGS_gr_convergence_failure BFGS_gr_nll_found BFGS_nll_found,
+  # we want BFGS_convergence_failure and BFGS_nll_found, then BFGS_gr_convergence_failure and BFGS_gr_nll_found
+  # so we need to search for "BFGS_c" or "BFGS_n", then for "BFGS_gr_c" and "BFGS_gr_n".
+  # i.e. we need to search for optim"_[cn]"
+  optim_columns <- grep(pattern = paste0("^", optim, "_[cn]"), x = colnames(data))
+  data_optim <- data[, optim_columns]
+  
+  # Failure rate
+  failure_column <- data_optim[, grep(pattern = "failure", colnames(data_optim))]
+  rates[idx_rates, "Failures $(\\%)$"] <- sum(failure_column) / length(failure_column) * 100
+  
+  # Convergence rate
+  nll_column <- data_optim[, grep(pattern = "nll", colnames(data_optim))]
+  # Only count the nll when the optimizer finds a solution
+  non_failure_indices <- which(failure_column == FALSE)
+  nll_column_relevant <- nll_column[non_failure_indices]
+  
+  nominator <- sum(nll_column_relevant)
+  denominator <- length(non_failure_indices)
+  rates[idx_rates, "Global maximum found $(\\%)$"] <- nominator / denominator * 100
+  
+  idx_rates <- idx_rates + 1
+}
+rownames(rates) <- rates_rownames
+
+table <- xtable(rates,
+                caption = paste0("Performance of multiple optimizers estimating Poisson HMMs from the second setting over ", nrow(data), " different sets of initial parameters. The first column lists all optimizers. The second column shows how often optimizers fail to converge successfully. The third column displays how often optimizers successfully found the global maximum of the nll when converging."),
+                label = "tab:performance-rates-simu1")
+
+print(table,
+      sanitize.colnames.function = identity)
+@
+
+<<optimizers-performance-rates-simu3, results='asis', echo = FALSE>>=
+rates <- data.frame("Failures $(\\%)$" = numeric(),
+                    "Global maximum found $(\\%)$" = numeric(),
+                    check.names = FALSE)
+length_optims <- length(OPTIMIZERS_METHOD)
+rates_rownames <- rep("", length_optims)
+# data <- accuracy_rates_simu3[accuracy_rates_simu3$m == 2, -1]
+data <- accuracy_rates_simu3[accuracy_rates_simu3$m == 2, -1]
+
+idx_rates <- 1
+for (optim in OPTIMIZERS_METHOD_UNDERSCORE) {
+  rates_rownames[idx_rates] <- gsub(pattern = "_", replacement = "-", x = optim)
+  rates_rownames[idx_rates] <- gsub(pattern = "-gr", replacement = "_gr", x = rates_rownames[idx_rates])
+  rates_rownames[idx_rates] <- gsub(pattern = "-he", replacement = "_he", x = rates_rownames[idx_rates])
+  
+  # For e.g. BFGS_convergence_failure BFGS_gr_convergence_failure BFGS_gr_nll_found BFGS_nll_found,
+  # we want BFGS_convergence_failure and BFGS_nll_found, then BFGS_gr_convergence_failure and BFGS_gr_nll_found
+  # so we need to search for "BFGS_c" or "BFGS_n", then for "BFGS_gr_c" and "BFGS_gr_n".
+  # i.e. we need to search for optim"_[cn]"
+  optim_columns <- grep(pattern = paste0("^", optim, "_[cn]"), x = colnames(data))
+  data_optim <- data[, optim_columns]
+  
+  # Failure rate
+  failure_column <- data_optim[, grep(pattern = "failure", colnames(data_optim))]
+  rates[idx_rates, "Failures $(\\%)$"] <- sum(failure_column) / length(failure_column) * 100
+  
+  # Convergence rate
+  nll_column <- data_optim[, grep(pattern = "nll", colnames(data_optim))]
+  # Only count the nll when the optimizer finds a solution
+  non_failure_indices <- which(failure_column == FALSE)
+  nll_column_relevant <- nll_column[non_failure_indices]
+  
+  nominator <- sum(nll_column_relevant)
+  denominator <- length(non_failure_indices)
+  rates[idx_rates, "Global maximum found $(\\%)$"] <- nominator / denominator * 100
+  
+  idx_rates <- idx_rates + 1
+}
+rownames(rates) <- rates_rownames
+
+table <- xtable(rates,
+                caption = paste0("Performance of multiple optimizers estimating Gaussian HMMs from the third setting over ", nrow(accuracy_rates_simu3), " different sets of initial parameters randomly drawn from ", sum(simu3_parameter_possibilities_initial_amounts), " different candidate sets of initial values. The first column lists all optimizers. The second column shows how often optimizers fail to converge successfully. The third column displays how often optimizers successfully found the global maximum of the nll when converging."),
+                label = "tab:performance-rates-simu3")
+
+print(table,
+      sanitize.colnames.function = identity)
+@
+
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Hybrid algorithm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Last, we ran a small simulation study investigating a hybrid algorithm within the {\tt{TMB}} framework in the spirit of \cite{bulla}. The hybrid algorithm starts with the \texttt{Nelder-Mead} optimizer and switches to \texttt{nlminb} after a certain number of iterations. The idea is to benefit from both \texttt{Nelder-Mead}'s rapid departure from poor initial values  and from the high convergence speed of \texttt{nlminb}. Our study is performed on 1000 random sets of initial values in a similar fashion to \autoref{sec:robustness}, using the weekly returns data set. For every set of initial values, we sequentially increase the number of iterations carried out by \texttt{Nelder-Mead} by ten (starting at one) until convergence or until $10 000$ iterations has been reached, in which case we classify the attempt as a failure. For comparison, we also run an optimization only with \texttt{nlminb} starting directly with the same sets of inital values. In both cases, \texttt{nlminb} benefits from the gradient and Hessian provided by {\tt{TMB}}. 
+
+ \autoref{fig:Nelder-Mead-convergence-per-iteration} reports the results of our study. The left most columns show that only one iteration was required to converge in 827 of the 1000 sets of initial values with the hybrid algorithm, while \texttt{nlminb} converges in only 698 out of these 827 sets. Furthermore, for 39 additional sets of initial values, the hybrid algorithm converges with 10 iterations carried out by the \texttt{Nelder-Mead} optimizer, whereas \texttt{nlminb} fails 26 times on these sets. Increasing the number of initial iterations carried out by \texttt{Nelder-Mead} for the hybrid algorithm leads to similar patterns. Finally, both optimization routines fail to converge for 18 sets of initial values. Thus, in total, the hybrid algorithm with one or more \texttt{Nelder-Mead} iterations failed in only $1.8 \%$ of the cases. In comparison, direct use of \texttt{nlminb} failed in around $12 \%$ of the cases. This indicates that the hybrid algorithm requires rather few iterations of \texttt{Nelder-Mead} to improve the convergence rate substantially.
+
+<<Nelder-Mead-convergence-per-iteration, echo=FALSE, warning=FALSE, fig.cap="Convergence counts of \\texttt{nlminb} and a hybrid algorithm (first \\texttt{Nelder-Mead}, then \\texttt{nlminb}). The hybrid algorithm uses 1, 10, 20,$\\ldots$ iterations for the \\texttt{Nelder-Mead}, then passes the estimates to \\texttt{nlminb} as initial values. We randomly picked 1000 sets of initial values out of 1458000 potential candidates.">>=
+load("data/neldermead_convergence_table_MEDIAN.RData")
+convergence_table %>%
+  select(c("idx", "iterations", "Hybrid_conv", "nlminb_alone_conv")) %>%
+  rename(nlminb_conv = nlminb_alone_conv) %>%
+  pivot_longer(cols = c("Hybrid_conv", "nlminb_conv"),
+               names_pattern = "(.*)_conv",
+               values_to = "convergence",
+               names_to = "algorithm") %>%
+  
+  # Replace estimation failure (NA) with FALSE
+  mutate(convergence = case_when(is.na(convergence) ~ FALSE,
+                                 TRUE ~ convergence)) %>%
+  
+  # Rotate the x axis labels
+  # (add a newline character (\n) after every letter followed by another letter)
+  mutate(algorithm = case_when(TRUE ~ gsub(pattern = "(.(?=[a-zA-Z]))", replacement = "\\1\n", x = algorithm, perl = TRUE))) %>%
+  
+  # New groups to aggregate Iterations 50-100, 110-200
+  mutate(iterations_grouped = case_when(50 <= iterations & iterations <= 100 ~ "50-100",
+                                        110 <= iterations & iterations <= 250 ~ "110-250",
+                                        iterations == 10000 ~ "Fail",
+                                        TRUE ~ as.character(iterations))) %>%
+  mutate(iterations_grouped = factor(iterations_grouped, levels = c("1", "10", "20", "30", "40", "50-100",
+                                                                    "110-250", "Fail"))) %>%
+
+  # Plot
+  ggplot(aes(x = algorithm,
+             fill = convergence)) +
+  geom_bar(stat = "count") +
+  facet_grid(. ~ iterations_grouped, space ="free_x", scales="free_x", switch="x") +
+  geom_text(stat = "count", aes(label = after_stat(count)), position = position_stack(vjust = 1)) +
+  ggtitle("Weekly returns") +
+  theme_Publication() +
+  xlab("Iterations") +
+  ylab("# of samples")
+@
+
+% 
+% <<Hybrid-Nelder-Mead-benchmark, fig.height=9, echo = FALSE, fig.cap="Time vs iterations for multiple data sets, assessed on the \\texttt{Nelder-Mead} optimizer along with the default \\texttt{nlminb} optimizer and a hybrid of the Nelder-Mead. The lines correspond to the mean times. Note that the \\texttt{nlminb} and \\texttt{Nelder-Mead} optimizers do not depend on the number of iterations, but the time measurements were repeated anyway for consistency and are expected to be almost constant. Each time measurement is derived from 100 replications.">>=
+% load("data/time_iterations_table.RData")
+% time_iterations_table %>%
+%   # mutate(method = case_when(method == "NM" ~ "Nelder-Mead",
+%   #                           method == "n" ~ "nlminb",
+%   #                           method == "H" ~ "Hybrid"),
+%   mutate(data = case_when(data == "tinn" ~ "TYT",
+%                           data == "soap" ~ "Soap",
+%                           data == "sp500" ~ "Daily returns",
+%                           data == "simu3" ~ "Simulation: two-state Gaussian HMM")) %>%
+%   mutate(data = factor(data, levels = c("TYT",
+%                                         "Soap",
+%                                         "Daily returns",
+%                                         "Simulation: two-state Gaussian HMM"))) %>%
+%   group_by(iterations, method, data) %>%
+%   summarise(mean_time = mean(time),
+%             # min_time = min(time),
+%             # max_time = max(time),
+%             .groups = "keep") %>%
+%   ggplot(aes(x = iterations, y = mean_time)) +
+%   # geom_point(aes(colour = method),
+%   #            # size = POINT_SIZE,
+%   #            shape = 16) +
+%   geom_line(aes(colour = method)) +
+%   scale_y_log10() +
+%   # size = LINE_SIZE) +
+%   # geom_errorbar(aes(ymin = min_time,
+%   #                   ymax = max_time,
+%   #                   # width = ERRORBAR_END_WIDTH,
+%   #                   color = method)) +
+%   #               # show.legend = FALSE) +
+%   # facet_grid(. ~ iterations, space ="free_x", scales="free_x", switch="x") +
+%   facet_wrap(vars(data), nrow = 3, ncol = 2) +
+%   ggtitle("Time vs iterations per data set") +
+%   ylab("Time (sec)") +
+%   xlab("Iterations") +
+%   theme_Publication()
+% @
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Concluding remarks}
+\label{sec:conclusion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This paper addresses a couple of aspects concerning parameter estimation for HMMs via {\tt{TMB}} and {\tt{R}} using direct numerical maximization (DNM) of the likelihood. The advantage of {\tt{TMB}} is that it permits to quantify the uncertainty of any quantity depending on the estimated parameters. This is achieved by combining the delta method with automatic differentiation.
+Moreover, {\tt{TMB}} provides exact calculations of first- and second-order derivatives of the (log-)likelihood of a model by automatic differentiation. This allows for efficient gradient- and/or Hessian-based optimization of the likelihood.   
+
+In the first part of the paper, we propose a straightforward technique to quantify the uncertainty of smoothing probabilities via the calculation of Wald-type CIs. The advantage of this approach is that one avoids computationally intensive bootstrap methods. By means of several examples, we illustrate how such CIs provide additional insight into the commonly used state classification via smoothing probabilities. For a practitioner working with HMMs, the presented uncertainty quantification constitutes a new tool for obtaining a better understanding of the dynamics of the hidden process.
+
+Subsequently, we examine speed and accuracy of the different optimizers in three simulation settings. Our results show a slight variation in both number of iterations and computational speed. In particular, the optimizers {\tt{nlminb}}, {\tt{nlm}}, {\tt{marqLevAlg}}, and {\tt{BFGS}} usually possess the highest computational speed. The computing time required by all optimizers reduces when using the gradient provided by {\tt{TMB}}. The number of iterations reduces in particular for {\tt{nlminb}} and {\tt{nlm}} when employing both gradient and Hessian from {\tt{TMB}}. This suggests a more direct path towards the (global) likelihood maximum compared to optimizer-internal approximation routines.\\ 
+Regarding the accuracy, measured in terms of attained negative log-likelihood and parameter estimates (and their variability) the results show little variations across the different optimizers. This is indeed a  positive finding, indicating that the performance of the optimizers is relatively equal in terms of accuracy - however, this statment only holds true when using optimal initial value.       
+Then, we examine robustness towards initial values across different optimizers. In three settings, we measure a) how often optimizers fail to converge and b) how often they successfully reach the global maximum of the log-likelihood function when starting from a wide range of sets of initial values. In particular, {\tt{nlm}}, {\tt{nlminb}}, and {\tt{hjn}} show an overall good performance. Notably, {\tt{nlm}} benefits strongly from employing both gradient and Hessian provided by {\tt{TMB}}, which is not the case for {\tt{nlminb}}. Altogether, we observe a trade-off between failure rates and convergence to the global maximum. Nevertheless, none of the optimizers shows an exceptionally bad performance.
+
+Finally, we illustrate that a hybrid algorithm starting with the \texttt{Nelder-Mead} optimizer and switching to \texttt{nlminb} after a certain number of iterations converges more often than {\tt{nlminb}}. Notably an effect is visible even with a single initial iteration carried out by \texttt{Nelder-Mead}. 
+
+ \clearpage
+
+
+% \vspace*{1pc}
+% \footnotesize{
+% \noindent {\bf{Acknowledgement}}
+
+\section*{Acknowledgements}
+% \fontsize{9pt}{11pt} % 2nd parameter = 1.2 times the font size, https://tex.stackexchange.com/a/48277
+% \selectfont
+%BLINDED
+We thank the University of Regensburg and European School for Interdisciplinary Tinnitus Research (ESIT) for providing access to the TYT data. Special thanks go to J.~Sim\~{o}es for data preparation, and W.~Schlee and B.~Langguth for helpful comments and suggestions. We also thank Anthony Chauvin and Bertrand Galichon for providing access to the hospital data set along with the necessary authorizations. J.~Bulla's profound thanks for the continued moral support go to the highly skilled, very helpful, and always friendly employees of Vestbrygg AS (Org.~ID 912105954).
+\vspace*{1pc}
+
+% \noindent {\bf{Conflict of Interest}}
+
+\section*{Disclosure statement}
+
+The authors have declared no conflict of interest.
+
+\section*{Funding}
+
+%BLINDED
+The work of J. Bulla was supported by the GENDER-Net Co-Plus Fund (GNP-182). This work was also supported by the Financial Market Fund (Norwegian Research Council project no. 309218).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage
+% \bibliographystyle{plainnat}
+\bibliographystyle{tfnlm}
+\bibliography{paper2,packages}
+% \addcontentsline{toc}{chapter}{References}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+
+\begin{center}
+  {\bf \Huge Appendix}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%The supplemental material provides some additional tables and figures related to the results from the main paper, and also provide a few additional studies. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Forward algorithm and backward algorithm}
+\label{sec:appendix-hmm_fwbw}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The pass through observations can be efficiently computed piece by piece, from left (i.e., time $s=1$) to right (i.e., time $s=t$) or right to left by the so-called ``forward algorithm'' and ``backward algorithm'' respectively. With these two algorithms, the likelihood can be computed recursively. To formulate the forward algorithm, let us define the vector $\alpha_t$ for $t = 1, 2, \ldots, T$ so that
+\begin{align*}
+\bm{\alpha}_t &= \bm{\delta} \bm{P}(x_1)\bm{\Gamma} \bm{P}(x_2) \bm{\Gamma} \bm{P}(x_3) \ldots \bm{\Gamma} \bm{P}(x_t)\\
+&= \bm{\delta} \bm{P}(x_1) \prod_{s=2}^{t}\bm{\Gamma} \bm{P}(x_s)\\
+&= \left( \alpha_t(1), \ldots, \alpha_t(m) \right)
+\end{align*}
+for $t = 1, 2, \ldots, T$.
+The name of the algorithm comes from computing it via the recursion
+\begin{gather*}
+\bm{\alpha}_0 = \bm{\delta} \bm{P}(x_1),\\
+\bm{\alpha}_t = \bm{\alpha}_{t-1} \bm{\Gamma} \bm{P}(x_t) \text{ for } t = 1, 2, \ldots, T.
+\end{gather*}
+After passing through all observations until time $T$, the likelihood is derived from
+\begin{gather*}
+L(\bm{\theta}) = \bm{\alpha}_T \bm{1}'.
+\end{gather*}
+
+The backward algorithm is very similar to the forward algorithm. The sole difference lies in starting from the last instead of the first observation. To specify the backward algorithm, let us define the vector $\bm{\beta}_t$ for $t = 1, 2, \ldots, T$ so that
+\begin{align*}
+\bm{\beta}'_t &= \bm{\Gamma} \bm{P}(x_{t+1}) \bm{\Gamma} \bm{P}(x_{t+2}) \ldots \bm{\Gamma} \bm{P}(x_T) \ldots \bm{1}'\\
+&= \left(\prod_{s=t+1}^{T}\bm{\Gamma} \bm{P}(x_s) \right) \bm{1}'\\
+&= \left( \beta_t(1), \ldots, \beta_t(m) \right).
+\end{align*}
+The name backward algorithm results from the way of recursively calculating $\bm{\beta}_t$ by
+\begin{gather*}
+\bm{\beta}_T = \bm{1}'\\
+\bm{\beta}_t = \bm{\Gamma} \bm{P}(x_{t+1}) \bm{\beta}_{t+1} \text{ for } t = T-1, T-2, \ldots, 1.
+\end{gather*}
+As before, the likelihood can be obtained after a pass through all observations by
+\begin{gather*}
+L(\bm{\theta}) = \bm{\delta} \bm{\beta}_1.
+\end{gather*}
+
+Usually, only the forward algorithm is used for parameter estimation.
+Nonetheless, either or both algorithms may be necessary to derive certain quantities of interest, e.g., smoothing probabilities (as we explore in \autoref{sec:smoothing-uncertainty}) or forecast probabilities. For practical implementation, attention needs to be paid to underflow errors which can quickly occur in both algorithms (due to the elements of the TPM and / or conditional probabilties taking values in $[0,1]$). Therefore, we implemented a scaled version of the forward algorithm as suggested by \cite[p.~48]{zucchini}. This version directly provides the negative log-likelihood (nll) as result.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Reparameterization of the likelihood function}
+\label{sec:appendix-reparameterization}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Along with the data, $\bm{\theta}$ serves as input for calculating the likelihood by the previously illustrated forward algorithms. Some constraints need to be imposed on $\bm{\theta}$:
+\begin{enumerate}
+\item In the case of the Poisson HMM, the parameter vector $\bm{\lambda}\ = (\lambda_1, \dots, \lambda_m)$ necessary for computing the conditional distribution has to consist of strictly positive elements.
+\item The elements $\gamma_{ij}$ of the TPM $\bm{\Gamma}$ must be non-negative, and each row of $\bm{\Gamma}$ needs to sum up to to one.
+\end{enumerate}
+Tacking these constraints by means of constrained optimization routines when maximizing the likelihood can lead to several difficulties. For example, constrained optimization routines may require a significantly amount of fine-tuning. Moreover, the number of available optimization routines is significantly reduced. A common alternative works by reparametrizing the log-likelihood as a function of unconstrained, so-called ``working'' parameters $\{\bf{T}, \bm{\eta}\}= g^{-1}(\bm{\Gamma}, \bm{\lambda})$, as follows.
+One possibility to reparametrize $\bm{\Gamma}$ is given by
+\begin{equation*}
+\tau_{ij} = \log\left(\frac{\gamma_{ij}}{1 - \sum_{k \neq i} \gamma_{ik}}\right) = \log(\gamma_{ij}/\gamma_{ii}) \text{ for } i \neq j.
+\end{equation*}
+where $\tau_{ij} \in \mathbb{R}$ are $m(m-1)$ unconstrained elements of an $m \times m$ matrix $\bf{T}$ with missing diagonal elements. The matching reverse transformation is
+\begin{equation*}
+\gamma_{ij} = \frac{\exp(\tau_{ij})}{1 + \sum_{k \neq i} \exp(\tau_{ik})} \text{ for } i \neq j\text{,}
+\end{equation*}
+and the diagonal elements of $\bm{\Gamma}$ follow from $\sum_j \gamma_{ij} = 1$, $i = 1,...,m$ (see \cite{zucchini}, p.~51).
+
+For a Poisson HMM, a simple method to reparametrize the conditional Poisson means $\bm{\lambda}$ into $\bm{\eta}$ is given by $\eta_i = \log(\lambda_i)$ for $i = 1, \ldots, m$.
+Consequently, the constrained ``natural'' parameters are obtained via $\lambda_i = \exp(\eta_i)$.
+Estimation of the natural parameters $\{\bm{\Gamma}, \bm{\lambda}\}$ can therefore be obtained by maximization of the reparametrized likelihood with respect to $\{\bf{T}, \bm{\eta}\}$ then by a transformation of the estimated working parameters back to natural parameters via the above transformations, i.e. $\{\hat{\bm{\Gamma}}, \hat{\bm{\lambda}}\} = g(\hat{\bm{P}}, \hat{\bm{\eta}})$.
+In general, the above procedure requires that the function $g$ is one-to-one.
+
+With a Gaussian HMM, the means are already unconstrained and do not require any transformation.
+However, the standard deviations can be transformed similarly to the Poisson rates via $\eta_i = \log(\sigma_i)$ for $i = 1, \ldots, m$, and the ``natural'' parameters are then obtained via the corresponding reverse transformation $\sigma_i = \exp(\eta_i)$.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Confidence intervals}
+\label{sec:appendix-cis}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+When handling statistical models, confidence intervals (CIs) for the estimated parameters can be derived via various approaches. One common such approach bases on finite-difference approximations of the Hessian. However, as \cite{visser} points out, there are better alternatives when dealing with most HMMs. Preferred are profile likelihood-based CIs or bootstrap-based CIs, where the latter are now widely used despite the potentially large computational load \citep{bulla, zucchini}. With common Poisson HMMs, \cite{bacri} shows that {\tt{TMB}} can yield valid Wald-type CIs in a fraction of the time required by classical bootstrap-based methods.
+
+In this section, we describe the Wald-type and the bootstrap-based approach. The likelihood profile method frequently fails to yield CIs (see \citep{bacri}) and is therefore not detailed.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Wald-type confidence intervals}
+\label{sec:appendix-wald}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Evaluating the Hessian at the optimum found by numerical optimization procedures is basis for Wald-tye CIs. As illustrated above, the optimized negative log-likelihood function of a HMM typically depends on the working parameters. However, drawing inference on the natural parameters is by far more relevant than inference on the working parameters. Since the Hessian $\nabla^2\log L(\{\hat{\bm{T}}, \hat{\bm{\eta}}\})$ relies on the working parameters $\hat{\bm{\eta}}$, an estimate of the covariance matrix of $\{\hat{\bm{\Gamma}}, \hat{\bm{\lambda}}\}$ can be obtained via the delta method through
+\begin{equation}
+\Sigma_{\hat{\bm{\Gamma}}, \hat{\bm{\lambda}}} = - \nabla g(\hat{\bm{T}}, \hat{\bm{\eta}})\left(\nabla^2\log L(\hat{\bm{T}}, \hat{\bf{\eta}})\right)^{-1}\nabla g(\hat{\bm{T}}, \hat{\bm{\eta}})^\prime,
+\label{eq:deltamethod}
+\end{equation}
+with $\{\hat{\bm{\Gamma}}, \hat{\bm{\lambda}}\} = g(\hat{\bm{T}}, \hat{\bm{\eta}})$ as defined in \cite[][Ch.~3.3.1]{zucchini} and \cite{bacri}.
+From this, {\tt{TMB}} deduces the standard errors for the working and natural parameters, from which 95\% CIs can be formed via $\hat{\bm{\lambda}} \pm q_{0.975} \cdot \text{SE}(\hat{\bm{\lambda}})$ where $q_{0.975} \approx 1.96$ is the $97.5^{\text{th}}$ percentile from the standard normal distribution, and $\text{SE}(\hat{\bm{\lambda}})$ denotes the standard error of $\hat{\bm{\lambda}}$.
+
+% {\hl REPHRASE AFTER}
+% 
+% From a practical perspective, however, inference about the natural parameters usually is of interest.
+% As the Hessian $\nabla^2\log L(\{\hat{\bm{T}}, \hat{\bm{\eta}}\})$ refers to the working parameters $\{\bm{T}, \bm{\eta}\}$, the delta method is suitable to obtain an estimate of the covariance matrix of $\{\hat{\bm{\Gamma}}, \hat{\bm{\lambda}}\}$ by
+% \begin{equation}
+% \Sigma_{\hat{\bm{\Gamma}}, \hat{\bm{\lambda}}} = - \nabla g(\hat{\bm{T}}, \hat{\bm{\eta}})\left(\nabla^2\log L(\hat{\bm{T}}, \hat{\bf{\eta}})\right)^{-1}\nabla g(\hat{\bm{T}}, \hat{\bm{\eta}})^\prime,
+% \label{eq:deltamethod}
+% \end{equation}
+% with $\{\hat{\bm{\Gamma}}, \hat{\bm{\lambda}}\} = g(\hat{\bm{T}}, \hat{\bm{\eta}})$ as defined in \autoref{sec:reparameterization}.
+% 
+% {\hl REPHRASE BEFORE}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Bootstrap-based confidence intervals}
+\label{sec:appendix-boostrap}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The bootstrap method was described by \cite{efron} in their seminal article, and is widely used by many practitioners. Many bootstrap techniques have been developed since then, and have been extensively applied in the scientific literature. This paper will not review these techniques, but will instead use one of them: the so-called parametric bootstrap. As \cite{hardle} points out, the parametric bootstrap is suitable for time series, and hence motivates this choice. For details on the parametric bootstrap implementation in {\tt{R}}, we refer to \cite[][Ch.~3.6.2, pp.~58-60]{zucchini}. 
+
+At its heart, bootstrapping requires some form of re-sampling to be carried out. Then, the chosen model is re-estimated on each new sample, and eventually some form of aggregation of the results takes place.
+We make use of {\tt{TMB}} to accelerate the re-estimation procedure, then look at the resulting median along with the 2.5th and 97.5th empirical percentile to infer a 95\% CI.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Estimated models for real data sets}
+\label{sec:appendix-estmod}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<<estimates-cis-aic-bic-real-data-preparation, include = FALSE>>=
+m <- 5
+
+## mu, sigma, gamma, delta, for SP 500 (max m, Gaussian) + AIC + BIC (for 2, 3, 4, 5 states)
+# lambda, gamma, delta, for SP 500 (max m, Gaussian) + AIC + BIC (for 2, 3, 4, 5 states)
+max_rows <- m + m^2 + m + 5
+# AIC, BIC (cols) for 2, 3, 4, 5 states and column names (rows)
+rows_AIC_BIC <- max_rows - 5 + 1:5
+
+round_to_digits <- 2
+@
+
+<<estimates-cis-aic-bic-real-data-preparation-tinn, dependson="estimates-cis-aic-bic-real-data-preparation", include = FALSE>>=
+m <- 2
+data <- tinn_data
+ 
+lambda_indices <- 1:m
+gamma_indices <- max(lambda_indices) + 1:(m^2)
+delta_indices <- max(gamma_indices) + 1:m
+
+# 1 row per parameter + AIC + BIC
+table_estimates <- data.frame(Par. = rep(NA, max_rows),
+                              Est. = NA,
+                              L. = NA,
+                              U. = NA)
+
+current_rows <- min(lambda_indices):(max(delta_indices))
+
+# Parameters
+gamma <- matrix(0.2 / (m - 1), nrow = m, ncol = m)
+diag(gamma) <- 0.8
+lambda <- seq(from = quantile(data, 0.1),
+              to = quantile(data, 0.9),
+              length.out = m)
+
+# Parameters & covariates for TMB
+working_params <- pois.HMM.pn2pw(m, lambda, gamma)
+TMB_data <- list(x = data, m = m)
+
+# Estimation
+tmb_gh <- TMB.estimate(TMB_data = TMB_data,
+                       working_parameters = working_params,
+                       gradient = TRUE,
+                       hessian = TRUE,
+                       std_error = TRUE)
+
+table_estimates[current_rows, "Par."] <- c(pois.latex.names(m))
+table_estimates[current_rows, "Est."] <- round(unlist(tmb_gh[c("lambda", "gamma", "delta")]), round_to_digits)
+table_estimates[current_rows, "U."] <- round(unlist(tmb_gh[c("lambda", "gamma", "delta")]) + q95_norm * unlist(tmb_gh[c("lambda_std_error", "gamma_std_error", "delta_std_error")]), round_to_digits)
+table_estimates[current_rows, "L."] <- round(unlist(tmb_gh[c("lambda", "gamma", "delta")]) - q95_norm * unlist(tmb_gh[c("lambda_std_error", "gamma_std_error", "delta_std_error")]), round_to_digits)
+
+# Poisson rates CIs must be strictly above 0
+table_estimates[lambda_indices, "L."] <- pmax(0, table_estimates[lambda_indices, "L."])
+
+# TPM CIs must be between 0 and 1
+table_estimates[gamma_indices, "L."] <- pmax(0, table_estimates[gamma_indices, "L."])
+table_estimates[gamma_indices, "U."] <- pmin(table_estimates[gamma_indices, "U."], 1)
+
+# Stationary distribution CIs must be between 0 and 1
+table_estimates[delta_indices, "L."] <- pmax(0, table_estimates[delta_indices, "L."])
+table_estimates[delta_indices, "U."] <- pmin(table_estimates[delta_indices, "U."], 1)
+
+# Order the TPM gamma indices
+new_gamma_indices <- order(table_estimates[gamma_indices, "Par."])
+# Turn them into table indices
+new_gamma_indices <- gamma_indices[new_gamma_indices]
+table_estimates[gamma_indices, ] <- table_estimates[new_gamma_indices, ]
+
+## AIC, BIC
+# Column names, headers
+table_estimates[rows_AIC_BIC[1], 1] <- "m"
+table_estimates[rows_AIC_BIC[1], 2] <- "AIC"
+table_estimates[rows_AIC_BIC[1], 3] <- "BIC"
+
+## 2-3-4-5 states
+for (m in 2:5) {
+  # Parameters
+  gamma <- matrix(0.2 / (m - 1), nrow = m, ncol = m)
+  diag(gamma) <- 0.8
+  lambda <- seq(from = quantile(data, 0.1),
+                to = quantile(data, 0.9),
+                length.out = m)
+  
+  # Parameters & covariates for TMB
+  working_params <- pois.HMM.pn2pw(m, lambda, gamma)
+  TMB_data <- list(x = data, m = m)
+  
+  # Estimation
+  tmb_gh <- TMB.estimate(TMB_data = TMB_data,
+                         working_parameters = working_params,
+                         gradient = TRUE,
+                         hessian = TRUE,
+                         std_error = TRUE)
+  
+  if (tmb_gh$convergence) {
+    table_estimates[rows_AIC_BIC[m], 1] <- tmb_gh$m
+    table_estimates[rows_AIC_BIC[m], 2] <- round(tmb_gh$AIC)
+    table_estimates[rows_AIC_BIC[m], 3] <- round(tmb_gh$BIC)
+  } else {
+    break
+  }
+}
+
+table_estimates_tinn <- table_estimates
+@
+
+<<estimates-cis-aic-bic-real-data-preparation-soap, dependson="estimates-cis-aic-bic-real-data-preparation", include = FALSE>>=
+m <- 2
+data <- soap_data
+ 
+lambda_indices <- 1:m
+gamma_indices <- max(lambda_indices) + 1:(m^2)
+delta_indices <- max(gamma_indices) + 1:m
+
+# 1 row per parameter + AIC + BIC
+table_estimates <- data.frame(Par. = rep(NA, max_rows),
+                              Est. = NA,
+                              L. = NA,
+                              U. = NA)
+
+current_rows <- min(lambda_indices):max(delta_indices)
+
+# Parameters
+gamma <- matrix(0.2 / (m - 1), nrow = m, ncol = m)
+diag(gamma) <- 0.8
+lambda <- seq(from = quantile(data, 0.1),
+              to = quantile(data, 0.9),
+              length.out = m)
+
+# Parameters & covariates for TMB
+working_params <- pois.HMM.pn2pw(m, lambda, gamma)
+TMB_data <- list(x = data, m = m)
+
+# Estimation
+tmb_gh <- TMB.estimate(TMB_data = TMB_data,
+                       working_parameters = working_params,
+                       gradient = TRUE,
+                       hessian = TRUE,
+                       std_error = TRUE)
+
+table_estimates[current_rows, "Par."] <- c(pois.latex.names(m))
+table_estimates[current_rows, "Est."] <- round(unlist(tmb_gh[c("lambda", "gamma", "delta")]), round_to_digits)
+table_estimates[current_rows, "U."] <- round(unlist(tmb_gh[c("lambda", "gamma", "delta")]) + q95_norm * unlist(tmb_gh[c("lambda_std_error", "gamma_std_error", "delta_std_error")]), round_to_digits)
+table_estimates[current_rows, "L."] <- round(unlist(tmb_gh[c("lambda", "gamma", "delta")]) - q95_norm * unlist(tmb_gh[c("lambda_std_error", "gamma_std_error", "delta_std_error")]), round_to_digits)
+
+# Poisson rates CIs must be strictly above 0
+table_estimates[lambda_indices, "L."] <- pmax(0, table_estimates[lambda_indices, "L."])
+
+# TPM CIs must be between 0 and 1
+table_estimates[gamma_indices, "L."] <- pmax(0, table_estimates[gamma_indices, "L."])
+table_estimates[gamma_indices, "U."] <- pmin(table_estimates[gamma_indices, "U."], 1)
+
+# Stationary distribution CIs must be between 0 and 1
+table_estimates[delta_indices, "L."] <- pmax(0, table_estimates[delta_indices, "L."])
+table_estimates[delta_indices, "U."] <- pmin(table_estimates[delta_indices, "U."], 1)
+
+# Order the TPM gamma indices
+new_gamma_indices <- order(table_estimates[gamma_indices, "Par."])
+# Turn them into table indices
+new_gamma_indices <- gamma_indices[new_gamma_indices]
+table_estimates[gamma_indices, ] <- table_estimates[new_gamma_indices, ]
+## AIC, BIC
+# Column names, headers
+table_estimates[rows_AIC_BIC[1], 1] <- "m"
+table_estimates[rows_AIC_BIC[1], 2] <- "AIC"
+table_estimates[rows_AIC_BIC[1], 3] <- "BIC"
+
+## 2-3-4-5 states
+for (m in 2:5) {
+  # Parameters
+  gamma <- matrix(0.2 / (m - 1), nrow = m, ncol = m)
+  diag(gamma) <- 0.8
+  lambda <- seq(from = quantile(data, 0.1),
+                to = quantile(data, 0.9),
+                length.out = m)
+  
+  # Parameters & covariates for TMB
+  working_params <- pois.HMM.pn2pw(m, lambda, gamma)
+  TMB_data <- list(x = data, m = m)
+  
+  # Estimation
+  tmb_gh <- TMB.estimate(TMB_data = TMB_data,
+                         working_parameters = working_params,
+                         gradient = TRUE,
+                         hessian = TRUE,
+                         std_error = TRUE)
+  
+  if (tmb_gh$convergence) {
+    table_estimates[rows_AIC_BIC[m], 1] <- tmb_gh$m
+    table_estimates[rows_AIC_BIC[m], 2] <- round(tmb_gh$AIC)
+    table_estimates[rows_AIC_BIC[m], 3] <- round(tmb_gh$BIC)
+  } else {
+    break
+  }
+}
+
+table_estimates_soap <- table_estimates
+@
+
+<<estimates-cis-aic-bic-real-data-preparation-sp500, dependson="estimates-cis-aic-bic-real-data-preparation", include = FALSE>>=
+m <- 3
+data <- 100 * sp500_data
+ 
+mu_indices <- 1:m
+sigma_indices <- max(mu_indices) + 1:m
+gamma_indices <- max(sigma_indices) + 1:(m^2)
+delta_indices <- max(gamma_indices) + 1:m
+
+# 1 row per parameter + AIC + BIC
+table_estimates <- data.frame(Par. = rep(NA, max_rows),
+                              Est. = NA,
+                              L. = NA,
+                              U. = NA)
+
+current_rows <- min(mu_indices):max(delta_indices)
+
+# Parameters
+gamma <- matrix(0.2 / (m - 1), nrow = m, ncol = m)
+diag(gamma) <- 0.8
+mu <- seq(from = quantile(data, 0.1),
+          to = quantile(data, 0.9),
+          length.out = m)
+sigma <- seq(from = 0.5 * sqrt(var(data)),
+             to = 1.5 * sqrt(var(data)),
+             length.out = m)
+
+# Parameters & covariates for TMB
+working_params <- norm.HMM.pn2pw(m, mu, sigma, gamma)
+TMB_data <- list(x = data, m = m)
+
+# Estimation
+tmb_gh <- norm.TMB.estimate(TMB_data = TMB_data,
+                            working_parameters = working_params,
+                            gradient = TRUE,
+                            hessian = TRUE,
+                            std_error = TRUE)
+
+table_estimates[current_rows, "Par."] <- c(norm.latex.names(m))
+table_estimates[current_rows, "Est."] <- round(unlist(tmb_gh[c("mu", "sigma", "gamma", "delta")]), round_to_digits)
+table_estimates[current_rows, "U."] <- round(unlist(tmb_gh[c("mu", "sigma", "gamma", "delta")]) + q95_norm * unlist(tmb_gh[c("mu_std_error", "sigma_std_error", "gamma_std_error", "delta_std_error")]), round_to_digits)
+table_estimates[current_rows, "L."] <- round(unlist(tmb_gh[c("mu", "sigma", "gamma", "delta")]) - q95_norm * unlist(tmb_gh[c("mu_std_error", "sigma_std_error", "gamma_std_error", "delta_std_error")]), round_to_digits)
+
+# Covariances CIs must be strictly above 0
+table_estimates[sigma_indices, "L."] <- pmax(0, table_estimates[sigma_indices, "L."])
+
+# TPM CIs must be between 0 and 1
+table_estimates[gamma_indices, "L."] <- pmax(0, table_estimates[gamma_indices, "L."])
+table_estimates[gamma_indices, "U."] <- pmin(table_estimates[gamma_indices, "U."], 1)
+
+# Stationary distribution CIs must be between 0 and 1
+table_estimates[delta_indices, "L."] <- pmax(0, table_estimates[delta_indices, "L."])
+table_estimates[delta_indices, "U."] <- pmin(table_estimates[delta_indices, "U."], 1)
+
+# Order the TPM gamma indices
+new_gamma_indices <- order(table_estimates[gamma_indices, "Par."])
+# Turn them into table indices
+new_gamma_indices <- gamma_indices[new_gamma_indices]
+table_estimates[gamma_indices, ] <- table_estimates[new_gamma_indices, ]
+
+## AIC, BIC
+# Column names, headers
+table_estimates[rows_AIC_BIC[1], 1] <- "m"
+table_estimates[rows_AIC_BIC[1], 2] <- "AIC"
+table_estimates[rows_AIC_BIC[1], 3] <- "BIC"
+
+## 2-3-4-5 states
+for (m in 2:5) {
+  # Parameters
+  gamma <- matrix(0.2 / (m - 1), nrow = m, ncol = m)
+  diag(gamma) <- 0.8
+  mu <- seq(from = quantile(data, 0.1),
+            to = quantile(data, 0.9),
+            length.out = m)
+  sigma <- seq(from = 0.5 * sqrt(var(data)),
+               to = 1.5 * sqrt(var(data)),
+               length.out = m)
+  
+  # Parameters & covariates for TMB
+  working_params <- norm.HMM.pn2pw(m, mu, sigma, gamma)
+  TMB_data <- list(x = data, m = m)
+  
+  # Estimation
+  tmb_gh <- norm.TMB.estimate(TMB_data = TMB_data,
+                              working_parameters = working_params,
+                              gradient = TRUE,
+                              hessian = TRUE,
+                              std_error = TRUE)
+  
+  if (tmb_gh$convergence) {
+    table_estimates[rows_AIC_BIC[m], 1] <- tmb_gh$m
+    table_estimates[rows_AIC_BIC[m], 2] <- round(tmb_gh$AIC)
+    table_estimates[rows_AIC_BIC[m], 3] <- round(tmb_gh$BIC)
+  } else {
+    break
+  }
+}
+
+table_estimates_sp500 <- table_estimates
+@
+
+<<estimates-cis-aic-bic-real-data-preparation-hosp, dependson="estimates-cis-aic-bic-real-data-preparation", include = FALSE>>=
+m <- 5
+data <- hosp_data
+ 
+lambda_indices <- 1:m
+gamma_indices <- max(lambda_indices) + 1:(m^2)
+delta_indices <- max(gamma_indices) + 1:m
+
+# 1 row per parameter + AIC + BIC
+table_estimates <- data.frame(Par. = rep(NA, max_rows),
+                              Est. = NA,
+                              L. = NA,
+                              U. = NA)
+
+current_rows <- min(lambda_indices):(max(delta_indices))
+
+# Parameters
+gamma <- matrix(0.2 / (m - 1), nrow = m, ncol = m)
+diag(gamma) <- 0.8
+lambda <- seq(from = quantile(data, 0.1),
+              to = quantile(data, 0.9),
+              length.out = m)
+
+# Parameters & covariates for TMB
+working_params <- pois.HMM.pn2pw(m, lambda, gamma)
+TMB_data <- list(x = data, m = m)
+
+# Estimation
+tmb_gh <- TMB.estimate(TMB_data = TMB_data,
+                       working_parameters = working_params,
+                       gradient = TRUE,
+                       hessian = TRUE,
+                       std_error = TRUE)
+
+table_estimates[current_rows, "Par."] <- c(pois.latex.names(m))
+table_estimates[current_rows, "Est."] <- round(unlist(tmb_gh[c("lambda", "gamma", "delta")]), round_to_digits)
+table_estimates[current_rows, "U."] <- round(unlist(tmb_gh[c("lambda", "gamma", "delta")]) + q95_norm * unlist(tmb_gh[c("lambda_std_error", "gamma_std_error", "delta_std_error")]), round_to_digits)
+table_estimates[current_rows, "L."] <- round(unlist(tmb_gh[c("lambda", "gamma", "delta")]) - q95_norm * unlist(tmb_gh[c("lambda_std_error", "gamma_std_error", "delta_std_error")]), round_to_digits)
+
+# Poisson rates CIs must be strictly above 0
+table_estimates[lambda_indices, "L."] <- pmax(0, table_estimates[lambda_indices, "L."])
+
+# TPM CIs must be between 0 and 1
+table_estimates[gamma_indices, "L."] <- pmax(0, table_estimates[gamma_indices, "L."])
+table_estimates[gamma_indices, "U."] <- pmin(table_estimates[gamma_indices, "U."], 1)
+
+# Stationary distribution CIs must be between 0 and 1
+table_estimates[delta_indices, "L."] <- pmax(0, table_estimates[delta_indices, "L."])
+table_estimates[delta_indices, "U."] <- pmin(table_estimates[delta_indices, "U."], 1)
+
+# Order the TPM gamma indices
+new_gamma_indices <- order(table_estimates[gamma_indices, "Par."])
+# Turn them into table indices
+new_gamma_indices <- gamma_indices[new_gamma_indices]
+table_estimates[gamma_indices, ] <- table_estimates[new_gamma_indices, ]
+## AIC, BIC
+# Column names, headers
+table_estimates[rows_AIC_BIC[1], 1] <- "m"
+table_estimates[rows_AIC_BIC[1], 2] <- "AIC"
+table_estimates[rows_AIC_BIC[1], 3] <- "BIC"
+
+## 2-3-4-5 states
+for (m in 2:5) {
+  # Parameters
+  gamma <- matrix(0.2 / (m - 1), nrow = m, ncol = m)
+  diag(gamma) <- 0.8
+  lambda <- seq(from = quantile(data, 0.1),
+                to = quantile(data, 0.9),
+                length.out = m)
+  
+  # Parameters & covariates for TMB
+  working_params <- pois.HMM.pn2pw(m, lambda, gamma)
+  TMB_data <- list(x = data, m = m)
+  
+  # Estimation
+  tmb_gh <- TMB.estimate(TMB_data = TMB_data,
+                         working_parameters = working_params,
+                         gradient = TRUE,
+                         hessian = TRUE,
+                         std_error = TRUE)
+  
+  if (tmb_gh$convergence) {
+    table_estimates[rows_AIC_BIC[m], 1] <- tmb_gh$m
+    table_estimates[rows_AIC_BIC[m], 2] <- round(tmb_gh$AIC)
+    table_estimates[rows_AIC_BIC[m], 3] <- round(tmb_gh$BIC)
+  } else {
+    break
+  }
+}
+
+table_estimates_hosp <- table_estimates
+@
+
+% SUMMARY TABLE PART 1
+
+<<estimates-cis-aic-bic-real-data-table-part1, dependson=c("estimates-cis-aic-bic-real-data-preparation-tinn", "estimates-cis-aic-bic-real-data-preparation-soap", "estimates-cis-aic-bic-real-data-preparation-sp500"), echo = FALSE, results = 'asis'>>=
+rows_to_keep <- c(1:18, 36:39)
+full_table_estimates <- cbind(table_estimates_tinn[rows_to_keep, ],
+                              table_estimates_soap[rows_to_keep, ],
+                              table_estimates_sp500[rows_to_keep, ])
+
+print_table <- xtable(full_table_estimates,
+                      align = paste0("ccccc|cccc|cccc"),
+                      digits = round_to_digits,
+                      caption = "Estimates, Wald-type 95\\% CIs, for a two-state Poisson HMM fitted to the TYT data, a two-state Poisson HMM fitted to the soap data, and a three-state Gaussian HMM fitted to the weekly returns data. From left to right, the columns contain: the parameter name, parameter estimate, and lower (L.) and upper (U.) bound of the corresponding 95\\% CI derived via the Hessian provided by TMB, repeated for the three HMMs. As standard deviations and Poisson rates must be non-negative, the CIs are adjusted when necessary. Similarly, the TPM elements and the stationary distribution must take values between 0 and 1 and the CIs are adjusted accordingly when necessary. AIC and BIC scores are displayed under for corresponding models with two, three, four, and five states (when the model estimation converges). Model estimates are derived by \\texttt{nlminb} with {\\tt{TMB}}\'s gradient and Hessian functions passed as arguments.",
+                      label = "tab:estimates-cis-aic-bic-real-data-part1")
+
+# Headers, and partial horizontal lines
+addtorow <- list()
+addtorow$pos <- list(-1)
+
+addtorow$command <- paste0("\\multicolumn{4}{c}{TYT data set} & ",
+                           "\\multicolumn{4}{c}{Soap data set} & ",
+                           "\\multicolumn{4}{c}{Weekly returns data set} ",
+                           "\\\\")
+
+print(print_table,
+      include.rownames = FALSE,
+      sanitize.text.function = identity,
+      # size = "\\fontsize{8pt}{11pt}\\selectfont",
+      hline.after = getOption("xtable.hline.after", c(-1, 0, nrow(print_table) - 3:4, nrow(print_table))),
+      add.to.row = addtorow)
+@
+
+% SUMMARY TABLE PART 2
+
+<<estimates-cis-aic-bic-real-data-table-part2, dependson="estimates-cis-aic-bic-real-data-preparation-hosp", echo = FALSE, results = 'asis'>>=
+max_rows <- nrow(table_estimates_hosp)
+rows_estimates <- 1:(max_rows - 5)
+max_rows_estimates <- max(rows_estimates)
+
+as_hux(table_estimates_hosp[rows_estimates, ]) %>%
+  
+  # Split the estimate table in 2 tables stacked side-by-side
+  restack_across(rows = ceiling(max_rows_estimates / 2) + 1, on_remainder = "fill") %>%
+  
+  # Don't format numbers
+  set_number_format(NA) %>%
+  
+  # Escape Parameter columns
+  set_escape_contents(row = everywhere, col = c(1, 5), FALSE) %>%
+  
+  # Headers
+  insert_row("Hospital data set (1)", "", "", "", "Hospital data set (2)", "", "", "") %>%
+  merge_cells(row = 1, col = 1:4) %>%
+  merge_cells(row = 1, col = 5:8) %>%
+
+  # Add AIC BIC scores below
+  add_rows(cbind(NA, NA, table_estimates_hosp[rows_AIC_BIC, ], NA, NA)) %>%
+
+  # Horizontal lines
+  set_tb_borders(row = 2, col = 1:8) %>% # Header lines
+  set_bottom_border(row = ceiling(max_rows_estimates / 2) + 3, col = 3:5) %>% # AIC BIC headers
+  set_bottom_border(row = ceiling(max_rows_estimates / 2) + 2, col = everywhere) %>% # AIC BIC headers
+  set_bottom_border(row = final(1), col = everywhere) %>% # Bottom of the table
+
+  # Vertical lines
+  set_right_border(row = 1:20, col = 4) %>%
+
+  # Alignment
+  set_align("center") %>%
+  
+  # Padding
+  set_all_padding(0.5) %>%
+  
+  # Table caption + label
+  set_caption("Estimates, Wald-type 95\\% CIs, for a five-state Poisson HMM fitted to the hospital data. From left to right, the columns contain: the parameter name, parameter estimate, and lower (L.) and upper (U.) bound of the corresponding 95\\% CI derived via the Hessian provided by TMB, repeated for the three HMMs. As standard deviations and Poisson rates must be non-negative, the CIs are adjusted when necessary. Similarly, the TPM elements and the stationary distribution must take values between 0 and 1 and the CIs are adjusted accordingly when necessary. AIC and BIC scores are displayed under for corresponding models with two, three, four, and five states (when the model estimation converges). Model estimates are derived by \\texttt{nlminb} with {\\tt{TMB}}\'s gradient and Hessian functions passed as arguments.") %>%
+  set_label("tab:estimates-cis-aic-bic-real-data-part2")
+@
+
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Performance and accuracy of different optimizers: additional figures and results}
+\label{sec:appendix-perf}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%In this section we present a few corresponding figures to the results from Section \ref{sec:optimization}. %, and an additional simulation study.
+
+\cref{fig:bootstrap-graph-tinn,fig:bootstrap-graph-simu1,fig:bootstrap-graph-simu3} show the median of the parameter estimates and the nll, along with 95\% CIs from the three different simulation designs described in \autoref{sec:optimization} across all optimizers studied, over 1000 realizations from the different models. All figures show that the different optimizers behave almost identically in terms of accuracy. However, we restate that the initial values used here are equal to the true parameter values.   
+
+
+<<bootstrap-graph-tinn-setup, echo = FALSE>>=
+m <- M_LIST_TINN
+
+bootstrap_tinn_results_with_nll <- bootstrap_tinn_results$all_natural_parameters %>%
+  select(-c("m")) %>%
+  add_row(bootstrap_tinn_results$all_nlls %>% mutate(Parameter = "nll")) %>%
+  select(-c("seed"))
+
+bootstrap_table <- as.data.frame(bootstrap_tinn_results_with_nll %>%
+                                   mutate(Parameter = factor(Parameter, levels = unique(Parameter))) %>% # Keeps the original order on the parameters. Otherwise, they are lexicographically ordered.
+                                   group_by(Parameter) %>% # We want an average per parameter, and by optimizer (already separated with columns)
+                                   summarise(across(where(is.double), median)) %>%
+                                   # mutate(across(where(is.double), trunc_custom, digits = 3)) %>% 
+                                   mutate(Parameter = levels(Parameter)) %>%
+                                   rename_with(~ paste0(.x, "-Median"))) # We don't need them as factors anymore, and factors may cause troubles later, so we undo the factorization.
+
+quantiles <- as.data.frame(bootstrap_tinn_results_with_nll %>%
+                             mutate(Parameter = factor(Parameter, levels = unique(Parameter))) %>%
+                             group_by(Parameter) %>%
+                             summarise(across(where(is.double), quantile.colwise), .groups = "keep") %>%
+                             mutate(Parameter = as.character(Parameter)))
+
+for (parameter_name in quantiles$Parameter) {
+  for (optimizer_name in OPTIMIZERS_METHOD_UNDERSCORE) {
+    idx_rows <- which(quantiles$Parameter == parameter_name)
+    idx_col <- which(colnames(quantiles) == optimizer_name)
+    
+    new_col_name1 <- sub(pattern = "$", replacement = paste0("-", "CI1"), x = optimizer_name)
+    new_col_name2 <- sub(pattern = "$", replacement = paste0("-", "CI2"), x = optimizer_name)
+    idx_row_bootstrap_table <- which(bootstrap_table$Parameter == parameter_name)
+    bootstrap_table[idx_row_bootstrap_table, new_col_name1] <- quantiles[idx_rows, idx_col][1]
+    bootstrap_table[idx_row_bootstrap_table, new_col_name2] <- quantiles[idx_rows, idx_col][2]
+  }
+}
+
+# Rename parameters to plotmath
+params_names_plotmath <- paste0(rep("widehat(lambda[",
+                                 m),
+                             1:m,
+                             "])")
+for (row in 1:m) {
+  # Get row and column indices for gamma instead of the default
+  # columnwise index: the default indices are 1:m for the 1st column,
+  # then (m + 1):(2 * m) for the 2nd, etc...
+  params_names_plotmath <- c(params_names_plotmath,
+                          paste0(sapply(X = 1:m,
+                                        FUN = function(row, col) {paste0("widehat(gamma[",
+                                                                         row,
+                                                                         col,
+                                                                         "])")},
+                                        row = row)))
+}
+params_names_plotmath <- c(params_names_plotmath,
+                           paste0(rep("widehat(delta[",
+                                      m),
+                                  1:m,
+                                  "])"))
+
+params_names_plotmath_with_nll <- c("nll", params_names_plotmath)
+
+plot_table <- bootstrap_table %>%
+  pivot_longer(cols = matches("^(?!Parameter)", perl = TRUE), # All columns except "Parameter"
+               names_to = c("Optimizer", ".value"),
+               names_sep = "-") %>%
+  rename(Parameter = `Parameter-Median`) %>%
+  mutate(Optimizer = factor(Optimizer),
+         Parameter = factor(Parameter, labels = c(params_names_plotmath[order(params_names_plotmath)], "nll"))) %>%
+  mutate(Parameter = factor(Parameter, levels = params_names_plotmath_with_nll))
+
+len <- length(params_names_plotmath_with_nll)
+idx_half <- len %/% 2
+
+caption <- paste0("Plots of estimates and NLL when estimating a two-state Poisson HMM on the TYT data set (", DATA_SIZE_TINN, " data), over ", BOOTSTRAP_SAMPLES, " realizations. The columns display in order the NLL, Poisson rates, TPM elements, and the stationary distribution. The dots represent the medians, and the lines display the 95\\% percentile CIs.")
+@
+
+<<bootstrap-graph-tinn, dependson="bootstrap-graph-tinn-setup", fig.height = 8, fig.cap = caption, echo = FALSE>>=
+plot1 <- plot_table %>%
+  filter(Parameter %in% params_names_plotmath_with_nll[1:idx_half]) %>%
+  ggplot(aes(x = Median, y = Optimizer, color = Optimizer)) +
+  geom_point(show.legend = FALSE) +
+  # scale_x_log10(limits = plot_limits) +
+  scale_x_continuous(limits = plot_limits) +
+  geom_errorbarh(aes(xmin = CI1, xmax = CI2, height = .3), show.legend = FALSE) +
+  facet_grid(
+    # . ~ Parameter,
+    cols = vars(Parameter),
+    # space ="free",
+    scales="free",
+    switch="x",
+    labeller = label_parsed
+  ) +
+  xlab("") +
+  theme_Publication() +
+  scale_color_manual(values = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]) +
+  theme(axis.text.y = element_markdown(colour = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]))
+
+plot2 <- plot_table %>%
+  filter(Parameter %in% params_names_plotmath_with_nll[(idx_half+1):len]) %>%
+  ggplot(aes(x = Median, y = Optimizer, color = Optimizer)) +
+  geom_point(show.legend = FALSE) +
+  # scale_x_log10() +
+  scale_x_continuous(limits = plot_limits) +
+  geom_errorbarh(aes(xmin = CI1, xmax = CI2, height = .3), show.legend = FALSE) +
+  facet_grid(
+    # . ~ Parameter,
+    cols = vars(Parameter),
+    # space ="free",
+    scales="free",
+    switch="x",
+    labeller = label_parsed
+  ) +
+  xlab("") +
+  theme_Publication() +
+  scale_color_manual(values = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]) +
+  theme(axis.text.y = element_markdown(colour = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]))
+
+ggarrange(plot1, plot2, ncol = 1, nrow = 2)
+@
+
+
+
+<<bootstrap-graph-simu1-setup, echo = FALSE>>=
+m <- M_LIST_SIMU1
+
+bootstrap_simu1_results_with_nll <- bootstrap_simu1_results$all_natural_parameters %>%
+  select(-c("m")) %>%
+  add_row(bootstrap_simu1_results$all_nlls %>% mutate(Parameter = "nll")) %>%
+  select(-c("seed"))
+
+bootstrap_table <- as.data.frame(bootstrap_simu1_results_with_nll %>%
+                                   mutate(Parameter = factor(Parameter, levels = unique(Parameter))) %>% # Keeps the original order on the parameters. Otherwise, they are lexicographically ordered.
+                                   group_by(Parameter) %>% # We want an average per parameter, and by optimizer (already separated with columns)
+                                   summarise(across(where(is.double), median)) %>%
+                                   # mutate(across(where(is.double), trunc_custom, digits = 3)) %>% 
+                                   mutate(Parameter = levels(Parameter)) %>%
+                                   rename_with(~ paste0(.x, "-Median"))) # We don't need them as factors anymore, and factors may cause troubles later, so we undo the factorization.
+
+quantiles <- as.data.frame(bootstrap_simu1_results_with_nll %>%
+                             mutate(Parameter = factor(Parameter, levels = unique(Parameter))) %>%
+                             group_by(Parameter) %>%
+                             summarise(across(where(is.double), quantile.colwise), .groups = "keep") %>%
+                             mutate(Parameter = as.character(Parameter)))
+
+for (parameter_name in quantiles$Parameter) {
+  for (optimizer_name in OPTIMIZERS_METHOD_UNDERSCORE) {
+    idx_rows <- which(quantiles$Parameter == parameter_name)
+    idx_col <- which(colnames(quantiles) == optimizer_name)
+    
+    new_col_name1 <- sub(pattern = "$", replacement = paste0("-", "CI1"), x = optimizer_name)
+    new_col_name2 <- sub(pattern = "$", replacement = paste0("-", "CI2"), x = optimizer_name)
+    idx_row_bootstrap_table <- which(bootstrap_table$Parameter == parameter_name)
+    bootstrap_table[idx_row_bootstrap_table, new_col_name1] <- quantiles[idx_rows, idx_col][1]
+    bootstrap_table[idx_row_bootstrap_table, new_col_name2] <- quantiles[idx_rows, idx_col][2]
+  }
+}
+
+# Rename parameters to plotmath
+params_names_plotmath <- paste0(rep("widehat(lambda[",
+                                 m),
+                             1:m,
+                             "])")
+for (row in 1:m) {
+  # Get row and column indices for gamma instead of the default
+  # columnwise index: the default indices are 1:m for the 1st column,
+  # then (m + 1):(2 * m) for the 2nd, etc...
+  params_names_plotmath <- c(params_names_plotmath,
+                          paste0(sapply(X = 1:m,
+                                        FUN = function(row, col) {paste0("widehat(gamma[",
+                                                                         row,
+                                                                         col,
+                                                                         "])")},
+                                        row = row)))
+}
+params_names_plotmath <- c(params_names_plotmath,
+                           paste0(rep("widehat(delta[",
+                                      m),
+                                  1:m,
+                                  "])"))
+
+params_names_plotmath_with_nll <- c("nll", params_names_plotmath)
+
+plot_table <- bootstrap_table %>%
+  pivot_longer(cols = matches("^(?!Parameter)", perl = TRUE), # All columns except "Parameter"
+               names_to = c("Optimizer", ".value"),
+               names_sep = "-") %>%
+  rename(Parameter = `Parameter-Median`) %>%
+  mutate(Optimizer = factor(Optimizer),
+         Parameter = factor(Parameter, labels = c(params_names_plotmath[order(params_names_plotmath)], "nll"))) %>%
+  mutate(Parameter = factor(Parameter, levels = params_names_plotmath_with_nll))
+
+len <- length(params_names_plotmath_with_nll)
+idx_half <- len %/% 2
+
+caption <- paste0("Plots of estimates and NLL when estimating a two-state Poisson HMM in the second study design, with (", DATA_SIZE_SIMU1, " observations), over ", BOOTSTRAP_SAMPLES, " realizations. The columns display in order the NLL, Poisson rates, TPM elements, and the stationary distribution. The dots represent the medians, and the lines display the 95\\% percentile CIs.")
+@
+
+<<bootstrap-graph-simu1, dependson="bootstrap-graph-simu1-setup", fig.height = 8, fig.cap = caption, echo = FALSE>>=
+plot1 <- plot_table %>%
+  filter(Parameter %in% params_names_plotmath_with_nll[1:idx_half]) %>%
+  ggplot(aes(x = Median, y = Optimizer, color = Optimizer)) +
+  geom_point(show.legend = FALSE) +
+  # scale_x_log10(limits = plot_limits) +
+  scale_x_continuous(limits = plot_limits) +
+  geom_errorbarh(aes(xmin = CI1, xmax = CI2, height = .3), show.legend = FALSE) +
+  facet_grid(
+    # . ~ Parameter,
+    cols = vars(Parameter),
+    # space ="free",
+    scales="free",
+    switch="x",
+    labeller = label_parsed
+  ) +
+  xlab("") +
+  theme_Publication() +
+  scale_color_manual(values = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]) +
+  theme(axis.text.y = element_markdown(colour = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]))
+
+plot2 <- plot_table %>%
+  filter(Parameter %in% params_names_plotmath_with_nll[(idx_half+1):len]) %>%
+  ggplot(aes(x = Median, y = Optimizer, color = Optimizer)) +
+  geom_point(show.legend = FALSE) +
+  # scale_x_log10() +
+  scale_x_continuous(limits = plot_limits) +
+  geom_errorbarh(aes(xmin = CI1, xmax = CI2, height = .3), show.legend = FALSE) +
+  facet_grid(
+    # . ~ Parameter,
+    cols = vars(Parameter),
+    # space ="free",
+    scales="free",
+    switch="x",
+    labeller = label_parsed
+  ) +
+  xlab("") +
+  theme_Publication() +
+  scale_color_manual(values = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]) +
+  theme(axis.text.y = element_markdown(colour = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]))
+
+ggarrange(plot1, plot2, ncol = 1, nrow = 2)
+@
+
+
+
+<<bootstrap-graph-simu3-setup, echo = FALSE>>=
+  m <- M_LIST_SIMU3
+
+bootstrap_simu3_results_with_nll <- bootstrap_simu3_results$all_natural_parameters %>%
+  select(-c("m")) %>%
+  add_row(bootstrap_simu3_results$all_nlls %>% mutate(Parameter = "nll")) %>%
+  select(-c("seed"))
+
+bootstrap_table <- as.data.frame(bootstrap_simu3_results_with_nll %>%
+                                   mutate(Parameter = factor(Parameter, levels = unique(Parameter))) %>% # Keeps the original order on the parameters. Otherwise, they are lexicographically ordered.
+                                   group_by(Parameter) %>% # We want an average per parameter, and by optimizer (already separated with columns)
+                                   summarise(across(where(is.double), median)) %>%
+                                   # mutate(across(where(is.double), trunc_custom, digits = 3)) %>% 
+                                   mutate(Parameter = levels(Parameter)) %>%
+                                   rename_with(~ paste0(.x, "-Median"))) # We don't need them as factors anymore, and factors may cause troubles later, so we undo the factorization.
+
+quantiles <- as.data.frame(bootstrap_simu3_results_with_nll %>%
+                             mutate(Parameter = factor(Parameter, levels = unique(Parameter))) %>%
+                             group_by(Parameter) %>%
+                             summarise(across(where(is.double), quantile.colwise), .groups = "keep") %>%
+                             mutate(Parameter = as.character(Parameter)))
+
+for (parameter_name in quantiles$Parameter) {
+  for (optimizer_name in OPTIMIZERS_METHOD_UNDERSCORE) {
+    idx_rows <- which(quantiles$Parameter == parameter_name)
+    idx_col <- which(colnames(quantiles) == optimizer_name)
+    
+    new_col_name1 <- sub(pattern = "$", replacement = paste0("-", "CI1"), x = optimizer_name)
+    new_col_name2 <- sub(pattern = "$", replacement = paste0("-", "CI2"), x = optimizer_name)
+    idx_row_bootstrap_table <- which(bootstrap_table$Parameter == parameter_name)
+    bootstrap_table[idx_row_bootstrap_table, new_col_name1] <- quantiles[idx_rows, idx_col][1]
+    bootstrap_table[idx_row_bootstrap_table, new_col_name2] <- quantiles[idx_rows, idx_col][2]
+  }
+}
+
+# Rename parameters to plotmath
+params_names_plotmath <- paste0(rep("widehat(mu[",
+                                    m),
+                                1:m,
+                                "])")
+params_names_plotmath <- c(params_names_plotmath,
+                           paste0(rep("widehat(sigma[",
+                                      m),
+                                  1:m,
+                                  "])"))
+for (row in 1:m) {
+  # Get row and column indices for gamma instead of the default
+  # columnwise index: the default indices are 1:m for the 1st column,
+  # then (m + 1):(2 * m) for the 2nd, etc...
+  params_names_plotmath <- c(params_names_plotmath,
+                             paste0(sapply(X = 1:m,
+                                           FUN = function(row, col) {paste0("widehat(gamma[",
+                                                                            row,
+                                                                            col,
+                                                                            "])")},
+                                           row = row)))
+}
+params_names_plotmath <- c(params_names_plotmath,
+                           paste0(rep("widehat(delta[",
+                                      m),
+                                  1:m,
+                                  "])"))
+
+params_names_plotmath_with_nll <- c("nll", params_names_plotmath)
+
+plot_table <- bootstrap_table %>%
+  pivot_longer(cols = matches("^(?!Parameter)", perl = TRUE), # All columns except "Parameter"
+               names_to = c("Optimizer", ".value"),
+               names_sep = "-") %>%
+  rename(Parameter = `Parameter-Median`) %>%
+  mutate(Optimizer = factor(Optimizer),
+         Parameter = factor(Parameter, labels = c(params_names_plotmath[order(params_names_plotmath)], "nll"))) %>%
+  mutate(Parameter = factor(Parameter, levels = params_names_plotmath_with_nll))
+
+len <- length(params_names_plotmath_with_nll)
+idx_half <- len %/% 2
+
+caption <- paste0("Plots of estimates and NLL when estimating a two-state Poisson HMM in the third study design, with (", DATA_SIZE_SIMU3, " observations), over ", BOOTSTRAP_SAMPLES, " realizations. The columns display in order the NLL, Poisson rates, TPM elements, and the stationary distribution. The dots represent the medians, and the lines display the 95\\% percentile CIs.")
+@
+  
+<<bootstrap-graph-simu3, dependson="bootstrap-graph-simu3-setup", fig.height = 8, fig.cap = caption, echo = FALSE>>=
+plot1 <- plot_table %>%
+  filter(Parameter %in% params_names_plotmath_with_nll[1:idx_half]) %>%
+  ggplot(aes(x = Median, y = Optimizer, color = Optimizer)) +
+  geom_point(show.legend = FALSE) +
+  # scale_x_log10(limits = plot_limits) +
+  scale_x_continuous(limits = plot_limits) +
+  geom_errorbarh(aes(xmin = CI1, xmax = CI2, height = .3), show.legend = FALSE) +
+  facet_grid(
+    # . ~ Parameter,
+    cols = vars(Parameter),
+    # space ="free",
+    scales="free",
+    switch="x",
+    labeller = label_parsed
+  ) +
+  xlab("") +
+  theme_Publication() +
+  scale_color_manual(values = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]) +
+  theme(axis.text.y = element_markdown(colour = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]))
+
+plot2 <- plot_table %>%
+  filter(Parameter %in% params_names_plotmath_with_nll[(idx_half+1):len]) %>%
+  ggplot(aes(x = Median, y = Optimizer, color = Optimizer)) +
+  geom_point(show.legend = FALSE) +
+  # scale_x_log10() +
+  scale_x_continuous(limits = plot_limits) +
+  geom_errorbarh(aes(xmin = CI1, xmax = CI2, height = .3), show.legend = FALSE) +
+  facet_grid(
+    # . ~ Parameter,
+    cols = vars(Parameter),
+    # space ="free",
+    scales="free",
+    switch="x",
+    labeller = label_parsed
+  ) +
+  xlab("") +
+  theme_Publication() +
+  scale_color_manual(values = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]) +
+  theme(axis.text.y = element_markdown(colour = COLORS[rep(c(1,2), length(OPTIMIZERS_METHOD) / 2)]))
+
+ggarrange(plot1, plot2, ncol = 1, nrow = 2)
+@
+
+
+\restoregeometry
+
+\clearpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

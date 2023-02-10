@@ -1,0 +1,342 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\normalfont{#1}}
+\providecommand{\urlprefix}{Available from: }
+
+\bibitem{kristensen}
+Kristensen~K, Nielsen~A, Berg~C, et~al. {{TMB}}: {{Automatic}} differentiation
+  and laplace approximation. Journal of Statistical Software, Articles.
+  2016;\hspace{0pt}70(5):1--21.
+
+\bibitem{bacri}
+Bacri~T, Berentsen~GD, Bulla~J, et~al. A gentle tutorial on accelerated
+  parameter and confidence interval estimation for hidden {{Markov}} models
+  using {{Template Model Builder}}. Biometrical Journal. 2022 May;\hspace{0pt}.
+
+\bibitem{juang}
+Juang~BH, Rabiner~LR. Hidden {{Markov Models}} for {{Speech Recognition}}.
+  Technometrics. 1991 Aug;\hspace{0pt}33(3):251--272.
+
+\bibitem{baum}
+Baum~LE, Petrie~T. Statistical {{Inference}} for {{Probabilistic Functions}} of
+  {{Finite State Markov Chains}}. The Annals of Mathematical Statistics. 1966
+  Dec;\hspace{0pt}37(6):1554--1563.
+
+\bibitem{rabiner}
+Rabiner~L. A tutorial on hidden {{Markov}} models and selected applications in
+  speech recognition. Proceedings of the IEEE. 1989
+  Feb;\hspace{0pt}77(2):257--286.
+
+\bibitem{rabinera}
+Rabiner~L, Juang~B. An introduction to hidden {{Markov}} models. IEEE ASSP
+  Magazine. 1986 Jan;\hspace{0pt}3(1):4--16.
+
+\bibitem{fredkin}
+Fredkin~DR, Rice~JA. Bayesian {{Restoration}} of {{Single-Channel Patch Clamp
+  Recordings}}. Biometrics. 1992;\hspace{0pt}48(2):427--448.
+
+\bibitem{schadt}
+Schadt~EE, Sinsheimer~JS, Lange~K. Computational {{Advances}} in {{Maximum
+  Likelihood Methods}} for {{Molecular Phylogeny}}. Genome Research. 1998
+  Jan;\hspace{0pt}8(3):222--233.
+
+\bibitem{durbin}
+Durbin~R. Biological {{Sequence Analysis}}: {{Probabilistic Models}} of
+  {{Proteins}} and {{Nucleic Acids}}. {Cambridge University Press}; 1998.
+
+\bibitem{eddy}
+Eddy~SR. Profile hidden {{Markov}} models. Bioinformatics. 1998
+  Jan;\hspace{0pt}14(9):755--763.
+
+\bibitem{hamilton}
+Hamilton~JD. A {{New Approach}} to the {{Economic Analysis}} of {{Nonstationary
+  Time Series}} and the {{Business Cycle}}. Econometrica.
+  1989;\hspace{0pt}57(2):357--384.
+
+\bibitem{mcclintock}
+McClintock~BT, Langrock~R, Gimenez~O, et~al. Uncovering ecological state
+  dynamics with hidden {{Markov}} models. Ecology Letters.
+  2020;\hspace{0pt}23(12):1878--1903.
+
+\bibitem{lystig}
+Lystig~TC, Hughes~JP. Exact {{Computation}} of the {{Observed Information
+  Matrix}} for {{Hidden Markov Models}}. Journal of Computational and Graphical
+  Statistics. 2002 Sep;\hspace{0pt}11(3):678--689.
+
+\bibitem{ailliot}
+Ailliot~P, Allard~D, Monbet~V, et~al. {Stochastic weather generators: an
+  overview of weather type models}. Journal de la soci\'et\'e fran\c{c}aise de
+  statistique. 2015;\hspace{0pt}156(1):101--113.
+
+\bibitem{mor}
+Mor~B, Garhwal~S, Kumar~A. A {{Systematic Review}} of {{Hidden Markov Models}}
+  and {{Their Applications}}. Archives of Computational Methods in Engineering.
+  2021 May;\hspace{0pt}28(3):1429--1448.
+
+\bibitem{bauma}
+Baum~LE, Petrie~T, Soules~G, et~al. A maximization technique occurring in the
+  statistical analysis of probabilistic functions of {{Markov}} chains. The
+  Annals of Mathematical Statistics. 1970;\hspace{0pt}41(1):164--171.
+
+\bibitem{dempster}
+Dempster~AP, Laird~NM, Rubin~DB. Maximum {{Likelihood}} from {{Incomplete Data
+  Via}} the {{EM Algorithm}}. Journal of the Royal Statistical Society: Series
+  B (Methodological). 1977;\hspace{0pt}39(1):1--22.
+
+\bibitem{liporace}
+Liporace~L. Maximum likelihood estimation for multivariate observations of
+  {{Markov}} sources. IEEE Transactions on Information Theory. 1982
+  Sep;\hspace{0pt}28(5):729--734.
+
+\bibitem{wu}
+Wu~CFJ. On the {{Convergence Properties}} of the {{EM Algorithm}}. The Annals
+  of Statistics. 1983;\hspace{0pt}11(1):95--103.
+
+\bibitem{turner}
+Turner~R. Direct maximization of the likelihood of a hidden {{Markov}} model.
+  Computational Statistics \& Data Analysis. 2008
+  May;\hspace{0pt}52(9):4147--4160.
+
+\bibitem{macdonald}
+MacDonald~IL, Zucchini~W. Hidden {{Markov}} and other models for
+  discrete-valued time series. (Monographs on Statistics and Applied
+  Probability; Vol.~70). {London}: {Chapman \& Hall}; 1997.
+
+\bibitem{cappe}
+Capp{\'e}~O, Moulines~E, Ryden~T. Inference in {{Hidden Markov Models}}.
+  {Springer Science \& Business Media}; 2006.
+
+\bibitem{lange}
+Lange~K, Weeks~DE. Efficient computation of lod scores: Genotype elimination,
+  genotype redefinition, and hybrid maximum likelihood algorithms. Annals of
+  Human Genetics. 1989;\hspace{0pt}53(1):67--83.
+
+\bibitem{zucchini}
+Zucchini~W, MacDonald~I, Langrock~R. Hidden markov models for time series: An
+  introduction using r, second edition. {CRC Press}; 2016. Chapman \&
+  {{Hall}}/{{CRC}} Monographs on Statistics \& Applied Probability.
+
+\bibitem{altmana}
+Altman~RM, Petkau~AJ. {Application of hidden Markov models to multiple
+  sclerosis lesion count data}. Statistics in Medicine.
+  2005;\hspace{0pt}24(15):2335--2344.
+
+\bibitem{gay}
+Gay~DM. Usage summary for selected optimization routines. Computing science
+  technical report. 1990;\hspace{0pt}153:1--21.
+
+\bibitem{R-optimr}
+Nash~JC, Varadhan~R. optimr: A replacement and extension of the optim function;
+  2019. R package version 2019-12.16;
+  \urlprefix\url{https://CRAN.R-project.org/package=optimr}.
+
+\bibitem{bulla}
+Bulla~J, Berzel~A. Computational issues in parameter estimation for stationary
+  hidden {{Markov}} models. Computational Statistics. 2008
+  Jan;\hspace{0pt}23(1):1--18.
+
+\bibitem{dennis}
+Dennis~J~John~E, Mor{\'e}~JJ. Quasi-{{Newton Methods}}, {{Motivation}} and
+  {{Theory}}. SIAM Review. 1977 Jan;\hspace{0pt}19(1):46--89.
+
+\bibitem{schnabel}
+Schnabel~RB, Koonatz~JE, Weiss~BE. A modular system of algorithms for
+  unconstrained minimization. ACM Transactions on Mathematical Software. 1985
+  Dec;\hspace{0pt}11(4):419--440.
+
+\bibitem{nelder}
+Nelder~JA, Mead~R. A {{Simplex Method}} for {{Function Minimization}}. The
+  Computer Journal. 1965 Jan;\hspace{0pt}7(4):308--313.
+
+\bibitem{hassan}
+Hassan~MR, Nath~B, Kirley~M. A fusion model of {{HMM}}, {{ANN}} and {{GA}} for
+  stock market forecasting. Expert Systems with Applications. 2007
+  Jul;\hspace{0pt}33(1):171--180.
+
+\bibitem{stolcke}
+Stolcke~A, Omohundro~S. Hidden {{Markov}} model induction by {{Bayesian}} model
+  merging. Advances in neural information processing systems.
+  1993;\hspace{0pt}:11--11.
+
+\bibitem{oudelha}
+Oudelha~M, Ainon~RN. {{HMM}} parameters estimation using hybrid {{Baum-Welch}}
+  genetic algorithm. In: 2010 {{International Symposium}} on {{Information
+  Technology}}; Vol.~2; Jun.; 2010. p. 542--545.
+
+\bibitem{redner}
+Redner~RA, Walker~HF. Mixture {{Densities}}, {{Maximum Likelihood}} and the
+  {{EM Algorithm}}. SIAM Review. 1984 Apr;\hspace{0pt}26(2):195--239.
+
+\bibitem{kato}
+Kato~J, Watanabe~T, Joga~S, et~al. An {{HMM-based}} segmentation method for
+  traffic monitoring movies. IEEE Transactions on Pattern Analysis and Machine
+  Intelligence. 2002 Sep;\hspace{0pt}24(9):1291--1296.
+
+\bibitem{Feller}
+Feller~W. An introduction to probability theory and its applications. {Wiley};
+  1968.
+
+\bibitem{pryss}
+Pryss~R, Reichert~M, Langguth~B, et~al. Mobile {{Crowd Sensing Services}} for
+  {{Tinnitus Assessment}}, {{Therapy}}, and {{Research}}. In: 2015 {{IEEE
+  International Conference}} on {{Mobile Services}}; Jun. {IEEE}; 2015. p.
+  352--359.
+
+\bibitem{pryssa}
+Pryss~R, Reichert~M, Herrmann~J, et~al. Mobile {{Crowd Sensing}} in
+  {{Clinical}} and {{Psychological Trials}} \textendash{} {{A Case Study}}. In:
+  2015 {{IEEE}} 28th {{International Symposium}} on {{Computer-Based Medical
+  Systems}}; Jun. {IEEE}; 2015. p. 23--24.
+
+\bibitem{probst}
+Probst~T, Pryss~R, Langguth~B, et~al. Emotion dynamics and tinnitus: {{Daily}}
+  life data from the ``{{TrackYourTinnitus}}'' application. Scientific Reports.
+  2016 Aug;\hspace{0pt}6(1):31166.
+
+\bibitem{probsta}
+Probst~T, Pryss~RC, Langguth~B, et~al. Does {{Tinnitus Depend}} on
+  {{Time-of-Day}}? {{An Ecological Momentary Assessment Study}} with the
+  ``{{TrackYourTinnitus}}'' {{Application}}. Frontiers in Aging Neuroscience.
+  2017 Aug;\hspace{0pt}9:253.
+
+\bibitem{rydenb}
+Ryd{\'e}n~T, Ter{\"a}svirta~T, {\AA}sbrink~S. Stylized {{Facts}} of {{Daily
+  Return Series}} and the {{Hidden Markov Model}}. Journal of Applied
+  Econometrics. 1998;\hspace{0pt}13(3):217--244.
+
+\bibitem{schwerta}
+Schwert~GW. Why does stock market volatility change over time. Journal of
+  Finance. 1989;\hspace{0pt}44(5):1115--1153.
+
+\bibitem{maheua}
+{maheu}~JM, McCurdy~TH. Identifying {{Bull}} and {{Bear Markets}} in {{Stock
+  Returns}}. Journal of Business \& Economic Statistics. 2000
+  Jan;\hspace{0pt}18(1):100--112.
+
+\bibitem{guidolina}
+Guidolin~M, Timmermann~A. Economic {{Implications}} of {{Bull}} and {{Bear
+  Regimes}} in {{UK Stock}} and {{Bond Returns}}. The Economic Journal. 2005
+  Jan;\hspace{0pt}115(500):111--143.
+
+\bibitem{rcoreteam}
+{R Core Team}. R: {{A}} language and environment for statistical computing.
+  {Vienna, Austria}: {R Foundation for Statistical Computing}; 2021.
+
+\bibitem{schwendinger}
+Schwendinger~F, Borchers~HW. {{CRAN Task View}}: {{Optimization}} and
+  {{Mathematical Programming}} [Https://cran.r-project.org/view=optimization];
+  2022.
+
+\bibitem{broyden}
+Broyden~CG. The {{Convergence}} of a {{Class}} of {{Double-rank Minimization
+  Algorithms}} 1. {{General Considerations}}. IMA Journal of Applied
+  Mathematics. 1970 Mar;\hspace{0pt}6(1):76--90.
+
+\bibitem{fletchera}
+Fletcher~R. A new approach to variable metric algorithms. The Computer Journal.
+  1970 Jan;\hspace{0pt}13(3):317--322.
+
+\bibitem{goldfarb}
+Goldfarb~D. A family of variable-metric methods derived by variational means.
+  Mathematics of Computation. 1970;\hspace{0pt}24(109):23--26.
+
+\bibitem{shanno}
+Shanno~DF. Conditioning of quasi-{{Newton}} methods for function minimization.
+  Mathematics of Computation. 1970;\hspace{0pt}24(111):647--656.
+
+\bibitem{byrd}
+Byrd~RH, Lu~P, Nocedal~J, et~al. A {{Limited Memory Algorithm}} for {{Bound
+  Constrained Optimization}}. SIAM Journal on Scientific Computing. 1995
+  Sep;\hspace{0pt}16(5):1190--1208.
+
+\bibitem{fletcher}
+Fletcher~R. Practical {{Methods}} of {{Optimization}}. {John Wiley \& Sons};
+  2013.
+
+\bibitem{dennisa}
+Dennis~JE, Schnabel~RB. Numerical {{Methods}} for {{Unconstrained
+  Optimization}} and {{Nonlinear Equations}}. {Society for Industrial and
+  Applied Mathematics}; 1996. Classics in {{Applied Mathematics}}.
+
+\bibitem{hooke}
+Hooke~R, Jeeves~TA. `` {{Direct Search}}'' {{Solution}} of {{Numerical}} and
+  {{Statistical Problems}}. Journal of the ACM. 1961
+  Apr;\hspace{0pt}8(2):212--229.
+
+\bibitem{R-marqLevAlg}
+Philipps~V, Proust-Lima~C, Prague~M, et~al. marqlevalg: A parallelized
+  general-purpose optimization based on marquardt-levenberg algorithm; 2022. R
+  package version 2.0.7;
+  \urlprefix\url{https://CRAN.R-project.org/package=marqLevAlg}.
+
+\bibitem{levenberg}
+Levenberg~K. A method for the solution of certain non-linear problems in least
+  squares. Quarterly of Applied Mathematics. 1944;\hspace{0pt}2(2):164--168.
+
+\bibitem{marquardt}
+Marquardt~DW. An {{Algorithm}} for {{Least-Squares Estimation}} of {{Nonlinear
+  Parameters}}. Journal of the Society for Industrial and Applied Mathematics.
+  1963 Jun;\hspace{0pt}11(2):431--441.
+
+\bibitem{R-ucminf}
+Nielsen~HB, Mortensen~SB. ucminf: General-purpose unconstrained non-linear
+  optimization; 2022. R package version 1.1-4.1;
+  \urlprefix\url{https://CRAN.R-project.org/package=ucminf}.
+
+\bibitem{nielsen}
+Nielsen~HB. {{UCMINF}} - an algorithm for unconstrained, nonlinear
+  optimization. {Informatics and Mathematical Modelling, Technical University
+  of Denmark, DTU}; 2000.
+
+\bibitem{R-BB}
+Varadhan~R, Gilbert~P. Bb: Solving and optimizing large-scale nonlinear
+  systems; 2019. R package version 2019.10-1;
+  \urlprefix\url{http://www.jhsph.edu/agingandhealth/People/Faculty_personal_pages/Varadhan.html}.
+
+\bibitem{varadhan}
+Varadhan~R, Gilbert~P. {{BB}}: {{An R Package}} for {{Solving}} a {{Large
+  System}} of {{Nonlinear Equations}} and for {{Optimizing}} a
+  {{High-Dimensional Nonlinear Objective Function}}. Journal of Statistical
+  Software. 2010;\hspace{0pt}32:1--26.
+
+\bibitem{R-minqa}
+Bates~D, Mullen~KM, Nash~JC, et~al. minqa: Derivative-free optimization
+  algorithms by quadratic approximation; 2022. R package version 1.2.5;
+  \urlprefix\url{http://optimizer.r-forge.r-project.org}.
+
+\bibitem{powell}
+Powell~MJD. The {{NEWUOA}} software for unconstrained optimization without
+  derivatives. In: Di~Pillo~G, Roma~M, editors. Large-{{Scale Nonlinear
+  Optimization}}. {Boston, MA}: {Springer US}; 2006. Nonconvex {{Optimization}}
+  and {{Its Applications}}; p. 255--297.
+
+\bibitem{R-microbenchmark}
+Mersmann~O. microbenchmark: Accurate timing functions; 2021. R package version
+  1.4.9; \urlprefix\url{https://github.com/joshuaulrich/microbenchmark/}.
+
+\bibitem{bohning}
+B{\"o}hning~D. Computer-assisted analysis of mixtures and applications:
+  Meta-analysis, disease mapping and others. Vol.~81. {CRC press}; 1999.
+
+\bibitem{bhatia}
+Bhatia~R, Davis~C. A {{Better Bound}} on the {{Variance}}. The American
+  Mathematical Monthly. 2000 Apr;\hspace{0pt}107(4):353--357.
+
+\bibitem{nagy}
+Nagy~J. {\"Uber algebraische Gleichungen mit lauter reellen Wurzeln.}
+  Jahresbericht der Deutschen Mathematiker-Vereinigung.
+  1918;\hspace{0pt}27:37--43.
+
+\bibitem{visser}
+Visser~I, Raijmakers~MEJ, Molenaar~PCM. Confidence intervals for hidden
+  {{Markov}} model parameters. British Journal of Mathematical and Statistical
+  Psychology. 2000;\hspace{0pt}53(2):317--327.
+
+\bibitem{efron}
+Efron~B, Tibshirani~RJ. An introduction to the bootstrap. {New York, N.Y.;
+  London}: {Chapman \& Hall}; 1993.
+
+\bibitem{hardle}
+H{\"a}rdle~W, Horowitz~J, Kreiss~JP. Bootstrap {{Methods}} for {{Time Series}}.
+  International Statistical Review. 2003;\hspace{0pt}71(2):435--459.
+
+\end{thebibliography}
