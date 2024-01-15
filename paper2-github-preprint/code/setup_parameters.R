@@ -18,6 +18,7 @@ source("functions/norm_utils.R")
 # Some commands contain private info and are not on GitHub
 notif <- function(msg, title, priority) {}
 
+# How many cores to use in parallel
 # CORES <- parallel::detectCores() / 2
 # CORES <- future::availableCores() / 2
 CORES <- 4
@@ -28,7 +29,6 @@ RNGversion("3.6.0")
 
 # Used for Wald confidence intervals, approximately 1.96
 q95_norm <- qnorm(1 - 0.05 / 2)
-
 
 # Number of benchmark runs used to time the estimation of HMM parameters (CAN = 0)
 BENCHMARK_SAMPLES <- 200
@@ -41,7 +41,6 @@ BOOTSTRAP_SAMPLES <- 1000
 # Number of hidden states used for timing HMMs on each dataset
 M_LIST_SIMU1 <- 2
 M_LIST_SIMU3 <- 2
-M_LIST_HOSP <- 2
 M_LIST_TINN <- 2
 
 # Percentage
