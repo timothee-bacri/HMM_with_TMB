@@ -60,7 +60,7 @@ Additionally, as a by-product of using `TMB`, we can derive standard errors and 
 
 ## Other article
 
-A preprint version of an article that will (hopefully) be published soon can be found along with the code of its results in the folder [paper2-github-preprint/](https://github.com/timothee-bacri/HMM_with_TMB/blob/main/paper2-github-preprint).
+A preprint version of *https://doi.org/10.1080/00949655.2023.2226788* that is published can be found along with the code of its results in the folder [paper2-github-preprint/](https://github.com/timothee-bacri/HMM_with_TMB/blob/main/paper2-github-preprint).
 
 This article looks at HMM optimization using popular optimization functions, compares their performance along with their robustness to bad initial parameters, and presents and analyzes smoothing probabilities confidence intervals.
 Its code is organized in a similar fashion to the article that this repository accompanies.
