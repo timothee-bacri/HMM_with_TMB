@@ -22,10 +22,12 @@ come)](https://onlinelibrary.wiley.com/journal/15214036).* -->
 This repository contains the code to produce the R-bookdown website
 found [here](https://timothee-bacri.github.io/HMM_with_TMB/).
 
-The folders (*[code/](#code)*, *[data/](#data)*,
-*[functions/](#functions)*) related to the analysis code and results of
+The folders (*[code/](https://github.com/timothee-bacri/HMM_with_TMB/tree/main/code)*, *[data/](https://github.com/timothee-bacri/HMM_with_TMB/tree/main/data)*,
+*[functions/](https://github.com/timothee-bacri/HMM_with_TMB/tree/main/functions)*) related to the analysis code and results of
 the paper [https://doi.org/10.1002/bimj.202100256](https://doi.org/10.1002/bimj.202100256) are described in
-[Directory structure](#directory-structure).
+[Directory structure](https://timothee-bacri.github.io/HMM_with_TMB/github.html#directory-structure).
+
+The folders inside (*[paper2-github-preprint/](https://github.com/timothee-bacri/HMM_with_TMB/tree/main/paper2-github-preprint)*) follow a similar structure, but concern a (second) paper [https://doi.org/10.1080/00949655.2023.2226788](https://doi.org/10.1080/00949655.2023.2226788).
 
 ## Author’s github account
 
